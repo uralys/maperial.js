@@ -254,10 +254,10 @@ SourcesManager.prototype.getURL = function (source, tx, ty, z) {
    switch(source.type){
 
       case Source.MaperialOSM:
-         return Maperial.serverURL + "/api/tile?x="+tx+"&y="+ty+"&z="+z;
+         return Maperial.apiURL + "/api/tile?x="+tx+"&y="+ty+"&z="+z;
 
       case Source.Raster:
-         return Maperial.serverURL + "/api/tile/"+source.params.rasterUID+"?x="+tx+"&y="+ty+"&z="+z;
+         return Maperial.apiURL + "/api/tile/"+source.params.rasterUID+"?x="+tx+"&y="+ty+"&z="+z;
 
       case Source.Images:
          var src = null;

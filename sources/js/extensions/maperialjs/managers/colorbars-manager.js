@@ -95,7 +95,7 @@ ColorbarsManager.prototype.loadNextColorbar = function() {
 //----------------------------//
 
 ColorbarsManager.prototype.getURL = function(colorbarUID) {
-   return Maperial.serverURL + "/api/colorbar/" + colorbarUID;
+   return Maperial.apiURL + "/api/colorbar/" + colorbarUID;
 }
 
 //----------------------------//

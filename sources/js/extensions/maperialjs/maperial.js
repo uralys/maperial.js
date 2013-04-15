@@ -30,11 +30,8 @@ function Maperial(tagId, width, height){
 
 //==================================================================//
 
-Maperial.serverURL              = "//maperial.com";
-
-Maperial.shadersPath            = Maperial.serverURL + "/assets/shaders";
-Maperial.styleToolsPath         = Maperial.serverURL + "/assets/style";
-//Maperial.styleToolsPath       = "http://192.168.1.19/project/mycarto/wwwClient/style";  // pour vivien :  )
+Maperial.staticURL              = (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? 'http://static.maperial.localhost' : 'http://static.maperial.com';
+Maperial.apiURL                 = 'http://api.maperial.com';
 
 Maperial.DEFAULT_ZOOM           = 8;
 Maperial.DEFAULT_LATITUDE       = 45.7;
