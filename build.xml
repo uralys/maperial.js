@@ -14,7 +14,7 @@
 		<echo>	build-shaders</echo>
 		<echo>	push-to-master</echo>
 	</target>
-		
+
 	<target name="build-all">
 		<delete dir="${dist}" />
 		<mkdir dir="${dist}" />
@@ -30,6 +30,7 @@
 		<copy todir="${dist}">
 			<fileset dir="assets" />
 		</copy>
+
 	</target>
 
 	<target name="build-css">
@@ -249,13 +250,19 @@
 			<arg value="-jar" />
 			<arg value="compressor/googleCompiler/compiler.jar" />
 
-			<arg value="--js" /><arg value="sources/js/libs/jquery.mousewheel.min.js" />
-			<arg value="--js" /><arg value="sources/js/libs/jquery.selectbox-0.2.min.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/tools/utils.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.mousewheel.min.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.selectbox-0.2.min.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/tools/utils.js" />
 
-			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/libs/gl-matrix-min.js" />
-			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/libs/coordinate-system.js" />
-			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/libs/geoloc.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/gl-matrix-min.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/coordinate-system.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/geoloc.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/libs/colorpicker.js" />
 			<arg value="--js" />
@@ -305,14 +312,21 @@
 			<arg value="sources/js/extensions/maperialjs/hud/panel-controls.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/panel-latlon.js" />
-			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/hud/panel-scale.js" />
-			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/hud/panel-settings.js" />
-			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/hud/triggers.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-scale.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-settings.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/triggers.js" />
 
-			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/managers/sources-manager.js" />
-			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/managers/colorbars-manager.js" />
-			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/managers/styles-manager.js" />
-			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/managers/layers-manager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/managers/sources-manager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/managers/colorbars-manager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/managers/styles-manager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/managers/layers-manager.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/edition/boundingbox-drawer.js" />
@@ -350,83 +364,146 @@
 
 		<delete dir="sources/js/min/maperial-webapp.min.js" />
 		<exec executable="java">
-			<arg value="-jar" /><arg value="compressor/googleCompiler/compiler.jar" />
+			<arg value="-jar" />
+			<arg value="compressor/googleCompiler/compiler.jar" />
 
-			<arg value="--js" /><arg value="sources/js/libs/jquery.js" />
-			<arg value="--js" /><arg value="sources/js/libs/jquery-ui-1.9.2.custom.min.js" />
-			<arg value="--js" /><arg value="sources/js/libs/handlebars.js" />
-			<arg value="--js" /><arg value="sources/js/libs/ember.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery-ui-1.9.2.custom.min.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/handlebars.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/ember.js" />
 
-			<arg value="--js" /><arg value="sources/js/libs/jquery.validate.min.js" />
-			<arg value="--js" /><arg value="sources/js/libs/jquery.prettyPhoto.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.validate.min.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.prettyPhoto.js" />
 
-			<arg value="--js" /><arg value="sources/js/webapp/tools/common-handlebars.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/tools/translator.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/tools/common-handlebars.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/tools/translator.js" />
 
-			<arg value="--js" /><arg value="sources/js/extensions/auth/maperialAuth.js" />
-			<arg value="--js" /><arg value="sources/js/extensions/upload/jquery.fileupload.js" />
-			<arg value="--js" /><arg value="sources/js/extensions/upload/main.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/auth/maperialAuth.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/upload/jquery.fileupload.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/upload/main.js" />
 
-			<arg value="--js" /><arg value="sources/js/webapp/tools/utils.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/tools/youtube-manager.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/tools/home-mover.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/tools/jquery-script-loader.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/tools/custom-ember-handlebars.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/app.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/tools/utils.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/tools/youtube-manager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/tools/home-mover.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/tools/jquery-script-loader.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/tools/custom-ember-handlebars.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/app.js" />
 
-			<arg value="--js" /><arg value="sources/js/webapp/managers/datasetManager.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/managers/styleManager.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/managers/colorbarManager.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/managers/userManager.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/managers/mapManager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/managers/datasetManager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/managers/styleManager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/managers/colorbarManager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/managers/userManager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/managers/mapManager.js" />
 
-			<arg value="--js" /><arg value="sources/js/webapp/models/publicData.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/models/globals.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/models/user.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/models/stylesData.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/models/colorbarsData.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/models/datasetsData.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/models/translations.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/models/publicData.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/models/globals.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/models/user.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/models/stylesData.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/models/colorbarsData.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/models/datasetsData.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/models/translations.js" />
 
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/helpers/layers-helper.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/helpers/layers-helper.js" />
 
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/applicationController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/homeController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/dashboardController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/tryscreenController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/mapCreationController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/stylesController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/styleEditorController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/colorbarsController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/colorbarEditorController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/viewMapController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/datasetsController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/fontsController.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/iconsController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/applicationController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/homeController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/dashboardController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/tryscreenController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/mapCreationController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/stylesController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/styleEditorController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/colorbarsController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/colorbarEditorController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/viewMapController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/datasetsController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/fontsController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/iconsController.js" />
 
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/applicationView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/homeView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/dashboardView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/tryscreenView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/mapCreationView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/stylesView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/styleEditorView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/colorbarsView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/colorbarEditorView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/viewMapView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/datasetsView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/fontsView.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/iconsView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/applicationView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/homeView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/dashboardView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/tryscreenView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/mapCreationView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/stylesView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/styleEditorView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/colorbarsView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/colorbarEditorView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/viewMapView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/datasetsView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/fontsView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/iconsView.js" />
 
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/styleList.js" />
-			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/colorbarList.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/styleList.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/colorbarList.js" />
 
-			<arg value="--js" /><arg value="sources/js/webapp/router.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/router.js" />
 
-			<arg value="--js_output_file" /><arg value="${dist}/js/maperial-webapp.min.localhost.js" />
+			<arg value="--js_output_file" />
+			<arg value="${dist}/js/maperial-webapp.min.localhost.js" />
 
-			<arg value="--warning_level" /><arg value="QUIET" />
-			<arg value="--language_in" /><arg value="ECMASCRIPT5" />
+			<arg value="--warning_level" />
+			<arg value="QUIET" />
+			<arg value="--language_in" />
+			<arg value="ECMASCRIPT5" />
 		</exec>
 
 		<echo>ready.</echo>
@@ -468,7 +545,7 @@
 		<exec executable="python" dir="sources/shaders">
 			<arg value="mkjson.py" />
 		</exec>
-		
+
 		<copy todir="${dist}">
 			<fileset file="sources/shaders/all.json" />
 		</copy>
