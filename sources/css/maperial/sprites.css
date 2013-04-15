@@ -1,0 +1,29 @@
+
+/* icons */
+[class^="sprite-"],
+[class*=" sprite-"] {
+  display: inline-block;
+  width: 17px;
+  height: 16px;
+  *margin-right: .3em;
+  line-height: 14px;
+  vertical-align: text-top;
+  background-image: url("http://assets.maperial.localhost/images/icons/sprites/sprites.maperial.png");
+  background-position: 14px 14px;
+  background-repeat: no-repeat;
+}
+[class^="sprite-"]:last-child,
+[class*=" sprite-"]:last-child {
+  *margin-left: 0;
+}
+
+.maperial-arrow-down{ background-position: 0 0; width: 16px; height: 16px; } 
+.maperial-brightness{ background-position: -21px 0; width: 16px; height: 16px; } 
+.maperial-bullet-arrow-down{ background-position: -42px 0; width: 16px; height: 16px; } 
+.maperial-contrast{ background-position: -63px 0; width: 16px; height: 16px; } 
+.maperial-icon-magnifier{ background-position: -84px 0; width: 16px; height: 16px; } 
+.maperial-map-add{ background-position: -105px 0; width: 16px; height: 16px; } 
+.maperial-map-delete{ background-position: -126px 0; width: 16px; height: 16px; } 
+.maperial-map-edit{ background-position: -147px 0; width: 16px; height: 16px; } 
+.maperial-map-go{ background-position: -168px 0; width: 16px; height: 16px; } 
+.maperial-shape-handles{ background-position: -189px 0; width: 16px; height: 16px; }

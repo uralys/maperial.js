@@ -1,0 +1,53 @@
+<html>
+
+<head>
+<title>Exported from WebApp UI</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+<!-- Google api for geoloc -->
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATwlkawyHykpfJF24jcPgL_b8kK8zO2Bc&sensor=false&libraries=places,panoramio"></script>
+
+<!-- libs -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
+<!-- MaperialJS -->
+<script type="text/javascript" src="js/min/maperialjs.min.js"></script>
+<link href="assets/css/min/maperial.min.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+   $(window).on(MaperialEvents.READY, function() {
+      $("#waitingSpin").hide()
+   });
+
+   $.ajax({
+      url : "templates/maperial.html",
+      success : function(data) {
+         $('body').append(data);
+         loadMaperial();
+      },
+      dataType : 'html'
+   });
+
+   function loadMaperial() {
+      $.ajax({
+         url : "http://www.maperial.com/api/map/1_map_13db7f550fbeca6deb6",
+         dataType : 'json',
+
+         success : function(config) {
+            console.log(config);
+            new Maperial().apply(config);
+         },
+      });
+   }
+</script>
+
+</head>
+
+<body>
+	<img id="waitingSpin" src="http://assets.maperial.localhost/images/mapediting/spin.gif" />
+</body>
+
+</html>
+

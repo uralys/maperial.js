@@ -1,0 +1,95 @@
+<html>
+
+<head>
+   <title>Test Canvas</title>
+   <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+   <script src="js/render-text.js"></script>
+   <script src="js/render-line.js"></script>
+   <script src="font/dejavu.js"></script>
+<script type="text/javascript">
+
+
+function MakePoint(  ctx, px ,py )  {
+
+   
+
+   ctx.save( )
+   ctx.beginPath()
+   ctx.moveTo(px-1,py-1)
+   ctx.lineTo(px-1,py+1)
+   ctx.lineTo(px+1,py+1)
+   ctx.lineTo(px+1,py-1)
+   ctx.fillStyle="blue"
+   ctx.fill()
+   ctx.restore()
+}
+
+function TestText (ctx,l,txt,px,py) {
+   ctx.beginPath();
+   ctx.moveTo(l[0],l[1]);
+   for (var p = 2 ; p < l.length ; p = p + 2) {
+      ctx.lineTo(l[p],l[p+1]);      
+   }
+   ctx.lineWidth=1;
+   ctx.strokeStyle="red";
+   ctx.stroke()
+   //ctx.fillText(txt,px,py);
+}
+
+
+function OnLoad() {
+   canv = document.getElementById("testMap1")
+   var ctx=canv.getContext("2d");
+   canv.width  = 1024;
+   canv.height = 1024;
+
+   ExtendCanvasContext ( ctx );
+   txt   = "Road Name Road Name Place Name Place Name yplkrftzqwb"
+   //txt   = "TEST test road place xylp ltfk"
+   l     = [ 10, 50, 60, 25, 110, 50 , 160, 25 , 210, 50, 210 , 100, 240, 100, 240, 170]
+   //l     = [ 0, 0, 600, 0 ]
+   fsize = 16
+   
+   var cssFont = 'oblique bold ' + fsize+"px DejaVu Sans";
+   //var cssFont = fsize+"px DejaVu Sans";
+
+   ctx.save();
+   ctx.translate ( 20 , 50 )
+   ctx.SetFont(cssFont);
+   ctx.lineWidth           = 2;
+   ctx.strokeStyle         = "rgba(128,0,0,1.0)";
+   ctx.strokeTextOnLine2   ( txt , l );
+   ctx.fillStyle           = "rgba(0,0,0,1.0)";
+   ctx.fillTextOnLine2     ( txt , l);
+   ctx.restore             ( );
+
+   ctx.save();
+   ctx.translate ( 20 , 150 )
+   ctx.SetFont(cssFont);
+   ctx.lineWidth        = 2;
+   ctx.strokeStyle      = "rgba(128,0,0,1.0)";
+   ctx.strokeTextOnLine ( txt , l );
+   ctx.fillStyle        = "rgba(0,0,0,1.0)";
+   ctx.fillTextOnLine   ( txt , l );
+   ctx.restore          ( );
+}
+
+</script>
+</head>
+
+<body onload="OnLoad();">
+   <!--<canvas id="testMap" style="border: none;" width="256" height="256"></canvas>
+   <canvas id="testMap2" style="border: none;" width="256" height="256"></canvas> -->
+   <div id="div"></div>
+   <canvas id="testMap1" style="margin:0px; border:0px; position: absolute; top : 0px; left:0px;"></canvas>
+   <canvas id="testMap2" style="margin:0px; border:0px; position: absolute; top : 0px; left:256px;"></canvas>
+   <canvas id="testMap3" style="margin:0px; border:0px;position: absolute; top : 256px; left:0px;"></canvas>
+   <canvas id="testMap4" style="margin:0px; border:0px;position: absolute; top : 256px; left:256px;"></canvas>
+   
+</body>
+
+</html>
+

@@ -1,0 +1,80 @@
+{
+    "en"				: "En",
+    "fr"				: "Fr",
+
+    "Try"				: "Essayer",
+    "TryNow"			: "Essayez !",
+    "FindOutMore"		: "En savoir plus",
+  	"LogIn"				: "Se logguer",
+    
+    "AwesomeMaps"		: "Vos données à la carte",
+    "Everywhere"		: "Votre SIG dans le Cloud",
+
+    "Choose"			: "Sélectionnez",
+    "chooseText1"		: "Une base parmi les ",
+    "chooseText2"		: "(Google, Mapquest, OSM)",
+    "chooseText3"		: "bases classiques",
+    "chooseText4"		: "ou votre propre style.",
+
+    "Upload"			: "Upload",
+    "uploadText"		: "Utilisez vos propres données géoréférencées",
+
+    "Organize"			: "Organisez",
+    "organizeText"		: "Construisez un contenu pertinent grâce à notre système de couches détaillé",
+
+    "Customize"			: "Personnalisez",
+    "customizeText"		: "Chaque élément du style et de vos données",
+
+    "Share"				: "Partagez",
+    "shareText"			: "Publiez vos carte sur le web et exportez des images 'haute définition'.",
+
+    "QuickAndEasy"		: "Simple et rapide",
+    "QEText1"			: "Création détaillée multi-couches en quelques clics",
+    "QEText2"			: "Générez rapidement vos cartes et stockez les sur le Cloud",
+    "QEText3"			: "Editez chaque élément de la carte en le sélectionnant directement sur la carte",
+    "QEText4"			: "Editeur de style temps-réel puissant et simple à utiliser, comprenant de nombreux styles prédéfinis",
+
+    "ToolForEveryone"	: "Un outil pour tous",
+    "TEText1"			: "Interface simple d'utilisation pour construire et publier vos cartes",
+    "TEText2"			: "Un éditeur de style simple pour tous, et exhaustif pour permettre aux graphistes la plus grande précision",
+    "TEText3"			: "Une API documentée pour les développeurs",
+    
+    "ToolForYou"		: "Un outil fait pour vous et avec vous",
+    "ToolForYouText1"	: "Nous sommes là pour vous écouter et comprendre votre besoin",
+    "ToolForYouText2"	: "Notre service répond à ce besoin : nous construisons les outils qu'il vous faut, travaillons avec tous vos types de données, et distribuons vos cartes de la manière qu'il vous convient le mieux",
+    "ToolForYouText3"	: "Vous aurez notre support pour apprendre à manipuler l'outil et nous sommes là pour répondre à vos questions",
+    "ToolForYouText4"	: "Contactez nous dès aujourd'hui pour étudier votre cas : ",
+
+    "Customize"			: "Personnalisez",
+    "CustomizeText1"	: "Choisissez tout des éléments de vos cartes : couleurs, formes, épaisseurs, transparence, bordures, polices...",
+    "CustomizeText2"	: "Paramétrage de la fusion des couches : testez nos nombreuses méthodes de calculs pour trouver le rendu adapté à vos données",
+    "CustomizeText3"	: "Déterminez sur quelle couche placer chaque élément de vos cartes (forêts et bâtiments sous les données, routes et ponts par dessus...) ",
+    "CustomizeText4"	: "Configurez l'interactivité de vos cartes pour améliorer la visualisation de vos utilisateurs : choisissez les outils qu'ils pourront manipuler afin de leur permettre une meilleure analyse",
+    "CustomizeText5"	: "Peur de perdre du temps parmi tout cela ? Utilisez simplement nos paramètres prédéfinis, nul besoin d'explorer entièrement la complexité notre éditeur",
+
+    "Maperialize"		: "Maperialisez vos données",
+    "MaperializeText1"	: "Importez vos données géolocalisées : ensembles et nuages de points, grilles, images...tout peut être rendu sur différentes couches.",
+    "MaperializeText2"	: "Organisez vos données sur un nombre de couches illimité, dont vous déterminez l'ordre et les fusions pour un rendu adapté.",
+    "MaperializeText3"	: "Exploitez ainsi au mieux vos données : Visualisez, questionnez, analysez, comprenez les.",
+
+    "Share"				: "Partagez",
+    "ShareText1"		: "Publiez vos cartes sur le web",
+    "ShareText2"		: "Exportez des images de haute qualité pour vos présentations",
+    "ShareText3"		: "Intégrez des cartes intéractives en haute définition sur votre propre domaine internet.",
+    "ShareText4"		: "Bénéficiez d'un cartothèque personalisée regroupant vos plus belles cartes.",
+    
+    "Saas"				: "Logiciel en tant que service",
+    "SaasText1"			: "Plus jamais à vous soucier de votre infrastructure",
+    "SaasText2"			: "Ne payez que les ressources dont vous avez besoin, partez dès que vous avez terminé",
+    "SaasText3"			: "Vos données sont sécurisées et vous pourrez y accéder partout",
+
+    "AboutUs"			: "A propos de nous",
+    "RecentPosts"		: "Posts récents",
+    "Team"				: "L'équipe",
+    "Blog"				: "Le Blog",
+    "Maps"				: "Cartes",
+    "ParisRoads"		: "Routes à Paris",
+    "Cartotheque"		: "Cartothèque",
+    
+    "":""
+}

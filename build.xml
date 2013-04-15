@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<project basedir="." default="push-to-master" name="PushWWWClient">
+	<property environment="env" />
+
+	<target name="push-to-master">
+		<echo>------------------------------------------------------</echo>
+		<echo>-----              Maperial 2013                  ----</echo>
+		<echo>-----       Push commits from develop to master   ----</echo>
+
+		<echo>git pull origin develop</echo>
+		<exec executable="git">
+			<arg value="pull" />
+			<arg value="origin" />
+			<arg value="develop" />
+		</exec>
+		
+		<echo>git push origin develop</echo>
+		<exec executable="git">
+			<arg value="push" />
+			<arg value="origin" />
+			<arg value="develop" />
+		</exec>
+		
+		<echo>git checkout master</echo>
+		<exec executable="git">
+			<arg value="checkout" />
+			<arg value="master" />
+		</exec>
+		
+		<echo>git pull origin master</echo>
+		<exec executable="git">
+			<arg value="pull" />
+			<arg value="origin" />
+			<arg value="master" />
+		</exec>
+		
+		<echo>git pull origin develop:master</echo>
+		<exec executable="git">
+			<arg value="pull" />
+			<arg value="origin" />
+			<arg value="develop:master" />
+		</exec>
+		
+		<echo>git push origin master</echo>
+		<exec executable="git">
+			<arg value="push" />
+			<arg value="origin" />
+			<arg value="master" />
+		</exec>
+
+		<echo>git checkout develop</echo>
+		<exec executable="git">
+			<arg value="checkout" />
+			<arg value="develop" />
+		</exec>
+		
+		
+		<echo>------------------------------------------------------</echo>
+		<echo>Completed.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
+
+</project>

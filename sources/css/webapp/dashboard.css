@@ -1,0 +1,26 @@
+/*---------------------------------------------------------------*/
+
+#maperialTag {
+	width: 350px;
+}
+
+/*---------------------------------------------------------------*/
+/* Maps */
+
+.files .export-dashboard-progress{
+	width: 185px;
+}
+
+.mapName{
+	width: 100px;
+}
+
+.exports {
+	height: 285px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#zoomSelector {
+	min-height: 0px;
+}

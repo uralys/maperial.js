@@ -1,0 +1,25 @@
+precision mediump float;
+varying vec2 vTextureCoord;
+
+uniform sampler2D uSamplerTex ;
+uniform sampler2D uSamplerClut;
+
+uniform vec4      uParams;
+
+void main(void) {
+   vec2 tc;
+   
+   tc.x           = vTextureCoord.x;
+   tc.y           = vTextureCoord.y;
+   vec4  data     = texture2D(uSamplerTex , tc );
+   float v        = data.r;
+   
+   float minData  = uParams.x;
+   float maxData  = uParams.y;
+   float minClut  = uParams.z;
+   float maxClut  = uParams.w;
+   
+   float clutI    = ( v * ( maxData - minData ) + minData - minClut ) / (maxClut - minClut);
+   vec4  color    = texture2D( uSamplerClut  , vec2(clutI , 0.5) );
+   gl_FragColor   = color;
+}

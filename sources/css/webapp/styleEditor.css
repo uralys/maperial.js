@@ -1,0 +1,26 @@
+/*---------------------------------------------------------------*/
+
+.panelStyleEditorMenu {
+	height: 30px;
+	width: 270px;
+}
+
+/*---------------------------------------------------------------*/
+
+#styleNameInput {
+	width: 190px;
+}
+	
+
+#style {
+	z-index: 3 !important;
+}
+
+
+/*-------------------------*/
+
+.panelColorbarManager {
+	top: 67px;
+	left: 0; 
+}
+

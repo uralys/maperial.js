@@ -1,0 +1,317 @@
+<html>
+<head>
+<title>Map it up nify geo plot data pimp !</title>
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+
+<!-- Google api for geoloc ::: THIS IS **MY** KEY-->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAc9G4jjBi4h7j1abb_r39x_HKcS2fhe_M&sensor=false&libraries=places,panoramio"></script>
+
+<!-- all jquery -->
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="js/libs/jquery-ui-1.9.2.custom.min.js"></script>
+
+<script>
+
+function getScript(src) {
+   document.write('<' + 'script src="' + src + '"' + ' type="text/javascript"><' + '/script>');
+}
+
+function getCss(src) {
+   document.write('<link rel="stylesheet" type="text/css" href="' + src + '" />');
+}
+
+function putOnTop(name){
+   $(".trigger").css({ zIndex : 101 });
+   $(".panel").css({ zIndex : 100 });
+   $("#trigger"+name).css({ zIndex : 201 });
+   $("#panel"+name).css({ zIndex : 200 });  
+}
+
+getCss("assets/css/jquery-ui-1.9.2.custom.min.css");
+
+//map dep
+getScript("js/libs/gl-matrix-min.js");
+getScript("js/extensions/maprendering/gl-tools.js");
+getScript("js/extensions/maprendering/coordinate-system.js");
+getScript("js/libs/jquery.mousewheel.min.js");
+getScript("js/extensions/maprendering/gl-map-parameters.js");
+getScript("js/extensions/maprendering/gl-rasterlayer.js");
+getScript("js/extensions/maprendering/gl-tile.js");
+getScript("js/extensions/maprendering/map-mover.js");
+getScript("js/extensions/maprendering/gl-vectoriallayer.js");
+getScript("js/extensions/maprendering/tile-renderer.js");
+getScript("js/extensions/maprendering/render-text.js");
+getScript("js/extensions/maprendering/render-line.js");
+getScript("js/extensions/maprendering/geoloc.js");
+
+//menu dep
+getScript("js/extensions/mapeditortools/v_colortool.js");
+getScript("js/extensions/mapeditortools/v_symbolizer.js");
+getScript("js/extensions/mapeditortools/colorpicker.js");
+getCss("assets/css/colorpicker.css");
+getCss("assets/css/v_mapnifyMenu.css");
+
+//CB dep
+//getScript("js/oldies/utils.js");
+getScript("js/webapp/utils.js");
+getScript("js/extensions/mapeditortools/canvasutilities.js");
+getScript("js/extensions/mapeditortools/map.js");
+getScript("js/extensions/mapeditortools/RGBColor.js");
+getScript("js/extensions/mapeditortools/colorpicker.js");
+getCss("assets/css/colorpicker.css");
+getCss("assets/css/v_mapnifyColorBar.css");
+getCss("assets/css/webappheroku.css");
+
+//ajax spin wait
+getCss("assets/css/ajaxwaitspin.css");
+getScript("js/extensions/mapeditortools/ajaxwaitspin.js");
+
+<!-- Load the colorBar script-->
+getScript("js/extensions/colorbar/colorBar.js");
+
+<!-- Load the menu script-->
+getScript("js/extensions/style/styleMenu.js");
+
+<!-- Load the map script-->
+getScript("js/extensions/maprendering/gl-map.js");
+
+<!-- Good fullscreen API-->
+getScript("js/fullscreen.js");
+
+var bar = null;
+$(function(){
+  // let's load the map
+  var maps = new GLMap ( "testMap", "magnifier" );
+  
+  // ok that's all we have to do to set up menu :-) 
+  StyleMenu.init($("#mapnifyMenu"),$("#mapnifyWidget"),$("#mapnifyZoom"),false,maps);
+
+  // and the color scale <;-()
+  bar = new ColorBar.Bar(50,355,$("#mapnifyColorBar"),50,40,true,25.4,375.89,false);
+
+  //fake data
+  var cbData = [];
+  cbData.push ( 0 );cbData.push ( 0 );cbData.push ( 0 );cbData.push ( 0 );
+  for (var i = 1 ; i < 256 ; i = i + 1) {
+     cbData.push ( i );cbData.push ( 0 );cbData.push ( 255-i );cbData.push ( 255 );
+  }
+
+  maps.GetParams().SetStyle(StyleMenu.__style);
+  maps.GetParams().SetColorBar(cbData);
+  maps.Start();
+  maps.DrawScene(true,true);
+
+ //--------------------------------------------------------//
+   // Init Triggers
+
+  // working together
+  $(".trigger_").click(function(){
+      var name = $(this).context.id.replace("trigger","");
+      if ( $(this).hasClass("active") ){
+         $(".panel_").hide("fast");
+         $(".trigger_").removeClass("active");
+      }
+      else{
+         $(".panel_").hide("fast");
+         $(".trigger_").removeClass("active");
+         $("#panel"+name).show("fast");
+         $(this).addClass("active");
+      }
+      return false;
+   });
+  // ----------
+  
+   $(".panel").click(function(){
+      var name = $(this).context.id.replace("panel","");
+      putOnTop(name);
+   });
+
+   $(".trigger").click(function(){
+
+      var name = $(this).context.id.replace("trigger","");
+      putOnTop(name);
+
+      if ($(this).hasClass('noclick')) {
+         $(this).removeClass('noclick');
+      }
+      else {
+
+         if ($(this).hasClass('active')) {
+            $(this).draggable("enable");
+         }
+         else{
+            $(this).draggable("disable");
+         }
+
+         $("#panel"+name).toggle("fast");
+         $(this).toggleClass("active");
+      }
+
+      return false;
+   });
+
+   //--------------------------------------------------------//
+   // Dragging
+
+   $( ".panel" ).draggable({ snap: "#testMap" , containment: "#testMap", scroll: false });
+   $( ".trigger" ).draggable({ snap: "#testMap", containment: "#testMap", scroll: false });
+
+   $( ".panel" ).bind('dragstart',function( event ){
+      var id = $(this).context.id;
+      var name = id.replace("panel","");
+
+      $("#trigger"+name).css({
+         opacity : 0
+      });
+
+      putOnTop(name);
+   });
+
+
+   $( ".panel" ).bind('dragstop',function( event ){
+      var id = $(this).context.id;
+      var name = id.replace("panel","");
+      var newTop = $("#"+id).css("top");
+      var newLeft = $("#"+id).css("left");
+
+      $("#trigger"+name).css({
+         top: newTop,
+         left: newLeft,
+         opacity : 1
+      });
+      
+   });
+
+   $( ".trigger" ).bind('dragstart',function( event ){
+      $(this).addClass('noclick');
+
+      var name = $(this).context.id.replace("trigger","");
+      putOnTop(name);
+   });
+
+   $( ".trigger" ).bind('dragstop',function( event ){
+      var id = $(this).context.id;
+      var name = id.replace("trigger","");
+
+      var newTop = $("#"+id).css("top");
+      var newLeft = $("#"+id).css("left");
+      $("#panel"+name).css({
+         top: newTop,
+         left: newLeft
+      });
+      
+   });
+
+   //--------------------------------------------------------//
+   
+   $("#dummyTilesCanvas").hide();
+   $("#mouseZoomCanvas").hide();
+   
+   if(screenfull.enabled){
+      screenfull.request();
+   } 
+   else{
+      console.log("Cannot go fullscreen");
+   }   
+  
+   GeoLoc.init("GeoLoc",$("#GeoLocGo"),maps);
+ 
+}); // when body is ready ...
+
+</script>
+
+<style>
+body {
+	margin: 0;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 20px;
+	color: #333333;
+   overflow: hidden;
+}
+
+#testMap {
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #eee;
+	border: none;
+	z-index: 5;
+}
+
+#mapnifyZoom {
+	font-size: 60%;
+}
+
+#mainContainer {
+    position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	border-style: solid;
+	border-width: 0px;
+	z-index: 3;
+}
+
+.pac-container {
+   z-index: 9999;
+}
+
+#geolocdiv{
+   position: absolute;
+   z-index: 90;
+   top: 0px;
+   left: 0px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Web app styleEditor -->
+<canvas id="dummyTilesCanvas" class="hide"></canvas>	
+
+<a class="trigger" id="triggerDetailsMenu" href="#">Details</a>
+<div class="panel" id="panelDetailsMenu" >
+  <div id="mapnifyMenu"></div>
+</div>
+
+<a class="trigger" id="triggerQuickEdit"  href="#">Quick Edit</a>
+<div class="panel" id="panelQuickEdit">
+  <div id="mapnifyWidget"></div>
+</div>
+
+<a class="trigger" id="triggerZooms"  href="#">Zooms</a>
+<div class="panel" id="panelZooms">
+  <div id="mapnifyZoom"></div>
+</div>
+
+<a class="trigger" id="triggerMagnifier"  href="#">Magnifier</a>
+<div class="panel" id="panelMagnifier">
+  <canvas id="magnifier" width="200" height="200"></canvas>
+</div>
+
+<a class="trigger" id="triggerColorBar"  href="#">ColorBar</a>
+	<div class="panel" id="panelColorBar">
+  <div id="mapnifyColorBar"></div>
+</div>
+
+<!-- /Web app styleEditor -->
+
+<div id="geolocdiv">
+   <input type="text" id="GeoLoc" name="GeotLoc">
+   <button id="GeoLocGo">Go</button>
+</div>
+<div id="mainContainer">
+   <canvas id="testMap"></canvas>
+</div>
+</body>
+</html>

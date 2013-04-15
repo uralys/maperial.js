@@ -1,0 +1,98 @@
+{
+   "road-highway":  {
+        "trunk": { "type": "line" , "casing": "trunk_casing", "center": "none" },
+        "interchange": { "type": "line" , "casing": "interchange_casing", "center": "none" },
+        "motorway": { "type": "line" , "casing": "motorway_casing", "center": "motorway_centerline" }
+            },
+   "road-std":  {
+        "cul_de_sac": { "type": "line" , "casing": "none", "center": "none" },
+        "alley": { "type": "line" , "casing": "alley_casing", "center": "none" },
+        "tertiary": { "type": "line" , "casing": "tertiary_casing", "center": "none" },
+        "secondary": { "type": "line" , "casing": "secondary_casing", "center": "none" },
+        "primary": { "type": "line" , "casing": "primary_casing", "center": "none" }
+            },
+   "road-other":  { 
+        "cycleway": { "type": "line" , "casing": "cycleway_casing", "center": "none" },
+        "road_bridges_fill": { "type": "line" , "casing": "road_bridges_casing", "center": "none" },
+        "street_text": { "type": "text"}
+            },
+   "building": { 
+        "building": { "type": "poly" , "line" : "none" }
+            },
+   "land": { 
+        "landmark": { "type": "poly" , "line" : "none" , 
+                       "alias" : { 
+                           "Forest" : "forest" , 
+                           "Military" : "military" , 
+                           "Park" : "playground" , 
+                           "Cemetery" : "cemetery" , 
+                           "Attraction" : "attraction" , 
+                           "Golf" : "golf_course" , 
+                           "Beach" : "beach" , 
+                           "Parking" : "parking" , 
+                           "Stadium" : "stadium" , 
+                           "School" : "university" , 
+                           "Hospital" : "hospital" , 
+                           "Retail" : "[landuse] = 'retail'" , 
+                           "Aerodrome" : "aerodrome" , 
+                           "Runway" : "runway" , 
+                           "Residential" : "residential" , 
+                           "Barrack" : "barracks"  
+                       } 
+                    },
+        "military": { "type": "poly" , "line" : "none" }
+            },
+   "text":  {
+        "landmark_poly_text": { "type": "text"},
+        "landmark_point_text": { "type": "text"},
+        "ferry_text": { "type": "text"},
+        "symbol_text": { "type": "text"},
+        "barrier_text": { "type": "text"},
+        "shield_text": { "type": "text"}, 
+        "street_text": { "type": "text"}
+            },
+   "world": {
+        "world_1": { "type": "poly" , "line": "none" },
+        "world_2": { "type": "poly" , "line": "none" },
+        "world_3": { "type": "poly" , "line": "none" },
+        "world_4": { "type": "poly" , "line": "none" },
+        "world": { "type": "poly" , "line": "none" }
+            },
+   "water": {
+        "water_lines": { "type": "line" , "casing": "none", "center": "none" },
+        "water_areas": { "type": "line" , "casing": "none", "center": "none" },
+        "water_text": { "type": "text"},
+        "water_line_text": { "type": "text"}
+            },
+   "administrative": {
+        "locality": { "type": "none"},
+        "neighborhood": { "type": "none"},
+        "city_4": { "type": "none"},
+        "city_3": { "type": "none"},
+        "city_2": { "type": "none"},
+        "city_1": { "type": "none"},
+        "city_1_lowzoom": { "type": "none"},
+        "capital": { "type": "none"},
+        "state": { "type": "none"},
+        "county": { "type": "none"},
+        "country": { "type": "none" },
+        "continent": { "type": "none"},
+        "state_border": { "type": "line", "casing": "state_border_casing" , "center": "none"},
+        "country_border": { "type": "line" , "casing": "county_border_casing", "center": "none" }
+            },            
+   "other": {   
+        "coast_poly": { "type": "poly", "border": "none"},
+        "builtup": { "type": "none"},
+        "barriers": { "type": "none"},
+        "ferry_routes": { "type": "none"},
+        "pedestrian_walkways": { "type": "line", "casing": "none", "center": "none"},
+        "pedestrian_polygon": { "type": "none"},
+        "runway": { "type": "none"},
+        "rail": { "type": "line", "casing": "rail_casing", "center": "none" },
+        "direction_arrows": { "type": "none"},
+        "symbols": { "type": "none"},
+        "barrier_symbols": { "type": "none"},
+        "addressing": { "type": "none"},
+        "interpolation": { "type": "none"}
+          }
+}

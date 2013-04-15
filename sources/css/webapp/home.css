@@ -1,0 +1,189 @@
+/************************************************
+*	10.	Homepage 				     	    * 
+************************************************/
+.homepage_top {
+	width: 100%;
+	margin-top: 35px;
+}
+.homepage_top .widget_sp_image {
+	padding: 0px 0px 0px 30px;
+	background: url(http://assets.maperial.localhost/images/home/column_bkg.gif) no-repeat left -2px;
+}	
+.homepage_top .three:first-child .widget_sp_image {
+	background: none;
+}
+.homepage_top .widget_sp_image img {
+	margin-top: 0;
+	padding-top: 26px;
+}
+
+.homepage_top .widget_sp_image h4 {
+	color: #27a200;
+	text-align: center;
+	font-size: 1.8em;
+	font-weight: normal;
+	/* margin: 20px 0 5px; */
+	margin-bottom: 25px;
+}
+
+/***** [ ecrans etroits ] *****/
+@media (max-width: 1000px) {
+	.homepage_top .widget_sp_image h4 {
+		font-size: 1.2em;
+	}
+}
+
+/***** [ ecrans mobiles ] *****/
+@media (max-width: 700px) {
+	.homepage_top .widget_sp_image h4 {
+		font-size: 0.9em;
+	}
+}
+
+.homepage_top .widget_sp_image P {
+	text-align: center;
+	line-height: 1.4;
+}
+.homepage_mid {
+	width: 100%;
+	min-height: 150px;
+	background: #e8e8e8;
+	color: #999;
+	padding: 10px 0;
+	box-shadow: 0 1px 1px #e0e0e0;
+}
+.homepage_mid a.btn {
+	margin: 10px 0 0 0;
+	float: right;
+}
+.homepage_mid .testimonial_wrapper img {
+	float: left;
+	margin: 20px 30px 20px 0;
+	width: 125px;
+	height: auto;
+}
+.homepage_mid .testimonial_wrapper blockquote {
+	font-size: 1.2em;
+	font-style: normal;
+	line-height: 1.4;
+	margin: 0px;
+	padding: 0;
+}
+.homepage_mid .testimonial_wrapper p {
+	padding: 0;
+	margin: 0 0 10px 0;
+	width: 80%;
+	font-family: Georgia, "Times New Roman",Times, serif;
+}
+.homepage_bottom {
+	margin: 50px 0 25px 0;
+}
+.homepage_bottom .widget_sp_image {
+	margin-bottom: 50px;
+	padding-bottom: 40px;
+	border-bottom: 1px solid #e8e8e8;
+}
+.homepage_bottom .widget_sp_image h4 {
+	color: #f74902;
+	text-align: left;
+	font-size: 1.8em;
+	font-weight: normal;
+	margin: 20px 0 5px;
+}
+.homepage_bottom .widget_sp_image-description, .homepage_bottom h4 {
+	width: 70%;
+}
+
+/*--------------------------------*/
+.widget_sp_image-description p {
+	font-size: 14px;
+}
+
+.home-description {
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.home-container {
+	margin-bottom:50px;
+}
+
+.home-details p {
+	font-size: 20px;
+	margin-bottom: 25px;
+	max-width: 300px;
+}
+
+.gallery-container {
+	padding-bottom: 120px;
+	padding-top: 60px;
+}
+
+.home-description h2{
+	color: #27a200;
+	margin-bottom:20px;
+}
+
+/*--------------------------------*/
+
+.centered { float: none; margin: 0 auto; }
+
+/*--------------------------------*/
+#homeContent {
+	padding: 0;
+	z-index: 1;
+}
+
+#maperialAuthFrame {
+	width: 532px;
+	height: 423px;
+	border: 0px;
+}
+
+#homeImage {
+	background: url('http://assets.maperial.localhost/images/home/part1/worldmap.mini.jpg');
+	background-repeat: repeat-x;
+	background-position-x: 0px;
+	height: 350px;
+}
+
+#videoWindow {
+	width: 843px;
+	height: 480px;
+}
+
+.gallery li { display: inline; }
+
+/*--------------------------------*/
+#playImage {
+	margin-top: -245px;
+}
+
+#part1 {
+	margin-top: -50px;
+}
+
+/*--------------------------------*/
+#partChrome {
+	padding-top: 50px;
+}
+
+/*--------------------------------*/
+.homeIcon {
+	margin-top: 30px!important;
+	margin-bottom: 30px!important;
+}
+
+.homeTitle {
+	color: #fff;
+	font-size: 19px;
+	margin-bottom: 14px;
+}
+
+.homeSubtitle {
+	margin-bottom: 40px;
+	font-size: 20px;
+	font-weight: 300;
+	line-height: 1.25;
+	color: #fff;
+}

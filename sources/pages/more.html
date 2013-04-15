@@ -1,0 +1,295 @@
+<html>
+
+<head>
+<title>Maperial</title>
+<!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+<![endif]-->
+<link rel="stylesheet" media="screen" href="/assets/css/min/home.min.css" />
+</head>
+
+<body id="body">
+
+	<div id="content"></div>
+
+<script id="content-template" type="text/x-handlebars-template">
+	<!-- ----------------------------------------------------------------------------- -->
+	<!-- Header 																	   -->
+	<!-- ----------------------------------------------------------------------------- -->
+
+	<div id="header" class="snapper">
+		<div class="span1 pointerCursor" onclick="window.location.href='/'">
+			<img id="logoHeader" src="http://assets.maperial.localhost/images/global/logo.png" />
+		</div>
+		<div class="span1 pointerCursor" onclick="window.location.href='/'">
+			<h1>Maperial</h1>
+		</div>
+	</div>
+
+	<!-- --------------------------- -->
+	<!-- Header buttons -->
+
+	<div id="tryButton" onClick="home.tryNow()" class="btn-large btn-primary">{{T 'Try'}}</div>
+	<div id="signinButton" onClick="window.location.href='http://maperial.herokuapp.com/?login'" class="btn-large btn-primary">{{T 'LogIn'}}</div>
+
+	<!-- --------------------------- -->
+	<!-- Language buttons -->
+
+	<div id="langButtons">
+		<div id="enButton" onClick="home.translator.setLang('en')" class="langButton">{{T 'en'}}</div>
+		<div id="frButton" onClick="home.translator.setLang('fr')" class="langButton">{{T 'fr'}}</div>
+	</div>	
+
+	<!-- ----------------------------------------------------------------------------- -->
+	<!-- Content 																	   -->
+	<!-- ----------------------------------------------------------------------------- -->
+
+	<div class="marketing home-container">
+
+		<!-- -------------------------------------------------------------- -->
+		<!-- Top Image -->
+
+		<div id="homeImage"></div>
+		<img id="playImage" onclick="window.youtubeManager.openVideoWindow()" class="touchable" src="http://assets.maperial.localhost/images/home/part1/play.png"></img>
+
+		<div class="row-fluid" id="part1">
+			<h1 class="homeTitle">{{T 'AwesomeMaps'}}</h1>
+			<p class="homeSubtitle">{{T 'Everywhere'}}</p>
+
+		</div>
+
+		<!-- -------------------------------------------------------------- -->
+		<!-- Larger descriptions -->
+
+		<div class="row-fluid homepage_top">
+
+			<div class="row-fluid">
+				<div class="home-description span6 offset2">
+					<h2>{{T 'QuickAndEasy'}}</h2>
+					<p>{{T 'QEText1'}}</p>
+					<p>{{T 'QEText2'}}</p>
+					<p>{{T 'QEText3'}}</p>
+					<p>{{T 'QEText4'}}</p>
+				</div>
+				<div class="span2">
+					<img class="homeIcon" src="http://assets.maperial.localhost/images/home/part1/clock.medium.png">
+				</div>
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<hr class="soften span10 offset1" />
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<div class="home-description span6 offset2">
+					<h2>{{T 'ToolForEveryone'}}</h2>
+					<p>{{T 'TEText1'}}</p>
+					<p>{{T 'TEText2'}}</p>
+					<p>{{T 'TEText3'}}</p>
+				</div>
+				<div class="span2">
+					<img class="homeIcon" src="http://assets.maperial.localhost/images/home/part1/everyone.medium.png">
+				</div>
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<hr class="soften span10 offset1" />
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<div class="home-description span6 offset2">
+					<h2>{{T 'Customize'}}</h2>
+					<p>{{T 'CustomizeText1'}}</p>
+					<p>{{T 'CustomizeText2'}}</p>
+					<p>{{T 'CustomizeText3'}}</p>
+					<p>{{T 'CustomizeText4'}}</p>
+					<br/><br/>
+					<p>{{T 'CustomizeText5'}}</p>
+				</div>
+				<div class="span2">
+					<img class="homeIcon" src="http://assets.maperial.localhost/images/home/part1/edit.medium.png">
+				</div>
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<hr class="soften span10 offset1" />
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<div class="home-description span6 offset2">
+					<h2>{{T 'Maperialize'}}</h2>
+					<p>{{T 'MaperializeText1'}}</p>
+					<p>{{T 'MaperializeText2'}}</p>
+					<p>{{T 'MaperializeText3'}}</p>
+				</div>
+				<div class="span2">
+					<img class="homeIcon" src="http://assets.maperial.localhost/images/home/part1/maperialize.medium.png">
+				</div>
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<hr class="soften span10 offset1" />
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<div class="home-description span6 offset2">
+					<h2>{{T 'Share'}}</h2>
+					<p>{{T 'ShareText1'}}</p>
+					<p>{{T 'ShareText2'}}</p>
+					<p>{{T 'ShareText3'}}</p>
+					<p>{{T 'ShareText4'}}</p>
+				</div>
+				<div class="span2">
+					<img class="homeIcon" src="http://assets.maperial.localhost/images/home/part1/people.medium.png">
+				</div>
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<hr class="soften span10 offset1" />
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<div class="home-description span6 offset2">
+					<h2>{{T 'Saas'}}</h2>
+					<p>{{T 'SaasText1'}}</p>
+					<p>{{T 'SaasText2'}}</p>
+					<p>{{T 'SaasText3'}}</p>
+				</div>
+				<div class="span2">
+					<img class="homeIcon" src="http://assets.maperial.localhost/images/home/part1/saas.medium.png">
+				</div>
+			</div>
+
+			<!-- -------------------------------------------------------------- -->
+
+			<div class="row-fluid">
+				<hr class="soften span10 offset1" />
+			</div>
+
+			<!-- -------------------------------------------------------------- -->
+			<!-- For You -->
+	
+			<div class="row-fluid">
+	
+					<div class="row-fluid">
+					<div class="home-description span6 offset2">
+						<h2>{{T 'ToolForYou'}}</h2>
+						<p>{{T 'ToolForYouText1'}}</p>
+						<p>{{T 'ToolForYouText2'}}</p>
+						<p>{{T 'ToolForYouText3'}}</p>
+						<br/>
+						<p>{{T 'ToolForYouText4'}}   <b>{{email here}}</b></p>
+					</div>
+					<div class="span2">
+						<img class="homeIcon" src="http://assets.maperial.localhost/images/home/part1/note.medium.png">
+					</div>
+				</div>
+
+			</div>
+
+			<!-- --------- -->
+
+			<div class="row-fluid">
+				<hr class="soften span10 offset1" />
+			</div>
+
+			<!-- --------- -->
+
+			<div onClick="home.tryNow()" class="btn-large btn-primary span2 offset5 touchable">{{T 'TryNow'}}</div>
+		</div>
+
+	</div>
+
+	<!-- -------------------------------------------------------------- -->
+	<!-- Footer -->
+
+	<div id="footerHome" class="snapper">
+		<div class="row-fluid">
+			<div class="span2 offset1 footerContent">
+				<div class="footerTitle">{{T 'AboutUs'}}</div>
+				<div class="link">{{T 'Team'}}</div>
+				<div class="link">{{T 'Blog'}}</div>
+			</div>
+			<div class="span2 footerContent">
+				<div class="footerTitle">{{T 'Maps'}}</div>
+				<div class="link" onClick="window.location.href='/pages/demos/demo.tag.html'">{{T 'ParisRoads'}}</div>
+				<div class="link" onClick="window.location.href='/pages/demos/demo.cartotheque.html'">{{T 'Cartotheque'}}</div>
+			</div>
+			<div class="span2 footerContent">
+				<div class="footerTitle">{{T 'RecentPosts'}}</div>
+				<div class="link">Ok</div>
+			</div>
+			<div class="span2 footerContent">
+				<div class="SocialIconsWidget">
+					<ul class="widget_socials">
+						<li><a href="/blog/" class="rss" target="_blank"></a></li>
+						<li><a href="https://twitter.com/maperial" class="twitter" target="_blank"></a></li>
+						<li><a href="https://plus.google.com/" class="googleplus" target="_blank"></a></li>
+						<li><a href="mailto:{{email here}}" class="mail" target="_blank"></a></li>
+						<li><a href="http://www.linkedin.com/company/maperial" class="linkedin" target="_blank"></a></li>
+						<li><a href="http://www.slideshare.net/maperial" class="slideshare" target="_blank"></a></li>
+						<li><a href="http://pinterest.com/maperial/" class="pinterest" target="_blank"></a></li>
+						<li><a href="https://github.com/Maperial" class="github" target="_blank"></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="span2 footerContent">
+				<div class="link">&copy; 2013 Maperial</div>
+				<br/>
+				<div class="link"> {{email here}}</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- -------------------------------------------------------------------- -->
+	<!-- Popup -->
+
+	<div style="display: none;" id="videoWindow" class="modal hide fade" tabindex="-1" role="dialog"
+		aria-labelledby="videoWindowLabel" aria-hidden="true">
+		<a id="lightbox-close" class="btn btn-rounded btn-icon-only btn-dark" data-dismiss="modal"> <i
+			class="icon icon-ex-white-outline"></i>
+		</a>
+		<div id="maperialVideo"></div>
+	</div>
+
+	</script>
+
+	<!-- -------------------------------------------------------------------- -->
+	<!-- JS -->
+
+	<script type="text/javascript" src="/js/tools/script-loader.js"></script>
+
+	<script type="text/javascript">
+		window.scriptLoader.getScripts([
+		     "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js",
+		     "http://twitter.github.com/bootstrap/assets/js/bootstrap-modal.js",
+		     "http://www.youtube.com/player_api",
+		     
+		     // tools
+		     "/js/min/home.min.js",
+		     ]);
+   </script>
+</body>
+
+</html>
+

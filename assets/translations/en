@@ -1,0 +1,81 @@
+{
+    "en"				: "En",
+    "fr"				: "Fr",
+
+    "Try"				: "Try",
+    "TryNow"			: "Try now !",
+    "FindOutMore"		: "Find out more",
+  	"LogIn"				: "Log In",
+    
+    "AwesomeMaps"		: "Awesome maps",
+    "Everywhere"		: "GIS in the Cloud",
+
+    "Choose"			: "Choose",
+    "chooseText1"		: "libraries",
+    "chooseText2"		: "or your own styles",
+    "chooseText3"		: "(Google, Mapquest, OSM)",
+    "chooseText4"		: "A basemap from classic",
+
+    "Upload"			: "Upload",
+    "uploadText"		: "Use your own georeferenced data",
+
+    "Organize"			: "Organize",
+    "organizeText"		: "Set all relevant content using our detailled layer creation.",
+
+    "Customize"			: "Customize",
+    "customizeText"		: "Choose everything, to style the basemaps and your data",
+
+    "Share"				: "Share",
+    "shareText"			: "Publish your maps on the web and export high quality images.",
+
+    "QuickAndEasy"		: "Quick and Easy",
+    "QEText1"			: "Detailled layer creation within clicks",
+    "QEText2"			: "Generate quickly and store in the Cloud",
+    "QEText3"			: "Easy to use and powerful real-time style editor, with many beautiful preset styles",
+    "QEText4"			: "Edit every map element using the menu or by clicking directly on the map",
+
+    "ToolForEveryone"	: "A tool for everyone",
+    "TEText1"			: "Easy to use UI to build and publish your maps",
+    "TEText2"			: "A simple style edition for anyone, yet a real accuracy for designers.",
+    "TEText3"			: "Documented API for developers",
+    
+    
+    "ToolForYou"		: "A tool designed for you, a solution built with you.",
+    "ToolForYouText1"	: "We are here to listen to you and understand your need.",
+    "ToolForYouText2"	: "We make the service suit to your need : build your maps with the tools you want, upload all the data you want to analyse, share the results the way your prefer.",
+    "ToolForYouText3"	: "We offer support to help you using the tool and to answer your questions.",
+    "ToolForYouText4"	: "Don't wait anymore to contact us and discover how way me work together : ",
+
+    "Customize"			: "Customize",
+    "CustomizeText1"	: "Choose everything in the style : colors, lines, opacity, borders, fonts...",
+    "CustomizeText2"	: "Layer fusion settings : test many calculation methods",
+    "CustomizeText3"	: "Choose the layer for every map element (roads and bridges on top of the data, buildings and forest behind...) ",
+    "CustomizeText4"	: "Configure your maps interactivity to improve your users' visualisation : select the tools they will play with to enhance their analysis",
+    "CustomizeText5"	: "Afraid to lose time ? Just use our awesome presets, you don't need to explore the whole of our powerful editor",
+
+    "Maperialize"		: "Maperialize your data",
+    "MaperializeText1"	: "Upload your data : all kinds of data may be rendered on the layers : rasters, grids, vectors...",
+    "MaperializeText2"	: "Unlimited layers, custom ordering and composition for a proper rendering",
+    "MaperializeText3"	: "Visualize, question, analyze, interpret, and understand your data",
+
+    "Share"				: "Share",
+    "ShareText1"		: "Publish your maps on the web",
+    "ShareText2"		: "Export high quality images for your presentations",
+    "ShareText3"		: "Interactive maps on your own domain",
+    "ShareText4"		: "Get your own 'Map Library'",
+    
+    "Saas"				: "Software as a service",
+    "SaasText1"			: "Never have to worry about infrastructure",
+    "SaasText2"			: "Pay only what you need, leave when you're done",
+    "SaasText3"			: "Your data secured and accessible from everywhere",
+
+    "AboutUs"			: "About us",
+    "RecentPosts"		: "Recent blog posts",
+    "Team"				: "Team",
+    "Blog"				: "Blog",
+    "Maps"				: "Maps",
+    "ParisRoads"		: "Paris roads",
+    "Cartotheque"		: "Maperial Library",
+    
+    "":""
+}

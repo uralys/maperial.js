@@ -1,0 +1,93 @@
+precision mediump float;
+varying vec2 vTextureCoord;
+
+uniform sampler2D uSamplerBgd;
+uniform sampler2D uSamplerFgd;
+uniform vec3      uParams;
+
+float BlackAndWhite1(vec4 inP){
+	return max (inP.r , max ( inP.g , inP.b ) );
+}
+float BlackAndWhite2(vec4 inP){		
+	return ( inP.r + inP.g + inP.b) / 3.0 ;
+}
+float BlackAndWhite3(vec4 inP){
+	float M = max (inP.r , max ( inP.g , inP.b ) );
+	float m = min (inP.r , min ( inP.g , inP.b ) );
+	return (M+m)/2.0;
+}
+float BlackAndWhite4(vec4 inP){		
+	return max(0., min( 1.0, 0.30* inP.r + 0.59*inP.g + 0.11*inP.b));
+}  
+vec2 evaluateBezierPositionByT( vec2 v[4], float t ) {
+    vec3  p;
+    float OneMinusT = 1.0 - t;
+    float b0 = OneMinusT*OneMinusT*OneMinusT;
+    float b1 = 3.0*t*OneMinusT*OneMinusT;
+    float b2 = 3.0*t*t*OneMinusT;
+    float b3 = t*t*t;
+    return ( b0*v[0] + b1*v[1] + b2*v[2] + b3*v[3] );
+}
+float evaluateBezierPosition( vec2 v[4], float c ) {
+   float lower	= 0.0;
+	float upper	= 1.0;
+	float t		= lower + (upper - lower) / 2.0;
+	float x		= evaluateBezierPositionByT(v,t).x;
+
+	for (int i = 0 ; i < 200 ; ++i) {
+      if ( abs ( x - c ) < 0.002 ) 
+         break;
+      if (x < c)
+         lower = t;
+      else if (x > c)
+         upper = t;
+
+		t	= lower + (upper - lower) / 2.0;
+		x  = evaluateBezierPositionByT(v,t).x;
+	}
+	float y = evaluateBezierPositionByT(v,t).y; 
+   return max(0., min( 1.0, y ));
+}
+
+void main(void) {
+   float c  = uParams.x;
+   float l  = uParams.y;   
+   int   bw = int ( uParams.z );
+
+   vec2 contrastP [4] ;
+   contrastP [0] = vec2(0.,0.);
+   contrastP [1] = vec2(c,0.);
+   contrastP [2] = vec2(1.0-c,1.0);
+   contrastP [3] = vec2(1.0,1.0);
+
+   vec2 luminosityP [4] ;
+   luminosityP [0] = vec2(0.,0.);
+   luminosityP [1] = vec2(-l,0.);
+   luminosityP [2] = vec2(-l,0.);
+   luminosityP [3] = vec2(1.,1.);
+
+   vec2 tc;
+   tc.x = vTextureCoord.x; //(vTextureCoord.x * (1.0 - 2.0*halfTexelSizeX)) + halfTexelSizeX;
+   tc.y = vTextureCoord.y; //(vTextureCoord.y * (1.0 - 2.0*halfTexelSizeY)) + halfTexelSizeY;
+   
+   vec4  bgd       = texture2D(uSamplerBgd  , tc);
+   vec4  fgd       = texture2D(uSamplerFgd  , tc);
+   
+   vec4  tmp;
+   if ( fgd.a == 0. ) {
+      gl_FragColor = bgd;
+   }
+   else {
+      float nb        = 0.;
+      if (bw == 1)
+         nb = BlackAndWhite1(bgd) ;
+      else if (bw == 2)
+         nb = BlackAndWhite2(bgd) ;
+      else if (bw == 3)
+         nb = BlackAndWhite3(bgd) ;
+      else if (bw == 4)
+         nb = BlackAndWhite4(bgd) ;
+      nb             = evaluateBezierPosition( contrastP , evaluateBezierPosition (luminosityP , nb));
+      gl_FragColor   = vec4 ( fgd.r * nb , fgd.g* nb , fgd.b * nb , fgd.a );
+   }
+}

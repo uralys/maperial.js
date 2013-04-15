@@ -1,0 +1,82 @@
+<html>
+
+<head>
+   <title>Test Canvas</title>
+   <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+   
+   <script src="js/tileRenderer.js"></script>
+<script type="text/javascript">
+
+function RenderTile ( jsonUrl , canv , zoomLevel ) {
+   req = $.ajax({
+      type     : "GET",
+      url      : jsonUrl,
+      dataType : "json",  
+      success  : function(data, textStatus, jqXHR) {
+         canv.width  = 256;
+         canv.height = 256;
+         var ctx=canv.getContext("2d");
+
+         ctx.globalCompositeOperation="source-over";
+         ctx.beginPath();
+         ctx.rect(0, 0, 256, 256);
+         ctx.closePath();
+         ctx.fillStyle = '#EEEEEE';
+         ctx.fill();
+         ctx.beginPath();
+         ctx.closePath();
+
+         RenderLayers( ctx , data , zoomLevel );
+      },
+      error : function(jqXHR, textStatus, errorThrown) {
+         console.log ( "Loading failed : " + textStatus );
+      }
+   });
+}
+
+function OnLoad() {
+   var xbase = Math.floor(8333);
+   var ybase = Math.floor(5843);
+   var z     = 14;
+   
+   for ( var y  = 0 ; y < 8 ; y = y + 1) {
+      for ( var x  = 0 ; x < 7 ; x = x + 1) {   
+         var c = document.createElement('canvas');
+         var ctx=c.getContext("2d");
+         ExtendCanvasContext ( ctx );
+         document.body.appendChild(c);
+         c.style.position ="absolute"
+         c.style.top  = (y*256)
+         c.style.left = (x*256)
+         RenderTile ("test/"+z+"/"+(xbase+x)+"_"+(ybase+y)+".jsonz", c , z)
+      }
+   }
+   
+   //RenderTile ("test/"+z+"/"+(xbase)+"_"+(ybase)+".jsonz" , document.getElementById("testMap1"),z);
+   //RenderTile ("test/"+z+"/"+(xbase+0)+"_"+(ybase+0)+".json" , document.getElementById("testMap1") ,z);
+   //RenderTile ("test/"+z+"/"+(xbase+0)+"_"+(ybase+0)+".json" , document.getElementById("testMap1") ,z); RenderTile ("test/"+z+"/"+(xbase+1)+"_"+(ybase+0)+".json" , document.getElementById("testMap2") ,z );
+   //RenderTile ("test/"+z+"/"+(xbase+0)+"_"+(ybase+1)+".json" , document.getElementById("testMap3") ,z); RenderTile ("test/"+z+"/"+(xbase+1)+"_"+(ybase+1)+".json" , document.getElementById("testMap4") ,z );
+   /*
+   RenderTile ("test/"+z+"/8332_5843.json", document.getElementById("testMap1" ) , z )
+   RenderTile ("test/"+z+"/8333_5843.json", document.getElementById("testMap2" ) , z )
+   RenderTile ("test/"+z+"/8332_5844.json", document.getElementById("testMap3" ) , z )
+   RenderTile ("test/"+z+"/8333_5844.json", document.getElementById("testMap4" ) , z )
+   */
+}
+
+</script>
+</head>
+
+<body onload="OnLoad();">
+   <div id="div"></div>
+   <canvas id="testMap1" style="margin:0px; border:0px; position: absolute; top : 0px; left:0px;"></canvas>
+   <canvas id="testMap2" style="margin:0px; border:0px; position: absolute; top : 0px; left:256px;"></canvas>
+   <canvas id="testMap3" style="margin:0px; border:0px;position: absolute; top : 256px; left:0px;"></canvas>
+   <canvas id="testMap4" style="margin:0px; border:0px;position: absolute; top : 256px; left:256px;"></canvas>
+</body>
+
+</html>
+

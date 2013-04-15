@@ -1,0 +1,105 @@
+<html>
+
+<head>
+<title>Demo Maperial- Style Edition</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link href="/assets/css/min/maperial.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div id="_maperial"></div>
+	<img id="waitingSpin" src="http://assets.maperial.localhost/images/mapediting/spin.gif" />
+</body>
+
+<script type="text/javascript" src="/js/tools/script-loader.js"></script>
+
+<script type="text/javascript">
+
+	window.scriptLoader.getScripts([
+	     "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js",
+	     "http://code.jquery.com/ui/1.9.2/jquery-ui.js",
+	     
+	     // tools
+	     "/js/tools/utils.js",
+	     "/js/libs/jquery.mousewheel.min.js",
+	     "/js/libs/jquery.selectbox-0.2.min.js",
+
+	     // libs
+	     "/js/extensions/maperial/libs/gl-matrix-min.js",
+	     "/js/extensions/maperial/libs/coordinate-system.js",
+	     "/js/extensions/maperial/libs/geoloc.js",
+	     "/js/extensions/maperial/libs/colorpicker.js",
+	     "/js/extensions/maperial/libs/RGBColor.js",
+	     "/js/extensions/maperial/libs/hashmap.js",
+	     "/js/extensions/maperial/libs/canvasutilities.js",
+
+	     // rendering
+	     "/js/extensions/maperial/rendering/gl-tools.js",
+	     "/js/extensions/maperial/rendering/gl-rasterlayer.js",
+	     "/js/extensions/maperial/rendering/gl-imagelayer.js",
+	     "/js/extensions/maperial/rendering/gl-tile.js",
+	     "/js/extensions/maperial/rendering/gl-vectoriallayer.js",
+	     "/js/extensions/maperial/rendering/render-line.js",
+	     "/js/extensions/maperial/rendering/render-text.js",
+	     "/js/extensions/maperial/rendering/tile-renderer.js",
+	     "/js/extensions/maperial/rendering/map-renderer.js",
+
+	     // modules
+	     "/js/extensions/maperial/events.js",
+	     "/js/extensions/maperial/source.js",
+	     "/js/extensions/maperial/mouse.js",
+	     "/js/extensions/maperial/mover.js",
+	     "/js/extensions/maperial/template-builder.js",
+
+	     // hud
+	     "/js/extensions/maperial/hud/hud.js",
+	     "/js/extensions/maperial/hud/panel-composition.js",
+	     "/js/extensions/maperial/hud/panel-switch.js",
+	     "/js/extensions/maperial/hud/panel-controls.js",
+	     "/js/extensions/maperial/hud/panel-latlon.js",
+	     "/js/extensions/maperial/hud/panel-scale.js",
+	     "/js/extensions/maperial/hud/panel-settings.js",
+	     "/js/extensions/maperial/hud/triggers.js",
+
+	     // managers
+	     "/js/extensions/maperial/managers/styles-manager.js",
+	     "/js/extensions/maperial/managers/colorbars-manager.js",
+	     "/js/extensions/maperial/managers/layers-manager.js",
+	     "/js/extensions/maperial/managers/sources-manager.js",
+
+	     // edition
+	     "/js/extensions/maperial/edition/boundingbox-drawer.js",
+	     "/js/extensions/maperial/edition/colortool.js",
+	     "/js/extensions/maperial/edition/symbolizer.js",
+	     "/js/extensions/maperial/edition/style-menu.js",
+
+	     // colorbar
+	     "/js/extensions/maperial/colorbar/colorbar-rainbow.js",
+	     "/js/extensions/maperial/colorbar/colorbar.js",
+
+	     "/js/extensions/maperial/maperial.js",
+	     
+	     // google - geoloc
+	     "https://maps.googleapis.com/maps/api/js?key=AIzaSyATwlkawyHykpfJF24jcPgL_b8kK8zO2Bc&sensor=false&libraries=places,panoramio",
+	     ], 
+	     function(){
+		   	var maperial = new Maperial();
+			var config = maperial.emptyConfig();
+			
+			config.layers = [];
+			config.layers.push(LayersManager.getImagesLayerConfig(Source.IMAGES_MAPQUEST));
+			config.layers.push(LayersManager.getRasterLayerConfig("1_raster_13dcc4de76c874941ef"));
+			
+			maperial.apply(config);
+			
+			$(window).on(MaperialEvents.READY, function() {
+			   $("#waitingSpin").hide()
+		 	})
+		}
+	);
+	
+</script>
+
+
+</html>
+

@@ -1,0 +1,56 @@
+
+/*------------------------------*/
+.datasetTitle {
+	background-color: #333;
+	padding-top: 8px;
+	color: #eee;
+	width: 80%;
+	-webkit-border-radius: 20px;
+	margin-left: 10%;
+}
+
+.datasetFileName {
+	color: #ddd;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 195px;
+	font-size: 15px;
+	white-space: nowrap;
+}
+
+#uploadContent {
+	margin-left: 60px;
+	margin-right: 60px;
+	margin-bottom: 30px;
+}
+
+.uploadEntry{
+	margin-bottom: 15px;
+}
+
+/*------------------------------*/
+.rasterParam {
+	margin-bottom: 0px;
+}
+
+.paramName {
+	margin-top: 8px;
+}
+
+/*------------------------------*/
+#rasterZoomSlider.ui-widget-content {
+	color: #eee;
+	border: 1px solid #ddd;
+	background: #ddd;
+	width: 50%;
+	margin-left: 25%;
+}
+
+#uploadDatasetButton {
+	max-width: 100px;
+	margin-left: 46%;
+}
+
+.separatorList {
+	margin-top: -7px;
+}

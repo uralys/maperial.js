@@ -1,0 +1,27 @@
+//--------------------------------//
+
+.bar {
+    height: 18px;
+    background: green;
+}
+
+.filename {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 195px;
+	font-size: 15px;
+	color: #333;
+	white-space: nowrap;
+	text-align: left;
+}
+
+.longfilename {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 411px;
+	font-size: 15px;
+	color: #333;
+	white-space: nowrap;
+}
+
+//--------------------------------//

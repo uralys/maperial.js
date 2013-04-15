@@ -1,0 +1,100 @@
+{
+   "road-highway":  [
+        "trunk_casing",
+        "trunk",
+        "interchange_casing",
+        "motorway_casing",
+        "interchange",
+        "motorway",
+        "motorway_centerline"
+            ],
+   "road-std":  [
+        "alley_casing",
+        "tertiary_casing",
+        "secondary_casing",
+        "primary_casing",
+        "cul_de_sac",
+        "alley",
+        "tertiary",
+        "secondary",
+        "primary"
+            ],
+   "road-other":  [ 
+        "cycleway",  
+        "cycleway_casing",  
+        "road_bridges_casing",
+        "road_bridges_fill",
+        "street_text"
+            ],
+   "building": [ 
+        "building"    
+            ],
+   "land": [ 
+        "landmark",  
+        "landmark_lowzoom",  
+        "military_lowzoom"   
+            ],
+   "text":  [
+        "landmark_poly_text_lowzoom",  
+        "landmark_poly_text",  
+        "landmark_point_text",  
+        "ferry_text",  
+        "symbol_text",  
+        "barrier_text",  
+        "shield_text", 
+        "street_text",
+        "water_text",  
+        "water_line_text"            
+            ],
+   "world": [
+        "world_raster_1",
+        "world_raster_2",  
+        "world_raster_3",  
+        "world_raster_4",  
+        "world"
+            ],
+   "water": [
+        "water_lines",  
+        "water_areas_lowzoom",  
+        "water_areas",
+        "water_text",  
+        "water_line_text"        
+            ],
+   "administrative": [
+        "locality",  
+        "neighborhood",  
+        "city_4",  
+        "city_3",  
+        "city_2",  
+        "city_1",  
+        "city_1_lowzoom",  
+        "capital",
+        "state",  
+        "county",  
+        "country",  
+        "continent", 
+        "county_border_casing",  
+        "state_border_casing",  
+        "country_border_casing",
+        "county_border",
+        "state_border",  
+        "country_border"         
+            ],            
+   "other": [   
+        "coast_poly",  
+        "builtup",  
+        "barriers",
+        "ferry_routes",  
+        "pedestrian_walkways",  
+        "pedestrian_polygon",  
+        "runway",
+        "rail",  
+        "railDA",  
+        "direction_arrows",  
+        "symbols",  
+        "barrier_symbols",  
+        "addressing",  
+        "interpolation"
+          ]
+}
+ 

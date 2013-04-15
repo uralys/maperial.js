@@ -1,0 +1,521 @@
+/*-------------------------*/
+.maperial-map {
+	margin-bottom: -5px;
+	position: absolute;
+}
+
+/*************************/
+.panel {
+	position: absolute;
+	background: #000000; 
+	background-image: url(IMAGE_URL); /* fallback */
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#444444),
+		to(#000000) ); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(top, #444444, #000000);
+	/* Chrome 10+, Saf5.1+ */
+	background-image: -moz-linear-gradient(top, #444444, #000000);
+	/* FF3.6+ */
+	background-image: -ms-linear-gradient(top, #444444, #000000);
+	/* IE10 */
+	background-image: -o-linear-gradient(top, #444444, #000000);
+	/* Opera 11.10+ */
+	background-image: linear-gradient(top, #444444, #000000);
+	-moz-border-radius-bottomright: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+	-moz-border-radius-topright: 6px;
+	-webkit-border-top-right-radius: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	-moz-border-radius-topleft: 6px;
+	-webkit-border-top-left-radius: 6px;
+	padding: 4px 4px 4px 4px;
+	filter: alpha(opacity =       85);
+	opacity: .85;
+	z-index: 101;
+	cursor:move;
+}
+
+a.trigger {
+	background: #111;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	position: fixed;
+	text-decoration: none;
+	font-size: 16px;
+	letter-spacing: -1px;
+	font-family: verdana, helvetica, arial, sans-serif;
+	color: #cdd;
+	padding: 5px 12px 5px 10px;
+	font-weight: 700;
+	-moz-border-radius-bottomright: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+	-moz-border-radius-topright: 6px;
+	-webkit-border-top-right-radius: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	-moz-border-radius-topleft: 6px;
+	-webkit-border-top-left-radius: 6px;
+	z-index: 102;
+	filter: alpha(opacity =       85);
+	opacity: .85;
+	cursor:hand;cursor:pointer;
+}
+
+a.trigger:hover {
+	color: #fff;
+	padding: 5px 14px 5px 12px;
+	background: #222;
+	text-decoration: none;
+}
+
+a.active.trigger {
+	background: #111 url(http://assets.maperial.localhost/images/mapediting/minus.png) 85% 55%
+		no-repeat;
+	width: 19px;
+	padding: 1px 1px 1px 1px;
+	font-size: 0;
+}
+
+/*************************/
+.buttonMode {
+	position: absolute;
+	text-decoration: none;
+	font-size: 16px;
+	letter-spacing: -1px;
+	font-family: verdana, helvetica, arial, sans-serif;
+	color: #cdd;
+	padding: 4px 13px 4px 13px;
+	font-weight: 700;
+	background: #000;
+	-moz-border-radius-bottomright: 20px;
+	-webkit-border-bottom-right-radius: 20px;
+	-moz-border-radius-bottomleft: 20px;
+	-webkit-border-bottom-left-radius: 20px;
+	z-index: 9999;
+	filter: alpha(opacity =     85);
+	cursor:pointer;
+	cursor:hand;
+}
+
+.buttonMode:hover {
+	padding: 6px 13px 6px 13px;
+	color: #cdd;
+}
+
+div.active.buttonMode {
+	padding: 6px 13px 6px 13px;
+}
+
+/*************************/
+.styleList {
+	overflow: auto;
+	height: 290px;
+}
+
+.colorbarList {
+	overflow: auto;
+	height: 290px;
+}
+
+/*-------------------------*/
+#cancelSelection {
+	margin-top: -173px;
+	margin-left: -17px;
+}
+
+#selectStyleWindow {
+	top: 35%;
+}
+
+.selectedStyleArea {
+	margin-top: 16px;
+}
+
+.selectedStyleThumb {
+	z-index: -1;
+	position: relative;
+}
+
+.selectedColorbarThumb {
+	z-index: -1;
+	position: relative;
+}
+
+.continueButton {
+	margin-top: 60px;
+}
+
+/*-------------------------*/
+.colorbarNameInput {
+	width: 143px;
+	margin-top: -2px;
+}
+
+.colorbar {
+	z-index: 3 !important;
+}
+
+.saveColorbarButton {
+	margin-left: 24px;
+	width: 29px;
+}
+
+/**********************************/
+/* Panel and Triggers*/
+.panelHUDSettings {
+	width: 200px;
+	color: #eee;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+a.triggerHUDSettings {
+	height: 16px;
+}
+
+/*-------------------------*/
+.panelCompositions {
+	width: 200px;
+	color: #eee;
+	padding-left:10px;
+}
+
+.compositionSettingsTitle {
+	color: #eee;
+	font-size:14px;
+	text-align: center;
+	margin-top:7px;
+	margin-bottom:23px;
+}
+
+.sourceThumb {
+	width: 45px;
+	margin-top: -9px!important;
+	margin-bottom: 0px!important;
+}
+
+/*-------------------------*/
+.panelGeoloc {
+	height: 30px;
+	width: 245px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.inputGeoloc {
+	height: 20px!important;
+	width: 190px;
+}
+
+.pac-container:after {
+	content: ""
+}
+
+/*-------------------------*/
+.panelLatLon {
+	height: 20px;
+	width: 290px;
+	padding-left: 7px;
+}
+
+.latlon {
+	color: #eee;
+}
+
+/*-------------------------*/
+.panelSwitchImages {
+	height: 108px;
+	width: 45px;
+	padding-top: 13px;
+}
+
+/*-------------------------*/
+.panelControls {
+	height: 200px;
+	width: 37px;
+	background: transparent;
+	padding-top: 0px;
+}
+
+.control-up,.control-down,.control-left,.control-right {
+	background-image: url(http://assets.maperial.localhost/images/mapediting/map.sprite.png);
+	position: absolute;
+	background-repeat: no-repeat;
+	cursor: hand;
+	cursor: pointer;
+}
+
+.control-up {
+	left: 10px;
+	width: 25px;
+	height: 13px;
+	background-position: -15px -5px;
+}
+
+.control-left {
+	left: 0px;
+	top: 13px;
+	width: 25px;
+	height: 24px;
+	background-position: -5px -17px;
+}
+
+.control-right {
+	left: 25px;
+	top: 13px;
+	width: 25px;
+	height: 24px;
+	background-position: -30px -17px;
+}
+
+.control-down {
+	left: 10px;
+	top: 36px;
+	width: 25px;
+	height: 15px;
+	background-position: -15px -40px;
+}
+
+.control-zoom {
+	height: 166px;
+	top: 65px;
+	left: 9px;
+	width: 16px;
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
+}
+
+/*-------------------------*/
+.panelScale {
+	height: 40px;
+	width: 190px;
+	padding-left: 7px;
+	background: transparent;
+}
+
+.scale {
+	color: #eee;
+}
+
+.scaleContainer {
+	color: #000;
+	border: 2px solid #777;
+	border-top: none;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	font-size: 11px;
+	text-shadow: 1px 1px 1px #fff;
+	background-color: rgba(255, 255, 255, 0.5);
+	box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+/*-------------------------*/
+.panelMapKey {
+	height: 310px;
+	width: 206px;
+	padding-left: 7px;
+}
+
+/*-------------------------*/
+a.triggerDetailsMenu {
+	
+}
+
+.panelDetailsMenu {
+	width: 356px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 437px;
+}
+
+/* main menu div*/
+.styleMenu_menu_maindiv {
+	float: left;
+	font-size: 60%;
+	width: 350px;
+	padding: 3px;
+	border-style: solid;
+	border-width: 0px;
+	border-color: #000;
+	background-color: #000;
+	color: #fff;
+	filter: alpha(opacity =       85);
+	opacity: .85;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+
+/*-------------------------*/
+.openDetailledWidget {
+	width: 30px;
+}
+
+.panelQuickEdit {
+	color: #eee;
+}
+
+/* main widget div*/
+.styleMenu_menu_widgetDiv {
+	max-height: 450px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding-right: 10px;
+}
+
+/*-------------------------*/
+
+.panelMagnifier {
+	width: 200px;
+	height: 200px;
+	opacity: 1;
+}
+
+.maperial-magnifier {
+	margin-bottom: -4px;
+	-moz-border-radius-topleft: 6px;
+	-webkit-border-top-left-radius: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	-moz-border-radius-topright: 6px;
+	-webkit-border-top-right-radius: 6px;
+	-moz-border-radius-bottomright: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+}
+
+/*-------------------------*/
+a.triggerZooms {
+	
+}
+
+.panelZooms {
+	width: 780px;
+	height: 50px;
+	text-align: center;
+}
+
+.zoom-button {
+	background: #eee url('');
+	font-size: 11px;
+	color: #111;
+}
+
+/*-------------------------*/
+a.triggerColorBar {
+	
+}
+
+.panelColorBar {
+	width: 370px;
+	height: auto;
+	text-align: center;
+}
+
+/*************************/
+/* StyleMenu */
+
+/* zoom h2 */
+.styleMenu_menu_par_title_z {
+	display: none;
+}
+
+/*zoom select buttons*/
+.styleMenu_menu_zoom_selector {
+	width: 100%;
+}
+
+/*zoom slider*/
+.styleMenu_menu_sliderrangez {
+	width: 92%;
+	margin-left: 4%;
+}
+
+/* Widget slider*/
+.styleMenu_menu_slider {
+	width: 100px !important;
+	display: inline-block !important;
+}
+
+/* header of main section */
+.styleMenu_menu_par_title {
+	color: #fff;
+	font-size: 17px;
+	padding-left: 10px;
+}
+
+/****************************/
+/* colorbar */
+.maperialColorBarDiv {
+	float: left;
+	border-style: solid;
+	border-width: 1px;
+	padding: 10px;
+	margin: 0px;
+	background-color: #fff;
+}
+
+.cb_canvas {
+	float: left;
+	border-style: solid;
+	border-width: 1px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding: 0;
+	margin: 20px;
+	background-color: rgb(255, 255, 255);
+}
+
+.cb_color {
+	float: left;
+	border-style: solid;
+	border-width: 0px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding: 0;
+	margin: 20px;
+}
+
+.cb_colorpicker { /*float : left;*/
+	border-style: solid;
+	border-width: 0px;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	padding: 0;
+	margin: 20px;
+}
+
+.cb_colorpickerWrap {
+	font-size: 100%;
+	float: left;
+	clear: both;
+	border-style: solid;
+	border-width: 1px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding: 0;
+	margin: 20px;
+	background-color: rgb(255, 255, 255);
+}
+
+.cb_pikerLegend { /*float : left;
+  border-style : solid;
+  border-width: 0px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;*/
+	padding: 0;
+	margin: 20px;
+}
+
+.cb_Interp,.cb_Hsl,.cb_Clear {
+	margin: 5px;
+}
