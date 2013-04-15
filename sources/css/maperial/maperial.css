@@ -71,7 +71,7 @@ a.trigger:hover {
 }
 
 a.active.trigger {
-	background: #111 url(http://resources.maperial.localhost/images/mapediting/minus.png) 85% 55%
+	background: #111 url(http://static.maperial.localhost/images/mapediting/minus.png) 85% 55%
 		no-repeat;
 	width: 19px;
 	padding: 1px 1px 1px 1px;
@@ -242,7 +242,7 @@ a.triggerHUDSettings {
 }
 
 .control-up,.control-down,.control-left,.control-right {
-	background-image: url(http://resources.maperial.localhost/images/mapediting/map.sprite.png);
+	background-image: url(http://static.maperial.localhost/images/mapediting/map.sprite.png);
 	position: absolute;
 	background-repeat: no-repeat;
 	cursor: hand;

@@ -6,7 +6,7 @@
 	border:1px solid #000000;
 }
 #dialog-restore span{
-	background-image:url(http://resources.maperial.localhost/images/ui-lightness/ui-icons_ffffff_256x240.png);
+	background-image:url(http://static.maperial.localhost/images/ui-lightness/ui-icons_ffffff_256x240.png);
 	height:16px;
 	width:16px;
 	background-repeat:no-repeat;
@@ -17,7 +17,7 @@
 }
 
 #dialog-maximize span{
-	background-image:url(http://resources.maperial.localhost/images/ui-lightness/ui-icons_ffffff_256x240.png);
+	background-image:url(http://static.maperial.localhost/images/ui-lightness/ui-icons_ffffff_256x240.png);
 	height:16px;
 	width:16px;
 	background-repeat:no-repeat;
@@ -28,7 +28,7 @@
 }
 
 #dialog-minimize span{
-	background-image:url(http://resources.maperial.localhost/images/ui-lightness/ui-icons_ffffff_256x240.png);
+	background-image:url(http://static.maperial.localhost/images/ui-lightness/ui-icons_ffffff_256x240.png);
 	height:16px;
 	width:16px;
 	background-repeat:no-repeat;

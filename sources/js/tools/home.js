@@ -24,7 +24,7 @@ Home.prototype.tryNow = function() {
    else{
       $("#tryButton").addClass("hide");
       $("#signinButton").addClass("hide");
-      $("#body").append('<img class="headerButton" src="http://resources.maperial.localhost/images/mapediting/spin.white.gif" width="25px"/>');
+      $("#body").append('<img class="headerButton" src="http://static.maperial.localhost/images/mapediting/spin.white.gif" width="25px"/>');
       window.location.href = "http://maperial.herokuapp.com/#/tryscreen";
    }
 }

@@ -7,7 +7,7 @@
 }
 .homepage_top .widget_sp_image {
 	padding: 0px 0px 0px 30px;
-	background: url(http://resources.maperial.localhost/images/home/column_bkg.gif) no-repeat left -2px;
+	background: url(http://static.maperial.localhost/images/home/column_bkg.gif) no-repeat left -2px;
 }	
 .homepage_top .three:first-child .widget_sp_image {
 	background: none;
@@ -141,7 +141,7 @@
 }
 
 #homeImage {
-	background: url('http://resources.maperial.localhost/images/home/part1/worldmap.mini.jpg');
+	background: url('http://static.maperial.localhost/images/home/part1/worldmap.mini.jpg');
 	background-repeat: repeat-x;
 	background-position-x: 0px;
 	height: 350px;

@@ -73,108 +73,49 @@ public class Obfuscator {
 //		varsMaperialJS.put("parameters", "_7_"); --> attention il y a un truc qui sappelle parameters dans une des libs
 
 		//=================================================================================//
-		// TAGBUILDER
 
-		BufferedReader br = null;
-		File f = new File("resources/js/maperial-builder.o.js");
-		FileWriter fw = new FileWriter(f);
-		BufferedWriter bw  = new BufferedWriter(fw);
-
-		try {
-
-			String sCurrentLine;
-
-			br = new BufferedReader(new FileReader("resources/js/maperial-builder.min.js"));
-
-			while ((sCurrentLine = br.readLine()) != null) {
-				for(String k : varsTag.keySet()){
-					sCurrentLine = sCurrentLine.replaceAll(k, varsTag.get(k));
-				}
-
-				bw.write(sCurrentLine);
-				bw.write("\n");
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-				if (bw != null)bw.close();
-				if (fw != null)fw.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-
+		replaceAll("static/js/maperial-builder.min.js", "static/js/maperial-builder.o.js", varsTag);
+		replaceAll("static/js/maperial-js.min.js", "static/js/maperial-js.o.js", varsMaperialJS);
+		replaceAll("static/js/maperial-webapp.min.js", "static/js/maperial-webapp.o.js", varsMaperialJS);
 
 		//=================================================================================//
-		// MAPERIALJS
 
-		br = null;
-		f = new File("resources/js/maperial-js.o.js");
-		fw = new FileWriter(f);
-		bw  = new BufferedWriter(fw);
-
-		try {
-
-			String sCurrentLine;
-
-			br = new BufferedReader(new FileReader("resources/js/maperial-js.min.js"));
-
-			while ((sCurrentLine = br.readLine()) != null) {
-				for(String k : varsMaperialJS.keySet()){
-					sCurrentLine = sCurrentLine.replaceAll(k, varsMaperialJS.get(k));
-				}
-
-				bw.write(sCurrentLine);
-				bw.write("\n");
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-				if (bw != null)bw.close();
-				if (fw != null)fw.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-		
-		//=================================================================================//
-		// Webapp
-		
-		br = null;
-		f = new File("resources/js/maperial-webapp.o.js");
-		fw = new FileWriter(f);
-		bw  = new BufferedWriter(fw);
-		
-		try {
-			String sCurrentLine;
-			
-			br = new BufferedReader(new FileReader("resources/js/maperial-webapp.min.js"));
-			
-			while ((sCurrentLine = br.readLine()) != null) {
-				for(String k : varsMaperialJS.keySet()){
-					sCurrentLine = sCurrentLine.replaceAll(k, varsMaperialJS.get(k));
-				}
-				
-				bw.write(sCurrentLine);
-				bw.write("\n");
-			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-				if (bw != null)bw.close();
-				if (fw != null)fw.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
 	}
+	
+	private static void replaceAll(String input, String output, Map<String, String> vars) throws IOException {
+		BufferedReader br = null;
+		File f = new File(output);
+		FileWriter fw = new FileWriter(f);
+		BufferedWriter bw = new BufferedWriter(fw);
+
+		try {
+
+			String sCurrentLine;
+
+			br = new BufferedReader(new FileReader(input));
+
+			while ((sCurrentLine = br.readLine()) != null) {
+				for (String k : vars.keySet()) {
+					sCurrentLine = sCurrentLine.replaceAll(k, vars.get(k));
+				}
+
+				bw.write(sCurrentLine);
+				bw.write("\n");
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)
+					br.close();
+				if (bw != null)
+					bw.close();
+				if (fw != null)
+					fw.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+   }
 }

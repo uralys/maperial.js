@@ -28,7 +28,7 @@ $(function(){
   //console.log("aws css added");
 
   $('<div id="aws_spinnerDiv" class="aws_spinner" style="display:none;">'     +
-    '<img id="aws_img-spinner" src="http://resources.maperial.localhost/images/spin.gif" alt="Loading"/>'         +
+    '<img id="aws_img-spinner" src="http://static.maperial.localhost/images/spin.gif" alt="Loading"/>'         +
     '</div>' ).appendTo('body');
     
   console.log("aws div added");
