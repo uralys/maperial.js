@@ -14,7 +14,7 @@
 		<echo>	build-shaders</echo>
 		<echo>	push-to-master</echo>
 	</target>
-
+		
 	<target name="build-all">
 		<delete dir="${dist}" />
 		<mkdir dir="${dist}" />
@@ -35,7 +35,6 @@
 	<target name="build-css">
 
 		<mkdir dir="${dist}/css" />
-		<copy file="${webapp}/target/scala-2.10/resource_managed/main/public/stylesheets/bootstrap/bootstrap.min.css" todir="sources/css/" />
 
 		<antcall target="home.min.css" />
 		<antcall target="maperial-js.min.css" />
@@ -543,4 +542,8 @@
 
 	</target>
 
+	<!-- DEV ONLY -->
+	<target name="copy-bootstrap">
+		<copy file="/Users/mad/Projects/Maperial/MaperialWebapp/target/scala-2.10/resource_managed/main/public/stylesheets/bootstrap/bootstrap.min.css" todir="sources/css/" />
+	</target>
 </project>
