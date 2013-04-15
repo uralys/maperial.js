@@ -2,4 +2,4 @@
 .classpath
 .project
 bin/
-resources/
+static/

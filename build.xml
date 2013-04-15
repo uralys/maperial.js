@@ -16,8 +16,8 @@
 	</target>
 
 	<target name="build-all">
-		<delete dir="${resources}" />
-		<mkdir dir="${resources}" />
+		<delete dir="${dist}" />
+		<mkdir dir="${dist}" />
 
 		<antcall target="build-css" />
 		<antcall target="build-js" />
@@ -25,14 +25,16 @@
 		<antcall target="replace-urls" />
 		<antcall target="obfuscate" />
 
-		<copy todir="${resources}">
+		<antcall target="build-shaders" />
+
+		<copy todir="${dist}">
 			<fileset dir="assets" />
 		</copy>
 	</target>
 
 	<target name="build-css">
 
-		<mkdir dir="${resources}/css" />
+		<mkdir dir="${dist}/css" />
 		<copy file="${webapp}/target/scala-2.10/resource_managed/main/public/stylesheets/bootstrap/bootstrap.min.css" todir="sources/css/" />
 
 		<antcall target="home.min.css" />
@@ -42,7 +44,7 @@
 	</target>
 
 	<target name="build-js">
-		<mkdir dir="${resources}/js" />
+		<mkdir dir="${dist}/js" />
 		<antcall target="home.min.js" />
 		<antcall target="maperial-builder.min.js" />
 		<antcall target="maperial-js.min.js" />
@@ -67,7 +69,7 @@
 			<arg value="compressor/yuicompressor/yuicompressor-2.4.8pre.jar" />
 			<arg value="${tmpFile}" />
 			<arg value="-o" />
-			<arg value="${resources}/css/home.min.localhost.css" />
+			<arg value="${dist}/css/home.min.localhost.css" />
 			<arg value="--charset" />
 			<arg value="utf-8" />
 			<arg value="--type" />
@@ -108,7 +110,7 @@
 			<arg value="compressor/yuicompressor/yuicompressor-2.4.8pre.jar" />
 			<arg value="${tmpFile}" />
 			<arg value="-o" />
-			<arg value="${resources}/css/maperial-js.min.localhost.css" />
+			<arg value="${dist}/css/maperial-js.min.localhost.css" />
 			<arg value="--charset" />
 			<arg value="utf-8" />
 			<arg value="--type" />
@@ -159,7 +161,7 @@
 			<arg value="compressor/yuicompressor/yuicompressor-2.4.8pre.jar" />
 			<arg value="${tmpFile}" />
 			<arg value="-o" />
-			<arg value="${resources}/css/maperial-webapp.min.localhost.css" />
+			<arg value="${dist}/css/maperial-webapp.min.localhost.css" />
 			<arg value="--charset" />
 			<arg value="utf-8" />
 			<arg value="--type" />
@@ -199,7 +201,7 @@
 			<arg value="sources/js/tools/home.js" />
 
 			<arg value="--js_output_file" />
-			<arg value="${resources}/js/home.min.localhost.js" />
+			<arg value="${dist}/js/home.min.localhost.js" />
 
 			<arg value="--language_in" />
 			<arg value="ECMASCRIPT5" />
@@ -227,7 +229,7 @@
 			<arg value="sources/js/tools/tag-builder.js" />
 
 			<arg value="--js_output_file" />
-			<arg value="${resources}/js/maperial-builder.min.localhost.js" />
+			<arg value="${dist}/js/maperial-builder.min.localhost.js" />
 
 			<arg value="--language_in" />
 			<arg value="ECMASCRIPT5" />
@@ -331,7 +333,7 @@
 			<arg value="sources/js/extensions/maperialjs/maperial.js" />
 
 			<arg value="--js_output_file" />
-			<arg value="${resources}/js/maperial-js.min.localhost.js" />
+			<arg value="${dist}/js/maperial-js.min.localhost.js" />
 
 			<arg value="--language_in" />
 			<arg value="ECMASCRIPT5" />
@@ -422,7 +424,7 @@
 
 			<arg value="--js" /><arg value="sources/js/webapp/router.js" />
 
-			<arg value="--js_output_file" /><arg value="${resources}/js/maperial-webapp.min.localhost.js" />
+			<arg value="--js_output_file" /><arg value="${dist}/js/maperial-webapp.min.localhost.js" />
 
 			<arg value="--warning_level" /><arg value="QUIET" />
 			<arg value="--language_in" /><arg value="ECMASCRIPT5" />
@@ -432,7 +434,6 @@
 		<echo>------------------------------------------------------</echo>
 
 	</target>
-
 
 
 	<target name="obfuscate">
@@ -462,6 +463,26 @@
 		<echo>ready.</echo>
 		<echo>------------------------------------------------------</echo>
 
+	</target>
+
+	<target name="build-shaders">
+		<exec executable="python" dir="sources/shaders">
+			<arg value="mkjson.py" />
+		</exec>
+		
+		<copy todir="${dist}">
+			<fileset file="sources/shaders/all.json" />
+		</copy>
+
+		<delete>
+			<fileset file="sources/shaders/fragmentAlphaBlend.json" />
+			<fileset file="sources/shaders/fragmentAlphaClip.json" />
+			<fileset file="sources/shaders/fragmentClut.json" />
+			<fileset file="sources/shaders/fragmentMulBlend.json" />
+			<fileset file="sources/shaders/fragmentTex.json" />
+			<fileset file="sources/shaders/vertex.json" />
+			<fileset file="sources/shaders/vertexTex.json" />
+		</delete>
 	</target>
 
 	<target name="push-to-master">
