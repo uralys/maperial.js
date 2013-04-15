@@ -279,7 +279,7 @@
 	width: 16px;
 	height: 16px;
 	vertical-align: text-top;
-	background-image: url(http://assets.maperial.localhost/images/global/icons-16x16.png?v=1);
+	background-image: url(http://resources.maperial.localhost/images/global/icons-16x16.png?v=1);
 	background-repeat: no-repeat;
 	*margin-right: .3em;
 }
@@ -437,7 +437,7 @@
 	margin-top: 21px;
 	margin-left: 84%;
 	color: #bbb;
-	background: url(http://assets.maperial.localhost/images/global/arrow_down.png) no-repeat right 8px;
+	background: url(http://resources.maperial.localhost/images/global/arrow_down.png) no-repeat right 8px;
 	cursor: pointer;
 	position: fixed;
 	padding-right: 15px;

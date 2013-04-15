@@ -316,7 +316,6 @@ parse: function parse(input) {
             return true;
         }
     }
-    return true;
 }
 };
 /* Jison generated lexer */

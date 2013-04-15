@@ -19,7 +19,7 @@
       apiKey: 'AIzaSyCrc-COPNAP_0ysMjr8ySruAnfmImnFuH8',
       scopes: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
       googleClientId : (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? '643408271777.apps.googleusercontent.com' : '643408271777-ss5bnucbnm5vv5gbpn0jpqcufph73das.apps.googleusercontent.com',
-      ASSETS_URL : (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? 'http://assets.maperial.localhost' : 'http://assets.maperial.com',
+      ASSETS_URL : (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? 'http://resources.maperial.localhost' : 'http://assets.maperial.com',
       maperialEmail: "",
       currentView: "",
       parentView: "",

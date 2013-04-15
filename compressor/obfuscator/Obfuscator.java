@@ -76,7 +76,7 @@ public class Obfuscator {
 		// TAGBUILDER
 
 		BufferedReader br = null;
-		File f = new File("/Users/mad/Projects/Maperial/mycarto/wwwClient/js/min/maperial-builder.o.js");
+		File f = new File("resources/js/maperial-builder.o.js");
 		FileWriter fw = new FileWriter(f);
 		BufferedWriter bw  = new BufferedWriter(fw);
 
@@ -84,7 +84,7 @@ public class Obfuscator {
 
 			String sCurrentLine;
 
-			br = new BufferedReader(new FileReader("/Users/mad/Projects/Maperial/mycarto/wwwClient/js/min/maperial-builder.min.js"));
+			br = new BufferedReader(new FileReader("resources/js/maperial-builder.min.js"));
 
 			while ((sCurrentLine = br.readLine()) != null) {
 				for(String k : varsTag.keySet()){
@@ -112,7 +112,7 @@ public class Obfuscator {
 		// MAPERIALJS
 
 		br = null;
-		f = new File("/Users/mad/Projects/Maperial/mycarto/wwwClient/js/min/maperial-js.o.js");
+		f = new File("resources/js/maperial-js.o.js");
 		fw = new FileWriter(f);
 		bw  = new BufferedWriter(fw);
 
@@ -120,7 +120,7 @@ public class Obfuscator {
 
 			String sCurrentLine;
 
-			br = new BufferedReader(new FileReader("/Users/mad/Projects/Maperial/mycarto/wwwClient/js/min/maperial-js.min.js"));
+			br = new BufferedReader(new FileReader("resources/js/maperial-js.min.js"));
 
 			while ((sCurrentLine = br.readLine()) != null) {
 				for(String k : varsMaperialJS.keySet()){
@@ -147,14 +147,14 @@ public class Obfuscator {
 		// Webapp
 		
 		br = null;
-		f = new File("/Users/mad/Projects/Maperial/mycarto/wwwClient/js/min/maperial-webapp.o.js");
+		f = new File("resources/js/maperial-webapp.o.js");
 		fw = new FileWriter(f);
 		bw  = new BufferedWriter(fw);
 		
 		try {
 			String sCurrentLine;
 			
-			br = new BufferedReader(new FileReader("/Users/mad/Projects/Maperial/mycarto/wwwClient/js/min/maperial-webapp.min.js"));
+			br = new BufferedReader(new FileReader("resources/js/maperial-webapp.min.js"));
 			
 			while ((sCurrentLine = br.readLine()) != null) {
 				for(String k : varsMaperialJS.keySet()){

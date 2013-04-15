@@ -78,9 +78,9 @@ TemplateBuilder.prototype.buildSwitchImages = function(){
    var html = "";
    html += "<div class=\"panel panelSwitchImages snapper hide\" id=\"panelSwitchImages"+this.tagId+"\" >";
    html += "    <div id=\"SwitchImages"+this.tagId+"\">";
-   html += "         <img id=\"imagesMapquest"+this.tagId+"\" class=\"sourceThumb touchable\" src=\"http://maperial.comhttp://assets.maperial.localhost/images/icons/layer.images.mapquest.png\"></img>";
-   html += "         <img id=\"imagesMapquestSatellite"+this.tagId+"\" class=\"sourceThumb touchable\" src=\"http://maperial.comhttp://assets.maperial.localhost/images/icons/layer.images.mapquest.satellite.png\"></img>";
-   html += "         <img id=\"imagesOSM"+this.tagId+"\" class=\"sourceThumb touchable\" src=\"http://maperial.comhttp://assets.maperial.localhost/images/icons/layer.images.osm.png\"></img>";
+   html += "         <img id=\"imagesMapquest"+this.tagId+"\" class=\"sourceThumb touchable\" src=\"http://resources.maperial.localhost/images/icons/layer.images.mapquest.png\"></img>";
+   html += "         <img id=\"imagesMapquestSatellite"+this.tagId+"\" class=\"sourceThumb touchable\" src=\"http://resources.maperial.localhost/images/icons/layer.images.mapquest.satellite.png\"></img>";
+   html += "         <img id=\"imagesOSM"+this.tagId+"\" class=\"sourceThumb touchable\" src=\"http://resources.maperial.localhost/images/icons/layer.images.osm.png\"></img>";
    html += "    </div>";
    html += "</div>";
    
@@ -136,7 +136,7 @@ TemplateBuilder.prototype.buildMapKey = function(){
    var html = "";
    html += "<div class=\"panel panelMapKey snapper hide\" id=\"panelMapKey"+this.tagId+"\" >";
    html += "    <div id=\"MapKey"+this.tagId+"\">";
-   html += "         <img src=\"http://maperial.comhttp://assets.maperial.localhost/images/global/dummy.legend.png\"></div>";
+   html += "         <img src=\"http://resources.maperial.localhost/images/global/dummy.legend.png\"></div>";
    html += "    </div>";
    html += "</div>";
    

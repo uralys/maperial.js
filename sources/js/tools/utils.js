@@ -223,11 +223,11 @@ Utils.getSourceThumb = function(layer) {
    
       case Source.Vector:
       case Source.Images:
-         return " src=\"http://assets.maperial.localhost/images/icons/layer."+layer.source.params.src+".png\"";
+         return " src=\"http://resources.maperial.localhost/images/icons/layer."+layer.source.params.src+".png\"";
          
       case Source.Raster:
       default:
-         return " src=\"http://assets.maperial.localhost/images/icons/layer.raster.png\""; // TODO : thumb du raster
+         return " src=\"http://resources.maperial.localhost/images/icons/layer.raster.png\""; // TODO : thumb du raster
 
    }
 }

@@ -1,11 +1,471 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 
-<project basedir="." default="push-to-master" name="PushWWWClient">
+<project basedir="." default="hello" name="Maperial">
 	<property environment="env" />
+	<property file="build.properties" />
+
+	<target name="hello">
+		<echo>------------------------------------------------------</echo>
+		<echo>-----              Maperial 2013                  ----</echo>
+		<echo>Choose a target :</echo>
+		<echo>	build-all</echo>
+		<echo>	build-css</echo>
+		<echo>	build-js</echo>
+		<echo>	build-shaders</echo>
+		<echo>	push-to-master</echo>
+	</target>
+
+	<target name="build-all">
+		<delete dir="${resources}" />
+		<mkdir dir="${resources}" />
+
+		<antcall target="build-css" />
+		<antcall target="build-js" />
+
+		<antcall target="replace-urls" />
+		<antcall target="obfuscate" />
+
+		<copy todir="${resources}">
+			<fileset dir="assets" />
+		</copy>
+	</target>
+
+	<target name="build-css">
+
+		<mkdir dir="${resources}/css" />
+		<copy file="${webapp}/target/scala-2.10/resource_managed/main/public/stylesheets/bootstrap/bootstrap.min.css" todir="sources/css/" />
+
+		<antcall target="home.min.css" />
+		<antcall target="maperial-js.min.css" />
+		<antcall target="maperial-webapp.min.css" />
+
+	</target>
+
+	<target name="build-js">
+		<mkdir dir="${resources}/js" />
+		<antcall target="home.min.js" />
+		<antcall target="maperial-builder.min.js" />
+		<antcall target="maperial-js.min.js" />
+		<antcall target="maperial-webapp.min.js" />
+	</target>
+
+	<target name="home.min.css">
+		<echo>------------------------------------------------------</echo>
+		<echo>Building...</echo>
+
+		<concat destfile="${tmpFile}">
+			<fileset file="sources/css/bootstrap.min.css" />
+			<fileset file="sources/css/libs/bootstrap-image-gallery.css" />
+			<fileset file="sources/css/libs/prettyPhoto.css" />
+			<fileset file="sources/css/maperial/global.css" />
+			<fileset file="sources/css/webapp/footer.css" />
+			<fileset file="sources/css/webapp/home.css" />
+		</concat>
+		<exec executable="java">
+			<arg value="-Xmx128m" />
+			<arg value="-jar" />
+			<arg value="compressor/yuicompressor/yuicompressor-2.4.8pre.jar" />
+			<arg value="${tmpFile}" />
+			<arg value="-o" />
+			<arg value="${resources}/css/home.min.localhost.css" />
+			<arg value="--charset" />
+			<arg value="utf-8" />
+			<arg value="--type" />
+			<arg value="css" />
+		</exec>
+
+		<delete>
+			<fileset file="${tmpFile}" />
+		</delete>
+
+		<echo>ready.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
+
+
+	<target name="maperial-js.min.css">
+		<echo>------------------------------------------------------</echo>
+		<echo>Building...</echo>
+
+		<concat destfile="${tmpFile}">
+			<fileset file="sources/css/bootstrap.min.css" />
+
+			<fileset file="sources/css/libs/bootstrap-image-gallery.css" />
+			<fileset file="sources/css/libs/jquery-ui-1.9.2.custom.min.css" />
+			<fileset file="sources/css/libs/slideronoff.css" />
+			<fileset file="sources/css/libs/jquery.selectbox.css" />
+
+			<fileset file="sources/css/mapediting/colorpicker.css" />
+			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
+
+			<fileset file="sources/css/maperial/global.css" />
+			<fileset file="sources/css/maperial/maperial.css" />
+		</concat>
+		<exec executable="java">
+			<arg value="-Xmx128m" />
+			<arg value="-jar" />
+			<arg value="compressor/yuicompressor/yuicompressor-2.4.8pre.jar" />
+			<arg value="${tmpFile}" />
+			<arg value="-o" />
+			<arg value="${resources}/css/maperial-js.min.localhost.css" />
+			<arg value="--charset" />
+			<arg value="utf-8" />
+			<arg value="--type" />
+			<arg value="css" />
+		</exec>
+
+		<delete>
+			<fileset file="${tmpFile}" />
+		</delete>
+
+		<echo>ready.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
+
+
+	<target name="maperial-webapp.min.css">
+		<echo>------------------------------------------------------</echo>
+		<echo>Building...</echo>
+
+		<concat destfile="${tmpFile}">
+			<fileset file="sources/css/bootstrap.min.css" />
+
+			<fileset file="sources/css/libs/bootstrap-image-gallery.css" />
+			<fileset file="sources/css/libs/jquery-ui-1.9.2.custom.min.css" />
+			<fileset file="sources/css/libs/jquery.fileupload-ui.css" />
+			<fileset file="sources/css/libs/prettyPhotos.css" />
+			<fileset file="sources/css/libs/upload.css" />
+			<fileset file="sources/css/libs/slideronoff.css" />
+			<fileset file="sources/css/libs/jquery.selectbox.css" />
+
+			<fileset file="sources/css/mapediting/colorpicker.css" />
+			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
+
+			<fileset file="sources/css/maperial/global.css" />
+			<fileset file="sources/css/maperial/maperial.css" />
+			<fileset file="sources/css/maperial/sprites.css" />
+			<fileset file="sources/css/webapp/dashboard.css" />
+			<fileset file="sources/css/webapp/datasets.css" />
+			<fileset file="sources/css/webapp/footer.css" />
+			<fileset file="sources/css/webapp/home.css" />
+			<fileset file="sources/css/webapp/mapCreation.css" />
+			<fileset file="sources/css/webapp/styleEditor.css" />
+		</concat>
+		<exec executable="java">
+			<arg value="-Xmx128m" />
+			<arg value="-jar" />
+			<arg value="compressor/yuicompressor/yuicompressor-2.4.8pre.jar" />
+			<arg value="${tmpFile}" />
+			<arg value="-o" />
+			<arg value="${resources}/css/maperial-webapp.min.localhost.css" />
+			<arg value="--charset" />
+			<arg value="utf-8" />
+			<arg value="--type" />
+			<arg value="css" />
+		</exec>
+
+		<delete>
+			<fileset file="${tmpFile}" />
+		</delete>
+
+		<echo>ready.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
+
+
+
+	<target name="home.min.js">
+		<echo>------------------------------------------------------</echo>
+		<echo>Building...</echo>
+
+		<exec executable="java">
+			<arg value="-jar" />
+			<arg value="compressor/googleCompiler/compiler.jar" />
+
+			<arg value="--js" />
+			<arg value="sources/js/tools/youtube-manager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.prettyPhoto.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/handlebars.js" />
+			<arg value="--js" />
+			<arg value="sources/js/tools/translator.js" />
+			<arg value="--js" />
+			<arg value="sources/js/tools/common-handlebars.js" />
+			<arg value="--js" />
+			<arg value="sources/js/tools/home.js" />
+
+			<arg value="--js_output_file" />
+			<arg value="${resources}/js/home.min.localhost.js" />
+
+			<arg value="--language_in" />
+			<arg value="ECMASCRIPT5" />
+		</exec>
+
+		<echo>ready.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
+
+
+
+	<target name="maperial-builder.min.js">
+		<echo>------------------------------------------------------</echo>
+		<echo>Building...</echo>
+
+		<delete dir="sources/js/min/maperial-builder.min.js" />
+		<exec executable="java">
+			<arg value="-jar" />
+			<arg value="compressor/googleCompiler/compiler.jar" />
+
+			<arg value="--js" />
+			<arg value="sources/js/tools/script-loader.js" />
+			<arg value="--js" />
+			<arg value="sources/js/tools/tag-builder.js" />
+
+			<arg value="--js_output_file" />
+			<arg value="${resources}/js/maperial-builder.min.localhost.js" />
+
+			<arg value="--language_in" />
+			<arg value="ECMASCRIPT5" />
+		</exec>
+
+		<echo>ready.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
+
+
+	<target name="maperial-js.min.js">
+		<echo>------------------------------------------------------</echo>
+		<echo>Building...</echo>
+
+		<delete dir="sources/js/min/maperial-js.min.js" />
+		<exec executable="java">
+			<arg value="-jar" />
+			<arg value="compressor/googleCompiler/compiler.jar" />
+
+			<arg value="--js" /><arg value="sources/js/libs/jquery.mousewheel.min.js" />
+			<arg value="--js" /><arg value="sources/js/libs/jquery.selectbox-0.2.min.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/tools/utils.js" />
+
+			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/libs/gl-matrix-min.js" />
+			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/libs/coordinate-system.js" />
+			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/libs/geoloc.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/colorpicker.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/RGBColor.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/hashmap.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/canvasutilities.js" />
+
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/gl-tools.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/gl-imagelayer.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/gl-rasterlayer.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/gl-tile.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/gl-vectoriallayer.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/render-line.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/render-text.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/tile-renderer.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/map-renderer.js" />
+
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/events.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/source.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/mouse.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/mover.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/template-builder.js" />
+
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/hud.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-switch.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-composition.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-controls.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-latlon.js" />
+			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/hud/panel-scale.js" />
+			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/hud/panel-settings.js" />
+			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/hud/triggers.js" />
+
+			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/managers/sources-manager.js" />
+			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/managers/colorbars-manager.js" />
+			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/managers/styles-manager.js" />
+			<arg value="--js" /><arg value="sources/js/extensions/maperialjs/managers/layers-manager.js" />
+
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/edition/boundingbox-drawer.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/edition/colortool.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/edition/symbolizer.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/edition/style-menu.js" />
+
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/colorbar/colorbar-rainbow.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/colorbar/colorbar.js" />
+
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/maperial.js" />
+
+			<arg value="--js_output_file" />
+			<arg value="${resources}/js/maperial-js.min.localhost.js" />
+
+			<arg value="--language_in" />
+			<arg value="ECMASCRIPT5" />
+		</exec>
+
+		<echo>ready.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
+
+
+	<target name="maperial-webapp.min.js">
+		<echo>------------------------------------------------------</echo>
+		<echo>Building...</echo>
+
+		<delete dir="sources/js/min/maperial-webapp.min.js" />
+		<exec executable="java">
+			<arg value="-jar" /><arg value="compressor/googleCompiler/compiler.jar" />
+
+			<arg value="--js" /><arg value="sources/js/libs/jquery.js" />
+			<arg value="--js" /><arg value="sources/js/libs/jquery-ui-1.9.2.custom.min.js" />
+			<arg value="--js" /><arg value="sources/js/libs/handlebars.js" />
+			<arg value="--js" /><arg value="sources/js/libs/ember.js" />
+
+			<arg value="--js" /><arg value="sources/js/libs/jquery.validate.min.js" />
+			<arg value="--js" /><arg value="sources/js/libs/jquery.prettyPhoto.js" />
+
+			<arg value="--js" /><arg value="sources/js/webapp/tools/common-handlebars.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/tools/translator.js" />
+
+			<arg value="--js" /><arg value="sources/js/extensions/auth/maperialAuth.js" />
+			<arg value="--js" /><arg value="sources/js/extensions/upload/jquery.fileupload.js" />
+			<arg value="--js" /><arg value="sources/js/extensions/upload/main.js" />
+
+			<arg value="--js" /><arg value="sources/js/webapp/tools/utils.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/tools/youtube-manager.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/tools/home-mover.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/tools/jquery-script-loader.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/tools/custom-ember-handlebars.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/app.js" />
+
+			<arg value="--js" /><arg value="sources/js/webapp/managers/datasetManager.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/managers/styleManager.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/managers/colorbarManager.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/managers/userManager.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/managers/mapManager.js" />
+
+			<arg value="--js" /><arg value="sources/js/webapp/models/publicData.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/models/globals.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/models/user.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/models/stylesData.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/models/colorbarsData.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/models/datasetsData.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/models/translations.js" />
+
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/helpers/layers-helper.js" />
+
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/applicationController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/homeController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/dashboardController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/tryscreenController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/mapCreationController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/stylesController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/styleEditorController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/colorbarsController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/colorbarEditorController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/viewMapController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/datasetsController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/fontsController.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/iconsController.js" />
+
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/applicationView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/homeView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/dashboardView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/tryscreenView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/mapCreationView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/stylesView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/styleEditorView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/colorbarsView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/colorbarEditorView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/viewMapView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/datasetsView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/fontsView.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/iconsView.js" />
+
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/styleList.js" />
+			<arg value="--js" /><arg value="sources/js/webapp/controllers/config/colorbarList.js" />
+
+			<arg value="--js" /><arg value="sources/js/webapp/router.js" />
+
+			<arg value="--js_output_file" /><arg value="${resources}/js/maperial-webapp.min.localhost.js" />
+
+			<arg value="--warning_level" /><arg value="QUIET" />
+			<arg value="--language_in" /><arg value="ECMASCRIPT5" />
+		</exec>
+
+		<echo>ready.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
+
+
+
+	<target name="obfuscate">
+		<echo>------------------------------------------------------</echo>
+		<echo>Obfuscating...</echo>
+
+		<exec executable="java">
+			<arg value="-jar" />
+			<arg value="compressor/obfuscator/obfuscator.jar" />
+		</exec>
+
+		<echo>ready.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
+
+
+	<target name="replace-urls">
+		<echo>------------------------------------------------------</echo>
+		<echo>Replacing URLs...</echo>
+
+		<exec executable="java">
+			<arg value="-jar" />
+			<arg value="compressor/obfuscator/renamer.jar" />
+		</exec>
+
+		<echo>ready.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
 
 	<target name="push-to-master">
 		<echo>------------------------------------------------------</echo>
-		<echo>-----              Maperial 2013                  ----</echo>
 		<echo>-----       Push commits from develop to master   ----</echo>
 
 		<echo>git pull origin develop</echo>
@@ -14,34 +474,34 @@
 			<arg value="origin" />
 			<arg value="develop" />
 		</exec>
-		
+
 		<echo>git push origin develop</echo>
 		<exec executable="git">
 			<arg value="push" />
 			<arg value="origin" />
 			<arg value="develop" />
 		</exec>
-		
+
 		<echo>git checkout master</echo>
 		<exec executable="git">
 			<arg value="checkout" />
 			<arg value="master" />
 		</exec>
-		
+
 		<echo>git pull origin master</echo>
 		<exec executable="git">
 			<arg value="pull" />
 			<arg value="origin" />
 			<arg value="master" />
 		</exec>
-		
+
 		<echo>git pull origin develop:master</echo>
 		<exec executable="git">
 			<arg value="pull" />
 			<arg value="origin" />
 			<arg value="develop:master" />
 		</exec>
-		
+
 		<echo>git push origin master</echo>
 		<exec executable="git">
 			<arg value="push" />
@@ -54,8 +514,8 @@
 			<arg value="checkout" />
 			<arg value="develop" />
 		</exec>
-		
-		
+
+
 		<echo>------------------------------------------------------</echo>
 		<echo>Completed.</echo>
 		<echo>------------------------------------------------------</echo>

@@ -338,7 +338,7 @@ h6, .h6 {
   color: inherit; }
 
 body {
-  background: #292b30 url("http://assets.maperial.localhost/images/futurico-images/background-noise.png");
+  background: #292b30 url("http://resources.maperial.localhost/images/futurico-images/background-noise.png");
   color: black;
   font: 12px/1.231 Arial, sans-serif;
   margin: 0;
@@ -572,7 +572,7 @@ input.button, input.button-huge {
     font: italic 12px Georgia, serif; }
 
 .checkbox, .checkbox-light, .radio, .radio-light {
-  background: url("http://assets.maperial.localhost/images/futurico-images/checkbox/square.png") 0 0 no-repeat;
+  background: url("http://resources.maperial.localhost/images/futurico-images/checkbox/square.png") 0 0 no-repeat;
   color: #dddddd;
   cursor: pointer;
   padding: 1px 0 3px 25px;
@@ -586,16 +586,16 @@ input.button, input.button-huge {
       background-position: 0 -80px; }
 
 .checkbox-light {
-  background-image: url("http://assets.maperial.localhost/images/futurico-images/checkbox/square-light.png"); }
+  background-image: url("http://resources.maperial.localhost/images/futurico-images/checkbox/square-light.png"); }
 
 .radio {
-  background-image: url("http://assets.maperial.localhost/images/futurico-images/checkbox/disk.png"); }
+  background-image: url("http://resources.maperial.localhost/images/futurico-images/checkbox/disk.png"); }
 
 .radio-light {
-  background-image: url("http://assets.maperial.localhost/images/futurico-images/checkbox/disk-light.png"); }
+  background-image: url("http://resources.maperial.localhost/images/futurico-images/checkbox/disk-light.png"); }
 
 .form-row {
-  background: url("http://assets.maperial.localhost/images/futurico-images/checkbox/form-row.png") 0 100% repeat-x;
+  background: url("http://resources.maperial.localhost/images/futurico-images/checkbox/form-row.png") 0 100% repeat-x;
   margin-bottom: 7px;
   padding-bottom: 7px; }
   .form-row.last {
@@ -650,7 +650,7 @@ input.button, input.button-huge {
       .select .selected:hover .icon, .select-arrowed .selected:hover .icon {
         background-position: 0 -30px; }
     .select .selected .icon, .select-arrowed .selected .icon {
-      background: url("http://assets.maperial.localhost/images/futurico-images/select/selected-icon.png") 0 0 no-repeat;
+      background: url("http://resources.maperial.localhost/images/futurico-images/select/selected-icon.png") 0 0 no-repeat;
       border-radius: 50%;
       height: 19px;
       position: absolute;
@@ -716,7 +716,7 @@ input.button, input.button-huge {
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06); }
 
 .select-arrowed .selected .icon {
-  background-image: url("http://assets.maperial.localhost/images/futurico-images/select/selected-icon-arrowed.png"); }
+  background-image: url("http://resources.maperial.localhost/images/futurico-images/select/selected-icon-arrowed.png"); }
 
 input[type='text'],
 input[type='password'] {
@@ -849,10 +849,10 @@ input[type='password'] {
   behavior: url("javascripts/vendor/PIE.htc"); }
 
 .text input.search-button, .text-rounded input.search-button {
-  background-image: url("http://assets.maperial.localhost/images/futurico-images/text-input/search-button.png"); }
+  background-image: url("http://resources.maperial.localhost/images/futurico-images/text-input/search-button.png"); }
 
 .appreciate {
-  background: url("http://assets.maperial.localhost/images/futurico-images/appreciate/splash.png") 0 0 no-repeat;
+  background: url("http://resources.maperial.localhost/images/futurico-images/appreciate/splash.png") 0 0 no-repeat;
   display: block;
   cursor: pointer;
   font-size: 13px;
@@ -864,9 +864,9 @@ input[type='password'] {
   .appreciate:hover {
     background-position: 0 -110px; }
   .appreciate.firm {
-    background-image: url("http://assets.maperial.localhost/images/futurico-images/appreciate/splash-firm.png"); }
+    background-image: url("http://resources.maperial.localhost/images/futurico-images/appreciate/splash-firm.png"); }
   .appreciate.tnx {
-    background: url("http://assets.maperial.localhost/images/futurico-images/appreciate/tnx.png") 0 0 no-repeat; }
+    background: url("http://resources.maperial.localhost/images/futurico-images/appreciate/tnx.png") 0 0 no-repeat; }
 
 .circle-banner {
   background-color: #141517;
@@ -891,7 +891,7 @@ input[type='password'] {
     margin-top: 15px;
     padding-top: 10px; }
   .circle-banner .ear {
-    background: url("http://assets.maperial.localhost/images/futurico-images/circle-banner/ear.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/circle-banner/ear.png") 0 0 no-repeat;
     height: 22px;
     left: 27px;
     position: absolute;
@@ -920,7 +920,7 @@ input[type='password'] {
   -moz-box-shadow: inset 0 1px 0 black, 0 1px 0 rgba(255, 255, 255, 0.06);
   box-shadow: inset 0 1px 0 black, 0 1px 0 rgba(255, 255, 255, 0.06); }
   .comments .ear {
-    background: url("http://assets.maperial.localhost/images/futurico-images/comments/ear.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/comments/ear.png") 0 0 no-repeat;
     height: 6px;
     left: 6px;
     position: absolute;
@@ -982,19 +982,19 @@ input[type='password'] {
     -o-transition: left 0.2s linear, margin 0.2s linear;
     transition: left 0.2s linear, margin 0.2s linear; }
     .commutator .is.off {
-      background: url("http://assets.maperial.localhost/images/futurico-images/commutator/slider.png") left 3px no-repeat;
+      background: url("http://resources.maperial.localhost/images/futurico-images/commutator/slider.png") left 3px no-repeat;
       right: -100%;
       padding-left: 24px;
       position: absolute;
       top: 0; }
 
 .crossbar {
-  background: url("http://assets.maperial.localhost/images/futurico-images/crossbar/center.png") center no-repeat;
+  background: url("http://resources.maperial.localhost/images/futurico-images/crossbar/center.png") center no-repeat;
   height: 62px;
   position: relative;
   width: 62px; }
   .crossbar [class^='to-'] {
-    background: url("http://assets.maperial.localhost/images/futurico-images/crossbar/button.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/crossbar/button.png") 0 0 no-repeat;
     border-radius: 50%;
     display: block;
     height: 24px;
@@ -1018,22 +1018,22 @@ input[type='password'] {
     left: 19px;
     top: 0; }
     .crossbar [class$='top'] .arrow {
-      background-image: url("http://assets.maperial.localhost/images/futurico-images/crossbar/to-top.png"); }
+      background-image: url("http://resources.maperial.localhost/images/futurico-images/crossbar/to-top.png"); }
   .crossbar [class$='right'] {
     right: 0;
     top: 19px; }
     .crossbar [class$='right'] .arrow {
-      background-image: url("http://assets.maperial.localhost/images/futurico-images/crossbar/to-right.png"); }
+      background-image: url("http://resources.maperial.localhost/images/futurico-images/crossbar/to-right.png"); }
   .crossbar [class$='bottom'] {
     left: 19px;
     bottom: 0; }
     .crossbar [class$='bottom'] .arrow {
-      background-image: url("http://assets.maperial.localhost/images/futurico-images/crossbar/to-bottom.png"); }
+      background-image: url("http://resources.maperial.localhost/images/futurico-images/crossbar/to-bottom.png"); }
   .crossbar [class$='left'] {
     left: 0;
     top: 19px; }
     .crossbar [class$='left'] .arrow {
-      background-image: url("http://assets.maperial.localhost/images/futurico-images/crossbar/to-left.png"); }
+      background-image: url("http://resources.maperial.localhost/images/futurico-images/crossbar/to-left.png"); }
 
 .currently-playing {
   border-radius: 8px;
@@ -1192,7 +1192,7 @@ input[type='password'] {
       top: 5px;
       width: 4px; }
   .ui-datepicker-header .ui-datepicker-prev, .ui-datepicker-header .ui-datepicker-next {
-    background: url("http://assets.maperial.localhost/images/futurico-images/datepicker/back.png") 5px 3px no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/datepicker/back.png") 5px 3px no-repeat;
     bottom: 9px;
     cursor: pointer;
     font-size: 1px;
@@ -1208,7 +1208,7 @@ input[type='password'] {
       background-position: 5px -29px;
       cursor: default; }
   .ui-datepicker-header .ui-datepicker-next {
-    background-image: url("http://assets.maperial.localhost/images/futurico-images/datepicker/forward.png");
+    background-image: url("http://resources.maperial.localhost/images/futurico-images/datepicker/forward.png");
     left: auto;
     right: -5px; }
 
@@ -1230,7 +1230,7 @@ input[type='password'] {
       color: #999999; }
 
 .ui-datepicker-close {
-  background: url("http://assets.maperial.localhost/images/futurico-images/datepicker/close.png") 8px 9px no-repeat;
+  background: url("http://resources.maperial.localhost/images/futurico-images/datepicker/close.png") 8px 9px no-repeat;
   border: none;
   cursor: pointer;
   font-size: 1px;
@@ -1274,7 +1274,7 @@ input[type='password'] {
     background-image: linear-gradient(left, #e1e1e1, #a4a4a4); }
 
 .equalizer-delimiter {
-  background: url("http://assets.maperial.localhost/images/futurico-images/equalizer/bar-delimiter.png") 0 0 no-repeat;
+  background: url("http://resources.maperial.localhost/images/futurico-images/equalizer/bar-delimiter.png") 0 0 no-repeat;
   float: left;
   margin-right: 6px;
   height: 114px;
@@ -1298,7 +1298,7 @@ input[type='password'] {
   background-image: linear-gradient(left, #6c901b, #91b73c); }
 
 .equalizer .ui-slider-handle {
-  background: url("http://assets.maperial.localhost/images/futurico-images/equalizer/slider.png") 5px 0 no-repeat;
+  background: url("http://resources.maperial.localhost/images/futurico-images/equalizer/slider.png") 5px 0 no-repeat;
   cursor: pointer;
   height: 16px;
   left: -6px;
@@ -1325,7 +1325,7 @@ input[type='password'] {
     font-family: Georgia, serif;
     font-style: italic; }
   .header-controls .fb-signup {
-    background: url("http://assets.maperial.localhost/images/futurico-images/header/fb-signup.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/header/fb-signup.png") 0 0 no-repeat;
     display: inline-block;
     height: 21px;
     margin: -7px 0;
@@ -1354,7 +1354,7 @@ input[type='password'] {
     .header-navigation li:last-child:after {
       display: none; }
     .header-navigation li.current:before {
-      background: url("http://assets.maperial.localhost/images/futurico-images/header/ear.png") 0 0 no-repeat;
+      background: url("http://resources.maperial.localhost/images/futurico-images/header/ear.png") 0 0 no-repeat;
       bottom: -20px;
       content: "";
       height: 8px;
@@ -1386,7 +1386,7 @@ input[type='password'] {
   box-shadow: inset 0 1px 0 black, 0 1px 0 rgba(255, 255, 255, 0.06);
   behavior: url("javascripts/vendor/PIE.htc"); }
   .login-block .login-ear {
-    background: url("http://assets.maperial.localhost/images/futurico-images/login-block/ear.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/login-block/ear.png") 0 0 no-repeat;
     height: 13px;
     left: 23px;
     position: absolute;
@@ -1434,7 +1434,7 @@ input[type='password'] {
     .pagination a:hover {
       background-color: #3f4147; }
   .pagination .pagination-up, .pagination .pagination-down, .pagination .pagination-left, .pagination .pagination-right {
-    background: url("http://assets.maperial.localhost/images/futurico-images/pagination/up.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/pagination/up.png") 0 0 no-repeat;
     cursor: pointer;
     float: left;
     height: 11px;
@@ -1444,11 +1444,11 @@ input[type='password'] {
     -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3); }
   .pagination .pagination-down {
-    background-image: url("http://assets.maperial.localhost/images/futurico-images/pagination/down.png"); }
+    background-image: url("http://resources.maperial.localhost/images/futurico-images/pagination/down.png"); }
   .pagination .pagination-left {
-    background-image: url("http://assets.maperial.localhost/images/futurico-images/pagination/left.png"); }
+    background-image: url("http://resources.maperial.localhost/images/futurico-images/pagination/left.png"); }
   .pagination .pagination-right {
-    background-image: url("http://assets.maperial.localhost/images/futurico-images/pagination/right.png"); }
+    background-image: url("http://resources.maperial.localhost/images/futurico-images/pagination/right.png"); }
 
 .player-control-wrapper {
   float: left;
@@ -1457,7 +1457,7 @@ input[type='password'] {
     left: 13px; }
 
 .player-control, .player-control-huge {
-  background: url("http://assets.maperial.localhost/images/futurico-images/player/control.png") 0 0 no-repeat;
+  background: url("http://resources.maperial.localhost/images/futurico-images/player/control.png") 0 0 no-repeat;
   cursor: pointer;
   float: left;
   height: 35px;
@@ -1471,7 +1471,7 @@ input[type='password'] {
       background-position: center bottom; }
 
 .player-control-huge {
-  background-image: url("http://assets.maperial.localhost/images/futurico-images/player/control-big.png");
+  background-image: url("http://resources.maperial.localhost/images/futurico-images/player/control-big.png");
   height: 54px;
   margin-top: -10px;
   width: 54px; }
@@ -1487,13 +1487,13 @@ input[type='password'] {
   margin: 10px 0 0 7px;
   width: 20px; }
   .player-icon.p-back {
-    background-image: url("http://assets.maperial.localhost/images/futurico-images/player/icon-back.png"); }
+    background-image: url("http://resources.maperial.localhost/images/futurico-images/player/icon-back.png"); }
   .player-icon.p-next {
-    background-image: url("http://assets.maperial.localhost/images/futurico-images/player/icon-next.png"); }
+    background-image: url("http://resources.maperial.localhost/images/futurico-images/player/icon-next.png"); }
   .player-icon.p-play {
-    background-image: url("http://assets.maperial.localhost/images/futurico-images/player/icon-play.png"); }
+    background-image: url("http://resources.maperial.localhost/images/futurico-images/player/icon-play.png"); }
   .player-icon.p-volume {
-    background-image: url("http://assets.maperial.localhost/images/futurico-images/player/icon-volume.png"); }
+    background-image: url("http://resources.maperial.localhost/images/futurico-images/player/icon-volume.png"); }
 
 .player-scale-holder {
   overflow: hidden;
@@ -1578,7 +1578,7 @@ input[type='password'] {
     height: 19px;
     top: -6px; }
   .scrollbox.disk .ui-slider-handle {
-    background: url("http://assets.maperial.localhost/images/futurico-images/scrollbox/sliders.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/scrollbox/sliders.png") 0 0 no-repeat;
     top: -2px;
     height: 19px;
     margin-left: -9px;
@@ -1603,7 +1603,7 @@ input[type='password'] {
     -pie-background: linear-gradient(#afd067, #71951f);
     behavior: url("javascripts/vendor/PIE.htc"); }
   .scrollbox.fat .ui-slider-handle {
-    background: url("http://assets.maperial.localhost/images/futurico-images/scrollbox/sliders.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/scrollbox/sliders.png") 0 0 no-repeat;
     top: -2px;
     height: 19px;
     margin-left: -9px;
@@ -1613,7 +1613,7 @@ input[type='password'] {
     height: 19px;
     top: -6px; }
   .scrollbox.range .ui-slider-handle {
-    background: url("http://assets.maperial.localhost/images/futurico-images/scrollbox/sliders.png") center -30px no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/scrollbox/sliders.png") center -30px no-repeat;
     top: -2px;
     height: 19px;
     margin-left: -9px;
@@ -1740,7 +1740,7 @@ input[type='password'] {
     float: left;
     position: relative; }
   .slideshow .show-slide {
-    background: url("http://assets.maperial.localhost/images/futurico-images/slideshow/prev.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/slideshow/prev.png") 0 0 no-repeat;
     cursor: pointer;
     height: 22px;
     margin-top: -13px;
@@ -1751,7 +1751,7 @@ input[type='password'] {
     .slideshow .show-slide:hover {
       background-position: 0 bottom; }
     .slideshow .show-slide.next {
-      background-image: url("http://assets.maperial.localhost/images/futurico-images/slideshow/next.png");
+      background-image: url("http://resources.maperial.localhost/images/futurico-images/slideshow/next.png");
       left: auto;
       right: -30px; }
   .slideshow .slide-description {
@@ -1767,7 +1767,7 @@ input[type='password'] {
     box-sizing: border-box; }
 
 .starbar {
-  background: #94eaf3 url("http://assets.maperial.localhost/images/futurico-images/starbar/background.png") 0 0 repeat-x;
+  background: #94eaf3 url("http://resources.maperial.localhost/images/futurico-images/starbar/background.png") 0 0 repeat-x;
   border-radius: 8px;
   display: inline-block;
   height: 16px;
@@ -1777,7 +1777,7 @@ input[type='password'] {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.4);
   behavior: url("javascripts/vendor/PIE.htc"); }
   .starbar .star {
-    background: url("http://assets.maperial.localhost/images/futurico-images/starbar/star.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/starbar/star.png") 0 0 no-repeat;
     float: left;
     height: 16px;
     width: 17px; }
@@ -1804,14 +1804,14 @@ input[type='password'] {
   text-align: center;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15); }
   .sticker.percent {
-    background: url("http://assets.maperial.localhost/images/futurico-images/sticker/percent.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/sticker/percent.png") 0 0 no-repeat;
     font: bold 42px "Helvetica Neue", Arial, sans-serif;
     height: 100px;
     letter-spacing: 1px;
     padding-top: 24px;
     width: 124px; }
   .sticker.pack {
-    background: url("http://assets.maperial.localhost/images/futurico-images/sticker/pack.png") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/sticker/pack.png") 0 0 no-repeat;
     font: bold 38px "Helvetica Neue", Arial, sans-serif;
     height: 84px;
     padding-top: 13px;
@@ -1933,11 +1933,11 @@ input[type='password'] {
       -moz-box-shadow: 8px 3px 5px -3px rgba(0, 0, 0, 0.4);
       box-shadow: 8px 3px 5px -3px rgba(0, 0, 0, 0.4); }
     .tabbox-navigation li.archive {
-      background-image: url("http://assets.maperial.localhost/images/futurico-images/tabbox/navigation-archive.png"); }
+      background-image: url("http://resources.maperial.localhost/images/futurico-images/tabbox/navigation-archive.png"); }
     .tabbox-navigation li.messages {
-      background-image: url("http://assets.maperial.localhost/images/futurico-images/tabbox/navigation-messages.png"); }
+      background-image: url("http://resources.maperial.localhost/images/futurico-images/tabbox/navigation-messages.png"); }
     .tabbox-navigation li.cloud {
-      background-image: url("http://assets.maperial.localhost/images/futurico-images/tabbox/navigation-cloud.png"); }
+      background-image: url("http://resources.maperial.localhost/images/futurico-images/tabbox/navigation-cloud.png"); }
     .tabbox-navigation li > a {
       display: block;
       height: 100%;
@@ -1976,7 +1976,7 @@ input[type='password'] {
     .tabbox-content .status-message.negative {
       color: #c34646; }
   .tabbox-content .preloader {
-    background: url("http://assets.maperial.localhost/images/futurico-images/tabbox/preloader.gif") 0 0 no-repeat;
+    background: url("http://resources.maperial.localhost/images/futurico-images/tabbox/preloader.gif") 0 0 no-repeat;
     height: 16px;
     margin-top: -13px;
     position: absolute;
