@@ -306,8 +306,8 @@ table td[class*="span"],table th[class*="span"],.row-fluid table td[class*="span
 .table-hover tbody tr.error:hover td{background-color:#ebcccc;}
 .table-hover tbody tr.warning:hover td{background-color:#faf2cc;}
 .table-hover tbody tr.info:hover td{background-color:#c4e3f3;}
-[class^="icon-"],[class*=" icon-"]{display:inline-block;width:14px;height:14px;*margin-right:.3em;line-height:14px;vertical-align:text-top;background-image:url("../../images/bootstrap/glyphicons-halflings.png");background-position:14px 14px;background-repeat:no-repeat;margin-top:1px;}
-.icon-white,.nav-pills>.active>a>[class^="icon-"],.nav-pills>.active>a>[class*=" icon-"],.nav-list>.active>a>[class^="icon-"],.nav-list>.active>a>[class*=" icon-"],.navbar-inverse .nav>.active>a>[class^="icon-"],.navbar-inverse .nav>.active>a>[class*=" icon-"],.dropdown-menu>li>a:hover>[class^="icon-"],.dropdown-menu>li>a:hover>[class*=" icon-"],.dropdown-menu>.active>a>[class^="icon-"],.dropdown-menu>.active>a>[class*=" icon-"],.dropdown-submenu:hover>a>[class^="icon-"],.dropdown-submenu:hover>a>[class*=" icon-"]{background-image:url("../../images/bootstrap/glyphicons-halflings-white.png");}
+[class^="icon-"],[class*=" icon-"]{display:inline-block;width:14px;height:14px;*margin-right:.3em;line-height:14px;vertical-align:text-top;background-image:url("http://static.maperial.localhost/images/bootstrap/glyphicons-halflings.png");background-position:14px 14px;background-repeat:no-repeat;margin-top:1px;}
+.icon-white,.nav-pills>.active>a>[class^="icon-"],.nav-pills>.active>a>[class*=" icon-"],.nav-list>.active>a>[class^="icon-"],.nav-list>.active>a>[class*=" icon-"],.navbar-inverse .nav>.active>a>[class^="icon-"],.navbar-inverse .nav>.active>a>[class*=" icon-"],.dropdown-menu>li>a:hover>[class^="icon-"],.dropdown-menu>li>a:hover>[class*=" icon-"],.dropdown-menu>.active>a>[class^="icon-"],.dropdown-menu>.active>a>[class*=" icon-"],.dropdown-submenu:hover>a>[class^="icon-"],.dropdown-submenu:hover>a>[class*=" icon-"]{background-image:url("http://static.maperial.localhost/images/bootstrap/glyphicons-halflings-white.png");}
 .icon-glass{background-position:0 0;}
 .icon-music{background-position:-24px 0;}
 .icon-search{background-position:-48px 0;}
@@ -832,11 +832,11 @@ a.label:hover,a.badge:hover{color:#ffffff;text-decoration:none;cursor:pointer;}
 .square{width:10px;height:10px;border:solid 1px;cursor:pointer;}
 .colorpicker{display:none;}
 .data-box{height:450px;padding:.2em;color:#888;font-size:14px;border:1px solid #000000;border-bottom-right-radius:4px;border-top-right-radius:4px;border-bottom-left-radius:4px;border-top-left-radius:4px;font-family:Verdana,Arial,sans-serif ;}
-.data-box .data-box-titlebar{padding:.4em 1em;position:relative;border:1px solid #ffffff;background:#000000 url(../../images/ui-lightness/ui-bg_highlight-soft_75_000000_1x100.png) 50% 50% repeat-x;border-bottom-right-radius:4px;border-top-right-radius:4px;border-bottom-left-radius:4px;border-top-left-radius:4px;color:#ffffff ;font-weight:bold;}
+.data-box .data-box-titlebar{padding:.4em 1em;position:relative;border:1px solid #ffffff;background:#000000 url('http://static.maperial.localhost/images/ui-lightness/ui-bg_highlight-soft_75_000000_1x100.png') 50% 50% repeat-x;border-bottom-right-radius:4px;border-top-right-radius:4px;border-bottom-left-radius:4px;border-top-left-radius:4px;color:#ffffff ;font-weight:bold;}
 .data-box .data-box-title{float:left;margin:.1em 16px .1em 0;}
 .data-box .data-box-content{height:390px;position:relative;border:0;padding:.5em 1em;background:none;overflow:auto;zoom:1;}
-.addDataButton{background:url("../../images/icons/add.png") 0 0 no-repeat;background-size:25px 23px;width:25px;height:23px;float:right;margin-right:-7px;}
-.addDataButton:hover{background:url("../../images/icons/add-hover.png") 0 0 no-repeat;background-size:25px 23px;}
+.addDataButton{background:url("http://static.maperial.localhost/images/icons/add.png") 0 0 no-repeat;background-size:25px 23px;width:25px;height:23px;float:right;margin-right:-7px;}
+.addDataButton:hover{background:url("http://static.maperial.localhost/images/icons/add-hover.png") 0 0 no-repeat;background-size:25px 23px;}
 .data-box-content-title{font-weight:bold;}
 .no-close .ui-dialog-titlebar-close{display:none;}
 .pointerCursor{cursor:pointer;cursor:hand;}
