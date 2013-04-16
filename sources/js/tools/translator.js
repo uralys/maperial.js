@@ -86,7 +86,9 @@ Translator.prototype.setLang = function(lang, dontStoreCookie) {
 
 Translator.prototype.load = function() {
    var me = this;
-   $.getJSON('http://maperial.com/assets/translations/'+this.lang, function(data) {
+   var staticURL = (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? 'http://static.maperial.localhost' : 'http://static.maperial.com';
+
+   $.getJSON(staticURL + '/translations/'+this.lang, function(data) {
       if(me.storeMessagesHere){
          Translator.messages = data;
          $(window).trigger(Translator.LANG_CHANGED);

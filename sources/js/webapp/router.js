@@ -16,6 +16,9 @@
 			//-------------------//
 			
 			home: App.HomeRouting,
+			more: App.MoreRouting,
+			usechrome: App.UsechromeRouting,
+			
 			tryscreen: App.TryscreenRouting,
 			dashboard: App.DashboardRouting,
 			
@@ -57,23 +60,35 @@
 	Router.openPage = function (router, page, customContext)
 	{
       console.log("openPage " + page);
-		if(page != "home" && page != "tryscreen" && !App.user.loggedIn)
+		if(page != "home" 
+	   && page != "more" 
+      && page != "usechrome" 
+		&& page != "tryscreen" 
+		&& !App.user.loggedIn)
 		{
 			console.log("Not connected ! Redirected to the home page");
 			router.transitionTo('home');
 		}
 		else{
-		   if(page != "home" && !App.maperial){
+		   if(page != "home" 
+	      && page != "more" 
+         && page != "usechrome" 
+	      && !App.maperial){
 		      console.log("Not loaded properly ! Redirected to the home page");
 		      router.transitionTo('home');
 		   }
 		   else{
-		      var context = Router.buildGlobalContext(customContext, page);
-		      App.Globals.set("currentPage", page);
-		      App.Globals.set("currentView", page);
-		      App.Globals.set("parentView", "root");
-		      
-		      router.get('applicationController').connectOutlet(page, context);
+
+	         if(navigator.appName == "Microsoft Internet Explorer")
+	            App.get('router').transitionTo('usechrome');
+	         else{
+	            var context = Router.buildGlobalContext(customContext, page);
+	            App.Globals.set("currentPage", page);
+	            App.Globals.set("currentView", page);
+	            App.Globals.set("parentView", "root");
+	            
+	            router.get('applicationController').connectOutlet(page, context);
+	         }
 		   }
 		}
 	}

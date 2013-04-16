@@ -76,6 +76,9 @@
     "Maps"				: "Maps",
     "ParisRoads"		: "Paris roads",
     "Cartotheque"		: "Maperial Library",
+
+    "WorksOnChrome"		: "Works on Chrome.",
+    "DownloadNow"		: "Download now !",
     
     "":""
 }

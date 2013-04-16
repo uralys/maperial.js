@@ -37,7 +37,6 @@
 
 		<mkdir dir="${dist}/css" />
 
-		<antcall target="home.min.css" />
 		<antcall target="maperial-js.min.css" />
 		<antcall target="maperial-webapp.min.css" />
 
@@ -45,46 +44,10 @@
 
 	<target name="build-js">
 		<mkdir dir="${dist}/js" />
-		<antcall target="home.min.js" />
 		<antcall target="maperial-builder.min.js" />
 		<antcall target="maperial-js.min.js" />
 		<antcall target="maperial-webapp.min.js" />
 	</target>
-
-	<target name="home.min.css">
-		<echo>------------------------------------------------------</echo>
-		<echo>Building...</echo>
-
-		<concat destfile="${tmpFile}">
-			<fileset file="sources/css/bootstrap.min.css" />
-			<fileset file="sources/css/libs/bootstrap-image-gallery.css" />
-			<fileset file="sources/css/libs/prettyPhoto.css" />
-			<fileset file="sources/css/maperial/global.css" />
-			<fileset file="sources/css/webapp/footer.css" />
-			<fileset file="sources/css/webapp/home.css" />
-		</concat>
-		<exec executable="java">
-			<arg value="-Xmx128m" />
-			<arg value="-jar" />
-			<arg value="compressor/yuicompressor/yuicompressor-2.4.8pre.jar" />
-			<arg value="${tmpFile}" />
-			<arg value="-o" />
-			<arg value="${dist}/css/home.min.localhost.css" />
-			<arg value="--charset" />
-			<arg value="utf-8" />
-			<arg value="--type" />
-			<arg value="css" />
-		</exec>
-
-		<delete>
-			<fileset file="${tmpFile}" />
-		</delete>
-
-		<echo>ready.</echo>
-		<echo>------------------------------------------------------</echo>
-
-	</target>
-
 
 	<target name="maperial-js.min.css">
 		<echo>------------------------------------------------------</echo>
@@ -178,42 +141,6 @@
 	</target>
 
 
-
-	<target name="home.min.js">
-		<echo>------------------------------------------------------</echo>
-		<echo>Building...</echo>
-
-		<exec executable="java">
-			<arg value="-jar" />
-			<arg value="compressor/googleCompiler/compiler.jar" />
-
-			<arg value="--js" />
-			<arg value="sources/js/tools/youtube-manager.js" />
-			<arg value="--js" />
-			<arg value="sources/js/libs/jquery.prettyPhoto.js" />
-			<arg value="--js" />
-			<arg value="sources/js/libs/handlebars.js" />
-			<arg value="--js" />
-			<arg value="sources/js/tools/translator.js" />
-			<arg value="--js" />
-			<arg value="sources/js/tools/common-handlebars.js" />
-			<arg value="--js" />
-			<arg value="sources/js/tools/home.js" />
-
-			<arg value="--js_output_file" />
-			<arg value="${dist}/js/home.min.localhost.js" />
-
-			<arg value="--language_in" />
-			<arg value="ECMASCRIPT5" />
-		</exec>
-
-		<echo>ready.</echo>
-		<echo>------------------------------------------------------</echo>
-
-	</target>
-
-
-
 	<target name="maperial-builder.min.js">
 		<echo>------------------------------------------------------</echo>
 		<echo>Building...</echo>
@@ -255,7 +182,7 @@
 			<arg value="--js" />
 			<arg value="sources/js/libs/jquery.selectbox-0.2.min.js" />
 			<arg value="--js" />
-			<arg value="sources/js/webapp/tools/utils.js" />
+			<arg value="sources/js/tools/utils.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/libs/gl-matrix-min.js" />
@@ -382,9 +309,9 @@
 			<arg value="sources/js/libs/jquery.prettyPhoto.js" />
 
 			<arg value="--js" />
-			<arg value="sources/js/webapp/tools/common-handlebars.js" />
+			<arg value="sources/js/tools/common-handlebars.js" />
 			<arg value="--js" />
-			<arg value="sources/js/webapp/tools/translator.js" />
+			<arg value="sources/js/tools/translator.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/auth/maperialAuth.js" />
@@ -394,9 +321,9 @@
 			<arg value="sources/js/extensions/upload/main.js" />
 
 			<arg value="--js" />
-			<arg value="sources/js/webapp/tools/utils.js" />
+			<arg value="sources/js/tools/utils.js" />
 			<arg value="--js" />
-			<arg value="sources/js/webapp/tools/youtube-manager.js" />
+			<arg value="sources/js/tools/youtube-manager.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/tools/home-mover.js" />
 			<arg value="--js" />
@@ -440,6 +367,10 @@
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/homeController.js" />
 			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/moreController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/usechromeController.js" />
+			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/dashboardController.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/tryscreenController.js" />
@@ -466,6 +397,10 @@
 			<arg value="sources/js/webapp/controllers/config/applicationView.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/homeView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/moreView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/usechromeView.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/dashboardView.js" />
 			<arg value="--js" />
