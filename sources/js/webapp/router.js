@@ -79,7 +79,9 @@
 		   }
 		   else{
 
-	         if(navigator.appName == "Microsoft Internet Explorer")
+	         if(page != "home" 
+	            && page != "more" 
+	            && navigator.appName == "Microsoft Internet Explorer")
 	            App.get('router').transitionTo('usechrome');
 	         else{
 	            var context = Router.buildGlobalContext(customContext, page);
