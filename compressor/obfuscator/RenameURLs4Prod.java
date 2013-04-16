@@ -22,11 +22,9 @@ public class RenameURLs4Prod {
 
 		// =================================================================================//
 
-		rename("static/css/home.min.localhost.css", "static/css/home.min.css", urls);
 		rename("static/css/maperial-js.min.localhost.css", "static/css/maperial-js.min.css", urls);
 		rename("static/css/maperial-webapp.min.localhost.css", "static/css/maperial-webapp.min.css", urls);
 		
-		rename("static/js/home.min.localhost.js", "static/js/home.min.js", urls);
 		rename("static/js/maperial-webapp.min.localhost.js", "static/js/maperial-webapp.min.js", urls);
 		rename("static/js/maperial-js.min.localhost.js", "static/js/maperial-js.min.js", urls);
 		rename("static/js/maperial-builder.min.localhost.js", "static/js/maperial-builder.min.js", urls);
