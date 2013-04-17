@@ -90,20 +90,6 @@ LayersManager.prototype.switchImagesTo = function(imagesSrc) {
    }
 }
 
-//------------------------------------------------------------------//
-
-LayersManager.prototype.useDefaultLayers = function() {
-
-   if(this.maperial.config.map.layersCreation){
-      console.log("  using no layer...");
-   }
-   else{
-      console.log("  using default layers...");
-      this.maperial.config.layers.push(LayersManager.getOSMLayerConfig());
-   }
-   
-}
-
 //=======================================================================================//
 
 /**

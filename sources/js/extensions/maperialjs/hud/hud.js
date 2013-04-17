@@ -197,9 +197,6 @@ HUD.prototype.getMargin = function (property) {
 
 HUD.prototype.placeElements = function () {
    
-   console.log("placeElements");
-   odump(this.maperial.config.hud.elements);
-   
    for (element in this.maperial.config.hud.elements) {
 
       var position = HUD.positions[element];

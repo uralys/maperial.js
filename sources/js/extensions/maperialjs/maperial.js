@@ -69,6 +69,7 @@ Maperial.prototype.restart = function(){
 Maperial.prototype.apply = function(config){
    console.log("MaperialJS applies ", config);
    this.config = config;
+   this.checkConfig();
    this.restart();
 }
 
@@ -109,10 +110,6 @@ Maperial.prototype.reset = function(){
 Maperial.prototype.load = function() {
 
    console.log("Starting maperialJS build...");
-
-   //--------------------------//
-
-   this.checkConfig();
 
    //--------------------------//
 
@@ -161,8 +158,15 @@ Maperial.prototype.checkConfig = function() {
    //--------------------------//
    // checking layer config
 
-   if(this.config.layers.length == 0)
-      this.layersManager.useDefaultLayers();
+   if(this.config.layers.length == 0){
+      if(this.config.map.layersCreation){
+         console.log("  using no layer...");
+      }
+      else{
+         console.log("  using default layers...");
+         this.config.layers.push(LayersManager.getOSMLayerConfig());
+      }      
+   }
    else{
       console.log("  using custom layers...");
    }
