@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class RenameURLs4Prod {
@@ -15,10 +15,11 @@ public class RenameURLs4Prod {
 
 		// =================================================================================//
 
-		Map<String, String> urls = new HashMap<String, String>();
+		Map<String, String> urls = new LinkedHashMap<String, String>();
 
-		urls.put("http://static.maperial.localhost",
-		      "http://static.maperial.com");
+		urls.put("http://static.maperial.localhost", "http://static.maperial.com");
+		urls.put("min.localhost.js", "o.js");
+		urls.put("min.localhost.css", "min.css");
 
 		// =================================================================================//
 

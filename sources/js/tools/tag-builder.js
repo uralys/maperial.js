@@ -35,7 +35,7 @@ MaperialBuilder.prototype.loadTags = function(){
 MaperialBuilder.prototype.build = function(map){
    var builder = this;
    $.ajax({
-      url : "http://www.maperial.com/api/map/"+map.uid,
+      url : "http://api.maperial.com/api/map/"+map.uid,
       dataType : 'json',
 
       success : function(config) {
@@ -46,14 +46,14 @@ MaperialBuilder.prototype.build = function(map){
 
 //=================================================================================//
 
-document.write('<' + 'link href="/assets/css/min/maperial.min.css" type="text/css" rel="stylesheet"><' + '/>');
+document.write('<' + 'link href="http://static.maperial.localhost/css/maperial-js.min.localhost.css" type="text/css" rel="stylesheet"><' + '/>');
 
 //=================================================================================//
 
 window.scriptLoader.getScripts([
      "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js",
      "http://code.jquery.com/ui/1.9.2/jquery-ui.js",
-     "/js/min/maperial-js.o.js",
+     "http://static.maperial.localhost/js/maperial-js.min.localhost.js",
      "https://maps.googleapis.com/maps/api/js?key=AIzaSyATwlkawyHykpfJF24jcPgL_b8kK8zO2Bc&sensor=false&libraries=places,panoramio",
      ], 
      function(){

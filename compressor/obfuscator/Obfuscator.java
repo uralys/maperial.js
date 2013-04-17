@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -16,8 +16,8 @@ public class Obfuscator {
 
 		//=================================================================================//
 
-		Map<String, String> varsTag = new HashMap<String, String>();
-		Map<String, String> varsMaperialJS = new HashMap<String, String>();
+		Map<String, String> varsTag = new LinkedHashMap<String, String>();
+		Map<String, String> varsMaperialJS = new LinkedHashMap<String, String>();
 
 		varsTag.put("ScriptLoader", "a");
 		varsTag.put("MaperialBuilder", "x");
@@ -83,6 +83,7 @@ public class Obfuscator {
 	}
 	
 	private static void replaceAll(String input, String output, Map<String, String> vars) throws IOException {
+
 		BufferedReader br = null;
 		File f = new File(output);
 		FileWriter fw = new FileWriter(f);
@@ -95,6 +96,7 @@ public class Obfuscator {
 			br = new BufferedReader(new FileReader(input));
 
 			while ((sCurrentLine = br.readLine()) != null) {
+				
 				for (String k : vars.keySet()) {
 					sCurrentLine = sCurrentLine.replaceAll(k, vars.get(k));
 				}
