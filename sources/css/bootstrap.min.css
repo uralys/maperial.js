@@ -95,7 +95,7 @@ a:hover{color:#0d0d0d;text-decoration:underline;}
 .row-fluid .offset2:first-child{margin-left:17.02127659574468%;*margin-left:16.914893617021278%;}
 .row-fluid .offset1{margin-left:10.638297872340425%;*margin-left:10.53191489361702%;}
 .row-fluid .offset1:first-child{margin-left:8.51063829787234%;*margin-left:8.404255319148938%;}
-[class*="span"].hide,.row-fluid [class*="span"].hide{display:none;}
+[class*="span"].hide,.row-fluid [class*="span"].hide{display:none!important;}
 [class*="span"].pull-right,.row-fluid [class*="span"].pull-right{float:right;}
 .container{margin-right:auto;margin-left:auto;*zoom:1;}.container:before,.container:after{display:table;content:"";line-height:0;}
 .container:after{clear:both;}
@@ -254,7 +254,7 @@ input.search-query{padding-right:14px;padding-right:4px \9;padding-left:14px;pad
 .form-search .input-prepend .search-query{-webkit-border-radius:0 14px 14px 0;-moz-border-radius:0 14px 14px 0;border-radius:0 14px 14px 0;}
 .form-search .input-prepend .btn{-webkit-border-radius:14px 0 0 14px;-moz-border-radius:14px 0 0 14px;border-radius:14px 0 0 14px;}
 .form-search input,.form-inline input,.form-horizontal input,.form-search textarea,.form-inline textarea,.form-horizontal textarea,.form-search select,.form-inline select,.form-horizontal select,.form-search .help-inline,.form-inline .help-inline,.form-horizontal .help-inline,.form-search .uneditable-input,.form-inline .uneditable-input,.form-horizontal .uneditable-input,.form-search .input-prepend,.form-inline .input-prepend,.form-horizontal .input-prepend,.form-search .input-append,.form-inline .input-append,.form-horizontal .input-append{display:inline-block;*display:inline;*zoom:1;margin-bottom:0;vertical-align:middle;}
-.form-search .hide,.form-inline .hide,.form-horizontal .hide{display:none;}
+.form-search .hide,.form-inline .hide,.form-horizontal .hide{display:none!important;}
 .form-search label,.form-inline label,.form-search .btn-group,.form-inline .btn-group{display:inline-block;}
 .form-search .input-append,.form-inline .input-append,.form-search .input-prepend,.form-inline .input-prepend{margin-bottom:0;}
 .form-search .radio,.form-search .checkbox,.form-inline .radio,.form-inline .checkbox{padding-left:0;margin-bottom:0;vertical-align:middle;}
@@ -852,7 +852,7 @@ a.label:hover,a.badge:hover{color:#ffffff;text-decoration:none;cursor:pointer;}
 .marketing{cursor:default;}
 .pull-right{float:right;}
 .pull-left{float:left;}
-.hide{display:none;}
-.show{display:block;}
+.hide{display:none!important;}
+.show{display:block!important;}
 .invisible{visibility:hidden;}
 .affix{position:fixed;}

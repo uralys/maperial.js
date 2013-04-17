@@ -369,6 +369,12 @@
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/moreController.js" />
 			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/teamController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/creditsController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/cartothequeController.js" />
+			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/usechromeController.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/dashboardController.js" />
@@ -399,6 +405,12 @@
 			<arg value="sources/js/webapp/controllers/config/homeView.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/moreView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/teamView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/creditsView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/cartothequeView.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/usechromeView.js" />
 			<arg value="--js" />

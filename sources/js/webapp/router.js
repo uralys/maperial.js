@@ -8,32 +8,41 @@
 			//-------------------------------------------------------//
 			// Common actions to all views
 			
-			openHome: Ember.Route.transitionTo('home'),
-			openDashboard: Ember.Route.transitionTo('dashboard'),
+			openHome       : Ember.Route.transitionTo('home'),
+			openTeam       : Ember.Route.transitionTo('team'),
+			openCredits    : Ember.Route.transitionTo('credits'),
+			openDemos      : Ember.Route.transitionTo('cartotheque'),
+			openDashboard  : Ember.Route.transitionTo('dashboard'),
+
+			translateEn    : function(){ App.translator.setLang('en') },
+			translateFr    : function(){ App.translator.setLang('fr') },
 			
 			//-------------------------------------------------------//
 			// Routes used when calling Ember.Route.transitionTo
 			//-------------------//
 			
-			home: App.HomeRouting,
-			more: App.MoreRouting,
-			usechrome: App.UsechromeRouting,
+			home           : App.HomeRouting,
+			more           : App.MoreRouting,
+			usechrome      : App.UsechromeRouting,
+			team           : App.TeamRouting,
+			credits        : App.CreditsRouting,
+			cartotheque    : App.CartothequeRouting,
 			
-			tryscreen: App.TryscreenRouting,
-			dashboard: App.DashboardRouting,
+			tryscreen      : App.TryscreenRouting,
+			dashboard      : App.DashboardRouting,
 			
-			styles: App.StylesRouting,
-			styleEditor: App.StyleEditorRouting,
+			styles         : App.StylesRouting,
+			styleEditor    : App.StyleEditorRouting,
 			
-			colorbars: App.ColorbarsRouting,
-			colorbarEditor: App.ColorbarEditorRouting,
+			colorbars      : App.ColorbarsRouting,
+			colorbarEditor : App.ColorbarEditorRouting,
 
-			datasets: App.DatasetsRouting,
-			fonts: App.FontsRouting,
-			icons: App.IconsRouting,
+			datasets       : App.DatasetsRouting,
+			fonts          : App.FontsRouting,
+			icons          : App.IconsRouting,
 
-			viewMap: App.ViewMapRouting,
-			mapCreation: App.MapCreationRouting
+			viewMap        : App.ViewMapRouting,
+			mapCreation    : App.MapCreationRouting
 		})
 	})
 	
@@ -59,10 +68,10 @@
 	 */
 	Router.openPage = function (router, page, customContext)
 	{
+	   var webappPage = Router.isWebappPage(page);
+	   
       console.log("openPage " + page);
-		if(page != "home" 
-	   && page != "more" 
-      && page != "usechrome" 
+		if(webappPage
 		&& page != "tryscreen" 
 		&& !App.user.loggedIn)
 		{
@@ -70,27 +79,25 @@
 			router.transitionTo('home');
 		}
 		else{
-		   if(page != "home" 
-	      && page != "more" 
-         && page != "usechrome" 
+
+         if(webappPage  
+            && navigator.appName == "Microsoft Internet Explorer"){
+            App.get('router').transitionTo('usechrome');
+            return;
+         }
+         
+		   if(webappPage  
 	      && !App.maperial){
 		      console.log("Not loaded properly ! Redirected to the home page");
 		      router.transitionTo('home');
 		   }
 		   else{
-
-	         if(page != "home" 
-	            && page != "more" 
-	            && navigator.appName == "Microsoft Internet Explorer")
-	            App.get('router').transitionTo('usechrome');
-	         else{
-	            var context = Router.buildGlobalContext(customContext, page);
-	            App.Globals.set("currentPage", page);
-	            App.Globals.set("currentView", page);
-	            App.Globals.set("parentView", "root");
-	            
-	            router.get('applicationController').connectOutlet(page, context);
-	         }
+            var context = Router.buildGlobalContext(customContext, page);
+            App.Globals.set("currentPage", page);
+            App.Globals.set("currentView", page);
+            App.Globals.set("parentView", "root");
+            
+            router.get('applicationController').connectOutlet(page, context);
 		   }
 		}
 	}
@@ -135,6 +142,22 @@
       return context;
    }
 
+   //-----------------------------------------------------------------------------------------//
+
+   Router.isWebappPage = function(page){
+      console.log("is w " + page)
+      var r = 
+      page != "home" && 
+      page != "more" && 
+      page != "team" && 
+      page != "credits" && 
+      page != "cartotheque" && 
+      page != "usechrome";
+      
+      console.log(r)
+      return  r;
+   }
+   
    //-----------------------------------------------------------------------------------------//
 
 	App.Router = Router;

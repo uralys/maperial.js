@@ -5,7 +5,7 @@
 		templateName: 'usechrome',
 		didInsertElement: function(){
 			App.UsechromeController.renderUI();
-         App.placeFooter();
+         App.placeFooter(true);
 		},
 		willDestroyElement: function(){
 			App.UsechromeController.cleanUI();

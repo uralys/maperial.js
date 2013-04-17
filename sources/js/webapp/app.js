@@ -31,9 +31,11 @@
 
       if($("#webappDiv").height() < $(window).height() || forceFix){
          $("#footerClassic").css({ position : "fixed" });
+         $("#footerHome").css({ position : "fixed" });
       }
       else{
          $("#footerClassic").css({ position : "relative" });
+         $("#footerHome").css({ position : "relative" });
       }
    }
 

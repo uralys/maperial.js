@@ -11,10 +11,10 @@
     "Everywhere"		: "GIS in the Cloud",
 
     "Choose"			: "Choose",
-    "chooseText1"		: "libraries",
-    "chooseText2"		: "or your own styles",
-    "chooseText3"		: "(Google, Mapquest, OSM)",
-    "chooseText4"		: "A basemap from classic",
+    "chooseText1"		: "A basemap from classic",
+    "chooseText2"		: "(Google, Mapquest, OSM)",
+    "chooseText3"		: "libraries",
+    "chooseText4"		: "or your own styles",
 
     "Upload"			: "Upload",
     "uploadText"		: "Use your own georeferenced data",
@@ -72,6 +72,7 @@
     "AboutUs"			: "About us",
     "RecentPosts"		: "Recent blog posts",
     "Team"				: "Team",
+    "Credits"			: "Credits",
     "Blog"				: "Blog",
     "Maps"				: "Maps",
     "ParisRoads"		: "Paris roads",
