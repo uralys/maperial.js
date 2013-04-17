@@ -302,7 +302,11 @@
 
 /*--------------------------------*/
 .marginbottom {
-	margin-bottom: 20px;
+	margin-bottom: 20px!important;
+}
+
+.hugemarginbottom {
+	margin-bottom: 65px!important;
 }
 
 .error {
@@ -329,18 +333,16 @@
 	cursor: pointer;
 	transition: font-size 0.2s;
 	-webkit-transition: font-size 0.2s;
-}
-
-.hint {
-	text-decoration: none;
+	text-decoration: none!important;
+	color: #000;
 	font-weight: bold;
-	cursor: pointer;
 }
 
 .link:hover {
 	font-size:15;
 	transition: font-size 0s;
 	-webkit-transition: font-size 0s;
+	color: #27a200;
 }
 /*--------------------------------*/
 #header h1 {

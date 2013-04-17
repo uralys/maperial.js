@@ -145,17 +145,13 @@
    //-----------------------------------------------------------------------------------------//
 
    Router.isWebappPage = function(page){
-      console.log("is w " + page)
-      var r = 
+      return 
       page != "home" && 
       page != "more" && 
       page != "team" && 
       page != "credits" && 
       page != "cartotheque" && 
       page != "usechrome";
-      
-      console.log(r)
-      return  r;
    }
    
    //-----------------------------------------------------------------------------------------//

@@ -12,6 +12,7 @@
 		<echo>	build-css</echo>
 		<echo>	build-js</echo>
 		<echo>	build-shaders</echo>
+		<echo>	copy-assets</echo>
 		<echo>	push-to-master</echo>
 	</target>
 
@@ -27,14 +28,12 @@
 
 		<antcall target="build-shaders" />
 
-		<copy todir="${dist}">
-			<fileset dir="assets" />
-		</copy>
-
+		<antcall target="copy-assets" />
 	</target>
 
 	<target name="build-css">
 
+		<delete dir="${dist}/css" />
 		<mkdir dir="${dist}/css" />
 
 		<antcall target="maperial-js.min.css" />
@@ -43,12 +42,22 @@
 	</target>
 
 	<target name="build-js">
+		<delete dir="${dist}/js" />
 		<mkdir dir="${dist}/js" />
 		<antcall target="maperial-builder.min.js" />
 		<antcall target="maperial-js.min.js" />
 		<antcall target="maperial-webapp.min.js" />
 	</target>
 
+	<target name="copy-assets">
+		<delete dir="${dist}/images" />
+		<delete dir="${dist}/style" />
+		<delete dir="${dist}/translations" />
+		<copy todir="${dist}">
+			<fileset dir="assets" />
+		</copy>
+	</target>
+	
 	<target name="maperial-js.min.css">
 		<echo>------------------------------------------------------</echo>
 		<echo>Building...</echo>

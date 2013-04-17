@@ -81,5 +81,15 @@
     "WorksOnChrome"		: "Works on Chrome.",
     "DownloadNow"		: "Download now !",
     
+    "cofounder"			: "Co-founder",
+    "djoulText"			: "Julien has been a scientific programmer on digital images, 3D and GPGPU for more than 7 years. This skill mix, and his work with scientists are the source of Maperial.",
+    "djoulText2"		: "Today, he's leading the server-side technologies development and the client-side visualization.",
+    "chrisText"			: "Chris worked for several years as software developer in a startup, then as freelance. Later he started his entrepreneurship creating web-browser ",
+    "chrisText2"		: "games.",
+    "chrisText3"		: "He then co-founded a Facebook",
+    "chrisText4"   		: "service",
+    "chrisText5"		: "just before joining Maperial. ",
+    "chrisText6"		: "Today he uses this web expertise to build the Maperial client-side.",
+    
     "":""
 }

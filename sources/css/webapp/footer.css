@@ -67,6 +67,15 @@
 	margin-bottom: 5px;
 }
 
+.footerContent .link {
+	color: #ccc;
+	font-weight: normal;
+}
+
+.footerContent .link:hover {
+	color: #27a200;
+}
+
 .footerEnd {
 	text-align: center;
 	color: #777;
@@ -84,6 +93,7 @@
 .SocialIconsWidget ul {
 	margin: 0;
 	padding: 0;	
+	float: right;
 }
 .SocialIconsWidget ul li {
 	list-style-type: none;

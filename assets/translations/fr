@@ -80,5 +80,15 @@
     "WorksOnChrome"		: "Fonctionne avec Chrome.",
     "DownloadNow"		: "Télécharger maintenant !",
 
+    "cofounder"			: "Co-fondateur",
+    "djoulText"			: "Julien travaille dans les domaines de l'images, de la 3D et du GPGPU pour l'informatique scientifique depuis plus de 7 ans. C'est l'alliance de ces domaines d'activités, et le contact avec des milieux scientifiques qui sont à l'origine de Maperial.",
+    "djoulText2"		: "Il est aujourd'hui en charge du développement des technologies serveur, et de la visualisation clients.",
+    "chrisText"			: "Après quelques années en tant que développeur dans une startup puis en indépendant, Chris s'est lancé dans l'entreprenariat en developpant des",
+    "chrisText2"		: "jeux",
+    "chrisText3"		: "pour navigateurs. Il est ensuite devenu co-fondateur d'un",
+    "chrisText4"   		: "service",
+    "chrisText5"		: "Facebook peu avant de rejoindre Maperial.",
+    "chrisText6"		: "Il apporte aujourd'hui son expertise dans l'univers du web pour construire la partie cliente/web de l'outil.",
+
     "":""
 }

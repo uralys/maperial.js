@@ -5,7 +5,7 @@
 		templateName: 'team',
 		didInsertElement: function(){
 			App.TeamController.renderUI();
-         App.placeFooter(true);
+         App.placeFooter();
 		},
 		willDestroyElement: function(){
 			App.TeamController.cleanUI();
