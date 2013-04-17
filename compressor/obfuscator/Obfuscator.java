@@ -19,54 +19,54 @@ public class Obfuscator {
 		Map<String, String> varsTag = new LinkedHashMap<String, String>();
 		Map<String, String> varsMaperialJS = new LinkedHashMap<String, String>();
 
-		varsTag.put("ScriptLoader", "a");
-		varsTag.put("MaperialBuilder", "x");
+		varsTag.put("ScriptLoader", "_a_");
+		varsTag.put("MaperialBuilder", "_x_");
 
-		varsTag.put("scriptCache", "t");
-		varsTag.put("scriptsRemaining", "v");
-		varsTag.put("callbackFunction", "h");
-		varsTag.put("getScripts", "r");
-		varsTag.put("loadScript", "b");
-		varsTag.put("onload", "g");
-		varsTag.put("loadNextScript", "c");
-		varsTag.put("loadTags", "n");
-		varsTag.put("build", "m");
+		varsTag.put("scriptCache", "_t_");
+		varsTag.put("scriptsRemaining", "_v_");
+		varsTag.put("callbackFunction", "_h_");
+		varsTag.put("getScripts", "_r_");
+		varsTag.put("loadScript", "_b_");
+		varsTag.put("onload", "_g_");
+		varsTag.put("loadNextScript", "_c_");
+		varsTag.put("loadTags", "_n_");
+		varsTag.put("build", "_m_");
 
 		varsTag.put("scriptLoader", "_ert");
 		varsTag.put("maperialBuilder", "_uyt");
 
-		varsMaperialJS.put("MapRenderer", "_a");
-		varsMaperialJS.put("MaperialEvents", "_b");
-		varsMaperialJS.put("MapParameters", "_c");
-		varsMaperialJS.put("MapMouse", "_d");
-		varsMaperialJS.put("MapMover", "_e");
-		varsMaperialJS.put("TemplateBuilder", "_f");
-		varsMaperialJS.put("HUD", "_g");
-		varsMaperialJS.put("StylesManager", "_h");
-		varsMaperialJS.put("stylesManager", "__i");
-		varsMaperialJS.put("LayersManager", "_i");
-		varsMaperialJS.put("layersManager", "__h");
-		varsMaperialJS.put("BoundingBoxDrawer", "_j");
-		varsMaperialJS.put("ColorTools", "_k");
-		varsMaperialJS.put("StyleMenu", "_l");
+		varsMaperialJS.put("MapRenderer", "__a__");
+		varsMaperialJS.put("MaperialEvents", "__b_");
+		varsMaperialJS.put("MapParameters", "__c_");
+		varsMaperialJS.put("MapMouse", "__d_");
+		varsMaperialJS.put("MapMover", "__e_");
+		varsMaperialJS.put("TemplateBuilder", "__f_");
+		varsMaperialJS.put("HUD", "__g_");
+		varsMaperialJS.put("StylesManager", "__h_");
+		varsMaperialJS.put("stylesManager", "__i_");
+		varsMaperialJS.put("LayersManager", "___i_");
+		varsMaperialJS.put("layersManager", "___h_");
+		varsMaperialJS.put("BoundingBoxDrawer", "_j_");
+		varsMaperialJS.put("ColorTools", "_k_");
+		varsMaperialJS.put("StyleMenu", "_l_");
 		
-		varsMaperialJS.put("Maperial", "_n");
-		varsTag.put("Maperial", "_n");
+		varsMaperialJS.put("Maperial", "__n_");
+		varsTag.put("Maperial", "__n_");
 
-		varsMaperialJS.put("ExtensionColorbar", "_m");
+		varsMaperialJS.put("ExtensionColorbar", "__m_");
 //		varsMaperialJS.put("Symbolizer", "___o_"); ->> marche pas..?
-		varsMaperialJS.put("CoordinateSystem", "_p");
-		varsMaperialJS.put("GeoLoc", "_q");
-		varsMaperialJS.put("HashMap", "_r");
-		varsMaperialJS.put("RGBColor", "_s");
+		varsMaperialJS.put("CoordinateSystem", "__p_");
+		varsMaperialJS.put("GeoLoc", "__q_");
+		varsMaperialJS.put("HashMap", "__r_");
+		varsMaperialJS.put("RGBColor", "__s_");
 
-		varsMaperialJS.put("ImageLayer", "_t");
-		varsMaperialJS.put("RasterLayer", "_u");
-		varsMaperialJS.put("Tile", "_v");
-		varsMaperialJS.put("GLTools", "_w");
-		varsMaperialJS.put("VectorialLayer", "_x");
-		varsMaperialJS.put("RenderLine", "_y");
-		varsMaperialJS.put("TileRenderer", "_z");
+		varsMaperialJS.put("ImageLayer", "__t_");
+		varsMaperialJS.put("RasterLayer", "__u_");
+		varsMaperialJS.put("Tile", "__v_");
+		varsMaperialJS.put("GLTools", "__w_");
+		varsMaperialJS.put("VectorialLayer", "__x_");
+		varsMaperialJS.put("RenderLine", "__y_");
+		varsMaperialJS.put("TileRenderer", "__z_");
 
 //		varsMaperialJS.put("context", "_R");
 //		varsMaperialJS.put("config", "_7");
