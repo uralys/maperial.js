@@ -12,6 +12,13 @@ import java.util.Map;
 
 public class Obfuscator {
 
+	//=================================================================================//
+
+	private static final String STOP = "---STOP-OBFUSCATION";
+	private static final String GO 	= "---GO-OBFUSCATION";
+
+	//=================================================================================//
+
 	public static void main(String[] args) throws IOException{
 
 		//=================================================================================//
@@ -92,15 +99,24 @@ public class Obfuscator {
 		try {
 
 			String sCurrentLine;
+			Boolean pauseObfucation = false;
 
 			br = new BufferedReader(new FileReader(input));
-
+			
 			while ((sCurrentLine = br.readLine()) != null) {
 				
-				for (String k : vars.keySet()) {
-					sCurrentLine = sCurrentLine.replaceAll(k, vars.get(k));
-				}
+				if(sCurrentLine.contains(Obfuscator.STOP))
+					pauseObfucation = true;
 
+				if(sCurrentLine.contains(Obfuscator.GO))
+					pauseObfucation = false;
+				
+				if(!pauseObfucation){
+					for (String k : vars.keySet()) {
+						sCurrentLine = sCurrentLine.replaceAll(k, vars.get(k));
+					}
+				}
+					
 				bw.write(sCurrentLine);
 				bw.write("\n");
 			}
