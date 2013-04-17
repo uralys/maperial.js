@@ -84,7 +84,7 @@
 
       var maperialJSScripts = "";
       
-      // ---STOP-OBFUSCATION
+      /** @preserve ---STOP-OBFUSCATION */
       if(window.location.hostname == "maperial.localhost.deploy"){ 
          scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.localhost.js"); // PROD only
       }
@@ -92,7 +92,7 @@
       if(window.location.hostname == "maperial.com"){ 
          scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.js"); // PROD only
       }
-      // ---GO-OBFUSCATION
+      /** @preserve ---GO-OBFUSCATION */
 
       scripts.push("http://fabricjs.com/lib/fabric.js");
 

@@ -105,10 +105,13 @@ public class Obfuscator {
 			
 			while ((sCurrentLine = br.readLine()) != null) {
 				
-				if(sCurrentLine.contains(Obfuscator.STOP))
+				if(sCurrentLine.contains(Obfuscator.STOP)){
+					System.out.println("opause");
 					pauseObfucation = true;
+				}
 
 				if(sCurrentLine.contains(Obfuscator.GO))
+					System.out.println("ogo");
 					pauseObfucation = false;
 				
 				if(!pauseObfucation){
