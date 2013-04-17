@@ -68,8 +68,8 @@ public class Obfuscator {
 		varsMaperialJS.put("RenderLine", "_y");
 		varsMaperialJS.put("TileRenderer", "_z");
 
-		varsMaperialJS.put("context", "_R");
-		varsMaperialJS.put("config", "_7");
+//		varsMaperialJS.put("context", "_R");
+//		varsMaperialJS.put("config", "_7");
 //		varsMaperialJS.put("parameters", "_7_"); --> attention il y a un truc qui sappelle parameters dans une des libs
 
 		//=================================================================================//
