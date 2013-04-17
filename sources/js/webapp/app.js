@@ -84,15 +84,13 @@
 
       var maperialJSScripts = "";
       
-      /** @preserve ---STOP-OBFUSCATION */
-      if(window.location.hostname == "maperial.localhost.deploy"){ 
-         scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.localhost.js"); // PROD only
-      }
-      
-      if(window.location.hostname == "maperial.com"){ 
-         scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.js"); // PROD only
-      }
-      /** @preserve ---GO-OBFUSCATION */
+      /**
+       *  @preserve ---STOP-OBFUSCATION 
+       */
+      scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.localhost.js"); 
+      /**
+       *  @preserve ---GO-OBFUSCATION 
+       */
 
       scripts.push("http://fabricjs.com/lib/fabric.js");
 
