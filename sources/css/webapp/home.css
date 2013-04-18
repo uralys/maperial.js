@@ -159,6 +159,12 @@
 	margin-right: 30px;
 }
 
+.creditlink {
+	margin-bottom: 15px;
+	font-size: 16px;
+	font-weight: normal;
+}
+
 /*--------------------------------*/
 #playImage {
 	margin-top: -245px;
