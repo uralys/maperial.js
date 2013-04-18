@@ -43,7 +43,7 @@
     "ToolForYouText1"	: "Nous sommes là pour vous écouter et comprendre votre besoin",
     "ToolForYouText2"	: "Notre service répond à ce besoin : nous construisons les outils qu'il vous faut, travaillons avec tous vos types de données, et distribuons vos cartes de la manière qu'il vous convient le mieux",
     "ToolForYouText3"	: "Vous aurez notre support pour apprendre à manipuler l'outil et nous sommes là pour répondre à vos questions",
-    "ToolForYouText4"	: "Contactez nous dès aujourd'hui pour étudier votre cas : ",
+    "ToolForYouText4"	: "Contactez nous dès aujourd'hui pour étudier votre cas",
 
     "Customize"			: "Personnalisez",
     "CustomizeText1"	: "Choisissez tout des éléments de vos cartes : couleurs, formes, épaisseurs, transparence, bordures, polices...",
@@ -72,6 +72,7 @@
     "RecentPosts"		: "Posts récents",
     "Team"				: "L'équipe",
     "Credits"			: "Crédits",
+    "Jobs"				: "Recrutement",
     "Blog"				: "Le Blog",
     "Maps"				: "Cartes",
     "ParisRoads"		: "Routes à Paris",
@@ -90,5 +91,10 @@
     "chrisText5"		: "Facebook peu avant de rejoindre Maperial.",
     "chrisText6"		: "Il apporte aujourd'hui son expertise dans l'univers du web pour construire la partie cliente/web de l'outil.",
 
+    "JobsText"			: "@Maperial nous travaillons en méthode Agile avec les dernières technologies Web, pour proposer un outil à la fois moderne, souple et puissant.",
+    "JobsText2"			: "Vous êtes experts jQuery, EmberJS, Play framework ou Python et n'avez pas peur de ne plus dormir la nuit ? Votre profil pourrait nous intéresser.",
+    
+    "CreditsTitle"		: "Nos outils",
+    
     "":""
 }

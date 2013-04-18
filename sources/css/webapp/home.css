@@ -154,6 +154,11 @@
 
 .gallery li { display: inline; }
 
+.creditimage {
+	margin-left: 30px;
+	margin-right: 30px;
+}
+
 /*--------------------------------*/
 #playImage {
 	margin-top: -245px;

@@ -39,7 +39,7 @@
             $("#footerClassic").css({ position : "relative" });
             $("#footerHome").css({ position : "relative" });
          }
-      }, 200);
+      }, 10);
    }
 
    //------------------------------------------------------//

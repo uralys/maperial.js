@@ -11,6 +11,7 @@
 			openHome       : Ember.Route.transitionTo('home'),
 			openTeam       : Ember.Route.transitionTo('team'),
 			openCredits    : Ember.Route.transitionTo('credits'),
+			openJobs       : Ember.Route.transitionTo('jobs'),
 			openDemos      : Ember.Route.transitionTo('cartotheque'),
 			openDashboard  : Ember.Route.transitionTo('dashboard'),
 
@@ -30,6 +31,7 @@
 			usechrome      : App.UsechromeRouting,
 			team           : App.TeamRouting,
 			credits        : App.CreditsRouting,
+			jobs           : App.JobsRouting,
 			cartotheque    : App.CartothequeRouting,
 			
 			tryscreen      : App.TryscreenRouting,
@@ -151,6 +153,7 @@
             page != "more" && 
             page != "team" && 
             page != "credits" && 
+            page != "jobs" && 
             page != "cartotheque" && 
             page != "usechrome");
    }

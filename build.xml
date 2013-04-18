@@ -379,6 +379,8 @@
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/creditsController.js" />
 			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/jobsController.js" />
+			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/cartothequeController.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/usechromeController.js" />
@@ -415,6 +417,8 @@
 			<arg value="sources/js/webapp/controllers/config/teamView.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/creditsView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/jobsView.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/cartothequeView.js" />
 			<arg value="--js" />
@@ -581,5 +585,6 @@
 	<!-- DEV ONLY -->
 	<target name="copy-bootstrap">
 		<copy file="/Users/mad/Projects/Maperial/MaperialWebapp/target/scala-2.10/resource_managed/main/public/stylesheets/bootstrap/bootstrap.min.css" todir="sources/css/" />
+		<antcall target="copy-assets"/>
 	</target>
 </project>

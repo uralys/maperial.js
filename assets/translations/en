@@ -44,7 +44,7 @@
     "ToolForYouText1"	: "We are here to listen to you and understand your need.",
     "ToolForYouText2"	: "We make the service suit to your need : build your maps with the tools you want, upload all the data you want to analyse, share the results the way your prefer.",
     "ToolForYouText3"	: "We offer support to help you using the tool and to answer your questions.",
-    "ToolForYouText4"	: "Don't wait anymore to contact us and discover how way me work together : ",
+    "ToolForYouText4"	: "Don't wait anymore to contact us and discover how way me work together",
 
     "Customize"			: "Customize",
     "CustomizeText1"	: "Choose everything in the style : colors, lines, opacity, borders, fonts...",
@@ -73,6 +73,7 @@
     "RecentPosts"		: "Recent blog posts",
     "Team"				: "Team",
     "Credits"			: "Credits",
+    "Jobs"				: "Jobs",
     "Blog"				: "Blog",
     "Maps"				: "Maps",
     "ParisRoads"		: "Paris roads",
@@ -90,6 +91,11 @@
     "chrisText4"   		: "service",
     "chrisText5"		: "just before joining Maperial. ",
     "chrisText6"		: "Today he uses this web expertise to build the Maperial client-side.",
+
+    "JobsText"			: "@Maperial we use agile development methods with latest web technologies, to build a modern, flexible and powerful tool.",
+    "JobsText2"			: "You are expert with jQuery, EmberJS, Play framework or Python and are not afraid not to sleep anymore ? Your profile might be interesting.",
+
+    "CreditsTitle"		: "Maperial's tools",
     
     "":""
 }
