@@ -32,15 +32,10 @@ Handlebars.registerHelper('email', function(options) {
 
 //---------------------------------------------------------------------------------------//
 
-Handlebars.registerHelper('T', function(key) {
-   try{
-      return Translator.messages[key]; 
-   }
-   catch(e){
-      if(!Translator.messages)
-         console.log("Translator missconfig");
-      else
-         console.log("key not found : " + key);
-      return key; 
-   }
+/**
+ * HTML doesnt know which static to call.
+ * Js does since Renamer.jar replace urls for min.js : so replace here as well
+ */
+Handlebars.registerHelper('static', function(options) {
+   return "http://static.maperial.localhost" + options.hash.path;
 });
