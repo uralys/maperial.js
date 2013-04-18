@@ -115,8 +115,6 @@
    Router.openComponent = function (router, parentView, customContext)
    {
       var view = router.currentState.name;
-      console.log("Router.openComponent " + view);
-
       var context = Router.buildGlobalContext(customContext, view);
 
       context["currentView"] = view;
@@ -149,13 +147,12 @@
    //-----------------------------------------------------------------------------------------//
 
    Router.isWebappPage = function(page){
-      return 
-      page != "home" && 
-      page != "more" && 
-      page != "team" && 
-      page != "credits" && 
-      page != "cartotheque" && 
-      page != "usechrome";
+      return (page != "home" && 
+            page != "more" && 
+            page != "team" && 
+            page != "credits" && 
+            page != "cartotheque" && 
+            page != "usechrome");
    }
    
    //-----------------------------------------------------------------------------------------//

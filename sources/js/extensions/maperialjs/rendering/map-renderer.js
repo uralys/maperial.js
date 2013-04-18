@@ -280,7 +280,7 @@ MapRenderer.prototype.Start = function () {
    } catch (e) { }
    if (!this.gl) {
       console.log("Could not initialise WebGL")
-      window.location.href = "http://maperial.com/pages/usechrome.html";
+      window.location.href = "http://www.maperial.com/#/usechrome";
       return false;
    }
 
