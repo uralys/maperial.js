@@ -516,6 +516,7 @@
 			<fileset file="sources/shaders/fragmentTex.json" />
 			<fileset file="sources/shaders/vertex.json" />
 			<fileset file="sources/shaders/vertexTex.json" />
+			<fileset file="sources/shaders/all.json" />
 		</delete>
 	</target>
 
