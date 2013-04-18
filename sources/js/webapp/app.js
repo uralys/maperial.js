@@ -28,16 +28,18 @@
    //------------------------------------------------------//
 
    App.placeFooter = function(forceFix){
-
-      if(($("#webappDiv").height() + App.Globals.FOOTER_HEIGHT) < $(window).height() || forceFix){
-         $("#footerClassic").css({ position : "fixed" });
-         $("#footerHome").css({ position : "fixed" });
-      }
-      else{
-         console.log("release footer");
-         $("#footerClassic").css({ position : "relative" });
-         $("#footerHome").css({ position : "relative" });
-      }
+      setTimeout(function(){
+         if(($("#webappDiv").height() + App.Globals.FOOTER_HEIGHT) < $(window).height() || forceFix){
+            console.log("fix footer", ($("#webappDiv").height() + App.Globals.FOOTER_HEIGHT), $(window).height(), forceFix);
+            $("#footerClassic").css({ position : "fixed" });
+            $("#footerHome").css({ position : "fixed" });
+         }
+         else{
+            console.log("release footer");
+            $("#footerClassic").css({ position : "relative" });
+            $("#footerHome").css({ position : "relative" });
+         }
+      }, 200);
    }
 
    //------------------------------------------------------//
