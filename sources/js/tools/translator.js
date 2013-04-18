@@ -46,6 +46,7 @@ Translator.prototype.getCookieLang = function() {
 //---------------------------------------------------------------------//
 
 Translator.prototype.initLang = function() {
+   console.log("initlang")
    var lang = this.getUrlLang();
    if(!lang){
       lang = this.getCookieLang();
@@ -60,6 +61,7 @@ Translator.prototype.initLang = function() {
       }
    }
 
+   console.log("setlang",lang)
    this.setLang(lang);
 }
 

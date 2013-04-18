@@ -1,4 +1,5 @@
 if ( window.XDomainRequest ) {
+   console.log("init xdr ")
    jQuery.ajaxTransport(function( s ) {
       if ( s.crossDomain && s.async ) {
          if ( s.timeout ) {
@@ -30,6 +31,7 @@ if ( window.XDomainRequest ) {
                xdr.open( s.type, s.url );
                
                setTimeout(function () {
+                  console.log("xdr send ",  s.url)
                   xdr.send( ( s.hasContent && s.data ) || null );
                }, 100);
             },
