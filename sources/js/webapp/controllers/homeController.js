@@ -8,7 +8,6 @@
 
 	HomeController.renderUI = function()
 	{
-	   $("area[rel^='prettyPhoto']").prettyPhoto();
 	   $(".gallery a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',slideshow:10000, hideflash: true});
 	}
 

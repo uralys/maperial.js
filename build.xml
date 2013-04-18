@@ -109,7 +109,7 @@
 			<fileset file="sources/css/libs/bootstrap-image-gallery.css" />
 			<fileset file="sources/css/libs/jquery-ui-1.9.2.custom.min.css" />
 			<fileset file="sources/css/libs/jquery.fileupload-ui.css" />
-			<fileset file="sources/css/libs/prettyPhotos.css" />
+			<fileset file="sources/css/libs/prettyPhoto.css" />
 			<fileset file="sources/css/libs/upload.css" />
 			<fileset file="sources/css/libs/slideronoff.css" />
 			<fileset file="sources/css/libs/jquery.selectbox.css" />
@@ -313,11 +313,6 @@
 			<arg value="sources/js/libs/ember.js" />
 
 			<arg value="--js" />
-			<arg value="sources/js/libs/jquery.validate.min.js" />
-			<arg value="--js" />
-			<arg value="sources/js/libs/jquery.prettyPhoto.js" />
-
-			<arg value="--js" />
 			<arg value="sources/js/tools/common-handlebars.js" />
 			<arg value="--js" />
 			<arg value="sources/js/tools/translator.js" />
@@ -453,6 +448,11 @@
 			<arg value="--js" />
 			<arg value="sources/js/webapp/router.js" />
 
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.validate.min.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.prettyPhoto.js" />
+			
 			<arg value="--js_output_file" />
 			<arg value="${dist}/js/maperial-webapp.min.localhost.js" />
 
