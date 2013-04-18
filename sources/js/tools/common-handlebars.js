@@ -37,7 +37,5 @@ Handlebars.registerHelper('email', function(options) {
  * Js does since Renamer.jar replace urls for min.js : so replace here as well
  */
 Handlebars.registerHelper('static', function(options) {
-   console.log("static",options)
-   console.log("http://static.maperial.localhost" + options.hash.path)
    return "http://static.maperial.localhost" + options.hash.path;
 });

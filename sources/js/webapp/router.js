@@ -7,7 +7,7 @@
 			
 			//-------------------------------------------------------//
 			// Common actions to all views
-			
+
 			openHome       : Ember.Route.transitionTo('home'),
 			openTeam       : Ember.Route.transitionTo('team'),
 			openCredits    : Ember.Route.transitionTo('credits'),
@@ -16,6 +16,10 @@
 
 			translateEn    : function(){ App.translator.setLang('en') },
 			translateFr    : function(){ App.translator.setLang('fr') },
+
+			openTryscreen  : function(){  App.finishLoadings("tryscreen") },
+			signin         : function(){$("#loginWindow").modal()},
+			
 			
 			//-------------------------------------------------------//
 			// Routes used when calling Ember.Route.transitionTo

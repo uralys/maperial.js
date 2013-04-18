@@ -29,15 +29,18 @@
 
    App.placeFooter = function(forceFix){
 
-      if($("#webappDiv").height() < $(window).height() || forceFix){
+      if(($("#webappDiv").height() + App.Globals.FOOTER_HEIGHT) < $(window).height() || forceFix){
          $("#footerClassic").css({ position : "fixed" });
          $("#footerHome").css({ position : "fixed" });
       }
       else{
+         console.log("release footer");
          $("#footerClassic").css({ position : "relative" });
          $("#footerHome").css({ position : "relative" });
       }
    }
+
+   //------------------------------------------------------//
 
    App.resize = function() {
       //App.homeScroller.resizeWindow();

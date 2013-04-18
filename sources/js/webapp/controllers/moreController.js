@@ -46,10 +46,8 @@
 		//-----------------------------------//
 		// actions
 		
-		openTryscreen: function(){  App.finishLoadings("tryscreen") },
 		openLoginWindow: function(){App.MoreController.openLoginWindow()},
 		showVideo: function(){App.MoreController.openVideoWindow()},
-		signin: function(){$("#loginWindow").modal()},
 		
 		maperialLogin: function(){MaperialAuth.authorize()},
 	});

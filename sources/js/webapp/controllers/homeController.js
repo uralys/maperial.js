@@ -48,10 +48,8 @@
 		// actions
 		
 		more: Ember.Route.transitionTo('more'),
-		openTryscreen: function(){  App.finishLoadings("tryscreen") },
 		openLoginWindow: function(){App.HomeController.openLoginWindow()},
 		showVideo: function(){App.HomeController.openVideoWindow()},
-		signin: function(){$("#loginWindow").modal()},
 		
 		maperialLogin: function(){MaperialAuth.authorize()},
 
