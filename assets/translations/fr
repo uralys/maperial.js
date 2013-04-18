@@ -11,9 +11,9 @@
     "Everywhere"		: "Votre SIG dans le Cloud",
 
     "Choose"			: "Sélectionnez",
-    "chooseText1"		: "Une base parmi les ",
+    "chooseText1"		: "Un fond parmi les ",
     "chooseText2"		: "(Google, Mapquest, OSM)",
-    "chooseText3"		: "bases classiques",
+    "chooseText3"		: "fonds classiques",
     "chooseText4"		: "ou votre propre style.",
 
     "Upload"			: "Upload",

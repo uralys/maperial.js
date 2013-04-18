@@ -311,6 +311,8 @@
 			<arg value="sources/js/libs/handlebars.js" />
 			<arg value="--js" />
 			<arg value="sources/js/libs/ember.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/xdr.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/tools/common-handlebars.js" />
