@@ -39,7 +39,7 @@
             $("#footerClassic").css({ position : "relative" });
             $("#footerHome").css({ position : "relative" });
          }
-      }, 10);
+      }, 70);
    }
 
    //------------------------------------------------------//
@@ -89,13 +89,9 @@
 
       var maperialJSScripts = "";
       
-      /**
-       *  @preserve ---STOP-OBFUSCATION 
-       */
+      /** @preserve ---STOP-OBFUSCATION */
       scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.localhost.js"); 
-      /**
-       *  @preserve ---GO-OBFUSCATION 
-       */
+      /** @preserve ---GO-OBFUSCATION */
 
       scripts.push("http://fabricjs.com/lib/fabric.js");
 

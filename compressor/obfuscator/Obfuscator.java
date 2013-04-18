@@ -14,8 +14,8 @@ public class Obfuscator {
 
 	//=================================================================================//
 
-	private static final String STOP = "---STOP-OBFUSCATION";
-	private static final String GO 	= "---GO-OBFUSCATION";
+//	private static final String STOP = "---STOP-OBFUSCATION";
+//	private static final String GO 	= "---GO-OBFUSCATION";
 
 	//=================================================================================//
 
@@ -99,26 +99,13 @@ public class Obfuscator {
 		try {
 
 			String sCurrentLine;
-			Boolean pauseObfucation = false;
 
 			br = new BufferedReader(new FileReader(input));
 			
 			while ((sCurrentLine = br.readLine()) != null) {
 				
-				if(sCurrentLine.contains(Obfuscator.STOP)){
-					System.out.println("opause");
-					pauseObfucation = true;
-				}
-
-				if(sCurrentLine.contains(Obfuscator.GO))
-					System.out.println("ogo");
-					pauseObfucation = false;
-				
-				if(!pauseObfucation){
-					for (String k : vars.keySet()) {
-						sCurrentLine = sCurrentLine.replaceAll(k, vars.get(k));
-					}
-				}
+				for (String k : vars.keySet()) 
+					sCurrentLine = sCurrentLine.replaceAll("\\b"+k+"\\b", vars.get(k));
 					
 				bw.write(sCurrentLine);
 				bw.write("\n");

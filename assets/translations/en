@@ -96,6 +96,7 @@
     "JobsText2"			: "You are expert with jQuery, EmberJS, Play framework or Python and are not afraid not to sleep anymore ? Your profile might be interesting.",
 
     "CreditsTitle"		: "Maperial's tools",
+    "CreditsTitle2"		: "We thank these plugins",
     
     "":""
 }
