@@ -19,11 +19,14 @@
 	       autoHeight : false,
 	       autoSlide : true
 	    });
+	    
+	    $(window).on(Translator.LANG_CHANGED, function(){
+	       window.location.href = "/";
+	    });
 	}
 
 	HomeController.cleanUI = function()
 	{
-	   
 	}
 
 	//==================================================================//
