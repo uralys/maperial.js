@@ -95,7 +95,8 @@
     "JobsText2"			: "Vous êtes experts jQuery, EmberJS, Play framework ou Python et n'avez pas peur de ne plus dormir la nuit ? Votre profil pourrait nous intéresser.",
     
     "CreditsTitle"		: "Nos outils",
-    "CreditsTitle2"		: "Merci à ces Plugins",
+    "CreditsTitle2"		: "Plugins jQuery",
+    "CreditsTitle3"		: "Plugins C++",
 
     "Screenshot1Title"	: "Maperial",
     "Screenshot1Text"	: "Demo",
