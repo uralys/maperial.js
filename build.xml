@@ -110,6 +110,7 @@
 			<fileset file="sources/css/libs/jquery-ui-1.9.2.custom.min.css" />
 			<fileset file="sources/css/libs/jquery.fileupload-ui.css" />
 			<fileset file="sources/css/libs/prettyPhoto.css" />
+			<fileset file="sources/css/libs/coda-slider.css" />
 			<fileset file="sources/css/libs/upload.css" />
 			<fileset file="sources/css/libs/slideronoff.css" />
 			<fileset file="sources/css/libs/jquery.selectbox.css" />
@@ -312,6 +313,14 @@
 			<arg value="--js" />
 			<arg value="sources/js/libs/ember.js" />
 			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.validate.min.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.prettyPhoto.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/galleria-1.2.9.min.js" />
+			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.coda-slider-3.0.js" />
+			<arg value="--js" />
 			<arg value="sources/js/libs/xdr.js" />
 
 			<arg value="--js" />
@@ -453,11 +462,6 @@
 
 			<arg value="--js" />
 			<arg value="sources/js/webapp/router.js" />
-
-			<arg value="--js" />
-			<arg value="sources/js/libs/jquery.validate.min.js" />
-			<arg value="--js" />
-			<arg value="sources/js/libs/jquery.prettyPhoto.js" />
 			
 			<arg value="--js_output_file" />
 			<arg value="${dist}/js/maperial-webapp.min.localhost.js" />

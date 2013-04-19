@@ -8,7 +8,17 @@
 
 	HomeController.renderUI = function()
 	{
-	   $(".gallery a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',slideshow:10000, hideflash: true});
+	  // $(".gallery a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',slideshow:10000, hideflash: true});
+	   
+	    Galleria.loadTheme('http://static.maperial.localhost/galleria/themes/classic/galleria.classic.min.js');
+	    Galleria.run('#galleria');
+
+	    $('#news').codaSlider({
+	       dynamicArrowsGraphical:true,
+	       width : $(window).width(),
+	       autoHeight : false,
+	       autoSlide : true
+	    });
 	}
 
 	HomeController.cleanUI = function()

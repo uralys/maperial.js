@@ -384,12 +384,19 @@
 }
 
 /*--------------------------------*/
+#headerButtons {
+	float: right;
+	margin-top: 25px;
+	margin-right: 65px;
+}
+
+#headerButtons .btn-large {
+	display: inline;
+}
+
 #signinButton {
-	margin-top: 10px;
-	margin-left: 80%;
 	cursor: pointer;
 	cursor: hand;
-	position: fixed;
 	z-index: 2;
 	background: transparent;
 }
@@ -406,11 +413,8 @@
 }
 
 #tryButton {
-	margin-top: 10px;
-	margin-left: 71%;
 	cursor: pointer;
 	cursor: hand;
-	position: fixed;
 	z-index: 2;
 	background: transparent;
 }

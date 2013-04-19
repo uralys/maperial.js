@@ -82,7 +82,7 @@
     "DownloadNow"		: "Télécharger maintenant !",
 
     "cofounder"			: "Co-fondateur",
-    "djoulText"			: "Julien travaille dans les domaines de l'images, de la 3D et du GPGPU pour l'informatique scientifique depuis plus de 7 ans. C'est l'alliance de ces domaines d'activités, et le contact avec des milieux scientifiques qui sont à l'origine de Maperial.",
+    "djoulText"			: "Julien travaille dans les domaines de l'image, de la 3D et du GPGPU pour l'informatique scientifique depuis plus de 7 ans. C'est l'alliance de ces domaines d'activités, et le contact avec des milieux scientifiques qui sont à l'origine de Maperial.",
     "djoulText2"		: "Il est aujourd'hui en charge du développement des technologies serveur, et de la visualisation clients.",
     "chrisText"			: "Après quelques années en tant que développeur dans une startup puis en indépendant, Chris s'est lancé dans l'entreprenariat en developpant des",
     "chrisText2"		: "jeux",
@@ -96,6 +96,19 @@
     
     "CreditsTitle"		: "Nos outils",
     "CreditsTitle2"		: "Merci à ces Plugins",
+
+    "Screenshot1Title"	: "Maperial",
+    "Screenshot1Text"	: "Demo",
+    "Screenshot2Title"	: "Maperial",
+    "Screenshot2Text"	: "Demo",
+    "Screenshot3Title"	: "Maperial",
+    "Screenshot3Text"	: "Demo",
+    "Screenshot4Title"	: "Maperial",
+    "Screenshot4Text"	: "Demo",
+    "Screenshot5Title"	: "Maperial",
+    "Screenshot5Text"	: "Demo",
+    "Screenshot6Title"	: "Maperial",
+    "Screenshot6Text"	: "Demo",
     
     "":""
 }

@@ -139,7 +139,7 @@
 	height: 423px;
 	border: 0px;
 }
-
+	
 #homeImage {
 	background: url('http://static.maperial.localhost/images/home/part1/worldmap.mini.jpg');
 	background-repeat: repeat-x;
@@ -152,8 +152,12 @@
 	height: 480px;
 }
 
+/*--------------------------------*/
 .gallery li { display: inline; }
 
+/* This rule is read by Galleria to define the gallery height: */
+#galleria{height:620px}
+/*--------------------------------*/
 .creditimage {
 	margin-left: 30px;
 	margin-right: 30px;

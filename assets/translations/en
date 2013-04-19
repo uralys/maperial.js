@@ -77,7 +77,7 @@
     "Blog"				: "Blog",
     "Maps"				: "Maps",
     "ParisRoads"		: "Paris roads",
-    "Cartotheque"		: "Maperial Library",
+    "Cartotheque"		: "Showcase",
 
     "WorksOnChrome"		: "Works on Chrome.",
     "DownloadNow"		: "Download now !",
@@ -97,6 +97,20 @@
 
     "CreditsTitle"		: "Maperial's tools",
     "CreditsTitle2"		: "We thank these plugins",
+
+    "Screenshot1Title"	: "Maperial",
+    "Screenshot1Text"	: "Demo",
+    "Screenshot2Title"	: "Maperial",
+    "Screenshot2Text"	: "Demo",
+    "Screenshot3Title"	: "Maperial",
+    "Screenshot3Text"	: "Demo",
+    "Screenshot4Title"	: "Maperial",
+    "Screenshot4Text"	: "Demo",
+    "Screenshot5Title"	: "Maperial",
+    "Screenshot5Text"	: "Demo",
+    "Screenshot6Title"	: "Maperial",
+    "Screenshot6Text"	: "Demo",
+    
     
     "":""
 }
