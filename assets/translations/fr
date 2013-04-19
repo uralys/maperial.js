@@ -109,6 +109,17 @@
     "Screenshot5Text"	: "Demo",
     "Screenshot6Title"	: "Maperial",
     "Screenshot6Text"	: "Demo",
+
+    "ReadMore"			: "Lire la suite",
+    
+    "New1Title"			: "maperial.com",
+    "New1Text"			: "Ca y est ! Le site est ouvert au public. Vous y découvrirez ce qu'est Maperial, et s'il ne répond pas à toutes vos questions vous pouvez nous joindre à tout moment.",
+        
+    "New2Title"			: "SRTM",
+    "New2Text"			: "Nous travaillons actuellement sur la modélisation de tuiles depuis des données SRTM. Les premiers résultats sont concluants, il reste maintenant à optimiser puis intégrer cette partie dans notre système de création de carte.",
+    
+    "New3Title"			: "Blog : Projection cartographique",
+    "New3Text"			: "La Terre est ronde (enfin...sphérique !), et la version actuelle de Maperial est en 2 dimensions, plane. Il est donc nécessaire d'utiliser des systèmes de projection pour représenter les différentes couches de données affichées comme les routes, la topographie ou encore vos propres données...",
     
     "":""
 }

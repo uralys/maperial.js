@@ -1,56 +1,69 @@
+
+/**
+ * data contains the file to upload
+ */
+Ember.Handlebars.registerHelper('date', function(options) {
+   var date = options.hash.value.split("-");
+   var year = date[0];
+   var month = date[1];
+   var day = date[2];
+
+   switch (App.translator.lang) {
+      case "fr":
+         return day + "/" + month + "/" + year;
+
+      case "en":
+      default:
+         return year + "." + month + "." + day;
+      
+   }
+});
+
 //---------------------------------------------------------------------------------------//
 
 /**
  * data contains the file to upload
  */
-Ember.Handlebars.registerBoundHelper('fileName', 
-   function(data, options) {
-      return data.files[0].name;
-   }
-);
+Ember.Handlebars.registerBoundHelper('fileName', function(data, options) {
+   return data.files[0].name;
+});
 
 //---------------------------------------------------------------------------------------//
 
 /**
  * defines a progressBar
  */
-Ember.Handlebars.registerBoundHelper('progressBar', 
-   function(percentage, options) {
-      var customclass = "";
-   
-      if(options.hash.class)
-         customclass += " " + options.hash.class;
-      else
-         customclass += " progress";
-   
-      if(options.hash.span)
-         customclass += " " + options.hash.span;
-   
-      return new Handlebars.SafeString("<div class=\""+customclass+"\"><div class=\"bar\" style=\"width: "+percentage+"%;\"></div></div>");
-   }
-);
+Ember.Handlebars.registerBoundHelper('progressBar', function(percentage, options) {
+   var customclass = "";
+
+   if(options.hash.class)
+      customclass += " " + options.hash.class;
+   else
+      customclass += " progress";
+
+   if(options.hash.span)
+      customclass += " " + options.hash.span;
+
+   return new Handlebars.SafeString("<div class=\""+customclass+"\"><div class=\"bar\" style=\"width: "+percentage+"%;\"></div></div>");
+});
 
 //---------------------------------------------------------------------------------------//
 
 /**
  * transform 40303 ==> 40.30 KB
  */
-Ember.Handlebars.registerBoundHelper('fileSize', 
-   function(size, options) {
-      return Utils.formatFileSize(size);
-   }
-);
+Ember.Handlebars.registerBoundHelper('fileSize', function(size, options) {
+   return Utils.formatFileSize(size);
+});
 
 //---------------------------------------------------------------------------------------//
 
 /**
  * transform 1356095267229 ==> 21/12/2012
  */
-Ember.Handlebars.registerBoundHelper('formatDate', 
-      function(uploadTime, options) {
+Ember.Handlebars.registerBoundHelper('formatDate', function(uploadTime, options) {
    return Utils.formatDate(uploadTime);
-}
-);
+});
 
 //---------------------------------------------------------------------------------------//
 
@@ -60,15 +73,12 @@ Ember.Handlebars.registerBoundHelper('formatDate',
  * 
  * note using registerBoundHelper instead of registerHelper so that the data is not a string
  */
-Ember.Handlebars.registerBoundHelper('equals', 
-      function(data, options) 
-      {
+Ember.Handlebars.registerBoundHelper('equals', function(data, options) {
    if(data == options.hash.value)
       return options.fn(this);
    else
       return options.inverse(this);
-      }
-);
+});
 
 /**
  * Display a specific html template whether data == value

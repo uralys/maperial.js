@@ -170,6 +170,36 @@
 }
 
 /*--------------------------------*/
+#titleNews {
+	left: 82px;
+	position: relative;
+	bottom: -56px;
+	z-index: 3;
+	font-size: 40px;
+	width: 0px;
+}
+
+.titleNew {
+	color: #27a200;
+	font-size: 25px;
+	margin-bottom:20px;
+	margin-top: 40px;
+}
+
+.moreNew {
+	color: #27a200;
+	text-align: right;
+	cursor:pointer;
+	cursor:hand;
+}
+
+.dateNew {
+	font-size: 20px;
+	color: #27a200;
+	margin-top: 40px;
+}
+
+/*--------------------------------*/
 #playImage {
 	margin-top: -245px;
 }

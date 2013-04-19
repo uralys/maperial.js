@@ -89,9 +89,8 @@
 
       var maperialJSScripts = "";
       
-      /** @preserve ---STOP-OBFUSCATION */
-      scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.localhost.js"); 
-      /** @preserve ---GO-OBFUSCATION */
+      if(!App.Globals.isDev)
+         scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.localhost.js"); 
 
       scripts.push("http://fabricjs.com/lib/fabric.js");
 

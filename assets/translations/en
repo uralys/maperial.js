@@ -110,7 +110,17 @@
     "Screenshot5Text"	: "Screenshot",
     "Screenshot6Title"	: "Maperial",
     "Screenshot6Text"	: "Screenshot",
+
+    "ReadMore"			: "Read more",
     
+    "New1Title"			: "maperial.com",
+    "New1Text"			: "Here we are ! The website is now open to everyone. It'll strive to help you discover what is Maperial, and if any question remains, we are here to answer anytime.",
+
+    "New2Title"			: "SRTM",
+    "New2Text"			: "We are currently working on tile generation from SRTM data. We reached conclusive results, time now to optimise, then integrate these tiles in our layer map creation.",
+
+    "New3Title"			: "Blog : Map projection",
+    "New3Text"			: "The Earth is round (well...a bumpy spheroid actually !), and Maperial's current version is 2D, flat. Therefore we need map projection to display data on layers like roads, buildings, topography and even your own data...",
     
     "":""
 }

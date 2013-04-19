@@ -33,9 +33,9 @@ function Maperial(tagId, width, height){
 Maperial.staticURL              = (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? 'http://static.maperial.localhost' : 'http://static.maperial.com';
 Maperial.apiURL                 = 'http://api.maperial.com';
 
-Maperial.DEFAULT_ZOOM           = 8;
-Maperial.DEFAULT_LATITUDE       = 45.7;
-Maperial.DEFAULT_LONGITUDE      = 3.12;
+Maperial.DEFAULT_ZOOM           = 10;
+Maperial.DEFAULT_LATITUDE       = 48.833;
+Maperial.DEFAULT_LONGITUDE      = 2.333;
 
 Maperial.refreshRate            = 15; // ms
 Maperial.tileDLTimeOut          = 60000; //ms
@@ -223,6 +223,7 @@ Maperial.prototype.createContext = function() {
 }
 
 Maperial.prototype.startLatitude = function() {
+   console.log("start", this.config.map.latMin, Maperial.DEFAULT_LATITUDE)
    if(this.config.map.latMin)
       return (this.config.map.latMin + this.config.map.latMax)/2;
    else
