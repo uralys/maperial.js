@@ -21,7 +21,6 @@
 			openTryscreen  : function(){  App.finishLoadings("tryscreen") },
 			signin         : function(){$("#loginWindow").modal()},
 			
-			
 			//-------------------------------------------------------//
 			// Routes used when calling Ember.Route.transitionTo
 			//-------------------//
@@ -32,6 +31,8 @@
 			team           : App.TeamRouting,
 			credits        : App.CreditsRouting,
 			jobs           : App.JobsRouting,
+			screenshots    : App.ScreenshotsRouting,
+			allNews        : App.AllNewsRouting,
 			cartotheque    : App.CartothequeRouting,
 			
 			tryscreen      : App.TryscreenRouting,
@@ -154,6 +155,8 @@
             page != "team" && 
             page != "credits" && 
             page != "jobs" && 
+            page != "screenshots" && 
+            page != "allNews" && 
             page != "cartotheque" && 
             page != "usechrome");
    }

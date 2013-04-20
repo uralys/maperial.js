@@ -20312,7 +20312,7 @@ Ember Routing
   }
 
   Metamorph.prototype.html = function(html) {
-    this.checkRemoved();
+    if(!this.checkRemoved())return;
     if (html === undefined) { return this.innerHTML; }
 
     htmlFunc.call(this, html);
@@ -20321,8 +20321,8 @@ Ember Routing
   };
 
   Metamorph.prototype.replaceWith = function(html) {
-    this.checkRemoved();
-    htmlFunc.call(this, html, true);
+     if(!this.checkRemoved())return;
+     htmlFunc.call(this, html, true);
   };
 
   Metamorph.prototype.remove = removeFunc;
@@ -20342,8 +20342,12 @@ Ember Routing
 
   Metamorph.prototype.checkRemoved = function() {
     if (this.isRemoved()) {
-      throw new Error("Cannot perform operations on a Metamorph that is not in the DOM.");
+//      throw new Error("Cannot perform operations on a Metamorph that is not in the DOM.");
+      console.log("Ember ERROR : Cannot perform operations on a Metamorph that is not in the DOM.");
+      return false;
     }
+    
+    return true;
   };
 
   window.Metamorph = Metamorph;

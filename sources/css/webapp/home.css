@@ -152,6 +152,10 @@
 	height: 480px;
 }
 
+.presentation {
+	font-size : 18px;
+}
+
 /*--------------------------------*/
 .gallery li { display: inline; }
 

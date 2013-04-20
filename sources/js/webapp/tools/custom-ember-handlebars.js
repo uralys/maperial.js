@@ -28,6 +28,7 @@ Ember.Handlebars.registerBoundHelper('fileName', function(data, options) {
    return data.files[0].name;
 });
 
+
 //---------------------------------------------------------------------------------------//
 
 /**

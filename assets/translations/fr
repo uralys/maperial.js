@@ -2,14 +2,21 @@
     "en"				: "En",
     "fr"				: "Fr",
 
-    "Try"				: "Essayer",
-    "TryNow"			: "Essayez !",
-    "FindOutMore"		: "En savoir plus",
-  	"LogIn"				: "Se logguer",
-    
     "AwesomeMaps"		: "Vos données à la carte",
     "Everywhere"		: "Votre SIG dans le Cloud",
 
+    "Try"				: "Essayer",
+    "TryNow"			: "Essayez !",
+    "FindOutMore"		: "En savoir plus",
+    "Demos"				: "Démos",
+    "Screenshots"		: "Voir",
+  	"LogIn"				: "Se logguer",
+  	
+    "openMoreText"		: "Découvrez plus en détails tout ce que vous propose Maperial.",
+    "openDemosText"		: "Parcourez quelques cartes dynamiques dans notre cartothèque de démonstration",
+    "openScreenshotsText": "Regardez nos plus récentes captures d'écran de l'outil et d'exemples de cartes",
+    "openTryscreenText"	: "Essayez vous même la simplicité de notre éditeur de style.",
+    
     "Choose"			: "Sélectionnez",
     "chooseText1"		: "Un fond parmi les ",
     "chooseText2"		: "(Google, Mapquest, OSM)",

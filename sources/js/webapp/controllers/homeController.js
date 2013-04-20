@@ -6,27 +6,11 @@
 
 	//==================================================================//
 
-	HomeController.renderUI = function()
-	{
-	  // $(".gallery a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',slideshow:10000, hideflash: true});
-	   
-	    Galleria.loadTheme('http://static.maperial.localhost/galleria/themes/classic/galleria.classic.min.js');
-	    Galleria.run('#galleria');
-
-	    $('#news').codaSlider({
-	       dynamicArrowsGraphical:true,
-	       width : $(window).width(),
-	       autoHeight : false,
-	       autoSlide : true
-	    });
-	    
-	    $(window).on(Translator.LANG_CHANGED, function(){
-	       window.location.href = "/";
-	    });
+	HomeController.renderUI = function(){
+	    App.get('router').transitionTo('home.news');
 	}
 
-	HomeController.cleanUI = function()
-	{
+	HomeController.cleanUI = function()	{
 	}
 
 	//==================================================================//
@@ -56,16 +40,26 @@
 			App.Router.openPage(router, "home");
 		},
 		
+		//--------------------------------------//
+      // states
+
+      news: Ember.Route.extend({
+         route: '/',
+         connectOutlets: function(router) {
+            App.Router.openComponent(router, "home");
+         }
+      }),
+		
 		//-----------------------------------//
 		// actions
 		
-		more: Ember.Route.transitionTo('more'),
-		openLoginWindow: function(){App.HomeController.openLoginWindow()},
-		showVideo: function(){App.HomeController.openVideoWindow()},
+		openMore           : Ember.Route.transitionTo('more'),
+		openScreenshots    : Ember.Route.transitionTo('screenshots'),
+		openAllNews        : Ember.Route.transitionTo('allNews'),
+		openLoginWindow    : function(){App.HomeController.openLoginWindow()},
+		showVideo          : function(){App.HomeController.openVideoWindow()},
 		
-		maperialLogin: function(){MaperialAuth.authorize()},
-
-		
+		maperialLogin      : function(){MaperialAuth.authorize()},
 	});
 
 	//==================================================================//
