@@ -467,6 +467,8 @@
 			<arg value="sources/js/webapp/controllers/config/styleList.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/colorbarList.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/news.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/webapp/router.js" />
