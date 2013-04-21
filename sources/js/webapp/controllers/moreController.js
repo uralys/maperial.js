@@ -36,7 +36,7 @@
 	//==================================================================//
 	// Routing
 
-	App.MoreRouting = Ember.Route.extend({
+	App.MoreRouting = App.Page.extend({
 		route: '/more',
 		
 		connectOutlets: function(router){

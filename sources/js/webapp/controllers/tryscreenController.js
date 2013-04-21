@@ -47,7 +47,7 @@
 	//==================================================================//
 	// Routing
 
-	App.TryscreenRouting = Ember.Route.extend({
+	App.TryscreenRouting = App.Page.extend({
 		route: '/tryscreen',
 		connectOutlets: function(router){
 			App.Router.openPage(router, "tryscreen");

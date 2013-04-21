@@ -24,7 +24,7 @@
 	//==================================================================//
 	// Routing
 
-	App.FontsRouting = Ember.Route.extend({
+	App.FontsRouting = App.Page.extend({
 		route: '/fonts',
 	
 		connectOutlets: function(router){

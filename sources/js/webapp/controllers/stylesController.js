@@ -86,7 +86,7 @@
 	//==================================================================//
 	// Routing
 
-	App.StylesRouting = Ember.Route.extend({
+	App.StylesRouting = App.Page.extend({
 		route: '/styles',
         
 		connectOutlets: function(router) {

@@ -23,7 +23,7 @@
 	//==================================================================//
 	// Routing
 
-	App.TeamRouting = Ember.Route.extend({
+	App.TeamRouting = App.Page.extend({
 		route: '/team',
 		
 		connectOutlets: function(router){

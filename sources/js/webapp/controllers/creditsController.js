@@ -23,7 +23,7 @@
 	//==================================================================//
 	// Routing
 
-	App.CreditsRouting = Ember.Route.extend({
+	App.CreditsRouting = App.Page.extend({
 		route: '/credits',
 		
 		connectOutlets: function(router){

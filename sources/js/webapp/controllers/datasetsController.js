@@ -166,7 +166,7 @@
 	//==================================================================//
 	// Routing
 
-	App.DatasetsRouting = Ember.Route.extend({
+	App.DatasetsRouting = App.Page.extend({
 		route: '/datasets',
 		
 		connectOutlets: function(router){

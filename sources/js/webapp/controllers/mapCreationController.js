@@ -647,7 +647,7 @@
    //==================================================================//
    // Routing
 
-   App.MapCreationRouting = Ember.Route.extend({
+   App.MapCreationRouting = App.Page.extend({
       route: '/mapCreation',
 
       connectOutlets: function(router){

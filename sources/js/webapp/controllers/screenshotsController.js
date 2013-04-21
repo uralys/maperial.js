@@ -24,7 +24,7 @@
 	//==================================================================//
 	// Routing
 
-	App.ScreenshotsRouting = Ember.Route.extend({
+	App.ScreenshotsRouting = App.Page.extend({
 		route: '/screenshots',
 		
 		connectOutlets: function(router){

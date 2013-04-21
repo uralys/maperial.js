@@ -33,7 +33,7 @@
    //==================================================================//
    // Routing
 
-   App.ViewMapRouting = Ember.Route.extend({
+   App.ViewMapRouting = App.Page.extend({
       route: '/map',
 
       connectOutlets: function(router) {

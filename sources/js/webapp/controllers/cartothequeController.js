@@ -23,7 +23,7 @@
 	//==================================================================//
 	// Routing
 
-	App.CartothequeRouting = Ember.Route.extend({
+	App.CartothequeRouting = App.Page.extend({
 		route: '/demos',
 		
 		connectOutlets: function(router){

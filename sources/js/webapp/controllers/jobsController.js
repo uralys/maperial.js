@@ -23,7 +23,7 @@
 	//==================================================================//
 	// Routing
 
-	App.JobsRouting = Ember.Route.extend({
+	App.JobsRouting = App.Page.extend({
 		route: '/jobs',
 		
 		connectOutlets: function(router){

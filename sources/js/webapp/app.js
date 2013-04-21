@@ -13,6 +13,14 @@
    });
 
    //------------------------------------------------------//
+   
+   App.Page = Em.Route.extend({
+       enter: function(router) {
+          window.scrollTo(0, 0);
+       }
+   });
+   
+   //------------------------------------------------------//
 
    App.initWindowSize = function() {
 

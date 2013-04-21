@@ -23,7 +23,7 @@
 	//==================================================================//
 	// Routing
 
-	App.UsechromeRouting = Ember.Route.extend({
+	App.UsechromeRouting = App.Page.extend({
 		route: '/usechrome',
 		
 		connectOutlets: function(router){

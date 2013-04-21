@@ -103,7 +103,7 @@
    //==================================================================//
    // Routing
 
-   App.StyleEditorRouting = Ember.Route.extend({
+   App.StyleEditorRouting = App.Page.extend({
       route: '/styleEditor',
 
       connectOutlets: function(router) {

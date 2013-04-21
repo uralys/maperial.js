@@ -33,7 +33,7 @@
 	//==================================================================//
 	// Routing
 
-	App.HomeRouting = Ember.Route.extend({
+	App.HomeRouting = App.Page.extend({
 		route: '/',
 		
 		connectOutlets: function(router){

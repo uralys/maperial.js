@@ -108,7 +108,7 @@
 	//==================================================================//
 	// Routing
 
-	App.DashboardRouting = Ember.Route.extend({
+	App.DashboardRouting = App.Page.extend({
 		route: '/dashboard',
 		
 		connectOutlets: function(router){

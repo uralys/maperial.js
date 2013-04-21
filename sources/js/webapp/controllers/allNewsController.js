@@ -23,7 +23,7 @@
 	//==================================================================//
 	// Routing
 
-	App.AllNewsRouting = Ember.Route.extend({
+	App.AllNewsRouting = App.Page.extend({
 		route: '/news',
 		
 		connectOutlets: function(router){

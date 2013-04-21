@@ -24,7 +24,7 @@
 	//==================================================================//
 	// Routing
 
-	App.IconsRouting = Ember.Route.extend({
+	App.IconsRouting = App.Page.extend({
 		route: '/icons',
 	
 		connectOutlets: function(router){

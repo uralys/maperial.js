@@ -84,7 +84,7 @@
 // ==================================================================//
 // Routing
 
-   App.ColorbarEditorRouting = Ember.Route.extend({
+   App.ColorbarEditorRouting = App.Page.extend({
       route: '/colorbarEditor',
 
       connectOutlets: function(router) {
