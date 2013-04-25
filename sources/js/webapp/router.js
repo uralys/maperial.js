@@ -20,6 +20,7 @@
 
 			openTryscreen  : function(){  App.finishLoadings("tryscreen") },
 			signin         : function(){$("#loginWindow").modal()},
+	      maperialLogin  : function(){MaperialAuth.authorize()},
 			
 			//-------------------------------------------------------//
 			// Routes used when calling Ember.Route.transitionTo

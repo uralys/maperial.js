@@ -59,7 +59,6 @@
 		openLoginWindow    : function(){App.HomeController.openLoginWindow()},
 		showVideo          : function(){App.HomeController.openVideoWindow()},
 		
-		maperialLogin      : function(){MaperialAuth.authorize()},
 	});
 
 	//==================================================================//

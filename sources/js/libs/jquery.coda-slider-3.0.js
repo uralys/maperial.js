@@ -23,7 +23,11 @@ if ( typeof Object.create !== 'function' ) {
 		//initialize
 		init: function( options, elem ) {
 			var self = this;
-
+			
+			$(window).resize(function() {
+	         self.positionElements();
+	      });
+			
 			//remove no JavaScript warning
 			$("body").removeClass("coda-slider-no-js");
 
@@ -81,59 +85,64 @@ if ( typeof Object.create !== 'function' ) {
 			// Store current tab
 			self.currentTab = (self.options.hashLinking && self.hash) ? self.hashPanel - 1 : self.options.firstPanelToLoad - 1;
 
-			// Apply starting height to the container
-			if (self.options.autoHeight) { $(self.sliderId).css('height', $($(self.panelcocaContainer).children()[self.currentTab]).height() + $(self.sliderId + '-wrapper .coda-nav-right').height());	}
-			if (self.options.startHeight) { $(self.sliderId).css('height', self.options.startHeight);	}
+	      // Apply starting height to the container
+         if (self.options.autoHeight) { $(self.sliderId).css('height', $($(self.panelcocaContainer).children()[self.currentTab]).height() + $(self.sliderId + '-wrapper .coda-nav-right').height());  }
+         if (self.options.startHeight) { $(self.sliderId).css('height', self.options.startHeight); }
 
-			// Build navigation tabs
-			if (self.options.dynamicTabs) { self.addNavigation(); }
+         // Build navigation tabs
+         if (self.options.dynamicTabs) { self.addNavigation(); }
 
-			// Build navigation arrows
-			if (self.options.dynamicArrows) { self.addArrows(); }
+         // Build navigation arrows
+         if (self.options.dynamicArrows) { self.addArrows(); }
 
-			// Create a container width to allow for a smooth float right.
-			//self.totalSliderWidth = $(self.sliderId).outerWidth(true) + $($(self.sliderId).parent()).children('[class^=coda-nav-left]').outerWidth(true) + $($(self.sliderId).parent()).children('[class^=coda-nav-right]').outerWidth(true);
-			self.totalSliderWidth = self.options.width;
-			$($(self.sliderId).parent()).css('width', self.totalSliderWidth);
+         // Clone panelcocas if continuous is enabled
+         if (self.options.continuous) {
+            $(self.panelcocaContainer).prepend($(self.panelcocaContainer).children().last().clone());
+            $(self.panelcocaContainer).append($(self.panelcocaContainer).children().eq(1).clone());
+         }
 
-			// Align navigation tabs
-			if (self.options.dynamicTabs) { self.alignNavigation(); }
-
-			// Clone panelcocas if continuous is enabled
-			if (self.options.continuous) {
-				$(self.panelcocaContainer).prepend($(self.panelcocaContainer).children().last().clone());
-				$(self.panelcocaContainer).append($(self.panelcocaContainer).children().eq(1).clone());
-			}
-
-			// Allow the slider to be clicked
-			self.clickable = true;
-
-			// Count the number of panelcocas and get the combined width
-			self.panelcocaCount = $(self.panelcocaClass).length;
-			self.panelcocaWidth = $(self.panelcocaClass).outerWidth();
-			self.totalWidth = self.panelcocaCount * self.panelcocaWidth;
-			
-			// Variable for the % sign if needed (responsive), otherwise px
-			self.pSign = 'px';
-
-//			self.slideWidth = $(self.sliderId).width();
-			self.slideWidth = self.options.width - 70;
-
-			$(".coda-slider-wrapper .coda-slider .panelcoca").css('width', self.slideWidth);
-			$(".coda-slider-wrapper .coda-slider").css('width',self.slideWidth);
-
-			// Puts the margin at the starting point with no animation. Made for both continuous and firstPanelToLoad features.
-			// ~~(self.options.continuous) will equal 1 if true, otherwise 0
-			$(self.panelcocaContainer).css('margin-left', ( -self.slideWidth * ~~(self.options.continuous)) + (-self.slideWidth * self.currentTab) );
-
-			// Configure the current tab
-			self.setCurrent(self.currentTab);
-
-			// Apply the width to the panelcoca container
-			$(self.sliderId + ' .panelcoca-container').css('width', self.totalWidth);
-
+         // Allow the slider to be clicked
+         self.clickable = true;
+         
+			self.positionElements();
 		},
 
+		positionElements: function(){
+         var self = this;
+
+         // Create a container width to allow for a smooth float right.
+         //self.totalSliderWidth = $(self.sliderId).outerWidth(true) + $($(self.sliderId).parent()).children('[class^=coda-nav-left]').outerWidth(true) + $($(self.sliderId).parent()).children('[class^=coda-nav-right]').outerWidth(true);
+         //self.totalSliderWidth = self.options.width;
+         $($(self.sliderId).parent()).css('width', self.options.container.width());
+
+         // Align navigation tabs
+         if (self.options.dynamicTabs) { self.alignNavigation(); }
+
+         // Count the number of panelcocas and get the combined width
+         self.panelcocaCount = $(self.panelcocaClass).length;
+         self.panelcocaWidth = $(self.panelcocaClass).outerWidth();
+         self.totalWidth = self.panelcocaCount * self.panelcocaWidth;
+         
+         // Variable for the % sign if needed (responsive), otherwise px
+         self.pSign = 'px';
+
+//       self.slideWidth = $(self.sliderId).width();
+         self.slideWidth = self.options.container.width() - 70;
+
+         $(".coda-slider-wrapper .coda-slider .panelcoca").css('width', self.slideWidth);
+         $(".coda-slider-wrapper .coda-slider").css('width',self.slideWidth);
+
+         // Puts the margin at the starting point with no animation. Made for both continuous and firstPanelToLoad features.
+         // ~~(self.options.continuous) will equal 1 if true, otherwise 0
+         $(self.panelcocaContainer).css('margin-left', ( -self.slideWidth * ~~(self.options.continuous)) + (-self.slideWidth * self.currentTab) );
+
+         // Configure the current tab
+         self.setCurrent(self.currentTab);
+
+         // Apply the width to the panelcoca container
+         $(self.sliderId + ' .panelcoca-container').css('width', self.totalWidth);
+		},
+		
 		addNavigation: function(){
 			var self = this;
 			// The id is assigned here to allow for the responsive setting

@@ -8,7 +8,7 @@
 		   setTimeout(function(){
 		      $('#news').codaSlider({
 		         dynamicArrowsGraphical:true,
-		         width : $(window).width(),
+		         container : $("#newsContainer"),
 		         autoHeight : false,
 		         autoSlide : true
 		      });

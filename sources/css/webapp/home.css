@@ -216,6 +216,13 @@
 	margin-top: 21px!important;
 	margin-left: -4px!important;
 }
+
+@media (max-width: 767px) {
+	.miniarrow {
+		margin-top: -48px!important;
+	}
+}
+
 /*--------------------------------*/
 .websiteContent {
 	padding-top: 50px;

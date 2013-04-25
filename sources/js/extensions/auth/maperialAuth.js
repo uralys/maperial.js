@@ -14,8 +14,7 @@ MaperialAuth.authorize = function()
       return;
    }
    
-	var authorizeURL = "http://map.x-ray.fr/user/auth"
-		+ "?redirect=/maperialAuthToken";
+	var authorizeURL = "http://auth.mapnify.fr/user/auth?redirect=/maperialAuthToken";
 
 	Utils.popup(authorizeURL, 'signin', 400, 150);
 }
