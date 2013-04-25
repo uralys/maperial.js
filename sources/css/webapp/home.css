@@ -240,16 +240,21 @@
 	margin-bottom: 14px;
 }
 
-.homeAction {
-	color: #27a200;
-	font-size: 23px;
-	margin-top: 38px;
-}
-
 .homeSubtitle {
 	margin-bottom: 40px;
 	font-size: 20px;
 	font-weight: 300;
 	line-height: 1.25;
 	color: #fff;
+}
+
+.homeAction {
+	color: #27a200;
+	font-size: 23px;
+	margin-top: 38px;
+}
+
+.homeActionSeparator {
+	margin-top: 0px;
+	margin-bottom: -1px;
 }
