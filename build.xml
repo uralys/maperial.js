@@ -64,6 +64,7 @@
 
 		<concat destfile="${tmpFile}">
 			<fileset file="sources/css/bootstrap.min.css" />
+			<fileset file="sources/css/responsive.min.css" />
 
 			<fileset file="sources/css/libs/bootstrap-image-gallery.css" />
 			<fileset file="sources/css/libs/jquery-ui-1.9.2.custom.min.css" />
@@ -105,6 +106,7 @@
 
 		<concat destfile="${tmpFile}">
 			<fileset file="sources/css/bootstrap.min.css" />
+			<fileset file="sources/css/responsive.min.css" />
 
 			<fileset file="sources/css/libs/bootstrap-image-gallery.css" />
 			<fileset file="sources/css/libs/jquery-ui-1.9.2.custom.min.css" />
