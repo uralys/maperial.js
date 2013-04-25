@@ -1,5 +1,10 @@
 /*--------------------------------*/
 
+.row-fluid.touchable:hover {
+	background-color: #DDEDDD;
+}
+
+
 .langButton{
 	color: #eee;
 	cursor: pointer;
@@ -9,9 +14,16 @@
 
 #langButtons{
 	margin-top: 10px;
-	right: 30px;
+	right: 17px;
 	position: fixed;
 	z-index: 2;
+}
+
+
+@media (max-width: 767px) {
+	#langButtons {
+		margin-top: -53px;
+	}
 }
 
 /*--------------------------------*/
@@ -355,7 +367,7 @@
 
 #logoHeader {
 	margin-top: 2px;
-	width: 100%;
+	width: 50px;
 }
 
 /*--------------------------------*/
@@ -391,6 +403,12 @@
 
 #headerButtons .btn-large {
 	display: inline;
+}
+
+@media (max-width: 767px) {
+	#headerButtons {
+		margin-top: -40px;
+	}
 }
 
 #signinButton {
