@@ -12,6 +12,7 @@
 			openTeam       : Ember.Route.transitionTo('team'),
 			openCredits    : Ember.Route.transitionTo('credits'),
 			openJobs       : Ember.Route.transitionTo('jobs'),
+			openFeatures   : Ember.Route.transitionTo('features'),
 			openDemos      : Ember.Route.transitionTo('cartotheque'),
 			openDashboard  : Ember.Route.transitionTo('dashboard'),
 
@@ -32,6 +33,7 @@
 			team           : App.TeamRouting,
 			credits        : App.CreditsRouting,
 			jobs           : App.JobsRouting,
+			features       : App.FeaturesRouting,
 			screenshots    : App.ScreenshotsRouting,
 			allNews        : App.AllNewsRouting,
 			cartotheque    : App.CartothequeRouting,
@@ -156,6 +158,7 @@
             page != "team" && 
             page != "credits" && 
             page != "jobs" && 
+            page != "features" && 
             page != "screenshots" && 
             page != "allNews" && 
             page != "cartotheque" && 

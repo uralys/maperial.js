@@ -81,6 +81,7 @@
     "Team"				: "Team",
     "Credits"			: "Credits",
     "Jobs"				: "Jobs",
+    "Features"			: "Features",
     "Blog"				: "Blog",
     "Maps"				: "Maps",
     "ParisRoads"		: "Paris roads",
@@ -129,6 +130,8 @@
 
     "New3Title"			: "Blog : Map projection",
     "New3Text"			: "The Earth is round (well...a bumpy spheroid actually !), and Maperial's current version is 2D, flat. Therefore we need map projection to display data on layers like roads, buildings, topography and even your own data...",
+
+    "DataManagement"	: "Gestion des données",
     
     "":""
 }

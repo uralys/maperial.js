@@ -80,6 +80,7 @@
     "Team"				: "L'équipe",
     "Credits"			: "Crédits",
     "Jobs"				: "Recrutement",
+    "Features"			: "Fonctionnalités",
     "Blog"				: "Le Blog",
     "Maps"				: "Cartes",
     "ParisRoads"		: "Routes à Paris",
@@ -128,6 +129,8 @@
     
     "New3Title"			: "Blog : Projection cartographique",
     "New3Text"			: "La Terre est ronde (enfin...sphérique !), et la version actuelle de Maperial est en 2 dimensions, plane. Il est donc nécessaire d'utiliser des systèmes de projection pour représenter les différentes couches de données affichées comme les routes, la topographie ou encore vos propres données...",
+    
+    "DataManagement"	: "Gestion des données",
     
     "":""
 }
