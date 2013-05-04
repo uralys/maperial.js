@@ -23,7 +23,7 @@
     "chooseText3"		: "fonds classiques",
     "chooseText4"		: "ou votre propre style.",
 
-    "Upload"			: "Upload",
+    "Upload"			: "Importez",
     "uploadText"		: "Utilisez vos propres données géoréférencées",
 
     "Organize"			: "Organisez",
@@ -130,7 +130,58 @@
     "New3Title"			: "Blog : Projection cartographique",
     "New3Text"			: "La Terre est ronde (enfin...sphérique !), et la version actuelle de Maperial est en 2 dimensions, plane. Il est donc nécessaire d'utiliser des systèmes de projection pour représenter les différentes couches de données affichées comme les routes, la topographie ou encore vos propres données...",
     
-    "DataManagement"	: "Gestion des données",
+    "KeepInMind"		: "N'oubliez pas que cette liste de fonctionnalités est entièrement adaptable à votre besoin (formats, représentations...). Contactez nous !",
     
+    "DataManagement"	: "Gestion des données",
+    "Basemap"			: "Fonds de carte",
+    "BasemapDetails"	: "(Google, OSM, Mapquest...)",
+    "Presets"			: "Bibliothèque de styles",
+    "PresetsDetails"	: "Prédéfinis / Personnalisables (voir edition)",
+    "Upload"			: "Import de données",
+    "UploadDetails"		: "Tous formats ( json, csv, ... )",
+    "ScatterPlots"		: "Nuages de points",
+    "Vectors"			: "Données vectorielles",
+    "ImagesGeorefencees": "Images géoréférencées",
+    "Projections"		: "Gestion des projections",
+    "ProjectionsClassic": "Classiques (EPSG)",
+    "ProjectionsPerso"	: "Personnalisées (déf. Proj4)",
+    "TileCreation"		: "Création de tuiles par interpolation",
+    "Dynamic"			: "Cartes de données dynamiques",
+    
+    "Edition"			: "Edition",
+    "Style"				: "Style",
+    "Picking"			: "Sélection par picking sur la carte",
+    "Dico"				: "Sélection dans le dictionnaire d'élements",
+    "DetailledEdition"	: "Edition détaillée par niveau de zoom",
+    "ElementColor"		: "Couleur des éléments",
+    "ElementThickness"	: "Epaisseur des éléments",
+    "ElementOpacity"	: "Opacité des éléments",
+    "ElementRepresentation"	: "Représentation des éléments",
+    "LineThickness"		: "Taille des lignes",
+
+    "Colorbar"			: "Barre de couleurs",
+    "ColorbarDetails"	: "Edition graphique ou textuelle",
+
+    "Composition"		: "Méthodes de composition des calques",
+    "AlphaBlending"		: "Alpha blending",
+    "AlphaClipping"		: "Alpha clipping",
+    "LuminosityAtt"		: "Luminosity attenuation (luminosité, contraste, algorithmes de fusion)",
+    "Repartition"		: "Répartition des éléments vectoriels cartographiques sur différents calques",
+
+    "PublishParams"		: "Paramétrage de publication",
+    "BoundingBox"		: "Bounding box (édition graphique ou textuelle)",
+    "HUDPerso"			: "HUD personalisable pour chaque carte",
+    "MapKeys"			: "Légende",
+    "PublicPrivate"		: "Cartes publiques ou privées",
+    
+    "Publish"			: "Publication",
+    "TagJS"				: "Tag javascript pour domaine externe",
+    "ExportPNG"			: "Export PNG haute définition",
+    "APIJS"				: "API Javascript",
+    "APIRest"			: "API Rest",
+    "APIRestDetails"	: "Mise à jour automatisée des cartographies",
+    "Showcase"			: "Cartothèque personnalisée",
+    "Mobile"			: "Application mobile",
+
     "":""
 }
