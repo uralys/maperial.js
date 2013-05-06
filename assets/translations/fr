@@ -75,7 +75,7 @@
     "SaasText2"			: "Ne payez que les ressources dont vous avez besoin, partez dès que vous avez terminé",
     "SaasText3"			: "Vos données sont sécurisées et vous pourrez y accéder partout",
 
-    "AboutUs"			: "A propos de nous",
+    "AboutUs"			: "A propos",
     "RecentPosts"		: "Posts récents",
     "Team"				: "L'équipe",
     "Credits"			: "Crédits",
@@ -100,10 +100,10 @@
     "chrisText5"		: "Facebook peu avant de rejoindre Maperial.",
     "chrisText6"		: "Il apporte aujourd'hui son expertise dans l'univers du web pour construire la partie cliente/web de l'outil.",
     
-    "vivienText"		: "Muni de compétences transverses, balayant la physique, les mathématiques et l'informatique, la modélisation, les méthodes numériques et la programmation scientique, Vivien apporte à Maperial sa passion pour les projets pluridisciplinaires.",
+    "vivienText"		: "Muni de compétences transverses, balayant la physique, les mathématiques et l'informatique, la modélisation, les méthodes numériques et la programmation scientique, Vivien apporte aussi à Maperial sa passion pour les projets pluridisciplinaires.",
     "vivienText2"		: "",
 
-    "JobsText"			: "@Maperial nous travaillons en méthode Agile avec les dernières technologies Web, pour proposer un outil à la fois moderne, souple et puissant.",
+    "JobsText"			: "Nous travaillons en méthode Agile avec les dernières technologies Web, pour proposer un outil à la fois moderne, souple et puissant.",
     "JobsText2"			: "Vous êtes experts jQuery, EmberJS, Play framework ou Python et n'avez pas peur de ne plus dormir la nuit ? Votre profil pourrait nous intéresser.",
     
     "CreditsTitle"		: "Nos outils",
@@ -187,5 +187,27 @@
     "Showcase"			: "Cartothèque personnalisée",
     "Mobile"			: "Application mobile",
 
+    "Presentation"		: "Qu'est ce que Maperial ?",
+    "PresentationText1"	: "Maperial fonctionne autour des 3 concepts principaux suivants :",
+    "PresentationText2"	: "La possibilité de styler rapidement et simplement les fonds de cartes. C'est à dire donner aux routes la couleur et la taille voulue, changer la couleur des forêts, la police des textes... L'innovation que propose Maperial à ce sujet est le rendu côté client. En effet, d'autres services très intéressants comme CloudMade ou Mapbox proposent déjà de styler les cartes mais l'ergonomie n'est pas toujours au rendez-vous et les images sont calculées par les serveurs puis envoyées aux clients. Maperial lui envoie directement les données vectorielles au moteur de rendu javascript chez ses utilisateurs (à la manière du GeoJson). Les modifications apportées au style des fonds de plan sont alors immédiates et l'expérience utilisateur largement améliorée.",
+    "PresentationText3"	: "La capacité de fusionner des couches (fonds de carte, images satellite, élévation, et surtout données client) intelligemment. Contrairement à la fusion par transparence de l'API googleMap (ou googleEarth) et encore plus élégamment que l'algorithme de fusion par multiplication de Mapbox, Maperial réalise les fusions esthétiques permettant de conserver une excellente visibilité des fonds de plan tout en mettant en valeur les données client.",
+    "PresentationText4"	: "L'interpolation des données client à partir de divers formats d'entrée de sorte à afficher rapidement des résultats de grande qualité. Bien meilleure que les classiques 'heat-map' de Mapbox par exemple. Plusieurs algorithmes d'interpolation sont évidemment à disposition pour couvrir le plus possible de cas de figure par rapport aux données d'entrée (densité, isotropie, partitionnement, ...)",
+
+    "PresentationText5"	: "Pourquoi ?",
+    "PresentationText6"	: "Maperial est né de l'idée, de la motivation et du travail de trois ingénieurs experts dans leurs domaines et intéressés par l'affichage des données géolocalisées. Le monde de la géo-spatialisation, du géo-référencement et surtout de l'affichage de données géo-référencées est en pleine expansion. Des nombreux projets de grande qualité émergent ou se consolident comme OpenSteetMap, CloudMade, Mapbox, CartoDB, GoogleMapAPI...",
+    "PresentationText7"	: "Trop peu d'entre eux s'intéressent à l'affichage direct de données client éparses (sparse data, nuage de point) sous forme de raster (image) après avoir été interpolées via des algorithmes de qualité. C'est ce manque que Maperial comble pour vous. ",
+
+    "PresentationText8"	: "Comment ?",
+    "PresentationText9"	: "Une large gamme de technologies et de connaissances est donc à la base de Maperial qui a nécessité l'utilisation et la maîtrise d'un nombre importants d'outil, librairie, code que ce soit dans le domaine du web, de l'utilisation des données géo-référencées ou du développement et de l'optimisation des codes de calcul.",
+    "PresentationText10": "La partie client de Maperial s'appuie ainsi largement sur les librairie javascript, ember, jquery et bootstrap, sur la technologie play et sur HTML5 (canvas et webGL). Côté serveur, de nombreux scripts pythons, des serveurs tornado et nginx permettent la distribution des diverses requêtes aux bases PostgreSQL / PostGIS et mongoDB.",
+    "PresentationText11": "Les calculs d'interpolation et de re-projection sont réalisés par un code C++ optimisé s'appuyant sur les librairies proj4, GDAL, et des algorithmes d'interpolation validés.",
+
+    "PresentationText12": "Pour qui ?",
+    "PresentationText13": "Maperial s'adresse principalement à l'exploitation de données géo-référencées pouvant profiter d'une visualisation 2D sur fond de plan. On peut penser aux études sur la qualité des sols, à l'affichage de donnée météorologique, de donnée de qualité de l'air ou de l'eau, à l'affichage de données statistiques (criminalité, économie, politique, urbanisme, ...), mais nous sommes certains que d'autres domaines se joindront à l'aventure.",
+    "PresentationText14": "Maperial peut aussi être utilisé sans donnée, simplement pour bénéficier de la qualité de ses styles de fond de plan et de son ergonomie pour créer de nouveaux styles. La diversité des styles générés pourra être utile aux webmasters, aux professeurs (de géographie, histoire, biologie, ...), aux graphistes, et à tous ceux qui veulent affichés une carte dont il maîtrise parfaitement de contenu et l'esthétique.",
+
+    "Prices"			: "Tarifs",
+    "PricesText"		: "La liste des fonctionnalités de l'outil est entièrement adaptable à votre besoin. Nous déterminons avec vous la solution la plus efficace et vous proposons un tarif sur mesure. Contactez nous !",
+    
     "":""
 }

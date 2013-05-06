@@ -104,7 +104,7 @@
     "vivienText"		: "Vivien's experience mixes physics, mathematics, modeling and scientific development.",
     "vivienText2"		: "His expertise on numerical methods and his love for multi-disciplinary teams are a key to Maperial.",
 
-    "JobsText"			: "@Maperial we use agile development methods with latest web technologies, to build a modern, flexible and powerful tool.",
+    "JobsText"			: "We use agile development methods with latest web technologies, to build a modern, flexible and powerful tool.",
     "JobsText2"			: "You are expert with jQuery, EmberJS, Play framework or Python and are not afraid not to sleep anymore ? Your profile might be interesting.",
 
     "CreditsTitle"		: "Maperial's tools",
@@ -187,6 +187,29 @@
     "APIRestDetails"	: "Automatic map updates",
     "Showcase"			: "Get your own showcase",
     "Mobile"			: "Mobile App",
+
+    "Presentation"		: "What is maperial ?",
+    "PresentationText1"	: "The 3 Maperial's keys",
+    "PresentationText2"	: "The ability to style your basemaps quickly and easily. Meaning to give the roads your prefered color and size, change the forests' color, fonts... Maperial innovates by rendering all this on client side. Interesting services like CloudMade or Mapbox help you style your maps as well, but forget about the ergonomy, and the speed as their images are built server side berfore to be sent to the client. Maperial sends directly vectorial data to the client, and uses javascript to render the maps on the user's computers (alike GeoJson). The user can therefore see instant changes on the basemap styles and the UX is enhanced more than ever.",
+    "PresentationText3"	: "The ability to fuse layers (basemaps, satellite images, elevations, and moreover client's data) with purpose. Contrary to MapBox, GoogleMap API or GoogleEarth's alphablending fuse, Maperial performs beautiful fuse allowing the better basemap visibility, meanwhile emphasing the client's data.",
+    "PresentationText4"	: "Data interpolation from many formats in order to display high quality rendering. Definitely better than the classical Mapbox 'heat-map' for instance. You can obviously use many interpolation algorithms to get the broadest display possibilities from the data set (density, isotropy, partitions...)",
+
+    "PresentationText5"	: "Why ?",
+    "PresentationText6"	: "Three engineers experts on their own domain and interested by geolocalised data rendering, got the idea, motivation and energy to start Maperial. Today geospatial analysis, georeference and georeferenced data rendering is expanding quickly. Many quality projects arise or get stronger like OpenSteetMap, CloudMade, Mapbox, CartoDB, GoogleMapAPI...",
+    "PresentationText7"	: "Only a few of them get interested on scatter plots rendering as raster (image) using high quality algorithms for interpolation. This is what Maperial brings for you.",
+
+    "PresentationText8"	: "How ?",
+    "PresentationText9"	: "Une large gamme de technologies et de connaissances est donc à la base de Maperial qui a nécessité l'utilisation et la maîtrise d'un nombre importants d'outil, librairie, code que ce soit dans le domaine du web, de l'utilisation des données géo-référencées ou du développement et de l'optimisation des codes de calcul.",
+    "PresentationText10": "La partie client de Maperial s'appuie ainsi largement sur les librairie javascript, ember, jquery et bootstrap, sur la technologie play et sur HTML5 (canvas et webGL). Côté serveur, de nombreux scripts pythons, des serveurs tornado et nginx permettent la distribution des diverses requêtes aux bases PostgreSQL / PostGIS et mongoDB.",
+    "PresentationText11": "Les calculs d'interpolation et de re-projection sont réalisés par un code C++ optimisé s'appuyant sur les librairies proj4, GDAL, et des algorithmes d'interpolation validés.",
+
+    "PresentationText12": "Who is this for ?",
+    "PresentationText13": "Maperial s'adresse principalement à l'exploitation de données géo-référencées pouvant profiter d'une visualisation 2D sur fond de plan. On peut penser aux études sur la qualité des sols, à l'affichage de donnée météorologique, de donnée de qualité de l'air ou de l'eau, à l'affichage de données statistiques (criminalité, économie, politique, urbanisme, ...), mais nous sommes certains que d'autres domaines se joindront à l'aventure.",
+    "PresentationText14": "Maperial peut aussi être utilisé sans donnée, simplement pour bénéficier de la qualité de ses styles de fond de plan et de son ergonomie pour créer de nouveaux styles. La diversité des styles générés pourra être utile aux webmasters, aux professeurs (de géographie, histoire, biologie, ...), aux graphistes, et à tous ceux qui veulent affichés une carte dont il maîtrise parfaitement de contenu et l'esthétique.",
+
+    "Prices"			: "Prices", 
+    "PricesText"		: "The tool and its features are entirely built on your need. We choose with you the best solution and the price is calculated from this step. Contact us !",
+   
     
     "":""
 }

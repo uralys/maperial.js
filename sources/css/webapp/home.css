@@ -27,7 +27,7 @@
 }
 
 /***** [ ecrans etroits ] *****/
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 	.homepage_top .widget_sp_image h4 {
 		font-size: 1.2em;
 	}

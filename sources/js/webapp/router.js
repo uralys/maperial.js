@@ -13,6 +13,8 @@
 			openCredits    : Ember.Route.transitionTo('credits'),
 			openJobs       : Ember.Route.transitionTo('jobs'),
 			openFeatures   : Ember.Route.transitionTo('features'),
+			openPresentation: Ember.Route.transitionTo('presentation'),
+			openPrices     : Ember.Route.transitionTo('prices'),
 			openDemos      : Ember.Route.transitionTo('cartotheque'),
 			openDashboard  : Ember.Route.transitionTo('dashboard'),
 
@@ -34,6 +36,8 @@
 			credits        : App.CreditsRouting,
 			jobs           : App.JobsRouting,
 			features       : App.FeaturesRouting,
+			presentation   : App.PresentationRouting,
+			prices         : App.PricesRouting,
 			screenshots    : App.ScreenshotsRouting,
 			allNews        : App.AllNewsRouting,
 			cartotheque    : App.CartothequeRouting,
@@ -159,6 +163,8 @@
             page != "credits" && 
             page != "jobs" && 
             page != "features" && 
+            page != "presentation" && 
+            page != "prices" && 
             page != "screenshots" && 
             page != "allNews" && 
             page != "cartotheque" && 

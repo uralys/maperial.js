@@ -394,6 +394,10 @@
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/featuresController.js" />
 			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/presentationController.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/pricesController.js" />
+			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/allNewsController.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/screenshotsController.js" />
@@ -438,6 +442,10 @@
 			<arg value="sources/js/webapp/controllers/config/jobsView.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/featuresView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/presentationView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/pricesView.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/allNewsView.js" />
 			<arg value="--js" />
