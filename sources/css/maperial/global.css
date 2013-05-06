@@ -376,7 +376,7 @@
 	position: fixed;
 	color: #fff;
 	margin-left: 47%;
-	margin-top: 20px;
+	margin-top: -6px;
 }
 
 .headerTitle h1 {
@@ -391,7 +391,7 @@
 	font-size: 17px;
 	color: #aaa;
 	margin-top: -13px;
-	margin-left: -30px;
+	margin-left: 30px;
 }
 
 /*--------------------------------*/
@@ -449,7 +449,7 @@
 
 .headerButton {
 	top: 19px;
-	margin-left: 80%;
+	right: 65px;
 	cursor: pointer;
 	cursor: hand;
 	position: fixed;
@@ -458,7 +458,7 @@
 
 .googleUser {
 	margin-top: 21px;
-	margin-left: 84%;
+	right: 120px;
 	color: #bbb;
 	background: url(http://static.maperial.localhost/images/global/arrow_down.png) no-repeat right 8px;
 	cursor: pointer;

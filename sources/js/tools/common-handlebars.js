@@ -17,6 +17,10 @@ Handlebars.registerHelper('email', function(options) {
          guymal_enc= "entou(bsahcFkgvctogj(eik";
          break;
 
+      case "vivien":
+         guymal_enc= "popoch(ejgs|ihFkgvctogj(eik";
+         break;
+
       case "jobs":
          guymal_enc= "liduFkgvctogj(eik";
          break;

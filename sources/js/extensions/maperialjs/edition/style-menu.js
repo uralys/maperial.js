@@ -46,7 +46,7 @@ function StyleMenu(container, container2, container3, maperial){
    //-------------------------------------------------//
 
    this.size = StyleMenu.SMALLEST;
-   this.currentLayerId = "000";
+   this.currentLayerId = "001";
    
    //-------------------------------------------------//
    //id <-> name/filter mapping

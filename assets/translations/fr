@@ -3,7 +3,7 @@
     "fr"				: "Fr",
 
     "AwesomeMaps"		: "Vos données à la carte",
-    "Everywhere"		: "Votre SIG dans le Cloud",
+    "Everywhere"		: "et dans le Cloud",
 
     "Try"				: "Essayer",
     "TryNow"			: "Essayez !",
@@ -89,15 +89,19 @@
     "WorksOnChrome"		: "Fonctionne avec Chrome.",
     "DownloadNow"		: "Télécharger maintenant !",
 
-    "cofounder"			: "Fondateur",
+    "Founders"			: "Les fondateurs",
     "djoulText"			: "Julien travaille dans les domaines de l'image, de la 3D et du GPGPU pour l'informatique scientifique depuis plus de 7 ans. C'est l'alliance de ces domaines d'activités, et le contact avec des milieux scientifiques qui sont à l'origine de Maperial.",
     "djoulText2"		: "Il est aujourd'hui en charge du développement des technologies serveur, et de la visualisation clients.",
+   
     "chrisText"			: "Après quelques années en tant que développeur dans une startup puis en indépendant, Chris s'est lancé dans l'entreprenariat en developpant des",
     "chrisText2"		: "jeux",
     "chrisText3"		: "pour navigateurs. Il est ensuite devenu co-fondateur d'un",
     "chrisText4"   		: "service",
     "chrisText5"		: "Facebook peu avant de rejoindre Maperial.",
     "chrisText6"		: "Il apporte aujourd'hui son expertise dans l'univers du web pour construire la partie cliente/web de l'outil.",
+    
+    "vivienText"		: "Muni de compétences transverses, balayant la physique, les mathématiques et l'informatique, la modélisation, les méthodes numériques et la programmation scientique, Vivien apporte à Maperial sa passion pour les projets pluridisciplinaires.",
+    "vivienText2"		: "",
 
     "JobsText"			: "@Maperial nous travaillons en méthode Agile avec les dernières technologies Web, pour proposer un outil à la fois moderne, souple et puissant.",
     "JobsText2"			: "Vous êtes experts jQuery, EmberJS, Play framework ou Python et n'avez pas peur de ne plus dormir la nuit ? Votre profil pourrait nous intéresser.",
@@ -137,7 +141,7 @@
     "BasemapDetails"	: "(Google, OSM, Mapquest...)",
     "Presets"			: "Bibliothèque de styles",
     "PresetsDetails"	: "Prédéfinis / Personnalisables (voir edition)",
-    "Upload"			: "Import de données",
+    "DataUpload"		: "Import de données",
     "UploadDetails"		: "Tous formats ( json, csv, ... )",
     "ScatterPlots"		: "Nuages de points",
     "Vectors"			: "Données vectorielles",

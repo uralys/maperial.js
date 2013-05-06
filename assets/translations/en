@@ -3,7 +3,7 @@
     "fr"				: "Fr",
     
     "AwesomeMaps"		: "Awesome maps",
-    "Everywhere"		: "GIS in the Cloud",
+    "Everywhere"		: "In the Cloud",
 
     "Try"				: "Try",
     "TryNow"			: "Try now !",
@@ -90,15 +90,19 @@
     "WorksOnChrome"		: "Works on Chrome.",
     "DownloadNow"		: "Download now !",
     
-    "cofounder"			: "Founder",
+    "Founders"			: "The founders",
     "djoulText"			: "Julien has been a scientific programmer on digital images, 3D and GPGPU for more than 7 years. This skill mix, and his work with scientists are the source of Maperial.",
     "djoulText2"		: "Today, he's leading the server-side technologies development and the client-side visualization.",
+
     "chrisText"			: "Chris worked for several years as software developer in a startup, then as freelance. Later he started his entrepreneurship creating web-browser ",
     "chrisText2"		: "games.",
     "chrisText3"		: "He then co-founded a Facebook",
     "chrisText4"   		: "service",
     "chrisText5"		: "just before joining Maperial. ",
     "chrisText6"		: "Today he uses this web expertise to build the Maperial client-side.",
+
+    "vivienText"		: "Vivien's experience mixes physics, mathematics, modeling and scientific development.",
+    "vivienText2"		: "His expertise on numerical methods and his love for multi-disciplinary teams are a key to Maperial.",
 
     "JobsText"			: "@Maperial we use agile development methods with latest web technologies, to build a modern, flexible and powerful tool.",
     "JobsText2"			: "You are expert with jQuery, EmberJS, Play framework or Python and are not afraid not to sleep anymore ? Your profile might be interesting.",
@@ -138,7 +142,7 @@
     "BasemapDetails"	: "(Google, OSM, Mapquest...)",
     "Presets"			: "Style library",
     "PresetsDetails"	: "Presets / Custom (see edition)",
-    "Upload"			: "Upload your data",
+    "DataUpload"		: "Upload your data",
     "UploadDetails"		: "Every formats ( json, csv, ... )",
     "ScatterPlots"		: "Scatter plots",
     "Vectors"			: "Vectorial data",
