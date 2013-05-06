@@ -204,6 +204,19 @@
 }
 
 /*--------------------------------*/
+#moreWhatButton {
+	position: fixed;
+	right: 20px;
+	top: 360px;
+}
+
+#moreTryButton {
+	position: fixed;
+	left: 20px;
+	top: 360px;
+}
+
+/*--------------------------------*/
 #playImage {
 	margin-top: -245px;
 }

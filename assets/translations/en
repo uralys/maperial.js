@@ -135,7 +135,7 @@
     "New3Title"			: "Blog : Map projection",
     "New3Text"			: "The Earth is round (well...a bumpy spheroid actually !), and Maperial's current version is 2D, flat. Therefore we need map projection to display data on layers like roads, buildings, topography and even your own data...",
 
-    "KeepInMind"		: "Keep in mind this list is entirely customisable to suit your need (Formats, representations). Contact us !",
+    "KeepInMind"		: "Keep in mind this list is entirely customisable to suit your needs (Formats, representations). Contact us !",
     
     "DataManagement"	: "Data Management",
     "Basemap"			: "Basemaps",
@@ -188,6 +188,7 @@
     "Showcase"			: "Get your own showcase",
     "Mobile"			: "Mobile App",
 
+    "What"				: "Maperial ?",
     "Presentation"		: "What is maperial ?",
     "PresentationText1"	: "The 3 Maperial's keys",
     "PresentationText2"	: "The ability to style your basemaps quickly and easily. Meaning to give the roads your prefered color and size, change the forests' color, fonts... Maperial innovates by rendering all this on client side. Interesting services like CloudMade or Mapbox help you style your maps as well, but forget about the ergonomy, and the speed as their images are built server side berfore to be sent to the client. Maperial sends directly vectorial data to the client, and uses javascript to render the maps on the user's computers (alike GeoJson). The user can therefore see instant changes on the basemap styles and the UX is enhanced more than ever.",
@@ -199,13 +200,14 @@
     "PresentationText7"	: "Only a few of them get interested on scatter plots rendering as raster (image) using high quality algorithms for interpolation. This is what Maperial brings for you.",
 
     "PresentationText8"	: "How ?",
-    "PresentationText9"	: "Une large gamme de technologies et de connaissances est donc à la base de Maperial qui a nécessité l'utilisation et la maîtrise d'un nombre importants d'outil, librairie, code que ce soit dans le domaine du web, de l'utilisation des données géo-référencées ou du développement et de l'optimisation des codes de calcul.",
-    "PresentationText10": "La partie client de Maperial s'appuie ainsi largement sur les librairie javascript, ember, jquery et bootstrap, sur la technologie play et sur HTML5 (canvas et webGL). Côté serveur, de nombreux scripts pythons, des serveurs tornado et nginx permettent la distribution des diverses requêtes aux bases PostgreSQL / PostGIS et mongoDB.",
-    "PresentationText11": "Les calculs d'interpolation et de re-projection sont réalisés par un code C++ optimisé s'appuyant sur les librairies proj4, GDAL, et des algorithmes d'interpolation validés.",
+    "PresentationText9"	: "Maperial is built on a broad technology choice and a real knowledge gathering. A great number of tools, langages and libraries is used, in every parts of the solution : web application, georeferenced data, calculation development and optimisation.",
+    "PresentationText10": "Maperial's client side is therefore based on javascript, EmberJS, jQuery, bootstrap, HTML5. Server side Play framework deal with the webapp, and for the maps servers many python scripts, Tornado and Nginx servers deal with the numerous requests to Postgres/PostGIS and mongoDB databases.",
+    "PresentationText11": "Interpolation calculations and projections are done with an optimised C++ code using proj4 and GDAL libraries, and validated interpolation algorithms.",
 
     "PresentationText12": "Who is this for ?",
-    "PresentationText13": "Maperial s'adresse principalement à l'exploitation de données géo-référencées pouvant profiter d'une visualisation 2D sur fond de plan. On peut penser aux études sur la qualité des sols, à l'affichage de donnée météorologique, de donnée de qualité de l'air ou de l'eau, à l'affichage de données statistiques (criminalité, économie, politique, urbanisme, ...), mais nous sommes certains que d'autres domaines se joindront à l'aventure.",
-    "PresentationText14": "Maperial peut aussi être utilisé sans donnée, simplement pour bénéficier de la qualité de ses styles de fond de plan et de son ergonomie pour créer de nouveaux styles. La diversité des styles générés pourra être utile aux webmasters, aux professeurs (de géographie, histoire, biologie, ...), aux graphistes, et à tous ceux qui veulent affichés une carte dont il maîtrise parfaitement de contenu et l'esthétique.",
+    "PresentationText13": "Maperial is the tool you need to visualize, question, analyze, interpret, and understand your georeferenced data on 2D basemaps. We could think of ground quality studies, meteorological data rendering, air quality or water quality data rendering, statistical data rendering (criminality, economy, politics, town planning...)... Surely there is not enough room to gather here the many domains that could join the list.",
+    "PresentationText14": "Maperial could be used without any data as well, just to draw awesome styled maps with the basemaps we provide and maperial's style editor ergonomy. The variety of custom styles can be useful to webmasters, teachers (geography, history, biology...), graphists...Everyone willing to draw a map willing to master its content and rendering !",
+    "PresentationText15": "Keep in mind Maperial is entirely customisable to suit your needs, just contact us !",
 
     "Prices"			: "Prices", 
     "PricesText"		: "The tool and its features are entirely built on your need. We choose with you the best solution and the price is calculated from this step. Contact us !",

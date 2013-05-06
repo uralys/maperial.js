@@ -187,6 +187,7 @@
     "Showcase"			: "Cartothèque personnalisée",
     "Mobile"			: "Application mobile",
 
+    "What"				: "Maperial ?",
     "Presentation"		: "Qu'est ce que Maperial ?",
     "PresentationText1"	: "Maperial fonctionne autour des 3 concepts principaux suivants :",
     "PresentationText2"	: "La possibilité de styler rapidement et simplement les fonds de cartes. C'est à dire donner aux routes la couleur et la taille voulue, changer la couleur des forêts, la police des textes... L'innovation que propose Maperial à ce sujet est le rendu côté client. En effet, d'autres services très intéressants comme CloudMade ou Mapbox proposent déjà de styler les cartes mais l'ergonomie n'est pas toujours au rendez-vous et les images sont calculées par les serveurs puis envoyées aux clients. Maperial lui envoie directement les données vectorielles au moteur de rendu javascript chez ses utilisateurs (à la manière du GeoJson). Les modifications apportées au style des fonds de plan sont alors immédiates et l'expérience utilisateur largement améliorée.",
@@ -199,12 +200,13 @@
 
     "PresentationText8"	: "Comment ?",
     "PresentationText9"	: "Une large gamme de technologies et de connaissances est donc à la base de Maperial qui a nécessité l'utilisation et la maîtrise d'un nombre importants d'outil, librairie, code que ce soit dans le domaine du web, de l'utilisation des données géo-référencées ou du développement et de l'optimisation des codes de calcul.",
-    "PresentationText10": "La partie client de Maperial s'appuie ainsi largement sur les librairie javascript, ember, jquery et bootstrap, sur la technologie play et sur HTML5 (canvas et webGL). Côté serveur, de nombreux scripts pythons, des serveurs tornado et nginx permettent la distribution des diverses requêtes aux bases PostgreSQL / PostGIS et mongoDB.",
+    "PresentationText10": "La partie client de Maperial s'appuie ainsi largement sur les librairies javascript, EmberJS, jQuery, bootstrap, HTML5. Côté serveur, Play framework permet de commnuiquer avec l'application web et pour les serveurs de cartes de nombreux scripts pythons, ainsi que des serveurs Tornado et Nginx permettent la distribution des diverses requêtes aux bases Postgres/PostGIS et mongoDB.",
     "PresentationText11": "Les calculs d'interpolation et de re-projection sont réalisés par un code C++ optimisé s'appuyant sur les librairies proj4, GDAL, et des algorithmes d'interpolation validés.",
 
     "PresentationText12": "Pour qui ?",
     "PresentationText13": "Maperial s'adresse principalement à l'exploitation de données géo-référencées pouvant profiter d'une visualisation 2D sur fond de plan. On peut penser aux études sur la qualité des sols, à l'affichage de donnée météorologique, de donnée de qualité de l'air ou de l'eau, à l'affichage de données statistiques (criminalité, économie, politique, urbanisme, ...), mais nous sommes certains que d'autres domaines se joindront à l'aventure.",
-    "PresentationText14": "Maperial peut aussi être utilisé sans donnée, simplement pour bénéficier de la qualité de ses styles de fond de plan et de son ergonomie pour créer de nouveaux styles. La diversité des styles générés pourra être utile aux webmasters, aux professeurs (de géographie, histoire, biologie, ...), aux graphistes, et à tous ceux qui veulent affichés une carte dont il maîtrise parfaitement de contenu et l'esthétique.",
+    "PresentationText14": "Maperial peut aussi être utilisé sans donnée, simplement pour bénéficier de la qualité de ses styles de fond de plan et de son ergonomie pour créer de nouveaux styles. La diversité des styles générés pourra être utile aux webmasters, aux professeurs (de géographie, histoire, biologie...), aux graphistes, et à tous ceux qui veulent afficher une carte dont ils maîtrisent parfaitement le contenu et l'esthétique.",
+    "PresentationText15": "N'oubliez pas que Maperial est entièrement adaptable à votre besoin : Contactez nous !",
 
     "Prices"			: "Tarifs",
     "PricesText"		: "La liste des fonctionnalités de l'outil est entièrement adaptable à votre besoin. Nous déterminons avec vous la solution la plus efficace et vous proposons un tarif sur mesure. Contactez nous !",
