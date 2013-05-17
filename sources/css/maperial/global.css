@@ -365,9 +365,9 @@
 	letter-spacing: -1px;
 }
 
-#logoHeader {
-	margin-top: 2px;
-	width: 50px;
+#logo {
+	width: 300px;
+	margin-top: 10px;
 }
 
 /*--------------------------------*/
