@@ -133,6 +133,9 @@
     
     "New3Title"			: "Blog : Projection cartographique",
     "New3Text"			: "La Terre est ronde (enfin...sphérique !), et la version actuelle de Maperial est en 2 dimensions, plane. Il est donc nécessaire d'utiliser des systèmes de projection pour représenter les différentes couches de données affichées comme les routes, la topographie ou encore vos propres données...",
+
+    "New4Title"			: "SRTM (2)",
+    "New4Text"			: "L'optimisation de nos modélisations SRTM se termine ! Nous pourrons bientôt vous les proposer parmi nos fonds de carte.",
     
     "KeepInMind"		: "N'oubliez pas que cette liste de fonctionnalités est entièrement adaptable à votre besoin (formats, représentations...). Contactez nous !",
     
