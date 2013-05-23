@@ -37,6 +37,8 @@
       isViewGeneration: false,
 
       //-------------------------------------------//
+   
+      isTryscreen: false,
 
    });
 

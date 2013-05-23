@@ -12,6 +12,7 @@ function LayersManager(maperial){
 LayersManager.Vector = "vector";
 LayersManager.Raster = "raster";
 LayersManager.Images = "images";
+LayersManager.WMS    = "wms";
 
 //-------------------------------------------//
 
@@ -19,23 +20,28 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
 
    var layerConfig;
    switch(sourceType){
-   case Source.MaperialOSM :
-      layerConfig = LayersManager.getOSMLayerConfig();
-      break;
-
-   case Source.Raster :
-      var rasterUID = params[0];
-      layerConfig = LayersManager.getRasterLayerConfig(rasterUID);
-      break;
-
-   case Source.Vector :
-      layerConfig = LayersManager.getVectorLayerConfig();
-      break;
-
-   case Source.Images :
-      var src = params[0];
-      layerConfig = LayersManager.getImagesLayerConfig(src);
-      break;
+      case Source.MaperialOSM :
+         layerConfig = LayersManager.getOSMLayerConfig();
+         break;
+   
+      case Source.Raster :
+         var rasterUID = params[0];
+         layerConfig = LayersManager.getRasterLayerConfig(rasterUID);
+         break;
+   
+      case Source.Vector :
+         layerConfig = LayersManager.getVectorLayerConfig();
+         break;
+   
+      case Source.Images :
+         var src = params[0];
+         layerConfig = LayersManager.getImagesLayerConfig(src);
+         break;
+   
+      case Source.WMS :
+         var wms = params[0];
+         layerConfig = LayersManager.getWMSLayerConfig(wms);
+         break;
    }
 
    this.maperial.config.layers.push(layerConfig);
@@ -300,6 +306,29 @@ LayersManager.getImagesLayerConfig = function(src) {
       },
       params: {
 
+      },
+      composition: {
+         shader : Maperial.AlphaBlend
+      }
+   }
+}
+
+//-------------------------------------------//
+
+/**
+ * src : 
+ *    Source.WMS_1
+ *    Source.WMS_2
+ */
+LayersManager.getWMSLayerConfig = function(wms) {
+   return { 
+      type: LayersManager.WMS, 
+      source: {
+         type: Source.WMS,
+         params: { wms: wms }
+      },
+      params: {
+         
       },
       composition: {
          shader : Maperial.AlphaBlend

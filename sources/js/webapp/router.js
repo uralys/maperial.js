@@ -86,7 +86,8 @@
 	   
       console.log("openPage " + page);
 		if(webappPage
-		&& page != "tryscreen" 
+//		&& page != "tryscreen" 
+	   && page != "mapCreation" 
 		&& !App.user.loggedIn)
 		{
 			console.log("Not connected ! Redirected to the home page");

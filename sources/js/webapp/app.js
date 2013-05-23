@@ -129,7 +129,18 @@
 
          //-------------------------------------//
 
-         App.get('router').transitionTo(nextPage);
+         if(nextPage == "tryscreen"){
+            App.Globals.isTryscreen = true;
+            App.mapManager.createNewMap();
+            App.get('router').transitionTo('mapCreation');
+         }
+         else{
+            App.Globals.isTryscreen = false;
+            App.get('router').transitionTo(nextPage);
+         }
+
+         //-------------------------------------//
+
          App.user.set("waiting", false);
       });
    }

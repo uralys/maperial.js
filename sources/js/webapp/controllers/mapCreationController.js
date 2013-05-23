@@ -162,6 +162,10 @@
             MapCreationController.openSelectRasterWindow();
             break;
 
+         case Source.Vector:
+            MapCreationController.openSelectWMSWindow();
+            break;
+
          case Source.Images:
             MapCreationController.addImagesLayer(imagesSrc);
             break;
@@ -194,13 +198,15 @@
          }
       }
       
-      if(yetAnotherImagesLayer){
-         // TODO :  ameliorer le UI avec bootstrap.alert
-         alert("Il y a deja un layer 'Images'");
-      }
-      else{
-         App.maperial.layersManager.addLayer(Source.Images, [src]);
-      }
+//      if(yetAnotherImagesLayer){
+//         // TODO :  ameliorer le UI avec bootstrap.alert
+//         alert("Il y a deja un layer 'Images'");
+//      }
+//      else{
+//         App.maperial.layersManager.addLayer(Source.Images, [src]);
+//      }
+
+      App.maperial.layersManager.addLayer(Source.Images, [src]);
    }
    
    //--------------------------------------//
@@ -287,12 +293,24 @@
    }
    
    //=============================================================================//
+   // WMS
+  
+   MapCreationController.openSelectWMSWindow = function(){
+      $("#selectWMSWindow").modal();
+   }
+
+   MapCreationController.selectWMS = function(wms){
+      $("#selectWMSWindow").modal("hide");
+      App.maperial.layersManager.addLayer(Source.WMS, wms);
+   }
+   
+   //=============================================================================//
    // Rasters
    
    MapCreationController.openSelectRasterWindow = function(){
       $("#selectRasterWindow").modal();
    }
-   
+
    MapCreationController.selectRaster = function(raster){
       $("#selectRasterWindow").modal("hide");
       
@@ -729,6 +747,14 @@
          var src = event.context;
          MapCreationController.selectImages(src);
       },
+      
+      //--------------------------------------//
+      // WMS actions
+      
+      selectWMS: function(router, event){
+         var wms = event.context;
+         MapCreationController.selectWMS([wms]);
+      },
 
       //--------------------------------------//
       // Settings actions
@@ -756,6 +782,11 @@
       useInputs: function(router, event){
          MapCreationController.useInputs();
       },
+
+      //--------------------------------------//
+      // as a tryscreen
+
+      signin: function(){window.location.href="/?login"},
    });
 
    //==================================================================//
