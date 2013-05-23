@@ -50,6 +50,7 @@ Tile.prototype.initLayers = function () {
             break;
    
          case LayersManager.Images:
+         case LayersManager.WMS:
             this.layers[i] = new ImageLayer     ( this.maperial.context.assets.ctx , this.z);
             break;
             
@@ -109,7 +110,10 @@ Tile.prototype.appendDataToLayers = function ( sourceType, data ) {
          if ( this.config.layers[i].source.type == sourceType )
             this.layers[i].Init( data );
       }
-      catch(e){}
+      catch(e){
+         console.log("Could not append")
+         console.log(e)
+      }
    }   
 }
 
