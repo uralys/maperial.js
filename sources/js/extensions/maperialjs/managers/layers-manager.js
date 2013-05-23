@@ -17,7 +17,7 @@ LayersManager.WMS    = "wms";
 //-------------------------------------------//
 
 LayersManager.prototype.addLayer = function(sourceType, params) {
-
+   console.log("adding layer " + params[0])
    var layerConfig;
    switch(sourceType){
       case Source.MaperialOSM :
@@ -296,6 +296,9 @@ LayersManager.getVectorLayerConfig = function() {
  *    Source.IMAGES_MAPQUEST
  *    Source.IMAGES_MAPQUEST_SATELLITE
  *    Source.IMAGES_OSM
+
+ *    Source.WMS_1
+ *    Source.WMS_2
  */
 LayersManager.getImagesLayerConfig = function(src) {
    return { 

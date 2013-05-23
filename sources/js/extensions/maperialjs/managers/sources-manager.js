@@ -43,11 +43,8 @@ SourcesManager.prototype.buildSources = function(layers){
             break;
 
          case Source.Images:
-            params = {src : layers[i].source.params.src };
-            break;
-
          case Source.WMS:
-            params = {wms : layers[i].source.params.wms };
+            params = {src : layers[i].source.params.src };
             break;
       }
 
@@ -184,7 +181,7 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
    var tm = setTimeout(ajaxTimeout, Maperial.tileDLTimeOut);
 
    //http://blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html
-   this.requests[requestId].crossOrigin = ''; // no credentials flag. Same as img.crossOrigin='anonymous'
+//   this.requests[requestId].crossOrigin = ''; // no credentials flag. Same as img.crossOrigin='anonymous'
 
    this.requests[requestId].src = url;
 }
@@ -306,48 +303,61 @@ SourcesManager.prototype.getURL = function (source, tx, ty, z) {
          return Maperial.apiURL + "/api/tile/"+source.params.rasterUID+"?x="+tx+"&y="+ty+"&z="+z;
 
       case Source.Images:
-         var src = null;
-         if ( source.params === undefined || source.params.src === undefined )
-            src = Source.IMAGES_OSM;
-         else 
-            src = source.params.src;
-
-         var gty = (Math.pow ( 2,z ) - 1) - ty;
-
-         switch (src) {
-
-            case Source.IMAGES_MAPQUEST :             // need to check http://developer.mapquest.com/web/products/open/map
-               var r = Math.floor ( Math.random() * 4 + 1 ) % (4 + 1) // Betwen [0,4]
-               return "http://otile"+r+".mqcdn.com/tiles/1.0.0/osm/"+z+"/"+tx+"/"+gty+".png";
-
-//             case Source.IMAGES_MAPQUEST_SATELLITE :   // need to check http://developer.mapquest.com/web/products/open/map
-//             var r = Math.floor ( Math.random() * 4 + 1 ) % (4 + 1) // Betwen [0,4]
-//             return "http://otile"+r+".mqcdn.com/tiles/1.0.0/sat/"+z+"/"+tx+"/"+gty+".png";
-
-            case Source.IMAGES_MAPQUEST_SATELLITE :   // need to check http://developer.mapquest.com/web/products/open/map
-               return "http://irs.gis-lab.info/?layers=landsat&request=GetTile&z="+z+"&x="+tx+"&y="+gty;
-
-            case Source.IMAGES_OSM:                   // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
-            default :
-               return "http://tile.openstreetmap.org/"+z+"/"+tx+"/"+gty+".png"
-
-               //http://irs.gis-lab.info/
-               //http://www.thunderforest.com/ 
-
-               // Check nokia
-
-               // Unautorized :(
-               //case "google satellite":
-               //   return "http://khm1.google.com/kh/v=101&x="+tx+"&y="+gty+"&z="+z
-               //case "google street":
-               //   return "http://mt0.google.com/vt/x="+tx+"&y="+gty+"&z="+z
-         }
-         // http://www.neongeo.com/wiki/doku.php?id=map_servers
-         
-         //http://www.opencyclemap.org/docs/
+         return this.getImageURL(source, tx, ty, z)
    }
 }
 
+
+SourcesManager.prototype.getImageURL = function (source, tx, ty, z) {
+
+   var src = null;
+   if ( source.params === undefined || source.params.src === undefined )
+      source.params.src = Source.IMAGES_OSM;
+   
+   var gty = (Math.pow ( 2,z ) - 1) - ty;
+   
+   console.log("src "+ source.params.src);
+  
+   switch (source.params.src) {
+      case Source.IMAGES_MAPQUEST :             // need to check http://developer.mapquest.com/web/products/open/map
+         var r = Math.floor ( Math.random() * 4 + 1 ) % (4 + 1) // Betwen [0,4]
+         return "http://otile"+r+".mqcdn.com/tiles/1.0.0/osm/"+z+"/"+tx+"/"+gty+".png";
+         break;
+   
+   //    case Source.IMAGES_MAPQUEST_SATELLITE :   // need to check http://developer.mapquest.com/web/products/open/map
+   //    var r = Math.floor ( Math.random() * 4 + 1 ) % (4 + 1) // Betwen [0,4]
+   //    return "http://otile"+r+".mqcdn.com/tiles/1.0.0/sat/"+z+"/"+tx+"/"+gty+".png";
+   
+      case Source.IMAGES_MAPQUEST_SATELLITE : 
+         return "http://irs.gis-lab.info/?layers=landsat&request=GetTile&z="+z+"&x="+tx+"&y="+gty;
+         break;
+   
+      case Source.WMSB:
+         console.log("WMSB");
+         return this.getWMSURL(source, tx, ty, z);
+         break;
+         
+//      case Source.IMAGES_OSM:                   // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
+//      default :
+//         console.log("OSM");
+//         return "http://tile.openstreetmap.org/"+z+"/"+tx+"/"+gty+".png"
+//         break;
+//   
+//         //http://irs.gis-lab.info/
+//         //http://www.thunderforest.com/ 
+//   
+//         // Check nokia
+//   
+//         // Unautorized :(
+//         //case "google satellite":
+//         //   return "http://khm1.google.com/kh/v=101&x="+tx+"&y="+gty+"&z="+z
+//         //case "google street":
+//         //   return "http://mt0.google.com/vt/x="+tx+"&y="+gty+"&z="+z
+   }
+// http://www.neongeo.com/wiki/doku.php?id=map_servers
+
+//http://www.opencyclemap.org/docs/
+}
 //-------------------------------------------//
 /*
  * 
@@ -387,7 +397,7 @@ SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
    var bottomRightP = new Point(topLeftP.x + Maperial.tileSize, topLeftP.y + Maperial.tileSize)
    var bottomRightM = this.maperial.context.coordS.PixelsToMeters(bottomRightP.x, bottomRightP.y, this.maperial.context.zoom)
 
-   switch(source.params.wms){
+   switch(source.params.src){
       
       case Source.WMS_1:
      

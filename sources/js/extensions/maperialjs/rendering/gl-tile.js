@@ -110,10 +110,7 @@ Tile.prototype.appendDataToLayers = function ( sourceType, data ) {
          if ( this.config.layers[i].source.type == sourceType )
             this.layers[i].Init( data );
       }
-      catch(e){
-         console.log("Could not append")
-         console.log(e)
-      }
+      catch(e){}
    }   
 }
 

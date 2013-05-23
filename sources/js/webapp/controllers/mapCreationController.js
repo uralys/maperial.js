@@ -287,6 +287,7 @@
             
          case Source.Raster :
          case Source.Images:
+         case Source.WMS:
             break;
             
       }
@@ -301,7 +302,10 @@
 
    MapCreationController.selectWMS = function(wms){
       $("#selectWMSWindow").modal("hide");
-      App.maperial.layersManager.addLayer(Source.WMS, wms);
+//      App.maperial.layersManager.addLayer(Source.WMS, wms);
+
+      
+      App.maperial.layersManager.addLayer(Source.Images, [wms]);
    }
    
    //=============================================================================//
@@ -753,7 +757,7 @@
       
       selectWMS: function(router, event){
          var wms = event.context;
-         MapCreationController.selectWMS([wms]);
+         MapCreationController.selectWMS(wms);
       },
 
       //--------------------------------------//
