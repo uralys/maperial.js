@@ -46,7 +46,7 @@ Maperial.autoMoveMillis         = 700;
 Maperial.autoMoveDeceleration   = 0.005;
 Maperial.autoMoveAnalyseSize    = 10;
 
-Maperial.DEFAULT_STYLE_UID      = "1_style_13ba851b4e18833e08e";
+Maperial.DEFAULT_STYLE_UID      = "1_style_13ed75438c8b2ed8914";
 Maperial.DEFAULT_COLORBAR_UID   = "1_colorbar_13c630ec3a5068919c3";
 
 Maperial.AlphaClip              = "AlphaClip";
@@ -375,7 +375,6 @@ Maperial.prototype.finishStartup = function() {
 
    this.refreshScreen();
    $(window).resize(Utils.apply ( this , "refreshScreen" ) );
-
    $(window).trigger(MaperialEvents.READY);
 }
 
@@ -468,6 +467,16 @@ Maperial.prototype.refreshScreen = function() {
 
 //==================================================================//
 
+Maperial.prototype.setConfigCoordinates = function(lat, lon, zoom){
+   this.config.map.latMin        = lat;
+   this.config.map.latMax        = lat;
+   this.config.map.lonMin        = lon;
+   this.config.map.lonMax        = lon;
+   this.config.map.defaultZoom   = zoom;
+}
+
+//==================================================================//
+   
 Maperial.prototype.SetCenter = function(lat,lon){
    this.context.centerM = this.context.coordS.LatLonToMeters( lat , lon );
    this.mapRenderer.DrawScene();

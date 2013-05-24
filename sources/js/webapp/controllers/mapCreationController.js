@@ -6,8 +6,8 @@
    
    //==================================================================//
    
-   MapCreationController.LAYERS_CREATION = "LAYERS_CREATION";
-   MapCreationController.SETTINGS = "SETTINGS";
+   MapCreationController.LAYERS_CREATION  = "LAYERS_CREATION";
+   MapCreationController.SETTINGS         = "SETTINGS";
 
    //==================================================================//
    // Rendering
@@ -148,14 +148,14 @@
    
    //--------------------------------------//
 
-   MapCreationController.addLayer = function(sourceType, imagesSrc){
+   MapCreationController.addLayer = function(sourceType, src){
       $("#baseSelectionWindow").modal("hide");
       $("#sourceSelectionWindow").modal("hide");
       
       switch(sourceType){
          
          case Source.MaperialOSM:
-            MapCreationController.addOSMLayer();
+            MapCreationController.addOSMLayer(src);
             break;
 
          case Source.Raster:
@@ -167,7 +167,7 @@
             break;
 
          case Source.Images:
-            MapCreationController.addImagesLayer(imagesSrc);
+            MapCreationController.addImagesLayer(src);
             break;
             
       }
@@ -175,14 +175,44 @@
 
    //--------------------------------------//
 
-   MapCreationController.addOSMLayer = function(){
+   MapCreationController.addOSMLayer = function(src){
       if(App.maperial.config.layers.length > 0 
       && App.maperial.config.layers[App.maperial.config.layers.length-1].source.type == Source.MaperialOSM){
          // TODO :  ameliorer le UI avec bootstrap.alert
          alert("Le layer du dessus est deja OSM");
       }
       else{
-         App.maperial.layersManager.addLayer(Source.MaperialOSM);
+         var params;
+         console.log("addOSMLayer : " + src)
+         switch(src){
+            case Source.MAPERIAL_BROWNIE:
+               params = Source.MAPERIAL_BROWNIE_ID;
+               break;
+            case Source.MAPERIAL_CLASSIC:
+               params = Source.MAPERIAL_CLASSIC_ID;
+               break;
+            case Source.MAPERIAL_COOKIES:
+               params = Source.MAPERIAL_COOKIES_ID;
+               break;
+            case Source.MAPERIAL_FLUO:
+               params = Source.MAPERIAL_FLUO_ID;
+               break;
+            case Source.MAPERIAL_GREEN:
+               params = Source.MAPERIAL_GREEN_ID;
+               break;
+            case Source.MAPERIAL_LIGHT:
+               params = Source.MAPERIAL_LIGHT_ID;
+               break;
+            case Source.MAPERIAL_PINK:
+               params = Source.MAPERIAL_PINK_ID;
+               break;
+            case Source.MAPERIAL_YELLOW:
+               params = Source.MAPERIAL_YELLOW_ID;
+               break;
+         }
+         
+         console.log("params : " + params)
+         App.maperial.layersManager.addLayer(Source.MaperialOSM, params);
       }
    }
    
@@ -198,15 +228,13 @@
          }
       }
       
-//      if(yetAnotherImagesLayer){
-//         // TODO :  ameliorer le UI avec bootstrap.alert
-//         alert("Il y a deja un layer 'Images'");
-//      }
-//      else{
-//         App.maperial.layersManager.addLayer(Source.Images, [src]);
-//      }
-
-      App.maperial.layersManager.addLayer(Source.Images, [src]);
+      if(yetAnotherImagesLayer){
+         // TODO :  ameliorer le UI avec bootstrap.alert
+         alert("Il y a deja un layer basemap/fond de map");
+      }
+      else{
+         App.maperial.layersManager.addLayer(Source.Images, [src]);
+      }
    }
    
    //--------------------------------------//
@@ -249,6 +277,9 @@
    
    MapCreationController.deleteLayer = function(layerIndex){
       App.maperial.layersManager.deleteLayer(layerIndex);
+      
+      if(App.maperial.config.layers.length == 0)
+         MapCreationController.openBaseSelection()
    }
    
    //=============================================================================//
@@ -723,9 +754,11 @@
       },
       
       addLayer: function(router, event){
+
+         console.log("addLayer : ",event.contexts)
          var source = event.contexts[0];
-         var imagesSrc = event.contexts[1];
-         MapCreationController.addLayer(source, imagesSrc);
+         var src    = event.contexts[1];
+         MapCreationController.addLayer(source, src);
       },
 
       openSettings: function(router, event){

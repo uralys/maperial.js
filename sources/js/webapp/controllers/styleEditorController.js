@@ -9,8 +9,8 @@
    //==================================================================//
 
    StyleEditorController.renderUI = function() {
-      App.maperial.apply(StyleEditorController.getConfig());
       $(window).on(MaperialEvents.READY, StyleEditorController.maperialReady);
+      App.maperial.apply(StyleEditorController.getConfig());
    }
 
    StyleEditorController.cleanUI = function() {
@@ -32,6 +32,7 @@
       
       //-----------------------------
       // if creating a new style : copy the selected style as a new style
+
       if(!App.stylesData.editingStyle)
       {
          var newStyle = {
@@ -88,6 +89,14 @@
    StyleEditorController.saveStyle = function()
    {
       App.stylesData.set('selectedStyle.name', $("#styleNameInput").val());
+      
+      for(var i = 0 ; i < App.user.styles.length; i++){
+         if(App.stylesData.selectedStyle.uid == App.user.styles[i].uid){
+            App.user.styles[i] = App.stylesData.selectedStyle; 
+            break;
+         }
+      }
+         
       $("#panelStyleEditorMenu_maperial").addClass("hide");
 
       if(App.stylesData.editingStyle)

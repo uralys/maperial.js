@@ -50,7 +50,6 @@ Tile.prototype.initLayers = function () {
             break;
    
          case LayersManager.Images:
-         case LayersManager.WMS:
             this.layers[i] = new ImageLayer     ( this.maperial.context.assets.ctx , this.z);
             break;
             

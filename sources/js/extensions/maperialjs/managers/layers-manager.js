@@ -12,16 +12,18 @@ function LayersManager(maperial){
 LayersManager.Vector = "vector";
 LayersManager.Raster = "raster";
 LayersManager.Images = "images";
-LayersManager.WMS    = "wms";
 
 //-------------------------------------------//
 
 LayersManager.prototype.addLayer = function(sourceType, params) {
-   console.log("adding layer " + params[0])
+
    var layerConfig;
    switch(sourceType){
       case Source.MaperialOSM :
-         layerConfig = LayersManager.getOSMLayerConfig();
+         if(params != undefined && params != null )
+            layerConfig = LayersManager.getOSMLayerConfig([params]);
+         else
+            layerConfig = LayersManager.getOSMLayerConfig();
          break;
    
       case Source.Raster :
@@ -38,10 +40,6 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
          layerConfig = LayersManager.getImagesLayerConfig(src);
          break;
    
-      case Source.WMS :
-         var wms = params[0];
-         layerConfig = LayersManager.getWMSLayerConfig(wms);
-         break;
    }
 
    this.maperial.config.layers.push(layerConfig);
@@ -293,12 +291,8 @@ LayersManager.getVectorLayerConfig = function() {
 
 /**
  * src : 
- *    Source.IMAGES_MAPQUEST
- *    Source.IMAGES_MAPQUEST_SATELLITE
- *    Source.IMAGES_OSM
-
- *    Source.WMS_1
- *    Source.WMS_2
+ *    Source.IMAGES_*
+ *    Source WMS
  */
 LayersManager.getImagesLayerConfig = function(src) {
    return { 
@@ -317,24 +311,3 @@ LayersManager.getImagesLayerConfig = function(src) {
 }
 
 //-------------------------------------------//
-
-/**
- * src : 
- *    Source.WMS_1
- *    Source.WMS_2
- */
-LayersManager.getWMSLayerConfig = function(wms) {
-   return { 
-      type: LayersManager.WMS, 
-      source: {
-         type: Source.WMS,
-         params: { wms: wms }
-      },
-      params: {
-         
-      },
-      composition: {
-         shader : Maperial.AlphaBlend
-      }
-   }
-}

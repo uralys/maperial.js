@@ -43,7 +43,10 @@ SourcesManager.prototype.buildSources = function(layers){
             break;
 
          case Source.Images:
-         case Source.WMS:
+            
+            if(layers[i].source.params.src == Source.IMAGES_STAMEN_TERRAIN)
+               this.maperial.setConfigCoordinates(40.68, -74.12, 7) // US - only
+               
             params = {src : layers[i].source.params.src };
             break;
       }
@@ -109,9 +112,6 @@ SourcesManager.prototype.loadSources = function (x, y ,z) {
             this.LoadImage ( source, x, y, z );
             break;
 
-         case Source.WMS:
-            this.LoadWMS ( source, x, y, z );
-            break;
       }
    }
 
@@ -157,6 +157,9 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
 
    this.requests[requestId] = new Image();
 
+   //http://blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html
+   this.requests[requestId].crossOrigin = ''; // no credentials flag. Same as img.crossOrigin='anonymous'
+
    this.requests[requestId].onload = function (oEvent) {      
       var img = me.requests[requestId]
       me.errors[requestId] = false;
@@ -179,9 +182,6 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
    // TODO opti : quest ce qui est le plus couteux : ce "try catch" + abort systematique ou un "if (requests && !data){abort}" ?
    function ajaxTimeout() { try{ me.requests[requestId].abort(); }catch(e){} }
    var tm = setTimeout(ajaxTimeout, Maperial.tileDLTimeOut);
-
-   //http://blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html
-//   this.requests[requestId].crossOrigin = ''; // no credentials flag. Same as img.crossOrigin='anonymous'
 
    this.requests[requestId].src = url;
 }
@@ -232,44 +232,6 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.LoadWMS = function ( source, x, y, z ) {
-   var me         = this;   
-   var url        = this.getWMSURL(source, x, y, z);
-   var requestId  = this.requestId(source, x, y, z);
-
-   this.requests[requestId] = new Image();
-
-   this.requests[requestId].onload = function (oEvent) {      
-      var img = me.requests[requestId]
-      me.errors[requestId] = false;
-      me.load[requestId]  = true;
-      me.data[requestId]  = img;
-
-      me.maperial.mapRenderer.sourceReady(source, x, y, z);
-   };
-
-   this.requests[requestId].onerror = function (oEvent) {
-      me.errors[requestId] = true;
-      me.load[requestId]  = true;
-      me.maperial.mapRenderer.sourceReady(source, x, y, z);
-   }
-
-   this.requests[requestId].abort = function () {
-      this.src = ''
-   }
-
-   // TODO opti : quest ce qui est le plus couteux : ce "try catch" + abort systematique ou un "if (requests && !data){abort}" ?
-   function ajaxTimeout() { try{ me.requests[requestId].abort(); }catch(e){} }
-   var tm = setTimeout(ajaxTimeout, Maperial.tileDLTimeOut);
-
-   //http://blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html
-   this.requests[requestId].crossOrigin = ''; // no credentials flag. Same as img.crossOrigin='anonymous'
-
-   this.requests[requestId].src = url;
-}
-
-//----------------------------------------------------------------------------------------------------------------------//
-
 SourcesManager.prototype.isTileLoaded = function ( x, y, z) {
 
    for(var i = 0; i< this.sources.length; i++){
@@ -315,80 +277,80 @@ SourcesManager.prototype.getImageURL = function (source, tx, ty, z) {
       source.params.src = Source.IMAGES_OSM;
    
    var gty = (Math.pow ( 2,z ) - 1) - ty;
+   var server = ["a", "b", "c", "d"];
    
-   console.log("src "+ source.params.src);
-  
    switch (source.params.src) {
-      case Source.IMAGES_MAPQUEST :             // need to check http://developer.mapquest.com/web/products/open/map
-         var r = Math.floor ( Math.random() * 4 + 1 ) % (4 + 1) // Betwen [0,4]
+      case Source.IMAGES_MAPQUEST : // need to check http://developer.mapquest.com/web/products/open/map
+         var r = Utils.random1(4);
          return "http://otile"+r+".mqcdn.com/tiles/1.0.0/osm/"+z+"/"+tx+"/"+gty+".png";
          break;
    
-   //    case Source.IMAGES_MAPQUEST_SATELLITE :   // need to check http://developer.mapquest.com/web/products/open/map
-   //    var r = Math.floor ( Math.random() * 4 + 1 ) % (4 + 1) // Betwen [0,4]
-   //    return "http://otile"+r+".mqcdn.com/tiles/1.0.0/sat/"+z+"/"+tx+"/"+gty+".png";
+       case Source.IMAGES_MAPQUEST_SATELLITE : // need to check http://developer.mapquest.com/web/products/open/map
+          var r = Utils.random1(4);
+          return "http://otile"+r+".mqcdn.com/tiles/1.0.0/sat/"+z+"/"+tx+"/"+gty+".png";
    
-      case Source.IMAGES_MAPQUEST_SATELLITE : 
-         return "http://irs.gis-lab.info/?layers=landsat&request=GetTile&z="+z+"&x="+tx+"&y="+gty;
-         break;
+
+       case Source.IMAGES_OCM_CYCLE :
+          var s = Utils.random0(2);
+          return "http://"+server[s]+".tile.opencyclemap.org/cycle/"+z+"/"+tx+"/"+gty+".png";
+
+       case Source.IMAGES_OCM_TRANSPORT :
+          var s = Utils.random0(2);
+          return "http://"+server[s]+".tile2.opencyclemap.org/transport/"+z+"/"+tx+"/"+gty+".png";
+       
+       case Source.IMAGES_OCM_LANDSCAPE :
+          var s = Utils.random0(2);
+          return "http://"+server[s]+".tile3.opencyclemap.org/landscape/"+z+"/"+tx+"/"+gty+".png";
+
+
+
+       case Source.IMAGES_STAMEN_WATERCOLOR :
+          var s = Utils.random0(3);
+          return "http://"+server[s]+".tile.stamen.com/watercolor/"+z+"/"+tx+"/"+gty+".jpg"    
+       
+       case Source.IMAGES_STAMEN_TERRAIN : // US only
+          var s = Utils.random0(3);
+          return "http://"+server[s]+".tile.stamen.com/terrain/"+z+"/"+tx+"/"+gty+".jpg"
+       
+       case Source.IMAGES_STAMEN_TONER :
+          var s = Utils.random0(3);
+          return "http://"+server[s]+".tile.stamen.com/toner/"+z+"/"+tx+"/"+gty+".jpg"
+  
+       case Source.IMAGES_STAMEN_TONER_BG :
+          var s = Utils.random0(3);
+          return "http://"+server[s]+".tile.stamen.com/toner-background/"+z+"/"+tx+"/"+gty+".jpg"
    
-      case Source.WMSB:
-         console.log("WMSB");
-         return this.getWMSURL(source, tx, ty, z);
-         break;
          
-//      case Source.IMAGES_OSM:                   // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
-//      default :
-//         console.log("OSM");
-//         return "http://tile.openstreetmap.org/"+z+"/"+tx+"/"+gty+".png"
+      case Source.IMAGES_OSM:  // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
+      default :
+         return "http://tile.openstreetmap.org/"+z+"/"+tx+"/"+gty+".png"
+         break;
+
+//        // Use google API
+//       case Source.IMAGES_GOOGLE_SATELLITE :
+//          return "http://khm1.google.com/kh/v=121&x="+tx+"&y="+gty+"&z="+z
+//       case Source.IMAGES_GOOGLE_TERRAIN :
+//          return "http://mt0.googleapis.com/vt?x="+tx+"&y="+gty+"&z="+z;
+
+//      case Source.WMS:
+//         return this.getWMSURL(source, tx, ty, z);
 //         break;
-//   
+
+         // PB JPG ?
+//      case Source.IRS_SATELLITE: 
+//         return "http://irs.gis-lab.info/?layers=landsat&request=GetTile&z="+z+"&x="+tx+"&y="+gty;
 //         //http://irs.gis-lab.info/
-//         //http://www.thunderforest.com/ 
 //   
+      
 //         // Check nokia
 //   
-//         // Unautorized :(
-//         //case "google satellite":
-//         //   return "http://khm1.google.com/kh/v=101&x="+tx+"&y="+gty+"&z="+z
-//         //case "google street":
-//         //   return "http://mt0.google.com/vt/x="+tx+"&y="+gty+"&z="+z
+      
+//      http://www.neongeo.com/wiki/doku.php?id=map_servers
    }
-// http://www.neongeo.com/wiki/doku.php?id=map_servers
 
-//http://www.opencyclemap.org/docs/
 }
 //-------------------------------------------//
-/*
- * 
-   var w = this.context.mapCanvas.width();
-   var h = this.context.mapCanvas.height();
 
-   var centerP = this.context.coordS.MetersToPixels(this.context.centerM.x, this.context.centerM.y, this.context.zoom);
-   var shiftX = w/2;
-   var shiftY = h/2;
-   
-   var topLeftP = new Point(centerP.x - shiftX, centerP.x - shiftY)
-   var topLeftM = this.context.coordS.PixelsToMeters(topLeftP.x, topLeftP.y, this.context.zoom)
-
-   var bottomRightP = new Point(centerP.x + shiftX, centerP.x + shiftY)
-   var bottomRightM = this.context.coordS.PixelsToMeters(bottomRightP.x, bottomRightP.y, this.context.zoom)
-   
-   // once initialized, these may be re-used as often as neededv
-
-   // transforming point coordinates
-   var topLeft = new Proj4js.Point(topLeftP.x, topLeftP.y);   //any object will do as long as it has 'x' and 'y' properties
-   Proj4js.transform(source, dest, topLeft);      //do the transformation.  x and y are modified in place
-
-   var bottomRight = new Proj4js.Point(bottomRightP.x, bottomRightP.y);   //any object will do as long as it has 'x' and 'y' properties
-   Proj4js.transform(source, dest, bottomRight);      //do the transformation.  x and y are modified in place
-
-   
-   console.log("------------------")
-   console.log(w + " | " + h)
-   console.log(topLeft.x + " | " + topLeft.y)
-   console.log(bottomRight.x + " | " + bottomRight.y)
- */
 SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
 
    var topLeftP     = new Point(tx * Maperial.tileSize, ty*Maperial.tileSize)
@@ -423,7 +385,8 @@ SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
          
          var topLeft = topLeftM;
          var bottomRight = bottomRightM;
-         return("http://geowww.agrocampus-ouest.fr/geoserver/ows?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+//         return("http://geowww.agrocampus-ouest.fr/geoserver/ows?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+         return("http://geobretagne.fr/geoserver/ows?SERVICE=WMS&LAYERS=d22%3AASS_LIN_22&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
          break;
    }
 }

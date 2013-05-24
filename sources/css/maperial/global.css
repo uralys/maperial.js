@@ -312,6 +312,10 @@
 	-webkit-user-select: none;
 }
 
+.popup {
+	padding-left: 20px;
+}
+
 /*--------------------------------*/
 .marginbottom {
 	margin-bottom: 20px!important;

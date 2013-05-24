@@ -62,7 +62,7 @@ StylesManager.prototype.loadStyle = function(styleUID) {
 
    var me = this;
 
-   if(window.maperialStyles[styleUID]){
+   if(window.maperialStyles[styleUID] && window.maperialStyles[styleUID].content){
       this.loadNextStyle();
       return;
    }
@@ -77,6 +77,9 @@ StylesManager.prototype.loadStyle = function(styleUID) {
       dataType: "json",
       success: function (style) {
          window.maperialStyles[styleUID] = {uid : styleUID, name: styleUID, content:style};
+         if(style == null)
+            console.log("STYLE BROKEN")
+            
          me.loadNextStyle();
       }
    });

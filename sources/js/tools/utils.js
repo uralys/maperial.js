@@ -115,6 +115,18 @@ Utils.formatDate = function(timestamp)
 
 //----------------------------------------------------------------------------------------//
 
+//return 1->i
+Utils.random1 = function(i){
+   return Math.floor(Math.random()*i) + 1;
+}
+
+//return 0->i
+Utils.random0 = function(i){
+   return Math.floor(Math.random()*(i+1));
+}
+
+//----------------------------------------------------------------------------------------//
+
 Utils.generateGuid = function() 
 {
    var result, i, j;
@@ -122,15 +134,10 @@ Utils.generateGuid = function()
    for(j=0; j<32; j++) {
       if( j == 8 || j == 12|| j == 16|| j == 20)
          result = result + '_';
-      i = Math.floor(Math.random()*16).toString(16).toUpperCase();
+      i = Utils.random0(15).toString(16).toUpperCase();
       result = result + i;
    }
    return result;
-}
-
-//return 1->i
-Utils.random = function(i){
-   return Math.floor(Math.random()*i) + 1;
 }
 
 //----------------------------------------------------------------------------------------//
@@ -184,9 +191,9 @@ Utils.editObjectInArray = function(object, property, value)
 
 //----------------------------------------------------------------------------------------//
 
-Utils.styleThumbURL = function(styleUID) 
+Utils.styleThumbURL = function(styleUID, size) 
 {
-   return Utils.thumbURL(styleUID, "style")
+   return Utils.thumbURL(styleUID, "style", size)
 }
 
 Utils.colorbarThumbURL = function(colorbarUID) 
@@ -196,20 +203,26 @@ Utils.colorbarThumbURL = function(colorbarUID)
 
 //----------------------------------------------------------------------------------------//
 
-Utils.thumbURL = function(uid, type) 
+Utils.thumbURL = function(uid, type, size) 
 {
    if(uid == undefined || uid == null)
       return "";
+   
+   if(size == undefined || size == null)
+      size = "";
+   else
+      size = "_"+size;
 
    var end = uid.substring(uid.length-4);
    var folders = end.split("");
-
-   var url = "//maperial.com/thumbs" + type;
+   
+   //http://static.maperial.com/thumbsstyle/3/9/3/7/1_style_13ed6abc87adcbf3937_m.png
+   var url = "http://static.maperial.com/thumbs" + type;
    folders.forEach(function(folder) {
       url += "/" + folder;
    });
 
-   return url + "/" + uid + ".png";
+   return url + "/" + uid + size + ".png";
 }
 
 //----------------------------------------------------------------------------------------//
@@ -219,7 +232,7 @@ Utils.getSourceThumb = function(layer) {
    switch(layer.source.type){
    
       case Source.MaperialOSM:
-         return " src=\""+Utils.styleThumbURL(layer.params.styles[layer.params.selectedStyle])+"\"";
+         return " src=\""+Utils.styleThumbURL(layer.params.styles[layer.params.selectedStyle], "l")+"\"";
    
       case Source.Vector:
       case Source.Images:
