@@ -29,7 +29,6 @@
 		<antcall target="build-shaders" />
 
 		<antcall target="copy-assets" />
-		<antcall target="link-data" />
 	</target>
 
 	<target name="build-css">
