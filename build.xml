@@ -58,10 +58,6 @@
 			<fileset dir="assets" />
 		</copy>
 	</target>
-
-	<target name="link-data">
-		<symlink link="${dist}/thumbs" resource="${thumbs}"/>
-	</target>
 	
 	<target name="maperial-js.min.css">
 		<echo>------------------------------------------------------</echo>
