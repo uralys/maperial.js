@@ -55,6 +55,10 @@ Maperial.MulBlend               = "MulBlend";
 
 //==================================================================//
 
+Maperial.DEMO_MAP_1              = "1_map_13ee017c8dac3b49852";
+
+//==================================================================//
+
 /**
  * Must be called whenever the config is changed, in order to build Maperial again
  */

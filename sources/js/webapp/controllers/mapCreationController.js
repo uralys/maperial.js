@@ -12,8 +12,7 @@
    //==================================================================//
    // Rendering
    
-   MapCreationController.init = function()
-   {
+   MapCreationController.init = function() {
       App.layersHelper = new LayersHelper(App.maperial, App.MapCreationController);
       $(window).on(MaperialEvents.READY, MapCreationController.maperialReady);
 
@@ -23,8 +22,7 @@
       MapCreationController.openLayersCreation();
    }
    
-   MapCreationController.terminate = function ()
-   {
+   MapCreationController.terminate = function () {
       $(window).off(MaperialEvents.READY, MapCreationController.maperialReady);
       App.user.set("isCreatingANewMap", false);  
       App.user.set("selectedMap", null);  
@@ -114,7 +112,10 @@
       var config = MapCreationController.getLayersCreationConfig();
       
       if(App.user.isCreatingANewMap){
-         MapCreationController.openBaseSelection();
+         if(App.Globals.isTryscreen)
+            MapCreationController.openDemoSelection();
+         else
+            MapCreationController.openBaseSelection();
       }
       else{
          config.layers = App.user.selectedMap.config.layers;
@@ -127,6 +128,17 @@
    //=============================================================================//
    // Layers
    
+   MapCreationController.openDemoSelection = function(){
+      $("#demoSelectionWindow").modal();
+      $('#demoSelectionWindow').off('hidden');
+      $('#demoSelectionWindow').on('hidden', function(){
+         setTimeout(function(){
+            if(App.maperial.config.layers.length == 0)
+               MapCreationController.openBaseSelection()
+         }, 200);
+      });
+   }
+
    MapCreationController.openBaseSelection = function(){
       $("#baseSelectionWindow").modal();
       $('#baseSelectionWindow').off('hidden');
@@ -823,7 +835,22 @@
       //--------------------------------------//
       // as a tryscreen
 
-      signin: function(){window.location.href="/?login"},
+      signin      : function(){window.location.href="/?login"},
+      
+      startDemo   : function(){
+         $("#demoSelectionWindow").modal("hide");
+         MapCreationController.openBaseSelection()
+      },
+
+      loadDemo    : function(router, event){
+         var mapUID = event.context;
+
+         MapManager.getMap(mapUID, function(map){
+            App.user.set("selectedMap", map);
+            MapCreationController.terminate();
+            MapCreationController.init();
+         });
+      },
    });
 
    //==================================================================//

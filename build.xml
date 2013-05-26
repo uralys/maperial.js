@@ -29,6 +29,7 @@
 		<antcall target="build-shaders" />
 
 		<antcall target="copy-assets" />
+		<antcall target="link-data" />
 	</target>
 
 	<target name="build-css">
@@ -56,6 +57,10 @@
 		<copy todir="${dist}">
 			<fileset dir="assets" />
 		</copy>
+	</target>
+
+	<target name="link-data">
+		<symlink link="${dist}/thumbs" resource="${thumbs}"/>
 	</target>
 	
 	<target name="maperial-js.min.css">

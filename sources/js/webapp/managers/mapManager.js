@@ -19,6 +19,19 @@ MapManager.prototype.createNewMap = function(){
 
 //=================================================================//
 
+MapManager.prototype.getMap = function(mapUID, next){
+   $.ajax({
+      url : "http://api.maperial.com/api/map/"+mapUID,
+      dataType : 'json',
+
+      success : function(config) {
+         next(config)
+      },
+   });
+}
+
+//=================================================================//
+   
 MapManager.prototype.getMaps = function(user){
    
    var me = this;
