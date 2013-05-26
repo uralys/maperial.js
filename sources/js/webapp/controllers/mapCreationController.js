@@ -845,10 +845,10 @@
       loadDemo    : function(router, event){
          var mapUID = event.context;
 
-         MapManager.getMap(mapUID, function(map){
+         App.mapManager.getMap(mapUID, function(map){
             App.user.set("selectedMap", map);
-            MapCreationController.terminate();
-            MapCreationController.init();
+            App.MapCreationController.terminate();
+            App.MapCreationController.init();
          });
       },
    });

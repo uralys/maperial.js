@@ -216,8 +216,7 @@ Utils.thumbURL = function(uid, type, size)
    var end = uid.substring(uid.length-4);
    var folders = end.split("");
    
-   //http://static.maperial.com/thumbsstyle/3/9/3/7/1_style_13ed6abc87adcbf3937_m.png
-   var url = "http://static.maperial.com/thumbs" + type;
+   var url = "http://static.maperial.com/thumbs/" + type;
    folders.forEach(function(folder) {
       url += "/" + folder;
    });
