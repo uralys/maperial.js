@@ -74,6 +74,12 @@
 	padding-right: 15px;
 }
 
+#demoSelectionWindow {
+	width: 670px;
+	margin-left: -335px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
 /*----------------------------------------------------------*/
 .mapthumb {
 	padding-left: 15px;

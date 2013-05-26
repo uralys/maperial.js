@@ -323,7 +323,8 @@ SourcesManager.prototype.getImageURL = function (source, tx, ty, z) {
          
       case Source.IMAGES_OSM:  // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
       default :
-         return "http://tile.openstreetmap.org/"+z+"/"+tx+"/"+gty+".png"
+         var s = Utils.random0(2);
+         return "http://"+server[s]+".tile.openstreetmap.org/"+z+"/"+tx+"/"+gty+".png"
          break;
 
 //        // Use google API

@@ -25,7 +25,10 @@ MapManager.prototype.getMap = function(mapUID, next){
       dataType : 'json',
 
       success : function(config) {
-         next(config)
+         var map = {}
+         map.uid = mapUID
+         map.config = config
+         next(map)
       },
    });
 }

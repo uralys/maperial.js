@@ -58,6 +58,11 @@
 
    App.finishLoadings = function(nextPage){
 
+      if(App.Globals.APP_READY){
+         App.appReadyToOpenPage(nextPage);
+         return;
+      }
+      
       App.user.set("waiting", true);
 
       //------------------------------------------------------//
@@ -126,18 +131,7 @@
          //-------------------------------------//
 
          App.maperial = new Maperial();
-
-         //-------------------------------------//
-
-         if(nextPage == "tryscreen"){
-            App.Globals.isTryscreen = true;
-            App.mapManager.createNewMap();
-            App.get('router').transitionTo('mapCreation');
-         }
-         else{
-            App.Globals.isTryscreen = false;
-            App.get('router').transitionTo(nextPage);
-         }
+         App.appReadyToOpenPage(nextPage);
 
          //-------------------------------------//
 
@@ -145,6 +139,21 @@
       });
    }
 
+   App.appReadyToOpenPage = function(page) {
+      
+      App.Globals.set("APP_READY", true);
+      
+      if(page == "tryscreen"){
+         App.Globals.set("isTryscreen", true);
+         App.mapManager.createNewMap();
+         App.get('router').transitionTo('mapCreation');
+      }
+      else{
+         App.Globals.set("isTryscreen", false);
+         App.get('router').transitionTo(page);
+      }
+   }
+   
    //------------------------------------------------------//
 
    App.addMargins = function(config) {

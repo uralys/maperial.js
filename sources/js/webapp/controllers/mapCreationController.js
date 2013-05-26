@@ -135,7 +135,7 @@
          setTimeout(function(){
             if(App.maperial.config.layers.length == 0)
                MapCreationController.openBaseSelection()
-         }, 200);
+         }, 350);
       });
    }
 
@@ -146,7 +146,7 @@
          setTimeout(function(){
             if(App.maperial.config.layers.length == 0)
                MapCreationController.openBaseSelection()
-         }, 200);
+         }, 350);
       });
    }
 
@@ -847,8 +847,9 @@
 
          App.mapManager.getMap(mapUID, function(map){
             App.user.set("selectedMap", map);
-            App.MapCreationController.terminate();
-            App.MapCreationController.init();
+            App.user.set("isCreatingANewMap", false);
+            MapCreationController.openLayersCreation();
+            $("#demoSelectionWindow").modal("hide");
          });
       },
    });

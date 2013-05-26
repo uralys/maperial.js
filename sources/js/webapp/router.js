@@ -21,7 +21,7 @@
 			translateEn    : function(){ App.translator.setLang('en') },
 			translateFr    : function(){ App.translator.setLang('fr') },
 
-			openTryscreen  : function(){  App.finishLoadings("tryscreen") },
+			openTryscreen  : function(){ App.finishLoadings("tryscreen") },
 			signin         : function(){$("#loginWindow").modal()},
 	      maperialLogin  : function(){MaperialAuth.authorize()},
 			

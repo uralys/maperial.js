@@ -12,29 +12,39 @@
       RASTER_DEFAULT_ZMAX: 10,
 
       //-------------------------------------------//
+      
+      APP_READY:false,
 
-      isDev: window.location.hostname == "maperial.localhost",
-      isLocal: (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ,
-      debug: false,
-      mapServer: '//api.maperial.com',
-      apiKey: 'AIzaSyCrc-COPNAP_0ysMjr8ySruAnfmImnFuH8',
-      scopes: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+      //-------------------------------------------//
+
+      isDev    : window.location.hostname == "maperial.localhost",
+      isLocal  : (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ,
+      debug    : false,
+
+      //-------------------------------------------//
+      
+      mapServer      : '//api.maperial.com',
+      apiKey         : 'AIzaSyCrc-COPNAP_0ysMjr8ySruAnfmImnFuH8',
+      scopes         : 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
       googleClientId : (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? '643408271777.apps.googleusercontent.com' : '643408271777-ss5bnucbnm5vv5gbpn0jpqcufph73das.apps.googleusercontent.com',
-      ASSETS_URL : (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? 'http://static.maperial.localhost' : 'http://static.maperial.com',
-      maperialEmail: "",
-      currentView: "",
-      parentView: "",
-      currentPage: "",
-      epsg: [],
-      shaders: [],
-      separators: [",", ";", "|", "\t"],
+      ASSETS_URL     : (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? 'http://static.maperial.localhost' : 'http://static.maperial.com',
+
+      //-------------------------------------------//
+            
+      maperialEmail  : "",
+      currentView    : "",
+      parentView     : "",
+      currentPage    : "",
+      epsg           : [],
+      shaders        : [],
+      separators     : [",", ";", "|", "\t"],
 
       //-------------------------------------------//
       // mapcreation - wizardStepper in header
-      isViewLayerCreation: false,
-      isViewDatasetSelection: false,
-      isViewStyleAndColorbar: false,
-      isViewGeneration: false,
+      isViewLayerCreation     : false,
+      isViewDatasetSelection  : false,
+      isViewStyleAndColorbar  : false,
+      isViewGeneration        : false,
 
       //-------------------------------------------//
    
