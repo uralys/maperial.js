@@ -62,15 +62,15 @@ MapRenderer.prototype.initListeners = function () {
    });
    
    $(window).on(MaperialEvents.CONTRAST_CHANGED, function(){
-      //
+      renderer.DrawScene (true, true) 
    });
    
    $(window).on(MaperialEvents.LUMINOSITY_CHANGED, function(){
-      //
+      renderer.DrawScene (true, true) 
    });
    
    $(window).on(MaperialEvents.BW_METHOD_CHANGED, function(){
-      //
+      renderer.DrawScene (true, true) 
    });
    
    $(window).on(MaperialEvents.DATA_SOURCE_CHANGED, function(){

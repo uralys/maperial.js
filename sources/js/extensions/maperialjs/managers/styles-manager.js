@@ -58,17 +58,20 @@ StylesManager.prototype.fetchStyles = function(styleUIDs, next) {
 
 //-------------------//
 
-StylesManager.prototype.loadStyle = function(styleUID) {
+StylesManager.prototype.loadStyle = function(styleUID, next) {
 
    var me = this;
 
+   if(!next){
+      next = function(){ me.loadNextStyle() };
+   }
+
    if(window.maperialStyles[styleUID] && window.maperialStyles[styleUID].content){
-      this.loadNextStyle();
+      next();
       return;
    }
 
    var styleURL = this.getURL(styleUID);
-//   styleURL = "http://serv.x-ray.fr/project/mycarto/wwwClient/style/style.json";
    console.log("  fetching : " + styleURL);
 
    $.ajax({  
@@ -77,10 +80,7 @@ StylesManager.prototype.loadStyle = function(styleUID) {
       dataType: "json",
       success: function (style) {
          window.maperialStyles[styleUID] = {uid : styleUID, name: styleUID, content:style};
-         if(style == null)
-            console.log("STYLE BROKEN")
-            
-         me.loadNextStyle();
+         next()
       }
    });
 

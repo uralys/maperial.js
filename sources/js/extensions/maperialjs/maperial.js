@@ -55,8 +55,11 @@ Maperial.MulBlend               = "MulBlend";
 
 //==================================================================//
 
-Maperial.DEMO_MAP_1              = "1_map_13ee017c8dac3b49852";
-Maperial.DEMO_MAP_2              = "1_map_13e4686751744c4fb4b";
+Maperial.DEMO_MAP = {
+   "0" : "1_map_13ee017c8dac3b49852",
+   "1" : "1_map_13e4686751744c4fb4b",
+   "2" : "1_map_13ee180b9258d9397bb",
+}
 
 //==================================================================//
 
@@ -228,25 +231,27 @@ Maperial.prototype.createContext = function() {
 }
 
 Maperial.prototype.startLatitude = function() {
-   if(this.config.map.latMin)
+   if(this.config.map.currentLat)
+      return this.config.map.currentLat
+   else if(this.config.map.latMin)
       return (this.config.map.latMin + this.config.map.latMax)/2;
-   else if(this.config.map.lat)
-      return this.config.map.lat
    else
       return Maperial.DEFAULT_LATITUDE;
 }
 
 Maperial.prototype.startLongitude = function() {
-   if(this.config.map.lonMin)
+   if(this.config.map.currentLon)
+      return this.config.map.currentLon
+   else if(this.config.map.lonMin)
       return (this.config.map.lonMin + this.config.map.lonMax)/2;
-   else if(this.config.map.lon)
-      return this.config.map.lon
    else
       return Maperial.DEFAULT_LONGITUDE;
 }
 
 Maperial.prototype.startZoom = function() {
-   if(this.config.map.defaultZoom)
+   if(this.config.map.currentZoom)
+      return this.config.map.currentZoom
+   else if(this.config.map.defaultZoom)
       return this.config.map.defaultZoom;
    else
       return Maperial.DEFAULT_ZOOM;
@@ -278,10 +283,10 @@ Maperial.prototype.loadStyles = function(next){
 
 //==================================================================//
 
-Maperial.prototype.changeStyle = function(styleUID, position, overidde){
+Maperial.prototype.changeStyle = function(styleUID, position, refresh){
 
    if(position === undefined) position = 0;
-   if(overidde === undefined) overidde = true;
+   if(refresh === undefined) refresh = true;
 
    for(var i = 0; i < this.config.layers.length; i++){
 
@@ -289,12 +294,12 @@ Maperial.prototype.changeStyle = function(styleUID, position, overidde){
          continue;
 
       var layerParams = this.config.layers[i].params;
-      if(!layerParams.styles || overidde){
+      if(!layerParams.styles || refresh){
 
-         if(!overidde)
-            console.log("  using default style...");
-         else
+         if(refresh)
             console.log("Changing style...");
+         else
+            console.log("  using default style...");
 
          layerParams.styles = {};
          layerParams.styles[position] = styleUID;
@@ -302,8 +307,18 @@ Maperial.prototype.changeStyle = function(styleUID, position, overidde){
       }
    }
 
-   if(overidde)
-      this.restart();
+   if(refresh){
+      var me = this
+      this.stylesManager.loadStyle(styleUID, function(){
+         var mapLatLon = me.context.coordS.MetersToLatLon(me.context.centerM.x, me.context.centerM.y)
+         
+         me.config.map.currentLat    = mapLatLon.y
+         me.config.map.currentLon    = mapLatLon.x
+         me.config.map.currentZoom   = me.context.zoom
+         
+         $(window).trigger(MaperialEvents.STYLE_CHANGED);
+      })
+   }
 }
 
 //==================================================================//

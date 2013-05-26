@@ -14,24 +14,27 @@
    
    MapCreationController.init = function() {
       App.layersHelper = new LayersHelper(App.maperial, App.MapCreationController);
-      $(window).on(MaperialEvents.READY, MapCreationController.maperialReady);
+
+      $(window).on(  MaperialEvents.READY, MapCreationController.maperialReady);
 
       App.user.set("isCreatingANewMap", (App.user.selectedMap.uid == null));
-
       MapCreationController.wizardSetView(MapCreationController.LAYERS_CREATION);
       MapCreationController.openLayersCreation();
    }
    
    MapCreationController.terminate = function () {
-      $(window).off(MaperialEvents.READY, MapCreationController.maperialReady);
-      App.user.set("isCreatingANewMap", false);  
-      App.user.set("selectedMap", null);  
+      App.user.set("isCreatingANewMap"    , false);  
+      App.user.set("selectedMap"          , null);  
    }
    
    //==================================================================//
-
+   // Calls by Listeners
+   
    MapCreationController.maperialReady = function (){
 
+      // not set before MaperialEvents.READY, because MaperialJS removes every Listeners on MaperialEvents during reset
+      $(window).on(MaperialEvents.STYLE_CHANGED, MapCreationController.refreshLayersPanel);
+      
       if(App.Globals.isViewLayerCreation){
          App.layersHelper.refreshLayersPanel();
       }
@@ -41,6 +44,12 @@
       
       MapCreationController.setSelectedStyle();
    }
+
+   MapCreationController.refreshLayersPanel = function (){
+      App.layersHelper.refreshLayersPanel();
+   }
+   
+   //==================================================================//
 
    // init : once maperial is ready, getSelectedStyle is also the selected one in the styleSelectionWindow
    MapCreationController.setSelectedStyle = function (){
@@ -111,9 +120,9 @@
       var mapLatLon = App.maperial.context.coordS.MetersToLatLon(App.maperial.context.centerM.x, App.maperial.context.centerM.y)
 
       config.map              = App.maperial.config.map
-      config.map.lat          = mapLatLon.y
-      config.map.lon          = mapLatLon.x
-      config.map.defaultZoom  = App.maperial.context.zoom
+      config.map.currentLat   = mapLatLon.y
+      config.map.currentLon   = mapLatLon.x
+      config.map.currentZoom  = App.maperial.context.zoom
 
       config.map.requireBoundingBoxDrawer = true
       
@@ -197,7 +206,6 @@
          case Source.Images:
             MapCreationController.addImagesLayer(src);
             break;
-            
       }
    }
 
@@ -722,6 +730,22 @@
    }
    
    //=============================================================================//
+   
+   MapCreationController.loadDemo = function(num)
+   {
+      var mapUID = Maperial.DEMO_MAP[num]
+
+      console.log("mapUID ------> " + mapUID)
+         
+      App.mapManager.getMap(mapUID, function(map){
+         App.user.set("selectedMap", map);
+         App.user.set("isCreatingANewMap", false);
+         MapCreationController.openLayersCreation();
+         $("#demoSelectionWindow").modal("hide");
+      });
+   }
+   
+   //=============================================================================//
 
    App.MapCreationController = MapCreationController;
 
@@ -858,16 +882,12 @@
          MapCreationController.openBaseSelection()
       },
 
-      loadDemo    : function(router, event){
-         var mapUID = event.context;
-
-         App.mapManager.getMap(mapUID, function(map){
-            App.user.set("selectedMap", map);
-            App.user.set("isCreatingANewMap", false);
-            MapCreationController.openLayersCreation();
-            $("#demoSelectionWindow").modal("hide");
-         });
-      },
+      loadDemo1    : function(){ MapCreationController.loadDemo(0) },
+      loadDemo2    : function(){ MapCreationController.loadDemo(1) },
+      loadDemo3    : function(){ MapCreationController.loadDemo(2) },
+      loadDemo4    : function(){ MapCreationController.loadDemo(3) },
+      loadDemo5    : function(){ MapCreationController.loadDemo(4) },
+      loadDemo6    : function(){ MapCreationController.loadDemo(5) },
    });
 
    //==================================================================//

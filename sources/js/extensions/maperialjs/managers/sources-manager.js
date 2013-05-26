@@ -46,9 +46,9 @@ SourcesManager.prototype.buildSources = function(layers){
             
             if(layers[i].source.params.src == Source.IMAGES_STAMEN_TERRAIN){
                // US - only
-               this.maperial.config.map.lat           = 40.68
-               this.maperial.config.map.lon           = -74.12
-               this.maperial.config.map.defaultZoom   = 7
+               this.maperial.config.map.currentLat    = 40.68
+               this.maperial.config.map.currentLon    = -74.12
+               this.maperial.config.map.currentZoom   = 7
             }
                
             params = {src : layers[i].source.params.src };
@@ -63,7 +63,10 @@ SourcesManager.prototype.buildSources = function(layers){
 
 SourcesManager.prototype.releaseEverything = function () {
    for(requestId in this.requests){
-      this.requests[requestId].abort();
+      try{
+         this.requests[requestId].abort();
+      }
+      catch(e){}
    }
 }
 
@@ -81,7 +84,11 @@ SourcesManager.prototype.release = function (x, y ,z) {
    for(var i = 0; i< this.sources.length; i++){
       var requestId = this.requestId(this.sources[i], x, y, z);
 
-      this.requests[requestId].abort();
+      try{
+         this.requests[requestId].abort();
+      }
+      catch(e){}
+      
       delete this.data[requestId];
       delete this.errors[requestId];
       delete this.load[requestId];

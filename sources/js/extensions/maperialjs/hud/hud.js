@@ -156,6 +156,10 @@ HUD.prototype.initListeners = function () {
    $(window).on(MaperialEvents.ZOOM_TO_REFRESH, function(event, x, y){
       hud.refreshZoom();
    });
+
+   $(window).on(MaperialEvents.STYLE_CHANGED, function(event, x, y){
+      hud.refreshCompositionsPanel();
+   });
 }
 
 //----------------------------------------------------------------------//

@@ -104,7 +104,7 @@
 		   if(webappPage  
 	      && !App.maperial){
 		      console.log("Not loaded properly ! Redirected to the home page");
-		      router.transitionTo('home');
+		      window.location.href="/"
 		   }
 		   else{
             var context = Router.buildGlobalContext(customContext, page);

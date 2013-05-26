@@ -100,11 +100,8 @@ HUD.prototype.refreshCompositionsPanel = function() {
             }(constrastId),
             change: function(constrastId, composition){
                return function( event, ui ) {
-                  console.log(event);
-                  console.log(ui);
-                  console.log(ui.value);
                   composition.params.uParams[0] = ui.value;
-                  me.maperial.restart();
+                  $(window).trigger(MaperialEvents.CONTRAST_CHANGED);
                }
             }(constrastId, composition)
          });
@@ -122,7 +119,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
             change: function(brightnessId, composition){
                return function( event, ui ) {
                   composition.params.uParams[1] = ui.value;
-                  me.maperial.restart();
+                  $(window).trigger(MaperialEvents.LUMINOSITY_CHANGED);
                }
             }(brightnessId, composition)
          });
@@ -140,7 +137,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
             change: function(bwId, composition){
                return function( event, ui ) {
                   composition.params.uParams[2] = ui.value;
-                  me.maperial.restart();
+                  $(window).trigger(MaperialEvents.BW_METHOD_CHANGED);
                }
             }(bwId, composition)
          });

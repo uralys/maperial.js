@@ -144,9 +144,14 @@
       App.Globals.set("APP_READY", true);
       
       if(page == "tryscreen"){
-         App.Globals.set("isTryscreen", true);
-         App.mapManager.createNewMap();
-         App.get('router').transitionTo('mapCreation');
+         if(App.Globals.currentPage == "mapCreation"){
+            App.MapCreationController.openDemoSelection()
+         }
+         else{
+            App.Globals.set("isTryscreen", true);
+            App.mapManager.createNewMap();
+            App.get('router').transitionTo('mapCreation');
+         }
       }
       else{
          App.Globals.set("isTryscreen", false);
