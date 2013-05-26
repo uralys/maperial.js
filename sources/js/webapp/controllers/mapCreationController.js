@@ -86,22 +86,38 @@
    
    MapCreationController.getSettingsConfig = function(){
 
-      var config = App.maperial.emptyConfig();
+      var config = App.maperial.emptyConfig()
       
       // map viewer hud config
-      config.hud = App.user.selectedMap.config.hud;
+      config.hud = App.user.selectedMap.config.hud
       
       // custom
-      config.hud.elements["Settings"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true, disableDrag : true };
+      config.hud.elements["Settings"] = {
+            show : true, 
+            type : HUD.PANEL, 
+            position : { 
+               right: "0", 
+               top: "0"
+            }, 
+            disableHide : true, 
+            disableDrag : true
+      }
 
-      App.addMargins(config);
+      App.addMargins(config)
 
       // layers + map options previously chosen
-      config.layers = App.maperial.config.layers;
-      config.map = App.maperial.config.map;
-      config.map.requireBoundingBoxDrawer = true;
+      config.layers = App.maperial.config.layers
 
-      return config;
+      var mapLatLon = App.maperial.context.coordS.MetersToLatLon(App.maperial.context.centerM.x, App.maperial.context.centerM.y)
+
+      config.map              = App.maperial.config.map
+      config.map.lat          = mapLatLon.y
+      config.map.lon          = mapLatLon.x
+      config.map.defaultZoom  = App.maperial.context.zoom
+
+      config.map.requireBoundingBoxDrawer = true
+      
+      return config
    }  
    
    //=============================================================================//

@@ -44,8 +44,12 @@ SourcesManager.prototype.buildSources = function(layers){
 
          case Source.Images:
             
-            if(layers[i].source.params.src == Source.IMAGES_STAMEN_TERRAIN)
-               this.maperial.setConfigCoordinates(40.68, -74.12, 7) // US - only
+            if(layers[i].source.params.src == Source.IMAGES_STAMEN_TERRAIN){
+               // US - only
+               this.maperial.config.map.lat           = 40.68
+               this.maperial.config.map.lon           = -74.12
+               this.maperial.config.map.defaultZoom   = 7
+            }
                
             params = {src : layers[i].source.params.src };
             break;

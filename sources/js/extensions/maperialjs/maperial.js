@@ -185,7 +185,7 @@ Maperial.prototype.checkConfig = function() {
 //==================================================================//
 
 Maperial.prototype.emptyConfig = function() {
-   return {hud:{elements:{}, options:{}}, map: {defaultZoom: Maperial.DEFAULT_ZOOM}, layers:[]};
+   return config = {hud:{elements:{}, options:{}}, map: {defaultZoom: Maperial.DEFAULT_ZOOM}, layers:[]};
 }
 
 Maperial.prototype.defaultConfig = function() {
@@ -202,8 +202,8 @@ Maperial.prototype.createContext = function() {
    if(!this.context){
       console.log("creating context...");
 
-      this.context = {};
-      this.context.coordS     = new CoordinateSystem ( Maperial.tileSize );
+      this.context         = {};
+      this.context.coordS  = new CoordinateSystem ( Maperial.tileSize );
    }
    else
       console.log("reset context...");
@@ -228,9 +228,10 @@ Maperial.prototype.createContext = function() {
 }
 
 Maperial.prototype.startLatitude = function() {
-   console.log("start", this.config.map.latMin, Maperial.DEFAULT_LATITUDE)
    if(this.config.map.latMin)
       return (this.config.map.latMin + this.config.map.latMax)/2;
+   else if(this.config.map.lat)
+      return this.config.map.lat
    else
       return Maperial.DEFAULT_LATITUDE;
 }
@@ -238,6 +239,8 @@ Maperial.prototype.startLatitude = function() {
 Maperial.prototype.startLongitude = function() {
    if(this.config.map.lonMin)
       return (this.config.map.lonMin + this.config.map.lonMax)/2;
+   else if(this.config.map.lon)
+      return this.config.map.lon
    else
       return Maperial.DEFAULT_LONGITUDE;
 }
@@ -472,16 +475,6 @@ Maperial.prototype.refreshScreen = function() {
 
 //==================================================================//
 
-Maperial.prototype.setConfigCoordinates = function(lat, lon, zoom){
-   this.config.map.latMin        = lat;
-   this.config.map.latMax        = lat;
-   this.config.map.lonMin        = lon;
-   this.config.map.lonMax        = lon;
-   this.config.map.defaultZoom   = zoom;
-}
-
-//==================================================================//
-   
 Maperial.prototype.SetCenter = function(lat,lon){
    this.context.centerM = this.context.coordS.LatLonToMeters( lat , lon );
    this.mapRenderer.DrawScene();
