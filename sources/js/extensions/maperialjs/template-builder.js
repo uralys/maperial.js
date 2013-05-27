@@ -65,7 +65,7 @@ TemplateBuilder.prototype.buildHUD = function(){
 TemplateBuilder.prototype.buildAttribution = function(){
    
    var html = "";
-   var maperialAttribution = this.config.layers.length > 1 ? "Fusion by <a class=\"link\" target=\"_blank\" href=\"http://www.maperial.com\">#Maperial</a>." : "";
+   var maperialAttribution = this.config.layers.length > 1 ? "Fusion by <a class=\"link\" target=\"_blank\" href=\"http://www.maperial.com\">__Maperial</a>." : "";
    var tilesAttribution    = "";
    var dataAttribution     = false;
    
@@ -73,7 +73,7 @@ TemplateBuilder.prototype.buildAttribution = function(){
 
    for(var i = 0; i < this.config.layers.length; i++){
       if(this.config.layers[i].source.type == Source.MaperialOSM){
-         maperialAttribution = "Styled tiles and fusion by <a class=\"link\" target=\"_blank\" href=\"http://www.maperial.com\">#Maperial</a>."
+         maperialAttribution = "Styled tiles and fusion by <a class=\"link\" target=\"_blank\" href=\"http://www.maperial.com\">__Maperial</a>."
          dataAttribution = true
       }
       else if(this.config.layers[i].source.type == Source.Images){

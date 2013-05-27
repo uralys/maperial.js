@@ -59,8 +59,8 @@ public class Obfuscator {
 		
 		varsMaperialJS.put("Maperial", "__n_");
 		varsTag.put("Maperial", "__n_");
-		varsMaperialJS.put("#Maperial", "Maperial");
-		varsTag.put("#Maperial", "Maperial");
+		varsMaperialJS.put("__Maperial", "Maperial");
+		varsTag.put("__Maperial", "Maperial");
 
 		varsMaperialJS.put("ExtensionColorbar", "__m_");
 //		varsMaperialJS.put("Symbolizer", "___o_"); ->> marche pas..?
