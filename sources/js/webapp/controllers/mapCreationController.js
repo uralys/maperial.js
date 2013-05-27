@@ -871,7 +871,11 @@
       
       startDemo   : function(){
          $("#demoSelectionWindow").modal("hide");
-         MapCreationController.openBaseSelection()
+         $("#baseSelectionWindow").modal();
+         App.user.set("isCreatingANewMap", true);  
+
+         var config = MapCreationController.getLayersCreationConfig();
+         App.maperial.apply(config);
       },
 
       loadDemo1    : function(){ MapCreationController.loadDemo(0) },
