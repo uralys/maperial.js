@@ -163,12 +163,12 @@
 
    App.addMargins = function(config) {
       config.hud.options["margin-top"] = App.Globals.HEADER_HEIGHT;
-      config.hud.options["margin-bottom"] = App.Globals.FOOTER_HEIGHT;
+//      config.hud.options["margin-bottom"] = App.Globals.FOOTER_HEIGHT;
    }
 
    App.removeMargins = function(config) {
       delete config.hud.options["margin-top"];
-      delete config.hud.options["margin-bottom"];
+//      delete config.hud.options["margin-bottom"];
    }
 
    //------------------------------------------------------//

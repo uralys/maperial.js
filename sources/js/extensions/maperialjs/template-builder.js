@@ -22,6 +22,7 @@ TemplateBuilder.prototype.build = function(maperial){
    
    this.buildMap();
    this.buildHUD();
+   this.buildAttribution();
 }
 
 //==================================================================//
@@ -57,6 +58,63 @@ TemplateBuilder.prototype.buildHUD = function(){
    this.buildZooms();
    this.buildMagnifier();
    this.buildColorbar();
+}
+
+//==================================================================//
+
+TemplateBuilder.prototype.buildAttribution = function(){
+   
+   var html = "";
+   var maperialAttribution = this.config.layers.length > 1 ? "Fusion by <a class=\"link\" target=\"_blank\" href=\"http://maperial.com\">Maperial</a>." : "";
+   var tilesAttribution    = "";
+   var dataAttribution     = false;
+   
+   html += "<p id=\"attribution\">"
+
+   for(var i = 0; i < this.config.layers.length; i++){
+      if(this.config.layers[i].source.type == Source.MaperialOSM){
+         maperialAttribution = "Styled tiles and fusion by <a class=\"link\" target=\"_blank\" href=\"http://maperial.com\">Maperial</a>."
+         dataAttribution = true
+      }
+      else if(this.config.layers[i].source.type == Source.Images){
+         switch(this.config.layers[i].source.params.src){
+            case Source.IMAGES_MAPQUEST:
+            case Source.IMAGES_MAPQUEST_SATELLITE:
+               tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://www.mapquest.com\">MapQuest</a>."
+               break;
+
+            case Source.IMAGES_OSM:
+               tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://openstreetmap.org\">© OpenStreetMap contributors</a>."
+               break;
+
+            case Source.IMAGES_OCM_CYCLE:
+            case Source.IMAGES_OCM_TRANSPORT:
+            case Source.IMAGES_OCM_LANDSCAPE:
+               tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"www.thunderforest.com\">OpenCycleMap</a>."
+               dataAttribution = true
+               break;
+               
+            case Source.IMAGES_STAMEN_WATERCOLOR:
+            case Source.IMAGES_STAMEN_TERRAIN:
+            case Source.IMAGES_STAMEN_TONER:
+            case Source.IMAGES_STAMEN_TONER_BG:
+               tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://maps.stamen.com\">Stamen Design</a>."
+               break;
+
+         }
+      }
+   }
+   
+   
+   html += maperialAttribution
+   html += tilesAttribution
+   
+   if(dataAttribution)
+      html += " Data by <a class=\"link\" target=\"_blank\" href=\"http://openstreetmap.org\">© OpenStreetMap contributors</a>."
+         
+   html += "</p>"
+
+   this.container.append(html);
 }
 
 //==================================================================//

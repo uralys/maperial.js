@@ -7,7 +7,7 @@
 /*************************/
 .panel {
 	position: absolute;
-	background: #000000; 
+	background: #000000;
 	background-image: url(IMAGE_URL); /* fallback */
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#444444),
 		to(#000000) ); /* Saf4+, Chrome */
@@ -29,10 +29,10 @@
 	-moz-border-radius-topleft: 6px;
 	-webkit-border-top-left-radius: 6px;
 	padding: 4px 4px 4px 4px;
-	filter: alpha(opacity =       85);
+	filter: alpha(opacity =         85);
 	opacity: .85;
 	z-index: 101;
-	cursor:move;
+	cursor: move;
 }
 
 a.trigger {
@@ -58,9 +58,10 @@ a.trigger {
 	-moz-border-radius-topleft: 6px;
 	-webkit-border-top-left-radius: 6px;
 	z-index: 102;
-	filter: alpha(opacity =       85);
+	filter: alpha(opacity =         85);
 	opacity: .85;
-	cursor:hand;cursor:pointer;
+	cursor: hand;
+	cursor: pointer;
 }
 
 a.trigger:hover {
@@ -71,8 +72,9 @@ a.trigger:hover {
 }
 
 a.active.trigger {
-	background: #111 url(http://static.maperial.localhost/images/mapediting/minus.png) 85% 55%
-		no-repeat;
+	background: #111
+		url(http://static.maperial.localhost/images/mapediting/minus.png) 85%
+		55% no-repeat;
 	width: 19px;
 	padding: 1px 1px 1px 1px;
 	font-size: 0;
@@ -94,9 +96,9 @@ a.active.trigger {
 	-moz-border-radius-bottomleft: 20px;
 	-webkit-border-bottom-left-radius: 20px;
 	z-index: 9999;
-	filter: alpha(opacity =     85);
-	cursor:pointer;
-	cursor:hand;
+	filter: alpha(opacity =       85);
+	cursor: pointer;
+	cursor: hand;
 }
 
 .buttonMode:hover {
@@ -181,21 +183,21 @@ a.triggerHUDSettings {
 .panelCompositions {
 	width: 200px;
 	color: #eee;
-	padding-left:10px;
+	padding-left: 10px;
 }
 
 .compositionSettingsTitle {
 	color: #eee;
-	font-size:14px;
+	font-size: 14px;
 	text-align: center;
-	margin-top:7px;
-	margin-bottom:23px;
+	margin-top: 7px;
+	margin-bottom: 23px;
 }
 
 .sourceThumb {
 	width: 45px;
-	margin-top: -9px!important;
-	margin-bottom: 0px!important;
+	margin-top: -9px !important;
+	margin-bottom: 0px !important;
 }
 
 /*-------------------------*/
@@ -207,7 +209,7 @@ a.triggerHUDSettings {
 }
 
 .inputGeoloc {
-	height: 20px!important;
+	height: 20px !important;
 	width: 190px;
 }
 
@@ -242,7 +244,8 @@ a.triggerHUDSettings {
 }
 
 .control-up,.control-down,.control-left,.control-right {
-	background-image: url(http://static.maperial.localhost/images/mapediting/map.sprite.png);
+	background-image:
+		url(http://static.maperial.localhost/images/mapediting/map.sprite.png);
 	position: absolute;
 	background-repeat: no-repeat;
 	cursor: hand;
@@ -345,7 +348,7 @@ a.triggerDetailsMenu {
 	border-color: #000;
 	background-color: #000;
 	color: #fff;
-	filter: alpha(opacity =       85);
+	filter: alpha(opacity =         85);
 	opacity: .85;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
@@ -369,7 +372,6 @@ a.triggerDetailsMenu {
 }
 
 /*-------------------------*/
-
 .panelMagnifier {
 	width: 200px;
 	height: 200px;
@@ -518,4 +520,29 @@ a.triggerColorBar {
 
 .cb_Interp,.cb_Hsl,.cb_Clear {
 	margin: 5px;
+}
+
+/*--------------------------------------*/
+#attribution {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	color: white;
+	background: black;
+	padding: 3px 5px 2px;
+	margin: 0;
+	z-index: 1000;
+}
+
+#attribution .link{
+	color: #ccc;
+}	
+
+#attribution .link {
+	color: #ccc;
+	font-weight: normal;
+}
+
+#attribution .link:hover {
+	color: #27a200;
 }

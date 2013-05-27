@@ -735,8 +735,6 @@
    {
       var mapUID = Maperial.DEMO_MAP[num]
 
-      console.log("mapUID ------> " + mapUID)
-         
       App.mapManager.getMap(mapUID, function(map){
          App.user.set("selectedMap", map);
          App.user.set("isCreatingANewMap", false);
