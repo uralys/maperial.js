@@ -14,8 +14,8 @@ function HUD(maperial){
 
    this.initListeners();
    this.updateScale();
-
 }
+
 //----------------------------------------------------------------------//
 
 HUD.prototype.element = function(name){
@@ -107,7 +107,7 @@ HUD.positions = [];
 
 HUD.positions[HUD.SETTINGS]      = { left  : "0",    top    : "0"   };
 HUD.positions[HUD.COMPOSITIONS]  = { left  : "0",    bottom : "0"   };
-HUD.positions[HUD.SWITCH_IMAGES] = { left : "10",   top    : "10"  };
+HUD.positions[HUD.SWITCH_IMAGES] = { left : "10",    top    : "10"  };
 HUD.positions[HUD.MAGNIFIER]     = { left  : "0",    bottom : "0"   };
 HUD.positions[HUD.COLORBAR]      = { left  : "0",    top    : "180" };
 HUD.positions[HUD.SCALE]         = { right : "10",   bottom : "10"  };
@@ -247,12 +247,20 @@ HUD.prototype.placeElements = function () {
          
       }
    }
+   
+   this.refreshAttribution()
 }
 
 //==================================================================//
 
 HUD.prototype.placeElementAt = function(element, value, property){
 
+   var elementName
+   if(this.maperial.config.hud.elements[element]){
+      elementName = element
+      element = this.element(this.maperial.config.hud.elements[elementName].type+elementName)
+   }
+      
    var margin = this.getMargin(property);
 
    var mapTop = this.context.mapCanvas[0].offsetTop;
@@ -267,7 +275,7 @@ HUD.prototype.placeElementAt = function(element, value, property){
          break;
       case "bottom":
          value = mapTop + mapHeight - value;
-         value -= this.element(this.maperial.config.hud.elements[element].type+element).height();
+         value -= element.height();
          value -= margin;
          value -= 8;
          property = "top";
@@ -278,15 +286,19 @@ HUD.prototype.placeElementAt = function(element, value, property){
          break;
       case "right":
          value = mapLeft + mapWidth - value;
-         value -= this.element(this.maperial.config.hud.elements[element].type+element).width();
+         value -= element.width();
          value -= margin;
-         value -= 8;
+         value -= 10;
          property = "left";
          break;
    }
    
-   this.panel(element).css(property, value+"px");
-   this.trigger(element).css(property, value+"px");
+   element.css(property, value+"px");
+   
+   if(elementName){
+      this.panel(elementName).css(property, value+"px");
+      this.trigger(elementName).css(property, value+"px");
+   }
 }
 
 HUD.prototype.display = function(){

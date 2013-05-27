@@ -46,9 +46,7 @@ SourcesManager.prototype.buildSources = function(layers){
             
             if(layers[i].source.params.src == Source.IMAGES_STAMEN_TERRAIN){
                // US - only
-               this.maperial.config.map.currentLat    = 40.68
-               this.maperial.config.map.currentLon    = -74.12
-               this.maperial.config.map.currentZoom   = 7
+               this.maperial.forceCenter(40.68, -74.12, 7)
             }
                
             params = {src : layers[i].source.params.src };

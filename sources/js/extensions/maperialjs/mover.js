@@ -4,8 +4,9 @@ function MapMover(maperial){
 
    console.log("  building mover...");
    
-   this.config = maperial.config;
-   this.context = maperial.context;
+   this.maperial     = maperial;
+   this.config       = maperial.config;
+   this.context      = maperial.context;
 
    this.lastMouseX   = null;
    this.lastMouseY   = null;
@@ -37,19 +38,19 @@ MapMover.prototype.initListeners = function (event) {
       mover.drag();
    });
 
-   $(window).on(MaperialEvents.CONTROL_UP, function(){
+   this.context.mapCanvas.on(MaperialEvents.CONTROL_UP, function(){
       mover.moveUp();
    });
 
-   $(window).on(MaperialEvents.CONTROL_DOWN, function(){
+   this.context.mapCanvas.on(MaperialEvents.CONTROL_DOWN, function(){
       mover.moveDown();
    });
 
-   $(window).on(MaperialEvents.CONTROL_RIGHT, function(){
+   this.context.mapCanvas.on(MaperialEvents.CONTROL_RIGHT, function(){
       mover.moveRight();
    });
 
-   $(window).on(MaperialEvents.CONTROL_LEFT, function(){
+   this.context.mapCanvas.on(MaperialEvents.CONTROL_LEFT, function(){
       mover.moveLeft();
    });
 }
@@ -106,6 +107,7 @@ MapMover.prototype.moveMap = function (dx, dy) {
    var r = this.context.coordS.Resolution ( this.context.zoom );
    this.context.centerM.x -= dx * r;
    this.context.centerM.y += dy * r;
+   this.maperial.refreshCurrentLatLon();
 
    $(window).trigger(MaperialEvents.MAP_MOVING);
 }

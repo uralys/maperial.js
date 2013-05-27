@@ -490,8 +490,24 @@ Maperial.prototype.refreshScreen = function() {
 
 //==================================================================//
 
+Maperial.prototype.refreshCurrentLatLon = function(){
+   var mapLatLon = this.context.coordS.MetersToLatLon(this.context.centerM.x, this.context.centerM.y)
+   this.config.map.currentLat   = mapLatLon.y
+   this.config.map.currentLon   = mapLatLon.x
+   this.config.map.currentZoom  = this.context.zoom
+}
+
+Maperial.prototype.forceCenter = function(lat, lon, zoom){
+   this.config.map.currentLat   = lat
+   this.config.map.currentLon   = lon
+   this.config.map.currentZoom  = zoom
+}
+
+//==================================================================//
+
 Maperial.prototype.SetCenter = function(lat,lon){
    this.context.centerM = this.context.coordS.LatLonToMeters( lat , lon );
+   this.refreshCurrentLatLon();
    this.mapRenderer.DrawScene();
 }
 

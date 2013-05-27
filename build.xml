@@ -256,6 +256,8 @@
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/panel-settings.js" />
 			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-attribution.js" />
+			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/triggers.js" />
 
 			<arg value="--js" />

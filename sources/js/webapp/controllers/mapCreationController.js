@@ -117,13 +117,7 @@
       // layers + map options previously chosen
       config.layers = App.maperial.config.layers
 
-      var mapLatLon = App.maperial.context.coordS.MetersToLatLon(App.maperial.context.centerM.x, App.maperial.context.centerM.y)
-
-      config.map              = App.maperial.config.map
-      config.map.currentLat   = mapLatLon.y
-      config.map.currentLon   = mapLatLon.x
-      config.map.currentZoom  = App.maperial.context.zoom
-
+      config.map = App.maperial.config.map
       config.map.requireBoundingBoxDrawer = true
       
       return config
