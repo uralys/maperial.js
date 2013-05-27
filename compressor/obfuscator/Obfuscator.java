@@ -59,6 +59,8 @@ public class Obfuscator {
 		
 		varsMaperialJS.put("Maperial", "__n_");
 		varsTag.put("Maperial", "__n_");
+		varsMaperialJS.put("#Maperial", "Maperial");
+		varsTag.put("#Maperial", "Maperial");
 
 		varsMaperialJS.put("ExtensionColorbar", "__m_");
 //		varsMaperialJS.put("Symbolizer", "___o_"); ->> marche pas..?
@@ -104,8 +106,9 @@ public class Obfuscator {
 			
 			while ((sCurrentLine = br.readLine()) != null) {
 				
-				for (String k : vars.keySet()) 
+				for (String k : vars.keySet()) {
 					sCurrentLine = sCurrentLine.replaceAll("\\b"+k+"\\b", vars.get(k));
+				}
 					
 				bw.write(sCurrentLine);
 				bw.write("\n");
