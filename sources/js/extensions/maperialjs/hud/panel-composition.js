@@ -53,15 +53,14 @@ HUD.prototype.refreshCompositionsPanel = function() {
       // build selectbox
 
       $("#"+shadersSelectionId).selectbox({
-         onChange: function(composition){
+         onChange: function(l){
             return function (val, inst) {
                try{
-                  composition.shader = inst.input[0][val].label;
-                  me.maperial.restart();
+                  me.maperial.layersManager.changeComposition(l, inst.input[0][val].label);
                }
                catch(e){}
             }
-         }(composition),
+         }(l),
          effect: "slide"
       });
 

@@ -7,29 +7,31 @@ HUD.prototype.refreshAttribution = function(){
    
    var maperialAttribution = this.maperial.config.layers.length > 1 ? "Fusion by <a class=\"link\" target=\"_blank\" href=\"http://www.maperial.com\">__Maperial</a>." : "";
    var tilesAttribution    = "";
-   var dataAttribution     = false;
+   var osmAttribution     = false;
 
    for(var i = 0; i < this.maperial.config.layers.length; i++){
       if(this.maperial.config.layers[i].source.type == Source.MaperialOSM){
          maperialAttribution = "Styled tiles and fusion by <a class=\"link\" target=\"_blank\" href=\"http://www.maperial.com\">__Maperial</a>."
-         dataAttribution = true
+         osmAttribution = true
       }
       else if(this.maperial.config.layers[i].source.type == Source.Images){
          switch(this.maperial.config.layers[i].source.params.src){
             case Source.IMAGES_MAPQUEST:
             case Source.IMAGES_MAPQUEST_SATELLITE:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://www.mapquest.com\">MapQuest</a>."
+               osmAttribution = true
                break;
 
             case Source.IMAGES_OSM:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://openstreetmap.org\">© OpenStreetMap contributors</a>."
+               osmAttribution = true
                break;
 
             case Source.IMAGES_OCM_CYCLE:
             case Source.IMAGES_OCM_TRANSPORT:
             case Source.IMAGES_OCM_LANDSCAPE:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"www.thunderforest.com\">OpenCycleMap</a>."
-               dataAttribution = true
+               osmAttribution = true
                break;
                
             case Source.IMAGES_STAMEN_WATERCOLOR:
@@ -37,6 +39,7 @@ HUD.prototype.refreshAttribution = function(){
             case Source.IMAGES_STAMEN_TONER:
             case Source.IMAGES_STAMEN_TONER_BG:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://maps.stamen.com\">Stamen Design</a>."
+               osmAttribution = true
                break;
 
          }
@@ -47,7 +50,7 @@ HUD.prototype.refreshAttribution = function(){
    html += maperialAttribution
    html += tilesAttribution
    
-   if(dataAttribution)
+   if(osmAttribution)
       html += " Data by <a class=\"link\" target=\"_blank\" href=\"http://openstreetmap.org\">© OpenStreetMap contributors</a>."
 
    this.element("attribution").append(html);
@@ -77,29 +80,31 @@ HUD.prototype.smallMapAttribution = function(){
    
    var maperialAttribution = this.maperial.config.layers.length > 1 ? "Fusion by <a class=\"link\" target=\"_blank\" href=\"http://www.maperial.com\">__Maperial</a>.<br/>" : "";
    var tilesAttribution    = "";
-   var dataAttribution     = false;
+   var osmAttribution     = false;
 
    for(var i = 0; i < this.maperial.config.layers.length; i++){
       if(this.maperial.config.layers[i].source.type == Source.MaperialOSM){
          maperialAttribution = "Styled tiles and fusion by <a class=\"link\" target=\"_blank\" href=\"http://www.maperial.com\">__Maperial</a>.<br/>"
-         dataAttribution = true
+         osmAttribution = true
       }
       else if(this.maperial.config.layers[i].source.type == Source.Images){
          switch(this.maperial.config.layers[i].source.params.src){
             case Source.IMAGES_MAPQUEST:
             case Source.IMAGES_MAPQUEST_SATELLITE:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://www.mapquest.com\">MapQuest</a>.<br/>"
+               osmAttribution = true
                break;
 
             case Source.IMAGES_OSM:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://openstreetmap.org\">© OpenStreetMap contributors</a>.<br/>"
+               osmAttribution = true
                break;
 
             case Source.IMAGES_OCM_CYCLE:
             case Source.IMAGES_OCM_TRANSPORT:
             case Source.IMAGES_OCM_LANDSCAPE:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"www.thunderforest.com\">OpenCycleMap</a>.<br/>"
-               dataAttribution = true
+               osmAttribution = true
                break;
                
             case Source.IMAGES_STAMEN_WATERCOLOR:
@@ -107,6 +112,7 @@ HUD.prototype.smallMapAttribution = function(){
             case Source.IMAGES_STAMEN_TONER:
             case Source.IMAGES_STAMEN_TONER_BG:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://maps.stamen.com\">Stamen Design</a>.<br/>"
+               osmAttribution = true
                break;
 
          }
@@ -117,7 +123,7 @@ HUD.prototype.smallMapAttribution = function(){
    html += maperialAttribution
    html += tilesAttribution
    
-   if(dataAttribution)
+   if(osmAttribution)
       html += " Data by <a class=\"link\" target=\"_blank\" href=\"http://openstreetmap.org\">© OpenStreetMap contributors</a>."
 
    this.element("attribution").append(html);

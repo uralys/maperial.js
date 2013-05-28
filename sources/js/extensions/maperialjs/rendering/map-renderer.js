@@ -83,13 +83,11 @@ MapRenderer.prototype.initListeners = function () {
 //-------------------------------------------//
 
 MapRenderer.prototype.sourceReady = function ( source, x, y, z ) {
-
    var key = x + "," + y + "," + z;
-
+      
    if ( this.tileCache[key] != null ) {
       this.tileCache[key].appendDataToLayers(source.type, this.maperial.sourcesManager.getData( source, x, y, z ));
    }
-   
 }
 
 //----------------------------------------------------------------------//
@@ -287,7 +285,6 @@ MapRenderer.prototype.Start = function () {
    this.gltools = new GLTools ()
    this.InitGL()
    
-   this.DrawScene();
    this.drawSceneInterval = setInterval( Utils.apply ( this, "DrawScene" ) , Maperial.refreshRate + 5 );
    return true;
 } 
@@ -296,11 +293,12 @@ MapRenderer.prototype.Start = function () {
 
 MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, forceTileRedraw) {
    var keyList = [];
-
+   
    for ( tx = txB ; tx <= txE ; tx = tx + 1) {
       for ( ty = tyB ; ty <= tyE ; ty = ty + 1) {
          var key = tx + "," + ty + "," + zoom;
-         keyList.push(key) 
+         keyList.push(key)
+         
          if ( this.tileCache[key] == null ) {
             this.tileCache[key]  = new Tile ( this.maperial, tx, ty, zoom);
          }
@@ -325,7 +323,7 @@ MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, f
       }
    }
 
-   var tileModified = false;
+   var tileModified  = false;
    var timeRemaining = Maperial.refreshRate;
    
    for (var ki = 0 ; ki < keyList.length ; ki++) {      
@@ -349,7 +347,7 @@ MapRenderer.prototype.DrawScene = function (forceGlobalRedraw,forceTileRedraw) {
       forceGlobalRedraw = true;
    if(typeof(forceTileRedraw)==='undefined' )
       forceTileRedraw = false;
-
+   
    var w = this.context.mapCanvas.width();
    var h = this.context.mapCanvas.height();
 
@@ -363,11 +361,11 @@ MapRenderer.prototype.DrawScene = function (forceGlobalRedraw,forceTileRedraw) {
    var originP = this.context.coordS.MetersToPixels ( originM.x, originM.y, this.context.zoom );
    var shift   = new Point ( Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) );
 
-   var nbTileX = Math.floor ( w  / Maperial.tileSize +1 );
-   var nbTileY = Math.floor ( h  / Maperial.tileSize  +1 ) ; 
+   var nbTileX = Math.floor ( w  / Maperial.tileSize + 1 );
+   var nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
    
    if ( this.UpdateTileCache ( this.context.zoom , tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , forceTileRedraw ) || forceGlobalRedraw) {
-
+      
       var mvMatrix      = mat4.create();
       var pMatrix       = mat4.create();
       mat4.identity    ( pMatrix );

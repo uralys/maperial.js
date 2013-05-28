@@ -36,8 +36,9 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
          break;
    
       case Source.Images :
+      case Source.WMS:
          var src = params[0];
-         layerConfig = LayersManager.getImagesLayerConfig(src);
+         layerConfig = LayersManager.getImagesLayerConfig(sourceType, src);
          break;
    
    }
@@ -224,6 +225,32 @@ LayersManager.buildOSMVisibilities = function(osmSets) {
 }
 
 //=======================================================================================//
+
+LayersManager.prototype.changeComposition = function(l, label) {
+
+   var composition = this.maperial.config.layers[l].composition;
+   composition.shader = label;
+   
+   switch(label){
+      
+      case Maperial.AlphaClip : 
+         break;
+
+      case Maperial.AlphaBlend : 
+         break;
+      
+      case Maperial.MulBlend : 
+         if(!composition.params || !composition.params.uParams)
+            composition.params = { uParams : [ -0.5, -0.5, 1.0 ]}
+         
+         console.log(composition.params.uParams)
+         break;
+   }
+   
+   this.maperial.restart();   
+}
+
+//=======================================================================================//
 // Default configs
 //-------------------------------------------//
 
@@ -290,15 +317,15 @@ LayersManager.getVectorLayerConfig = function() {
 //-------------------------------------------//
 
 /**
- * src : 
- *    Source.IMAGES_*
- *    Source WMS
+ * sourceType
+ *    Source.IMAGES
+ *    Source.WMS
  */
-LayersManager.getImagesLayerConfig = function(src) {
+LayersManager.getImagesLayerConfig = function(sourceType, src) {
    return { 
       type: LayersManager.Images, 
       source: {
-         type: Source.Images,
+         type: sourceType,
          params: { src: src }
       },
       params: {

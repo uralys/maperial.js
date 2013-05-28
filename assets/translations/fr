@@ -19,7 +19,7 @@
     
     "Choose"			: "Sélectionnez",
     "chooseText1"		: "Un fond parmi les ",
-    "chooseText2"		: "(Google, Mapquest, OSM)",
+    "chooseText2"		: "(Stamen, Mapquest, OSM)",
     "chooseText3"		: "fonds classiques",
     "chooseText4"		: "ou votre propre style.",
 
