@@ -236,7 +236,9 @@ function GLTools () {
          shaderProgram.attr[key]    = gl.getAttribLocation( shaderProgram, attributes[key] ); 
       }
       for (var key in parameters) {
-         shaderProgram.params[key]  = gl.getUniformLocation(shaderProgram, parameters[key]);
+         shaderProgram.params[key] = {}
+         shaderProgram.params[key]["name"] = gl.getUniformLocation(shaderProgram, parameters[key][0]);
+         shaderProgram.params[key]["fct"]  = parameters[key][1];
       }
       return shaderProgram;
    }

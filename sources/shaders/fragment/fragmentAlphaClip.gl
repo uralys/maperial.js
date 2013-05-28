@@ -3,9 +3,12 @@ varying vec2 vTextureCoord;
 
 uniform sampler2D uSamplerFgd ;
 uniform sampler2D uSamplerBgd ;
+uniform float     uParams;
 
 void main(void) {
    vec2 tc;   
+   
+   float au       = uParams;
    tc.x           = vTextureCoord.x;
    tc.y           = vTextureCoord.y;
    vec4  bgd      = texture2D(uSamplerBgd , tc );
@@ -13,6 +16,7 @@ void main(void) {
    if ( fgd.a <= 0.0 )
       gl_FragColor   = bgd;
    else
-      gl_FragColor   = fgd;
+      //gl_FragColor   = fgd;
+      mix(bgd, fgd, au);
 
 }

@@ -30,7 +30,12 @@ function Maperial(tagId, width, height){
 
 //==================================================================//
 
-Maperial.staticURL              = (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? 'http://static.maperial.localhost' : 'http://static.maperial.com';
+//Maperial.staticURL              = (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? 'http://static.maperial.localhost' : 'http://static.maperial.com';
+//Maperial.shaderURL              = (window.location.hostname == "maperial.localhost" || window.location.hostname == "maperial.localhost.deploy") ? 'http://sources.maperial.localhost:81/shaders/' : 'http://static.maperial.com';
+
+Maperial.staticURL              = (window.location.hostname.indexOf("maperial.localhost") !== -1 || window.location.hostname.indexOf("maperial.localhost.deploy") !== -1 ) ? 'http://static.maperial.localhost:'+ window.location.port: 'http://static.maperial.com';
+Maperial.shaderURL              = (window.location.hostname.indexOf("maperial.localhost") !== -1 || window.location.hostname.indexOf("maperial.localhost.deploy") !== -1 ) ? 'http://' + window.location.host+'/shaders' : 'http://static.maperial.com';
+
 Maperial.apiURL                 = 'http://api.maperial.com';
 
 Maperial.DEFAULT_ZOOM           = 10;

@@ -128,7 +128,7 @@ function GlobalInitGL( glAsset , gl , glTools) {
    
    glAsset.ShaderReq  = $.ajax({
       type     : "GET",
-      url      : Maperial.staticURL + "/all.json",
+      url      : Maperial.shaderURL + "/all.json",
       dataType : "json",
       async    : false,
       success  : function(data, textStatus, jqXHR) {
