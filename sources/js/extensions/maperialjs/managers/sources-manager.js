@@ -54,6 +54,7 @@ SourcesManager.prototype.buildSources = function(layers){
             break;
       }
 
+      console.log("     adding source " + type);
       this.sources.push(new Source(type, params));
    }
 

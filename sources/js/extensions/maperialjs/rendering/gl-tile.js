@@ -235,15 +235,13 @@ Tile.prototype.Fuse = function ( backTex,frontTex,destFB, prog, params ) {
    this.gl.bindTexture              (this.gl.TEXTURE_2D, frontTex );
    this.gl.uniform1i                (prog.params.uSamplerTex2.name, 1);
 
-   this.gl.drawArrays               (this.gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
-
-//   console.log("=====================================")
-//   console.log(this.x, this.y)
    for (var p in params) {
       // WRONG !!!!! always  uniform3fv ???
       //this.gl.uniform3fv             (prog.params[p] , params[p] ); 
       this.gl[prog.params[p].fct] (prog.params[p].name, params[p] ); 
    }
+
+   this.gl.drawArrays               (this.gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
 
    this.gl.bindFramebuffer          (this.gl.FRAMEBUFFER, null );
    this.gl.activeTexture            (this.gl.TEXTURE0);

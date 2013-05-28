@@ -1,0 +1,108 @@
+<html>
+
+<head>
+<title>Demo Maperial- Style Edition</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link href="http://static.maperial.localhost/css/maperial-js.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div id="_maperial"></div>
+	<img id="waitingSpin" src="http://static.maperial.localhost/images/mapediting/spin.gif" />
+</body>
+
+<script type="text/javascript" src="/js/tools/script-loader.js"></script>
+
+<script type="text/javascript">
+   window.scriptLoader
+         .getScripts(
+               [
+                     "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js",
+                     "http://code.jquery.com/ui/1.9.2/jquery-ui.js",
+
+                     // tools
+                     "/js/tools/utils.js",
+                     "/js/libs/jquery.mousewheel.min.js",
+                     "/js/libs/jquery.selectbox-0.2.min.js",
+                     "/js/libs/jquery.validate.min.js",
+                     "/js/libs/proj4js-compressed.js",
+
+                     // libs
+                     "/js/extensions/maperialjs/libs/gl-matrix-min.js",
+                     "/js/extensions/maperialjs/libs/coordinate-system.js",
+                     "/js/extensions/maperialjs/libs/geoloc.js",
+                     "/js/extensions/maperialjs/libs/colorpicker.js",
+                     "/js/extensions/maperialjs/libs/RGBColor.js",
+                     "/js/extensions/maperialjs/libs/hashmap.js",
+                     "/js/extensions/maperialjs/libs/canvasutilities.js",
+
+                     // rendering
+                     "/js/extensions/maperialjs/rendering/gl-tools.js",
+                     "/js/extensions/maperialjs/rendering/gl-rasterlayer.js",
+                     "/js/extensions/maperialjs/rendering/gl-imagelayer.js",
+                     "/js/extensions/maperialjs/rendering/gl-tile.js",
+                     "/js/extensions/maperialjs/rendering/gl-vectoriallayer.js",
+                     "/js/extensions/maperialjs/rendering/render-line.js",
+                     "/js/extensions/maperialjs/rendering/render-text.js",
+                     "/js/extensions/maperialjs/rendering/tile-renderer.js",
+                     "/js/extensions/maperialjs/rendering/map-renderer.js",
+
+                     // modules
+                     "/js/extensions/maperialjs/events.js",
+                     "/js/extensions/maperialjs/source.js",
+                     "/js/extensions/maperialjs/mouse.js",
+                     "/js/extensions/maperialjs/mover.js",
+                     "/js/extensions/maperialjs/template-builder.js",
+
+                     // hud
+                     "/js/extensions/maperialjs/hud/hud.js",
+                     "/js/extensions/maperialjs/hud/panel-composition.js",
+                     "/js/extensions/maperialjs/hud/panel-switch.js",
+                     "/js/extensions/maperialjs/hud/panel-controls.js",
+                     "/js/extensions/maperialjs/hud/panel-latlon.js",
+                     "/js/extensions/maperialjs/hud/panel-scale.js",
+                     "/js/extensions/maperialjs/hud/panel-settings.js",
+                     "/js/extensions/maperialjs/hud/panel-attribution.js",
+                     "/js/extensions/maperialjs/hud/triggers.js",
+
+                     // managers
+                     "/js/extensions/maperialjs/managers/styles-manager.js",
+                     "/js/extensions/maperialjs/managers/colorbars-manager.js",
+                     "/js/extensions/maperialjs/managers/layers-manager.js",
+                     "/js/extensions/maperialjs/managers/sources-manager.js",
+
+                     // edition
+                     "/js/extensions/maperialjs/edition/boundingbox-drawer.js",
+                     "/js/extensions/maperialjs/edition/colortool.js",
+                     "/js/extensions/maperialjs/edition/symbolizer.js",
+                     "/js/extensions/maperialjs/edition/style-menu.js",
+
+                     // colorbar
+                     "/js/extensions/maperialjs/colorbar/colorbar-rainbow.js",
+                     "/js/extensions/maperialjs/colorbar/colorbar.js",
+
+                     "/js/extensions/maperialjs/maperial.js",
+
+                     // google - geoloc
+                     "https://maps.googleapis.com/maps/api/js?key=AIzaSyATwlkawyHykpfJF24jcPgL_b8kK8zO2Bc&sensor=false&libraries=places,panoramio", ],
+               function() {
+
+                  $(window).on(MaperialEvents.READY, function() {
+                     $("#waitingSpin").css("display", "none")
+                  })
+
+                  var maperial = new Maperial()
+                  var config = maperial.emptyConfig();
+
+                  config.hud.elements[HUD.COMPOSITIONS]  = {show : true,  type : HUD.PANEL,    label : "Composition", disableDrag : true };
+                  
+                  config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
+                  config.layers.push(LayersManager.getOSMLayerConfig(["1_style_13ed780ed7174481e7e"]))
+                  
+                  maperial.apply(config)
+               });
+</script>
+
+
+</html>
+

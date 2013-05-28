@@ -171,7 +171,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
             min: 0,
             max: 1,
             step: 0.01,
-            value: composition.params.alpha,
+            value: composition.params.uParams,
             slide: function(alphaId){
                //-----
             }(alphaId),

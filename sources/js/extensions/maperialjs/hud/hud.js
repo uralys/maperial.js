@@ -7,7 +7,7 @@ function HUD(maperial){
    
    this.maperial = maperial;
    this.context = this.maperial.context;
-
+   
    this.buildTriggers();
    this.buildControls();
    this.display();

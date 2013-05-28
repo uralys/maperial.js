@@ -226,26 +226,39 @@ LayersManager.buildOSMVisibilities = function(osmSets) {
 
 //=======================================================================================//
 
-LayersManager.prototype.changeComposition = function(l, label) {
+LayersManager.prototype.changeComposition = function(l, shader) {
 
    var composition = this.maperial.config.layers[l].composition;
-   composition.shader = label;
    
-   switch(label){
-      
-      case Maperial.AlphaClip : 
-         break;
-
-      case Maperial.AlphaBlend : 
-         break;
-      
-      case Maperial.MulBlend : 
-         if(!composition.params || !composition.params.uParams)
-            composition.params = { uParams : [ -0.5, -0.5, 1.0 ]}
+   //-----------------------------------------------//
+   // storing previous params
+   
+   if(!composition.storedparams)
+      composition.storedparams = {}
+   
+   composition.storedparams[composition.shader] = composition.params
+   
+   //-----------------------------------------------//
+   
+   composition.shader = shader;
+   
+   if(composition.storedparams && composition.storedparams[shader])
+      composition.params = composition.storedparams[shader]
+   else{
+      switch(shader){
          
-         console.log(composition.params.uParams)
-         break;
+         case Maperial.AlphaClip : 
+         case Maperial.AlphaBlend : 
+               composition.params = { uParams : 1.0 }
+            break;
+            
+         case Maperial.MulBlend : 
+               composition.params = { uParams : [ -0.5, -0.5, 1.0 ]}
+            break;
+      }
    }
+
+   console.log("setting uParams : " + composition.params.uParams)
    
    this.maperial.restart();   
 }
@@ -323,6 +336,10 @@ LayersManager.getVectorLayerConfig = function() {
  *    Source.WMS
  */
 LayersManager.getImagesLayerConfig = function(sourceType, src) {
+   
+   console.log(sourceType)
+   console.log(src)
+   
    return { 
       type: LayersManager.Images, 
       source: {
