@@ -216,8 +216,8 @@ Tile.prototype.Fuse = function ( backTex,frontTex,destFB, prog, params ) {
 
    
    this.gl.useProgram               (prog);
-   this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform , false, pMatrix);
-   this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform, false, mvMatrix);
+   this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform.name , false, pMatrix);
+   this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform.name, false, mvMatrix);
    this.gl.bindBuffer               (this.gl.ARRAY_BUFFER, this.assets.squareVertexPositionBuffer);
    this.gl.enableVertexAttribArray  (prog.attr.vertexPositionAttribute);
    this.gl.vertexAttribPointer      (prog.attr.vertexPositionAttribute, this.assets.squareVertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
@@ -229,19 +229,20 @@ Tile.prototype.Fuse = function ( backTex,frontTex,destFB, prog, params ) {
 
    this.gl.activeTexture            (this.gl.TEXTURE0);
    this.gl.bindTexture              (this.gl.TEXTURE_2D, backTex );
-   this.gl.uniform1i                (prog.params.uSamplerTex1, 0);
+   this.gl.uniform1i                (prog.params.uSamplerTex1.name, 0);
 
    this.gl.activeTexture            (this.gl.TEXTURE1);
    this.gl.bindTexture              (this.gl.TEXTURE_2D, frontTex );
-   this.gl.uniform1i                (prog.params.uSamplerTex2, 1);
+   this.gl.uniform1i                (prog.params.uSamplerTex2.name, 1);
 
    this.gl.drawArrays               (this.gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
 
 //   console.log("=====================================")
 //   console.log(this.x, this.y)
    for (var p in params) {
-//      console.log(p + " | " + params[p])
-      this.gl.uniform3fv            (prog.params[p] , params[p] );
+      // WRONG !!!!! always  uniform3fv ???
+      //this.gl.uniform3fv             (prog.params[p] , params[p] ); 
+      this.gl[prog.params[p].fct] (prog.params[p].name, params[p] ); 
    }
 
    this.gl.bindFramebuffer          (this.gl.FRAMEBUFFER, null );
@@ -272,8 +273,8 @@ Tile.prototype.Copy = function ( backTex , destFB ) {
    var prog = this.assets.prog["Tex"];
 
    this.gl.useProgram               (prog);
-   this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform , false, pMatrix);
-   this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform, false, mvMatrix);
+   this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform.name, false, pMatrix);
+   this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform.name, false, mvMatrix);
    this.gl.bindBuffer               (this.gl.ARRAY_BUFFER, this.assets.squareVertexPositionBuffer);
    this.gl.enableVertexAttribArray  (prog.attr.vertexPositionAttribute);
    this.gl.vertexAttribPointer      (prog.attr.vertexPositionAttribute, this.assets.squareVertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
@@ -284,7 +285,7 @@ Tile.prototype.Copy = function ( backTex , destFB ) {
 
    this.gl.activeTexture            (this.gl.TEXTURE0);
    this.gl.bindTexture              (this.gl.TEXTURE_2D, backTex );
-   this.gl.uniform1i                (prog.params.uSamplerTex1, 0);
+   this.gl.uniform1i                (prog.params.uSamplerTex1.name, 0);
    this.gl.drawArrays               (this.gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
 
    gl.bindFramebuffer               ( gl.FRAMEBUFFER, null );
@@ -339,8 +340,8 @@ Tile.prototype.Render = function (pMatrix, mvMatrix) {
    if ( this.IsUpToDate() ) {
       var prog                         = this.assets.prog["Tex"];
       this.gl.useProgram               (prog);
-      this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform , false, pMatrix);
-      this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform, false, mvMatrix);
+      this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform.name, false, pMatrix);
+      this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform.name, false, mvMatrix);
       this.gl.bindBuffer               (this.gl.ARRAY_BUFFER, this.assets.squareVertexPositionBuffer);
       this.gl.enableVertexAttribArray  (prog.attr.vertexPositionAttribute);
       this.gl.vertexAttribPointer      (prog.attr.vertexPositionAttribute, this.assets.squareVertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
@@ -356,7 +357,7 @@ Tile.prototype.Render = function (pMatrix, mvMatrix) {
       if ( err != 0 )
          console.log ( err );
 
-      this.gl.uniform1i                (prog.params.uSamplerTex1, 0);
+      this.gl.uniform1i                (prog.params.uSamplerTex1.name, 0);
       this.gl.drawArrays               (this.gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
 
       this.gl.activeTexture            (this.gl.TEXTURE0);
