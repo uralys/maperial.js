@@ -235,6 +235,7 @@ Utils.getSourceThumb = function(layer) {
    
       case Source.Vector:
       case Source.Images:
+      case Source.WMS:
          return " src=\"http://static.maperial.localhost/images/icons/layer."+layer.source.params.src+".png\"";
          
       case Source.Raster:

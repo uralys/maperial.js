@@ -22,12 +22,17 @@ function Tile (maperial, x, y, z) {
 
    //--------------------------------//
 
+   this.nbErrors     = 0;
+
+   //--------------------------------//
+
    this.Init();
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.Init = function () {
+   this.nbErrors = 0;
    this.initLayers();
    this.maperial.sourcesManager.loadSources(this.x, this.y, this.z);
    this.prepareBuffering();
@@ -104,12 +109,19 @@ Tile.prototype.IsUpToDate = function ( ) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.appendDataToLayers = function ( sourceType, data ) {
+   
+   if(!data){
+      this.nbErrors ++;
+   }
+   
    for(var i = 0; i< this.config.layers.length; i++){
       try{
          if ( this.config.layers[i].source.type == sourceType )
             this.layers[i].Init( data );
       }
-      catch(e){}
+      catch(e){
+         console.log("-------> ERROR")
+      }
    }   
 }
 
@@ -196,12 +208,13 @@ Tile.prototype.Fuse = function ( backTex,frontTex,destFB, prog, params ) {
    gl.viewport                      ( 0, 0, destFB.width, destFB.height);
    gl.clear                         ( gl.COLOR_BUFFER_BIT );
 
-   mvMatrix                         = mat4.create();
-   pMatrix                          = mat4.create();
+   var mvMatrix                     = mat4.create();
+   var pMatrix                      = mat4.create();
    mat4.identity                    ( pMatrix );
    mat4.identity                    ( mvMatrix );
    mat4.ortho                       ( 0, destFB.width , 0, destFB.height, 0, 1, pMatrix ); // Y swap !
 
+   
    this.gl.useProgram               (prog);
    this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform , false, pMatrix);
    this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform, false, mvMatrix);
@@ -213,6 +226,7 @@ Tile.prototype.Fuse = function ( backTex,frontTex,destFB, prog, params ) {
    this.gl.enableVertexAttribArray  (prog.attr.textureCoordAttribute);
    this.gl.vertexAttribPointer      (prog.attr.textureCoordAttribute, this.assets.squareVertexTextureBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
 
+
    this.gl.activeTexture            (this.gl.TEXTURE0);
    this.gl.bindTexture              (this.gl.TEXTURE_2D, backTex );
    this.gl.uniform1i                (prog.params.uSamplerTex1, 0);
@@ -223,12 +237,14 @@ Tile.prototype.Fuse = function ( backTex,frontTex,destFB, prog, params ) {
 
    this.gl.drawArrays               (this.gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
 
+//   console.log("=====================================")
+//   console.log(this.x, this.y)
    for (var p in params) {
-      // WRONG !!!!! always  uniform3fv ???
-      this.gl.uniform3fv             (prog.params[p] , params[p] ); 
+//      console.log(p + " | " + params[p])
+      this.gl.uniform3fv            (prog.params[p] , params[p] );
    }
 
-   gl.bindFramebuffer               ( gl.FRAMEBUFFER, null );
+   this.gl.bindFramebuffer          (this.gl.FRAMEBUFFER, null );
    this.gl.activeTexture            (this.gl.TEXTURE0);
    this.gl.bindTexture              (this.gl.TEXTURE_2D, null );
    this.gl.activeTexture            (this.gl.TEXTURE1);
@@ -247,8 +263,8 @@ Tile.prototype.Copy = function ( backTex , destFB ) {
    gl.viewport                      ( 0, 0, destFB.width, destFB.height);
    gl.clear                         ( gl.COLOR_BUFFER_BIT );
 
-   mvMatrix                         = mat4.create();
-   pMatrix                          = mat4.create();
+   var mvMatrix                     = mat4.create();
+   var pMatrix                      = mat4.create();
    mat4.identity                    ( pMatrix );
    mat4.identity                    ( mvMatrix );
    mat4.ortho                       ( 0, destFB.width , 0, destFB.height, 0, 1, pMatrix ); // Y swap !
@@ -285,11 +301,13 @@ Tile.prototype.Compose = function (  ) {
    var tmpI    = 0;
 
    if ( this.config.layers.length > 1 ) {
+
       for( var i = 1 ; i < this.config.layers.length ; i++ ) {
          var frontTex   = this.layers[i].tex;
          if (frontTex) {
             var prog       = this.assets.prog[ this.config.layers[i].composition.shader ]
             var params     = this.config.layers[i].composition.params;
+
             this.Fuse      ( backTex,frontTex,destFb, prog , params);
          }
          else {
@@ -297,6 +315,7 @@ Tile.prototype.Compose = function (  ) {
          }
          backTex        = this.texL[tmpI];
          this.tex       = backTex;
+
          tmpI           = ( tmpI + 1 ) % 2;
          destFb         = this.frameBufferL[ tmpI ];
       }
@@ -319,7 +338,6 @@ Tile.prototype.Render = function (pMatrix, mvMatrix) {
 
    if ( this.IsUpToDate() ) {
       var prog                         = this.assets.prog["Tex"];
-
       this.gl.useProgram               (prog);
       this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform , false, pMatrix);
       this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform, false, mvMatrix);
@@ -343,5 +361,9 @@ Tile.prototype.Render = function (pMatrix, mvMatrix) {
 
       this.gl.activeTexture            (this.gl.TEXTURE0);
       this.gl.bindTexture              (this.gl.TEXTURE_2D, null );
+
+      var err = this.gl.getError();
+      if ( err != 0 )
+         console.log ( err );
    }
 }

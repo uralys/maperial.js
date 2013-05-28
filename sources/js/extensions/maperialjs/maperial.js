@@ -24,7 +24,7 @@ function Maperial(tagId, width, height){
    this.colorbarRenderer = null;
 
    this.templateBuilder = new TemplateBuilder();
-   
+
    this.shaders = [Maperial.AlphaClip, Maperial.AlphaBlend, Maperial.MulBlend];
 };
 
@@ -222,6 +222,7 @@ Maperial.prototype.createContext = function() {
    // set new divs (ember erase and build new divs)
 
    this.context.mapCanvas = $("#Map"+this.tagId);
+   this.setCanvasSize();
 
    if(this.config.hud.elements[HUD.MAGNIFIER]){
       this.context.magnifierCanvas = $("#Magnifier"+this.tagId);
@@ -460,9 +461,7 @@ Maperial.prototype.buildHUD = function() {
 
 //==================================================================//
 
-Maperial.prototype.refreshScreen = function() {
-
-   console.log("refreshing screen...");
+Maperial.prototype.setCanvasSize = function() {
 
    var w = $(window).width(); 
    var h = $(window).height();
@@ -479,6 +478,9 @@ Maperial.prototype.refreshScreen = function() {
       this.context.mapCanvas[0].width = w;
       this.context.mapCanvas[0].height = h;
    }
+}
+
+Maperial.prototype.refreshScreen = function() {
 
    try{
       this.mapRenderer.fitToSize();

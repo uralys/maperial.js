@@ -106,7 +106,7 @@ HUD.applyDefaultHUD = function(config) {
 HUD.positions = [];
 
 HUD.positions[HUD.SETTINGS]      = { left  : "0",    top    : "0"   };
-HUD.positions[HUD.COMPOSITIONS]  = { left  : "0",    bottom : "0"   };
+HUD.positions[HUD.COMPOSITIONS]  = { left  : "0",    bottom : "120"   };
 HUD.positions[HUD.SWITCH_IMAGES] = { left : "10",    top    : "10"  };
 HUD.positions[HUD.MAGNIFIER]     = { left  : "0",    bottom : "0"   };
 HUD.positions[HUD.COLORBAR]      = { left  : "0",    top    : "180" };

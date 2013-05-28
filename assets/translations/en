@@ -19,7 +19,7 @@
     
     "Choose"			: "Choose",
     "chooseText1"		: "A basemap from classic",
-    "chooseText2"		: "(Google, Mapquest, OSM)",
+    "chooseText2"		: "(Stamen, Mapquest, OSM)",
     "chooseText3"		: "libraries",
     "chooseText4"		: "or your own styles",
 
