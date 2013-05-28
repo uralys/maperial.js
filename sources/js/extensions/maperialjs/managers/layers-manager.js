@@ -310,7 +310,7 @@ LayersManager.getVectorLayerConfig = function() {
       },
       composition: {
          shader : Maperial.AlphaBlend,
-         params : {}
+         params : { uParams : 1.0 }
       }
    }
 }
@@ -334,7 +334,7 @@ LayersManager.getImagesLayerConfig = function(sourceType, src) {
       },
       composition: {
          shader : Maperial.AlphaBlend,
-         params : {}
+         params : { uParams : 1.0 }
       }
    }
 }

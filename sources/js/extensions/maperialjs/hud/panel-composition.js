@@ -177,8 +177,8 @@ HUD.prototype.refreshCompositionsPanel = function() {
             }(alphaId),
             change: function(alphaId, composition){
                return function( event, ui ) {
-                  composition.params.alpha = ui.value;
-                  console.log("alpha : " + composition.params.alpha)
+                  composition.params.uParams = ui.value;
+                  console.log("alpha : " + composition.params.uParams)
                   $(window).trigger(MaperialEvents.ALPHA_CHANGED);
                }
             }(alphaId, composition)
