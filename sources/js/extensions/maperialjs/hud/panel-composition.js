@@ -19,7 +19,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
    //-----------------------------------------------------//
 
    this.element(HUD.COMPOSITIONS).removeClass("hide"); 
-   this.element(HUD.COMPOSITIONS).append("<p class=\"compositionSettingsTitle\">Compositions Settings</p>");
+   this.element(HUD.COMPOSITIONS).append("<p class=\"compositionSettingsTitle\">Composition Settings</p>");
 
    //-----------------------------------------------------//
 
@@ -100,6 +100,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
             change: function(constrastId, composition){
                return function( event, ui ) {
                   composition.params.uParams[0] = ui.value;
+                  console.log("contrast : " + composition.params.uParams[0])
                   $(window).trigger(MaperialEvents.CONTRAST_CHANGED);
                }
             }(constrastId, composition)
@@ -118,7 +119,8 @@ HUD.prototype.refreshCompositionsPanel = function() {
             change: function(brightnessId, composition){
                return function( event, ui ) {
                   composition.params.uParams[1] = ui.value;
-                  $(window).trigger(MaperialEvents.LUMINOSITY_CHANGED);
+                  console.log("brightness : " + composition.params.uParams[1])
+                  $(window).trigger(MaperialEvents.BRIGHTNESS_CHANGED);
                }
             }(brightnessId, composition)
          });
@@ -136,6 +138,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
             change: function(bwId, composition){
                return function( event, ui ) {
                   composition.params.uParams[2] = ui.value;
+                  console.log("BW : " + composition.params.uParams[2])
                   $(window).trigger(MaperialEvents.BW_METHOD_CHANGED);
                }
             }(bwId, composition)
@@ -147,6 +150,45 @@ HUD.prototype.refreshCompositionsPanel = function() {
          Utils.buildSliderStyle(brightnessId);
          Utils.buildSliderStyle(bwId);
       }
+
+      //-----------------------------------------------------//
+      
+      if(composition.shader == Maperial.AlphaClip
+      || composition.shader == Maperial.AlphaBlend){
+
+         var alphaId = "user_alpha_"+l;
+         
+         var div = "<div class=\"row-fluid marginbottom\">" +
+         "<div class=\"span1 offset1\"><i class=\"sprite-maperial maperial-contrast\"></i></div>" +
+         "<div class=\"span7 offset1\"><div class=\"mulblendSlider\" id="+alphaId+"></div></div>" +
+         "</div>";
+
+         this.element(HUD.COMPOSITIONS).append(div);
+         
+         $( "#"+alphaId ).slider({
+            orientation: "horizontal",
+            range: "min",
+            min: 0,
+            max: 1,
+            step: 0.01,
+            value: composition.params.alpha,
+            slide: function(alphaId){
+               //-----
+            }(alphaId),
+            change: function(alphaId, composition){
+               return function( event, ui ) {
+                  composition.params.alpha = ui.value;
+                  console.log("alpha : " + composition.params.alpha)
+                  $(window).trigger(MaperialEvents.ALPHA_CHANGED);
+               }
+            }(alphaId, composition)
+         });
+
+         panelHeight += 45;
+         
+         Utils.buildSliderStyle(alphaId);
+      }
+      
       //-----------------------------------------------------//
 
       panelHeight += 60;

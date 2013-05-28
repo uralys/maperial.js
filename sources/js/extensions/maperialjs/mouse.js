@@ -4,8 +4,9 @@ function MapMouse(maperial){
 
    console.log("  listening mouse...");
    
-   this.config = maperial.config;
-   this.context = maperial.context;
+   this.maperial           = maperial;
+   this.config             = maperial.config;
+   this.context            = maperial.context;
    
    this.mouseDown          = false;
    this.lastWheelMillis    = new Date().getTime();
@@ -43,6 +44,9 @@ MapMouse.prototype.removeListeners = function () {
 //==================================================================//
 
 MapMouse.prototype.down = function (event) {
+
+   event.preventDefault();
+   
    this.mouseDown = true;
    this.context.mapCanvas.trigger(MaperialEvents.MOUSE_DOWN);
 }
@@ -53,12 +57,15 @@ MapMouse.prototype.leave = function (event) {
 }
 
 MapMouse.prototype.up = function (event) {
+   this.context.mapCanvas.removeClass( 'movable' )
    this.mouseDown = false; 
    this.context.mapCanvas.trigger(MaperialEvents.MOUSE_UP);
 }
 
 MapMouse.prototype.move = function (event) {
-
+   
+   event.preventDefault();
+   
    // refresh magnifier
    this.context.mouseP = Utils.getPoint(event);
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
@@ -69,6 +76,7 @@ MapMouse.prototype.move = function (event) {
       this.context.mapCanvas.trigger(MaperialEvents.UPDATE_LATLON);
    }
    else{
+      this.context.mapCanvas.addClass( 'movable' )
       this.context.mapCanvas.trigger(MaperialEvents.DRAGGING_MAP);
    }
 

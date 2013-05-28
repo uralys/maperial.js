@@ -7,7 +7,8 @@ HUD.prototype.refreshAttribution = function(){
    
    var maperialAttribution = this.maperial.config.layers.length > 1 ? "Fusion by <a class=\"link\" target=\"_blank\" href=\"http://www.maperial.com\">__Maperial</a>." : "";
    var tilesAttribution    = "";
-   var osmAttribution     = false;
+   var dataAttribution     = "";
+   var osmAttribution      = false;
 
    for(var i = 0; i < this.maperial.config.layers.length; i++){
       if(this.maperial.config.layers[i].source.type == Source.MaperialOSM){
@@ -19,29 +20,40 @@ HUD.prototype.refreshAttribution = function(){
             case Source.IMAGES_MAPQUEST:
             case Source.IMAGES_MAPQUEST_SATELLITE:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://www.mapquest.com\">MapQuest</a>."
-               osmAttribution = true
-               break;
-
+                  osmAttribution = true
+                  break;
+               
             case Source.IMAGES_OSM:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://openstreetmap.org\">© OpenStreetMap contributors</a>."
-               osmAttribution = true
-               break;
-
+                  osmAttribution = true
+                  break;
+               
             case Source.IMAGES_OCM_CYCLE:
             case Source.IMAGES_OCM_TRANSPORT:
             case Source.IMAGES_OCM_LANDSCAPE:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"www.thunderforest.com\">OpenCycleMap</a>."
-               osmAttribution = true
-               break;
+                  osmAttribution = true
+                  break;
                
             case Source.IMAGES_STAMEN_WATERCOLOR:
             case Source.IMAGES_STAMEN_TERRAIN:
             case Source.IMAGES_STAMEN_TONER:
             case Source.IMAGES_STAMEN_TONER_BG:
                tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://maps.stamen.com\">Stamen Design</a>."
-               osmAttribution = true
+                  osmAttribution = true
+                  break;
+               
+         }
+      }
+      else if(this.maperial.config.layers[i].source.type == Source.WMS){
+         switch(this.maperial.config.layers[i].source.params.src){
+            case Source.WMS_BRETAGNECANTONS:
+               dataAttribution += " WMS data by <a class=\"link\" target=\"_blank\" href=\"http://cms.geobretagne.fr/\">GeoBretagne</a>."
                break;
 
+            case Source.WMS_FRANCECOURSDEAU:
+               dataAttribution += " WMS data by <a class=\"link\" target=\"_blank\" href=\"http://geowww.agrocampus-ouest.fr/\">GeoSAS</a>."
+               break;
          }
       }
    }
@@ -49,6 +61,7 @@ HUD.prototype.refreshAttribution = function(){
    var html = "";
    html += maperialAttribution
    html += tilesAttribution
+   html += dataAttribution
    
    if(osmAttribution)
       html += " Data by <a class=\"link\" target=\"_blank\" href=\"http://openstreetmap.org\">© OpenStreetMap contributors</a>."
@@ -63,7 +76,8 @@ HUD.prototype.refreshAttribution = function(){
       this.smallMapAttribution()
    }
    else{
-      this.element("attribution").css("max-width", "1000px")      
+      this.element("attribution").css("max-width", "1500px")      
+      this.element("attribution").css("width", this.element("attribution").width() + 2)
       this.placeElementAt(this.element("attribution"), -2, "bottom")
       this.placeElementAt(this.element("attribution"), 0, "right")
    }

@@ -374,7 +374,7 @@ SourcesManager.prototype.getImageURL = function (source, tx, ty, z) {
 //-------------------------------------------//
 
 /**
- * geo1 : "http://geobretagne.fr/geoserver/ows?SERVICE=WMS&LAYERS=d22%3AASS_LIN_22&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
+ * Source.WMS_BRETAGNECANTONS | geo1 : "http://geobretagne.fr/geoserver/ows?SERVICE=WMS&LAYERS=d22%3AASS_LIN_22&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
  * Source.WMS_FRANCECOURSDEAU | geo2 : "http://geowww.agrocampus-ouest.fr/geoserver/ows?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
  */ 
 SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
@@ -388,22 +388,20 @@ SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
    switch(source.params.src){
       
       case Source.WMS_BRETAGNECANTONS:
+         //http://www.mapmatters.org/wms/602246
 
          var topLeft       = topLeftM;
          var bottomRight   = bottomRightM;
          
-         //d22%3AASS_LIN_22
-         //bzh%3Ahotels_littoral
-         //bzh%3ACANTON
-         //bzh:n_parc_eolien_s_r53
          return("http://api.maperial.com/geo1?SERVICE=WMS&LAYERS=bzh%3ACANTON&FORMAT=image%2Fpng&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
          break;
 
       case Source.WMS_FRANCECOURSDEAU:
+         //http://www.mapmatters.org/wms/647145
          
          var topLeft       = topLeftM;
          var bottomRight   = bottomRightM;
-         
+
          return("http://api.maperial.com/geo2?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
          break;
 

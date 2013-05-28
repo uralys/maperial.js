@@ -137,6 +137,9 @@
 
     "New4Title"			: "SRTM (2)",
     "New4Text"			: "We did tremendous progress with our SRTM modelisation ! We expect to add our new basemaps very soon.",
+
+    "New5Title"			: "New basemaps",
+    "New5Text"			: "Thanks to Stamen Design and OpenCycleMaps, we now provide more basemaps. Try them out !",
     
     "KeepInMind"		: "Keep in mind this list is entirely customisable to suit your needs (Formats, representations). Contact us !",
     

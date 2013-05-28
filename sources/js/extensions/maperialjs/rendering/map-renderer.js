@@ -65,11 +65,15 @@ MapRenderer.prototype.initListeners = function () {
       renderer.DrawScene (true, true) 
    });
    
-   $(window).on(MaperialEvents.LUMINOSITY_CHANGED, function(){
+   $(window).on(MaperialEvents.BRIGHTNESS_CHANGED, function(){
       renderer.DrawScene (true, true) 
    });
    
    $(window).on(MaperialEvents.BW_METHOD_CHANGED, function(){
+      renderer.DrawScene (true, true) 
+   });
+   
+   $(window).on(MaperialEvents.ALPHA_CHANGED, function(){
       renderer.DrawScene (true, true) 
    });
    
@@ -99,8 +103,9 @@ MapRenderer.prototype.removeListeners = function () {
    $(window).off(MaperialEvents.STYLE_CHANGED);
    $(window).off(MaperialEvents.COLORBAR_CHANGED);
    $(window).off(MaperialEvents.CONTRAST_CHANGED);
-   $(window).off(MaperialEvents.LUMINOSITY_CHANGED);
+   $(window).off(MaperialEvents.BRIGHTNESS_CHANGED);
    $(window).off(MaperialEvents.BW_METHOD_CHANGED);
+   $(window).off(MaperialEvents.ALPHA_CHANGED);
    $(window).off(MaperialEvents.DATA_SOURCE_CHANGED);
    
    clearInterval(this.drawSceneInterval);
@@ -137,7 +142,7 @@ function GlobalInitGL( glAsset , gl , glTools) {
       },
       error : function(jqXHR, textStatus, errorThrown) {
          me.shaderError = true
-         console.log ( Maperial.static + "/all.json" + " : loading failed : " + textStatus );
+         console.log ( Maperial.staticURL + "/all.json" + " : loading failed : " + textStatus );
       }
    });
 

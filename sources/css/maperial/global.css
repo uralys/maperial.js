@@ -308,8 +308,11 @@
 /* contraint les sites qui utilisent bootstrap.marketing a bien coller les canvas des maps sur la gauche */
 .maperial-container {
 	text-align: left;
-	user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
 	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 
 .popup {
@@ -534,7 +537,8 @@
 }
 
 .movable {
-	cursor: move;
+	
+	cursor: move!important;
 }
 
 .selectable {

@@ -36,8 +36,9 @@ MaperialEvents.NEW_BOUNDING_BOX     = "MaperialEvents.NEW_BOUNDING_BOX";
 MaperialEvents.STYLE_CHANGED        = "MaperialEvents.STYLE_CHANGED";
 MaperialEvents.COLORBAR_CHANGED     = "MaperialEvents.COLORBAR_CHANGED";
 MaperialEvents.CONTRAST_CHANGED     = "MaperialEvents.CONTRAST_CHANGED";
-MaperialEvents.LUMINOSITY_CHANGED   = "MaperialEvents.LUMINOSITY_CHANGED";
+MaperialEvents.BRIGHTNESS_CHANGED   = "MaperialEvents.BRIGHTNESS_CHANGED";
 MaperialEvents.BW_METHOD_CHANGED    = "MaperialEvents.BW_METHOD_CHANGED";
+MaperialEvents.ALPHA_CHANGED        = "MaperialEvents.ALPHA_CHANGED";
 MaperialEvents.DATA_SOURCE_CHANGED  = "MaperialEvents.DATA_SOURCE_CHANGED";
 
 
@@ -51,7 +52,7 @@ MaperialEvents.removeAllListeners = function (){
    $(window).off(MaperialEvents.STYLE_CHANGED);
    $(window).off(MaperialEvents.COLORBAR_CHANGED);
    $(window).off(MaperialEvents.CONTRAST_CHANGED);
-   $(window).off(MaperialEvents.LUMINOSITY_CHANGED);
+   $(window).off(MaperialEvents.BRIGHTNESS_CHANGED);
    $(window).off(MaperialEvents.BW_METHOD_CHANGED);
    $(window).off(MaperialEvents.DATA_SOURCE_CHANGED);
    $(window).off(MaperialEvents.MOUSE_UP_WIHTOUT_AUTOMOVE);
