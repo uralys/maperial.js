@@ -16,7 +16,5 @@ void main(void) {
    if ( fgd.a <= 0.0 )
       gl_FragColor   = bgd;
    else
-      //gl_FragColor   = fgd;
-      mix(bgd, fgd, au);
-
+      gl_FragColor   = mix(bgd, fgd, au);
 }
