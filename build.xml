@@ -67,7 +67,6 @@
 			<fileset file="sources/css/responsive.min.css" />
 
 			<fileset file="sources/css/libs/bootstrap-image-gallery.css" />
-			<fileset file="sources/css/libs/jquery-ui-1.9.2.custom.min.css" />
 			<fileset file="sources/css/libs/slideronoff.css" />
 			<fileset file="sources/css/libs/jquery.selectbox.css" />
 			<fileset file="sources/css/libs/maki-sprite.css" />
@@ -111,14 +110,13 @@
 			<fileset file="sources/css/responsive.min.css" />
 
 			<fileset file="sources/css/libs/bootstrap-image-gallery.css" />
-			<fileset file="sources/css/libs/jquery-ui-1.9.2.custom.min.css" />
 			<fileset file="sources/css/libs/jquery.fileupload-ui.css" />
 			<fileset file="sources/css/libs/prettyPhoto.css" />
 			<fileset file="sources/css/libs/coda-slider.css" />
 			<fileset file="sources/css/libs/upload.css" />
 			<fileset file="sources/css/libs/slideronoff.css" />
-			<fileset file="sources/css/libs/jquery.selectbox.css" />
 			<fileset file="sources/css/libs/maki-sprite.css" />
+			<fileset file="sources/css/libs/jquery.selectbox.css" />
 
 			<fileset file="sources/css/mapediting/colorpicker.css" />
 			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
@@ -311,10 +309,6 @@
 			<arg value="-jar" />
 			<arg value="compressor/googleCompiler/compiler.jar" />
 
-			<arg value="--js" />
-			<arg value="sources/js/libs/jquery.js" />
-			<arg value="--js" />
-			<arg value="sources/js/libs/jquery-ui-1.9.2.custom.min.js" />
 			<arg value="--js" />
 			<arg value="sources/js/libs/handlebars.js" />
 			<arg value="--js" />
