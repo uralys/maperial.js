@@ -159,7 +159,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
          var alphaId = "user_alpha_"+l;
          
          var div = "<div class=\"row-fluid marginbottom\">" +
-         "<div class=\"span1 offset1\"><i class=\"sprite-maperial maperial-contrast\"></i></div>" +
+         "<div class=\"span1 offset1\"><i class=\"icon-white icon-eye-close\"></i></div>" +
          "<div class=\"span7 offset1\"><div class=\"mulblendSlider\" id="+alphaId+"></div></div>" +
          "</div>";
 

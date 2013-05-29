@@ -22,11 +22,15 @@ LayersHelper.prototype.refreshLayersPanel = function() {
    $("#layers").empty(); 
    var panelHeight = 35;
 
+   //------------------//
+
    for(var i = App.maperial.config.layers.length - 1; i >= 0 ; i--) {
       this.buildLayerEntry(i);
       panelHeight += 64;
    }
 
+   //------------------//
+   
    $("#layers").sortable({
       revert: true,
       delay: 200,
@@ -48,27 +52,44 @@ LayersHelper.prototype.refreshLayersPanel = function() {
 
 LayersHelper.prototype.buildLayerEntry = function(layerIndex) {
 
+   var tooltip = ""
+   var icon = "icon-eye-open"
+   
+   for (var i in this.maperial.config.map.osmSets) {
+      var set = this.maperial.config.map.osmSets[i]
+
+      if(layerIndex == set.layerPosition){
+         if(tooltip != "") tooltip += ", "
+         tooltip += set.label
+      }
+   }
+   
+   if(tooltip == ""){
+      icon     = "icon-warning-sign"
+      tooltip  = "Empty !"
+   }
+   
    var layer = App.maperial.config.layers[layerIndex];
    var html = "";
-   
-   html += "<div class=\"row-fluid movable marginbottom\" id=\"layer_"+layerIndex+"\">";
-   html += "   <div class=\"span4 offset1\"><img class=\"selectable sourceThumb\" onclick=\"App.MapCreationController.editLayer("+layerIndex+")\" "+Utils.getSourceThumb(layer)+"></img></div>";
-   
-   switch(layer.type){
-   case LayersManager.Images:
-   case LayersManager.Raster:
-      html += "   <div class=\"span1 offset4\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
-      break;
-   case LayersManager.Vector:
-      html += "   <div class=\"span1 offset1\"><button class=\"btn-small btn-success\" onclick=\"App.MapCreationController.customizeLayer("+layerIndex+")\"><i class=\"icon-edit icon-white\"></i></button></div>";
-      html += "   <div class=\"span1 offset2\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
-      break;
-   }
-      
-   html += "</div>";
-   
-   $("#layers").append(html); 
 
+   html += "<div class=\"row-fluid movable marginbottom\" id=\"layer_"+layerIndex+"\">";
+   html += "   <div class=\"span3 offset1\"><img class=\"selectable sourceThumb\" onclick=\"App.MapCreationController.editLayer("+layerIndex+")\" "+Utils.getSourceThumb(layer)+"></img></div>";
+
+   switch(layer.type){
+      case LayersManager.Images:
+      case LayersManager.Raster:
+         html += "   <div class=\"span1 offset4\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
+         break;
+      case LayersManager.Vector:
+         html += "   <div class=\"span1 touchable\" onclick=\"App.MapCreationController.customizeLayer("+layerIndex+")\"><i id=\"eye_"+layerIndex+"\" class=\"icon-white "+icon+"\" title=\""+tooltip+"\"></i></div>";
+         html += "   <div class=\"span1 offset3\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
+         break;
+   }
+
+   html += "</div>";
+
+   $("#layers").append(html); 
+   $( "#eye_"+layerIndex ).tooltip()
 }
 
 //=======================================================================//
@@ -154,7 +175,7 @@ LayersHelper.prototype.buildOSMSets = function(layerCustomizedIndex){
 //=======================================================================//
 
 /**
- * TODO (not usefull for a DEMO)
+ * TODO (not 1.0)
  */
 LayersHelper.prototype.buildDetailledSets = function(){
    $("#osmSetsDiv").empty();
@@ -198,7 +219,6 @@ LayersHelper.prototype.refreshHUDViewerSettings = function() {
 
       $("#hudViewerSettings").append(div); 
       panelHeight += 50;
-
       
       // ----- toggle listeners
 

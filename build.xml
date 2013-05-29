@@ -70,12 +70,14 @@
 			<fileset file="sources/css/libs/jquery-ui-1.9.2.custom.min.css" />
 			<fileset file="sources/css/libs/slideronoff.css" />
 			<fileset file="sources/css/libs/jquery.selectbox.css" />
+			<fileset file="sources/css/libs/maki-sprite.css" />
 
 			<fileset file="sources/css/mapediting/colorpicker.css" />
 			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
 
 			<fileset file="sources/css/maperial/global.css" />
 			<fileset file="sources/css/maperial/maperial.css" />
+			<fileset file="sources/css/maperial/sprites.css" />
 		</concat>
 		<exec executable="java">
 			<arg value="-Xmx128m" />
@@ -116,6 +118,7 @@
 			<fileset file="sources/css/libs/upload.css" />
 			<fileset file="sources/css/libs/slideronoff.css" />
 			<fileset file="sources/css/libs/jquery.selectbox.css" />
+			<fileset file="sources/css/libs/maki-sprite.css" />
 
 			<fileset file="sources/css/mapediting/colorpicker.css" />
 			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
