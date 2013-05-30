@@ -1,0 +1,47 @@
+<html>
+
+<head>
+<title>Demo Maperial- Disc</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link href="/css/maperial/diskSelection.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div id="selectArea" class="">
+		<div id="selector">
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/tools/script-loader.js"></script>
+
+<script type="text/javascript">
+   window.scriptLoader
+         .getScripts(
+               [
+                     "//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js",
+                     "http://code.jquery.com/ui/1.9.2/jquery-ui.js",
+
+                     // tools
+               ],
+               function() {
+			        var width = $("#selectArea").width() - $("#selector").width()
+			        var height = $("#selectArea").height() - $("#selector").height()
+			        
+					$("#selector").css("left", 	(width/2) 	+ "px")
+					$("#selector").css("top", 	(height/2) 	+ "px")
+					      
+					$("#selector").draggable({ 
+					  containment: "parent" ,
+				      stop: function() {
+				         var position = $("#selector").position()
+				         console.log("x : ", Math.round(100*position.left/width) - 50);
+				         console.log("y : ", Math.round(100*position.top/height) - 50);
+				      }
+					});
+               });
+</script>
+
+
+</html>
+

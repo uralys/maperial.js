@@ -175,13 +175,13 @@ HUD.prototype.refreshCompositionsPanel = function() {
             slide: function(alphaId){
                //-----
             }(alphaId),
-            change: function(alphaId, composition){
+            change: function(alphaId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams = ui.value;
-                  console.log("alpha : " + composition.params.uParams)
-                  $(window).trigger(MaperialEvents.ALPHA_CHANGED);
+                  console.log("alpha : " + composition.params.uParams + " on layer " + l)
+                  $(window).trigger(MaperialEvents.ALPHA_CHANGED, [l]);
                }
-            }(alphaId, composition)
+            }(alphaId, composition, l)
          });
 
          panelHeight += 45;
