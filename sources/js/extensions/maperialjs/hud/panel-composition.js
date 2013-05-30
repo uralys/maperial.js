@@ -97,13 +97,13 @@ HUD.prototype.refreshCompositionsPanel = function() {
             slide: function(constrastId){
                //-----
             }(constrastId),
-            change: function(constrastId, composition){
+            change: function(constrastId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[0] = ui.value;
-                  console.log("contrast : " + composition.params.uParams[0])
-                  $(window).trigger(MaperialEvents.CONTRAST_CHANGED);
+                  console.log("contrast : " + composition.params.uParams[0] + " on layer " + l)
+                  $(window).trigger(MaperialEvents.CONTRAST_CHANGED, [l]);
                }
-            }(constrastId, composition)
+            }(constrastId, composition, l)
          });
 
          $( "#"+brightnessId ).slider({
@@ -116,13 +116,13 @@ HUD.prototype.refreshCompositionsPanel = function() {
             slide: function(brightnessId){
                //-----
             }(brightnessId),
-            change: function(brightnessId, composition){
+            change: function(brightnessId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[1] = ui.value;
-                  console.log("brightness : " + composition.params.uParams[1])
-                  $(window).trigger(MaperialEvents.BRIGHTNESS_CHANGED);
+                  console.log("brightness : " + composition.params.uParams[1] + " on layer " + l)
+                  $(window).trigger(MaperialEvents.BRIGHTNESS_CHANGED, [l]));
                }
-            }(brightnessId, composition)
+            }(brightnessId, composition, l)
          });
 
          $( "#"+bwId ).slider({
@@ -135,13 +135,13 @@ HUD.prototype.refreshCompositionsPanel = function() {
             slide: function(bwId){
                //-----
             }(bwId),
-            change: function(bwId, composition){
+            change: function(bwId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[2] = ui.value;
-                  console.log("BW : " + composition.params.uParams[2])
-                  $(window).trigger(MaperialEvents.BW_METHOD_CHANGED);
+                  console.log("BW : " + composition.params.uParams[2] + " on layer " + l)
+                  $(window).trigger(MaperialEvents.BW_METHOD_CHANGED, [l]));
                }
-            }(bwId, composition)
+            }(bwId, composition, l)
          });
 
          panelHeight += 135;
@@ -159,7 +159,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
          var alphaId = "user_alpha_"+l;
          
          var div = "<div class=\"row-fluid marginbottom\">" +
-         "<div class=\"span1 offset1\"><i class=\"sprite-maperial maperial-contrast\"></i></div>" +
+         "<div class=\"span1 offset1\"><i class=\"icon-white icon-eye-close\"></i></div>" +
          "<div class=\"span7 offset1\"><div class=\"mulblendSlider\" id="+alphaId+"></div></div>" +
          "</div>";
 

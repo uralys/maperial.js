@@ -61,15 +61,15 @@ MapRenderer.prototype.initListeners = function () {
       renderer.renderAllColorBars(); //optim : refresh que de la colorbar modifiée non ?
    });
    
-   $(window).on(MaperialEvents.CONTRAST_CHANGED, function(){
+   $(window).on(MaperialEvents.CONTRAST_CHANGED, function(event, layerIndex){
       renderer.DrawScene (true, true) 
    });
    
-   $(window).on(MaperialEvents.BRIGHTNESS_CHANGED, function(){
+   $(window).on(MaperialEvents.BRIGHTNESS_CHANGED, function(event, layerIndex){
       renderer.DrawScene (true, true) 
    });
    
-   $(window).on(MaperialEvents.BW_METHOD_CHANGED, function(){
+   $(window).on(MaperialEvents.BW_METHOD_CHANGED, function(event, layerIndex){
       renderer.DrawScene (true, true) 
    });
    
