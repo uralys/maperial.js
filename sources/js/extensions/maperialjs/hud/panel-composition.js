@@ -120,7 +120,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
                return function( event, ui ) {
                   composition.params.uParams[1] = ui.value;
                   console.log("brightness : " + composition.params.uParams[1] + " on layer " + l)
-                  $(window).trigger(MaperialEvents.BRIGHTNESS_CHANGED, [l]));
+                  $(window).trigger(MaperialEvents.BRIGHTNESS_CHANGED, [l]);
                }
             }(brightnessId, composition, l)
          });
@@ -139,7 +139,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
                return function( event, ui ) {
                   composition.params.uParams[2] = ui.value;
                   console.log("BW : " + composition.params.uParams[2] + " on layer " + l)
-                  $(window).trigger(MaperialEvents.BW_METHOD_CHANGED, [l]));
+                  $(window).trigger(MaperialEvents.BW_METHOD_CHANGED, [l]);
                }
             }(bwId, composition, l)
          });
