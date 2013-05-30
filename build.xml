@@ -551,6 +551,7 @@
 			<fileset file="sources/shaders/fragmentClut.json" />
 			<fileset file="sources/shaders/fragmentMulBlend.json" />
 			<fileset file="sources/shaders/fragmentTex.json" />
+			<fileset file="sources/shaders/fragmentShade.json" />
 			<fileset file="sources/shaders/vertex.json" />
 			<fileset file="sources/shaders/vertexTex.json" />
 		</delete>
