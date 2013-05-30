@@ -227,7 +227,7 @@ Utils.thumbURL = function(uid, type, size)
 //----------------------------------------------------------------------------------------//
 
 Utils.getSourceThumb = function(layer) {
-
+   
    switch(layer.source.type){
    
       case Source.MaperialOSM:

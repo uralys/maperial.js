@@ -20,27 +20,40 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
 
    var layerConfig;
    switch(sourceType){
+      
+      // ------------------------------------------//
+      // Sources for LayersManager.Vector
+      
       case Source.MaperialOSM :
          if(params != undefined && params != null )
             layerConfig = LayersManager.getOSMLayerConfig([params]);
          else
             layerConfig = LayersManager.getOSMLayerConfig();
          break;
+
+      case Source.Vector :
+         layerConfig = LayersManager.getVectorLayerConfig();
+         break;
    
+      // ------------------------------------------//
+      // Sources for LayersManager.Raster
+         
       case Source.Raster :
          var rasterUID = params[0];
          layerConfig = LayersManager.getRasterLayerConfig(rasterUID);
          break;
    
-      case Source.Vector :
-         layerConfig = LayersManager.getVectorLayerConfig();
-         break;
+      // ------------------------------------------//
+      // Sources for LayersManager.Images
    
       case Source.Images :
       case Source.WMS:
          var src = params[0];
          layerConfig = LayersManager.getImagesLayerConfig(sourceType, src);
          break;
+         
+      // ------------------------------------------//
+      // Sources for LayersManager.Shade
          
       case Source.SRTM :
          layerConfig = LayersManager.getShadeLayerConfig();

@@ -75,6 +75,7 @@
 			<fileset file="sources/css/mapediting/colorpicker.css" />
 			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
 
+			<fileset file="sources/css/maperial/diskSelection.css" />
 			<fileset file="sources/css/maperial/global.css" />
 			<fileset file="sources/css/maperial/maperial.css" />
 			<fileset file="sources/css/maperial/sprites.css" />
@@ -249,6 +250,8 @@
 			<arg value="sources/js/extensions/maperialjs/hud/panel-switch.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/panel-composition.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-layer-settings.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/panel-controls.js" />
 			<arg value="--js" />

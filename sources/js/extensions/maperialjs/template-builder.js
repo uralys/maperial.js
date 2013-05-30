@@ -48,6 +48,7 @@ TemplateBuilder.prototype.buildHUD = function(){
    this.buildHUDSettings();
    this.buildSwitchImages();
    this.buildCompositions();
+   this.buildLayerSettings();
    this.buildLatLon();
    this.buildScale();
    this.buildMapKey();
@@ -98,6 +99,18 @@ TemplateBuilder.prototype.buildCompositions = function(){
    var html = "";
    html += "<div class=\"panel panelCompositions snapper hide\" id=\"panelCompositions"+this.tagId+"\" >";
    html += "    <div id=\"Compositions"+this.tagId+"\"></div>";
+   html += "</div>";
+   
+   this.container.append(html);
+}
+
+//==================================================================//
+
+TemplateBuilder.prototype.buildLayerSettings = function(){
+   
+   var html = "";
+   html += "<div class=\"panel panelLayerSettings snapper hide\" id=\"panelLayerSettings"+this.tagId+"\" >";
+   html += "    <div id=\"LayerSettings"+this.tagId+"\"></div>";
    html += "</div>";
    
    this.container.append(html);

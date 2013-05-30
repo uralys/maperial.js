@@ -37,9 +37,10 @@ HUD.prototype.refreshCompositionsPanel = function() {
       // layer header html
 
       var div = "<div class=\"row-fluid marginbottom\">";
-      div += "<div class=\"span3\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.maperial.config.layers[l])+"></img></div>";
-
-      div += "<div class=\"span4 offset1\"><select class=\"shaderSelectbox\" name=\""+shadersSelectionId+"\" id=\""+shadersSelectionId+"\">";
+      div += "<div class=\"span1 mapthumb top\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.maperial.config.layers[l])+"></img></div>";
+      div += "<div class=\"span1 mapthumb\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.maperial.config.layers[l-1])+"></img></div>";
+      
+      div += "<div class=\"span4 offset3\"><select class=\"shaderSelectbox\" name=\""+shadersSelectionId+"\" id=\""+shadersSelectionId+"\">";
 
       for(var s=0; s< this.maperial.shaders.length; s++) 
          div += "<option value=\""+s+"\">"+this.maperial.shaders[s]+"</option>";
@@ -90,8 +91,8 @@ HUD.prototype.refreshCompositionsPanel = function() {
          $( "#"+constrastId ).slider({
             orientation: "vertical",
             range: "min",
-            min: -2,
-            max: 2,
+            min: -1,
+            max: 1,
             step: 0.01,
             value: composition.params.uParams[0],
             slide: function(constrastId){
@@ -109,8 +110,8 @@ HUD.prototype.refreshCompositionsPanel = function() {
          $( "#"+brightnessId ).slider({
             orientation: "vertical",
             range: "min",
-            min: -2,
-            max: 2,
+            min: -1,
+            max: 1,
             step: 0.01,
             value: composition.params.uParams[1],
             slide: function(brightnessId){
