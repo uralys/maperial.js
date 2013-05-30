@@ -78,6 +78,7 @@ LayersHelper.prototype.buildLayerEntry = function(layerIndex) {
    switch(layer.type){
       case LayersManager.Images:
       case LayersManager.Raster:
+      case LayersManager.Shade:
          html += "   <div class=\"span1 offset4\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
          break;
       case LayersManager.Vector:

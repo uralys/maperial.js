@@ -114,7 +114,7 @@ Tile.prototype.IsUpToDate = function ( ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.appendDataToLayers = function ( sourceType, data ) {
+Tile.prototype.appendDataToLayers = function ( source, data ) {
    
    if(!data){
       this.nbErrors ++;
@@ -122,8 +122,22 @@ Tile.prototype.appendDataToLayers = function ( sourceType, data ) {
    
    for(var i = 0; i< this.config.layers.length; i++){
       try{
-         if ( this.config.layers[i].source.type == sourceType )
-            this.layers[i].Init( data );
+         
+         switch(source.type){
+            case Source.SRTM:
+            case Source.MaperialOSM:
+            case Source.Raster:
+               if ( this.config.layers[i].source.type == source.type )
+                  this.layers[i].Init( data );
+               break;
+
+            case Source.Images:
+            case Source.WMS:
+               if ( this.config.layers[i].source.params.src == source.params.src )
+                  this.layers[i].Init( data );
+               break;
+         }
+         
       }
       catch(e){
          console.log("-------> ERROR")
