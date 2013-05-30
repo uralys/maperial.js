@@ -53,11 +53,11 @@ MapRenderer.prototype.initListeners = function () {
       }
    });
 
-   $(window).on(MaperialEvents.STYLE_CHANGED, function(){
+   $(window).on(MaperialEvents.STYLE_CHANGED, function(event, layerIndex){
       renderer.DrawScene (true,true);
    });
    
-   $(window).on(MaperialEvents.COLORBAR_CHANGED, function(){
+   $(window).on(MaperialEvents.COLORBAR_CHANGED, function(event, layerIndex){
       renderer.renderAllColorBars(); //optim : refresh que de la colorbar modifiée non ?
    });
    
@@ -73,7 +73,7 @@ MapRenderer.prototype.initListeners = function () {
       renderer.DrawScene (true, true) 
    });
    
-   $(window).on(MaperialEvents.ALPHA_CHANGED, function(){
+   $(window).on(MaperialEvents.ALPHA_CHANGED, function(event, layerIndex){
       renderer.DrawScene (true, true) 
    });
    
@@ -411,10 +411,13 @@ MapRenderer.prototype.FindLayerId = function () {
    var tileClickCoord = new Point(Math.floor (clickP.x - tileCoord.x*Maperial.tileSize), Math.floor ( (tileCoord.y+1) * Maperial.tileSize - clickP.y ) );
    
    var style = this.maperial.stylesManager.getSelectedStyle();
-   var subLayerId = tile.FindSubLayerId( tileClickCoord , this.context.zoom, style.content ) ;
+   var result = tile.FindSubLayerId( tileClickCoord , this.context.zoom, style.content ) ;
 
-   console.log("subLayerId :  " + subLayerId);
-   $(window).trigger(MaperialEvents.OPEN_STYLE, [subLayerId]);
+   var layerIndex = result[0];
+   var subLayerId = result[1];
+
+   console.log("subLayerId :  " + subLayerId + " | layer : " + layerIndex);
+   $(window).trigger(MaperialEvents.OPEN_STYLE, [layerIndex, subLayerId]);
 }
 
 //----------------------------------------------------------------------//

@@ -161,7 +161,7 @@ Tile.prototype.FindSubLayerId = function ( tileClickCoord, zoom, styleContent ) 
       var subLayerId = TileRenderer.FindSubLayerId(tileClickCoord , ctx , data , zoom, styleContent, i, this.maperial.context.osmVisibilities );
 
       if(subLayerId)
-         return subLayerId;
+         return [i, subLayerId];
    }
 
 }

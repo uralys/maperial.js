@@ -45,8 +45,9 @@ function StyleMenu(container, container2, container3, maperial){
    
    //-------------------------------------------------//
 
-   this.size = StyleMenu.SMALLEST;
-   this.currentLayerId = "001";
+   this.size               = StyleMenu.SMALLEST;
+   this.currentLayerId     = "001"; // layer.sublayer
+   this.currentLayerIndex  = 0;     // map.layer
    
    //-------------------------------------------------//
    //id <-> name/filter mapping
@@ -101,8 +102,8 @@ StyleMenu.prototype.initListeners = function (event) {
    
    var styleMenu = this;
    
-   $(window).on(MaperialEvents.OPEN_STYLE, function(event, layerId){
-      styleMenu.ChangeSelectedSubLayer(layerId)
+   $(window).on(MaperialEvents.OPEN_STYLE, function(event, layerIndex, layerId){
+      styleMenu.ChangeSelectedSubLayer(layerIndex, layerId)
    });
 
 }
@@ -114,7 +115,7 @@ StyleMenu.prototype.removeListeners = function (event) {
 //==================================================================//
 
 StyleMenu.prototype.Refresh = function(){
-   $(window).trigger(MaperialEvents.STYLE_CHANGED);
+   $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.currentLayerIndex]);
 }
 
 StyleMenu.prototype.DefFromRule = function(luid,rule){
@@ -1140,8 +1141,9 @@ StyleMenu.prototype.refresh = function () {
    
 }
 
-StyleMenu.prototype.ChangeSelectedSubLayer = function (layerId) {
-   this.currentLayerId = layerId;
+StyleMenu.prototype.ChangeSelectedSubLayer = function (layerIndex, subLayerId) {
+   this.currentLayerIndex = layerIndex;
+   this.currentLayerId    = subLayerId;
    this.refresh();
 }
 
