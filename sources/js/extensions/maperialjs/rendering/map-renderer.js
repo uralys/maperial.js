@@ -54,11 +54,16 @@ MapRenderer.prototype.initListeners = function () {
    });
 
    $(window).on(MaperialEvents.STYLE_CHANGED, function(event, layerIndex){
-      renderer.DrawScene (true,true);
+      for (var key in renderer.tileCache) {
+         var tile = renderer.tileCache[key].Reset ( layerIndex );
+      }
    });
    
    $(window).on(MaperialEvents.COLORBAR_CHANGED, function(event, layerIndex){
       renderer.renderAllColorBars(); //optim : refresh que de la colorbar modifiée non ?
+      for (var key in renderer.tileCache) {
+         var tile = renderer.tileCache[key].Reset ( layerIndex );
+      }
    });
    
    $(window).on(MaperialEvents.CONTRAST_CHANGED, function(event, layerIndex){
@@ -80,9 +85,11 @@ MapRenderer.prototype.initListeners = function () {
    });
    
    $(window).on(MaperialEvents.ALPHA_CHANGED, function(event, layerIndex){
-      renderer.DrawScene (true, true) 
+      for (var key in renderer.tileCache) {
+         var tile = renderer.tileCache[key].Reset ( layerIndex );
+      }
    });
-   
+
    $(window).on(MaperialEvents.DATA_SOURCE_CHANGED, function(){
       //Reload ALL ???? and Redraw ??
       //renderer.DrawScene (true) 
