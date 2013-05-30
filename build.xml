@@ -14,6 +14,7 @@
 		<echo>	build-shaders</echo>
 		<echo>	copy-assets</echo>
 		<echo>	push-to-master</echo>
+		<echo>	push-to-develop</echo>
 	</target>
 
 	<target name="build-all">
@@ -552,9 +553,9 @@
 		</delete>
 	</target>
 
-	<target name="push-to-master">
+	<target name="push-to-develop">
 		<echo>------------------------------------------------------</echo>
-		<echo>-----       Push commits from develop to master   ----</echo>
+		<echo>-----       Push commits on develop			    ----</echo>
 
 		<echo>git pull origin develop</echo>
 		<exec executable="git">
@@ -562,7 +563,6 @@
 			<arg value="origin" />
 			<arg value="develop" />
 		</exec>
-
 		<echo>git push origin develop</echo>
 		<exec executable="git">
 			<arg value="push" />
@@ -570,6 +570,18 @@
 			<arg value="develop" />
 		</exec>
 
+		<echo>------------------------------------------------------</echo>
+		<echo>Completed.</echo>
+		<echo>------------------------------------------------------</echo>
+
+	</target>
+	
+	<target name="push-to-master">
+		<echo>------------------------------------------------------</echo>
+		<echo>-----       Push commits from develop to master   ----</echo>
+
+		<antcall target="push-to-develop" />
+		
 		<echo>git checkout master</echo>
 		<exec executable="git">
 			<arg value="checkout" />
