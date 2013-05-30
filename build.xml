@@ -123,6 +123,7 @@
 			<fileset file="sources/css/mapediting/colorpicker.css" />
 			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
 
+			<fileset file="sources/css/maperial/diskSelection.css" />
 			<fileset file="sources/css/maperial/global.css" />
 			<fileset file="sources/css/maperial/maperial.css" />
 			<fileset file="sources/css/maperial/sprites.css" />
