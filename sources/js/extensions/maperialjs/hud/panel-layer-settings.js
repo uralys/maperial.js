@@ -28,16 +28,14 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
       switch(layer.type){
          case LayersManager.Images:
          case LayersManager.Raster:
+         case LayersManager.Vector:
             continue;
             break;
 
-         case LayersManager.Vector:
-            this.buildShadeSettings(i);
+         case LayersManager.Shade:
             nbSettings ++
             panelHeight += 100
-            break;
-            
-         case LayersManager.Shade:
+            this.buildShadeSettings(i);
             break;
       }
 
