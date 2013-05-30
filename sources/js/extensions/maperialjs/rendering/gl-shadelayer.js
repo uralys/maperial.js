@@ -1,5 +1,5 @@
 
-function RasterLayer ( maperial , inZoom) {
+function ShadeLayer ( maperial , inZoom) {
    this.maperial = maperial;
    this.assets = maperial.context.assets;
    this.gl     = this.assets.ctx;
@@ -11,26 +11,30 @@ function RasterLayer ( maperial , inZoom) {
    this.z      = inZoom;
 }
 
-RasterLayer.prototype.GetType = function ( ) {
-   return LayersManager.Raster;
+ShadeLayer.prototype.GetType = function ( ) {
+   return LayersManager.Shade;
 }
 
-RasterLayer.prototype.Init = function ( data ) {
+ShadeLayer.prototype.Init = function ( data ) {
    if (this.tex)
       return;
    if (data) {
-      var byteArray              = new Uint8Array        ( data );
-      var nx                     = byteArray[0] + 1
-      byteArray                  = new Uint8Array        ( data.slice(1) );
-      var ny                     = byteArray.length / nx;
-      
-      this.w                     = nx;      
-      this.h                     = ny; 
+      var newV                   = []
+      for (var y = 255 ; y >= 0 ; y-- ) {
+         for (var x = 0 ; x < 256 ; x++ ) {
+            newV.push(data[y + x * 256] & 255)
+            newV.push((data[y + x * 256] >> 8) & 255)
+            newV.push(0)
+         }
+      }
+      var byteArray              = new Uint8Array        ( newV );
+      this.w                     = 256;      
+      this.h                     = 256; 
       this.data                  = byteArray;
    }
 }
 
-RasterLayer.prototype.Reset = function (  ) {
+ShadeLayer.prototype.Reset = function (  ) {
    var gl = this.gl;
    if (this.tex) {
       gl.deleteTexture ( this.tex );
@@ -39,7 +43,7 @@ RasterLayer.prototype.Reset = function (  ) {
    }
 }
 
-RasterLayer.prototype.Release = function (  ) {
+ShadeLayer.prototype.Release = function (  ) {
    var gl = this.gl;
    if (this.tex) {
       gl.deleteTexture ( this.tex );
@@ -52,37 +56,31 @@ RasterLayer.prototype.Release = function (  ) {
    }
 }
 
-RasterLayer.prototype.IsUpToDate = function ( ) {
+ShadeLayer.prototype.IsUpToDate = function ( ) {
    return this.tex != null;
 }
 
-RasterLayer.prototype.Update = function ( params ) {
+ShadeLayer.prototype.Update = function ( params ) {
    if (this.tex)
       return 1;
 
    var gl = this.gl;
-   var colorbarUID = params.colorbars[params.selectedColorbar];
-   var colorbar = this.maperial.colorbarsManager.getColorbar(colorbarUID).tex;
-   
-   if ( !colorbar ) { 
-      console.log("Invalid color bar : setting default") ;
-   }
 
-   if ( this.data && colorbar) {
+   if ( this.data ) {
       var gltools                = new GLTools ()
       var fbtx                   = gltools.CreateFrameBufferTex(gl,this.w,this.h)
       var tmpTex                 = gl.createTexture (      );
       this.tex                   = fbtx[1];
       gl.bindTexture             (gl.TEXTURE_2D, tmpTex);      
       gl.pixelStorei             (gl.UNPACK_FLIP_Y_WEBGL  , false );
-      gl.texImage2D              (gl.TEXTURE_2D, 0, gl.LUMINANCE, this.w , this.h, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, this.data)
+      gl.texImage2D              (gl.TEXTURE_2D, 0, gl.RGB, this.w , this.h, 0, gl.RGB, gl.UNSIGNED_BYTE, this.data)
       gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
       gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_WRAP_S    , gl.CLAMP_TO_EDGE);
       gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_WRAP_T    , gl.CLAMP_TO_EDGE);
 
       gl.bindFramebuffer         ( gl.FRAMEBUFFER, fbtx[0] );
-      this.gl.clearColor         ( 1.0, 1.0, 1.0, 1.0  );
+      this.gl.clearColor         ( 1.0, 1.0,1.0, 1.0  );
       this.gl.disable            ( this.gl.DEPTH_TEST  );
       gl.viewport                ( 0, 0, fbtx[0].width, fbtx[0].height);
       gl.clear                   ( gl.COLOR_BUFFER_BIT );
@@ -93,8 +91,8 @@ RasterLayer.prototype.Update = function ( params ) {
       mat4.scale                 ( mvMatrix, [this.w  / Maperial.tileSize , this.h / Maperial.tileSize, 1.0] );
       mat4.identity              ( pMatrix );
       mat4.ortho                 ( 0, fbtx[0].width , 0, fbtx[0].height, 0, 1, pMatrix ); // Y swap !
-      
-      var prog                   = this.assets.prog[ "Clut" ]
+
+      var prog                   = this.assets.prog[ "Shade" ]
       
       gl.useProgram              (prog);
       gl.uniformMatrix4fv        (prog.params.pMatrixUniform.name , false, pMatrix);
@@ -110,21 +108,19 @@ RasterLayer.prototype.Update = function ( params ) {
       gl.activeTexture           (gl.TEXTURE0);
       gl.bindTexture             (gl.TEXTURE_2D, tmpTex);
       gl.uniform1i               (prog.params.uSamplerTex1.name, 0);
-      
-      gl.activeTexture           (gl.TEXTURE1);
-      gl.bindTexture             (gl.TEXTURE_2D, colorbar );
-      gl.uniform1i               (prog.params.uSamplerTex2.name, 1);
-         
-      gl.uniform4fv              (prog.params.uParams.name ,[0.0,2.0,0.0,1.0] ); 
+
+     // gl.uniform3fv              (prog.params.uLight.name   ,[-1.0,-1.0,-2.0] ); 
+      gl.uniform3fv              (prog.params.uLight.name   ,[0.0,0.0,-50.0] ); 
+      gl.uniform1f               (prog.params.uScale.name   , 10.0 ); 
+      var r = this.maperial.context.coordS.Resolution ( this.z );
+      gl.uniform1f               (prog.params.uPixRes.name  , r ); 
          
       gl.drawArrays              (gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
 
       gl.bindFramebuffer         ( gl.FRAMEBUFFER, null );
       gl.activeTexture           (gl.TEXTURE0);
       gl.bindTexture             (gl.TEXTURE_2D, null );
-      gl.activeTexture           (gl.TEXTURE1);
-      gl.bindTexture             (gl.TEXTURE_2D, null );
-
+      
       gl.deleteTexture           (tmpTex);
       gl.deleteFramebuffer       (fbtx[0]);
    }
@@ -140,7 +136,6 @@ RasterLayer.prototype.Update = function ( params ) {
       this.w = 2;
       this.h = 2;
    }
-   
    // Time it and return !!!
    return 2
 }

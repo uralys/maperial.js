@@ -1,0 +1,9 @@
+{
+   "type": "x-shader/x-fragment", 
+   "parameters": {
+      "uLight"             : ["uLight", "uniform3fv"],
+      "uScale"             : ["uScale", "uniform1f"],
+      "uPixRes"            : ["uPixRes", "uniform1f"],
+      "uSamplerTex1"       : ["uSampler", null]
+   }
+}

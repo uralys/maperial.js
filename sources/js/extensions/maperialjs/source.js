@@ -6,6 +6,7 @@ Source.Raster           = "raster";
 Source.Vector           = "vector";
 Source.Images           = "images";
 Source.WMS              = "wms";
+Source.SRTM             = "srtm";
 
 //-----------------------------------------------------------------------------------//
 // Maperial public default styles

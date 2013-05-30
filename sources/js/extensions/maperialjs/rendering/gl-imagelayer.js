@@ -55,7 +55,7 @@ ImageLayer.prototype.Update = function () {
 
    var gl = this.gl;
    
-   if (this.data != null) {
+   if (this.data != null && this.data.width > 0) {
       this.tex             = gl.createTexture();
       gl.bindTexture       ( gl.TEXTURE_2D           , this.tex     );
       gl.pixelStorei       ( gl.UNPACK_FLIP_Y_WEBGL  , false        );

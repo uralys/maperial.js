@@ -12,6 +12,7 @@ function LayersManager(maperial){
 LayersManager.Vector = "vector";
 LayersManager.Raster = "raster";
 LayersManager.Images = "images";
+LayersManager.Shade  = "shade";
 
 //-------------------------------------------//
 
@@ -39,6 +40,10 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
       case Source.WMS:
          var src = params[0];
          layerConfig = LayersManager.getImagesLayerConfig(sourceType, src);
+         break;
+         
+      case Source.SRTM :
+         layerConfig = LayersManager.getShadeLayerConfig();
          break;
    
    }
@@ -253,7 +258,7 @@ LayersManager.prototype.changeComposition = function(l, shader) {
             break;
             
          case Maperial.MulBlend : 
-               composition.params = { uParams : [ -0.5, -0.5, 1.0 ]}
+               composition.params = { uParams : [ 0.0, 0.0, 1.0 ]}
             break;
       }
    }
@@ -282,7 +287,7 @@ LayersManager.getOSMLayerConfig = function(styleUIDs) {
       },
       composition: {
          shader : Maperial.MulBlend,
-         params : { uParams : [ -0.5, -0.5, 1.0 ]}
+         params : { uParams : [ 0.0, 0.0, 1.0 ]}
       }
    }
 }
@@ -305,7 +310,25 @@ LayersManager.getRasterLayerConfig = function(rasterUID, colorbarUIDs) {
       },
       composition: {
          shader : Maperial.MulBlend,
-         params : { uParams : [ -0.5, -0.5, 1 ]}
+         params : { uParams : [ 0.0, 0.0, 1 ]}
+      }
+   }
+}
+
+//-------------------------------------------//
+
+LayersManager.getShadeLayerConfig = function() {
+   return { 
+      type: LayersManager.Shade, 
+      source: {
+         type: Source.SRTM,
+      },
+      params: {
+
+      },
+      composition: {
+         shader : Maperial.MulBlend,
+         params : { uParams : [ 0.0, 0.0, 1 ]}
       }
    }
 }

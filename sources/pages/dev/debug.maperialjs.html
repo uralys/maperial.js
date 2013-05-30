@@ -40,6 +40,7 @@
                      "/js/extensions/maperialjs/rendering/gl-tools.js",
                      "/js/extensions/maperialjs/rendering/gl-rasterlayer.js",
                      "/js/extensions/maperialjs/rendering/gl-imagelayer.js",
+                     "/js/extensions/maperialjs/rendering/gl-shadelayer.js",
                      "/js/extensions/maperialjs/rendering/gl-tile.js",
                      "/js/extensions/maperialjs/rendering/gl-vectoriallayer.js",
                      "/js/extensions/maperialjs/rendering/render-line.js",
@@ -96,8 +97,9 @@
 
                   config.hud.elements[HUD.COMPOSITIONS]  = {show : true,  type : HUD.PANEL,    label : "Composition", disableDrag : true };
                   
-                  config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
-                  config.layers.push(LayersManager.getOSMLayerConfig(["1_style_13ed780ed7174481e7e"]))
+                  config.layers.push(LayersManager.getShadeLayerConfig())
+                  config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
+                  //config.layers.push(LayersManager.getOSMLayerConfig(["1_style_13ed780ed7174481e7e"]))
                   
                   maperial.apply(config)
                });

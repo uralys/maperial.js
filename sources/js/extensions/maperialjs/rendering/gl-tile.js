@@ -58,8 +58,10 @@ Tile.prototype.initLayers = function () {
             this.layers[i] = new ImageLayer     ( this.maperial.context.assets.ctx , this.z);
             break;
             
+         case LayersManager.Shade:
+            this.layers[i] = new ShadeLayer    ( this.maperial , this.z);
+            break;
       }
-      
    }
 }
 

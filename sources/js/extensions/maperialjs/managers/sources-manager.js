@@ -27,6 +27,7 @@ SourcesManager.prototype.buildSources = function(layers){
 
    console.log("  fetching sources...");
    var isRegisterdOSM;
+   var isRegisterdSRTM;
 
    for(var i = 0; i < layers.length; i++){
       var type = layers[i].source.type;
@@ -38,6 +39,11 @@ SourcesManager.prototype.buildSources = function(layers){
             isRegisterdOSM = true;
             break;
 
+         case Source.SRTM:
+            if(isRegisterdSRTM) continue;
+            isRegisterdSRTM = true;
+            break;
+            
          case Source.Raster:
             params = {rasterUID : layers[i].source.params.uid };
             break;
@@ -75,7 +81,7 @@ SourcesManager.prototype.releaseEverything = function () {
 SourcesManager.prototype.requestId = function (source, x, y, z) {
    
    switch(source.type){
-     
+      case Source.SRTM:
       case Source.MaperialOSM:
       case Source.Raster:
          return source.type + "_" + x + "_" + y + "_" + z;
@@ -121,7 +127,7 @@ SourcesManager.prototype.loadSources = function (x, y ,z) {
          return false;
 
       switch(source.type){
-
+         case Source.SRTM:
          case Source.MaperialOSM:
             this.LoadVectorial ( source, x, y, z );
             break;
@@ -284,6 +290,11 @@ SourcesManager.prototype.getURL = function (source, tx, ty, z) {
       case Source.MaperialOSM:
          return Maperial.apiURL + "/api/tile?x="+tx+"&y="+ty+"&z="+z;
 
+      case Source.SRTM:
+         //return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+         return "http://192.168.0.1:8081/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+         
+         
       case Source.Raster:
          return Maperial.apiURL + "/api/tile/"+source.params.rasterUID+"?x="+tx+"&y="+ty+"&z="+z;
 
