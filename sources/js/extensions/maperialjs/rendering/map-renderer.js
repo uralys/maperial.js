@@ -62,15 +62,21 @@ MapRenderer.prototype.initListeners = function () {
    });
    
    $(window).on(MaperialEvents.CONTRAST_CHANGED, function(event, layerIndex){
-      renderer.DrawScene (true, true) 
+      for (var key in renderer.tileCache) {
+         var tile = renderer.tileCache[key].Reset ( layerIndex );
+      }
    });
    
    $(window).on(MaperialEvents.BRIGHTNESS_CHANGED, function(event, layerIndex){
-      renderer.DrawScene (true, true) 
+      for (var key in renderer.tileCache) {
+         var tile = renderer.tileCache[key].Reset ( layerIndex );
+      }
    });
    
    $(window).on(MaperialEvents.BW_METHOD_CHANGED, function(event, layerIndex){
-      renderer.DrawScene (true, true) 
+      for (var key in renderer.tileCache) {
+         var tile = renderer.tileCache[key].Reset ( layerIndex );
+      }
    });
    
    $(window).on(MaperialEvents.ALPHA_CHANGED, function(){

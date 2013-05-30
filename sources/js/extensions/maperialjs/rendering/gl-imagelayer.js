@@ -7,6 +7,7 @@ function ImageLayer (gl, inZoom) {
    this.w      = 0;
    this.h      = 0;
    this.z      = inZoom;
+   console.log("Image Constructor")
 }
 
 ImageLayer.prototype.GetType = function ( ) {
@@ -21,6 +22,7 @@ ImageLayer.prototype.Init = function ( data ) {
       this.h      = data.height; 
       this.data   = data;
    }
+   console.log("Image Init")
 }
 
 ImageLayer.prototype.Reset = function (  ) {
@@ -43,6 +45,7 @@ ImageLayer.prototype.Release = function (  ) {
       delete this.data;
       this.data = null;
    }
+   console.log("Image Release")
 }
 
 ImageLayer.prototype.IsUpToDate = function ( ) {

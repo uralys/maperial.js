@@ -208,8 +208,13 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
       this.src = ''
    }
 
-   // TODO opti : quest ce qui est le plus couteux : ce "try catch" + abort systematique ou un "if (requests && !data){abort}" ?
-   function ajaxTimeout() { try{ me.requests[requestId].abort(); }catch(e){} }
+   function ajaxTimeout() { 
+      if ( ! me.load[requestId] ) {
+         try{ 
+            me.requests[requestId].abort(); 
+         }catch(e){} 
+      }
+   }
    var tm = setTimeout(ajaxTimeout, Maperial.tileDLTimeOut);
 
    this.requests[requestId].src = url;
@@ -251,9 +256,14 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
       me.load[requestId]  = true;
       me.maperial.mapRenderer.sourceReady(source, x, y, z);
    }
-
-   // TODO opti : quest ce qui est le plus couteux : ce "try catch" + abort systematique ou un "if (requests && !data){abort}" ?
-   function ajaxTimeout() { try{ me.requests[requestId].abort(); }catch(e){} }
+   
+   function ajaxTimeout() { 
+      if ( ! me.load[requestId] ) {
+         try{ 
+            me.requests[requestId].abort(); 
+         }catch(e){} 
+      }
+   }
    var tm = setTimeout(ajaxTimeout, Maperial.tileDLTimeOut);
 
    this.requests[requestId].send(null);

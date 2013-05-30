@@ -82,8 +82,8 @@ Tile.prototype.Release = function() {
 
    this.maperial.sourcesManager.release(this.x, this.y, this.z);
    
-   for(var i = 0; i< this.config.layers.length; i++)
-         this.layers[i].Release();
+   for(var i = 0; i < this.config.layers.length; i++)
+      this.layers[i].Release();
    
    var gl = this.gl;
    for ( var i = 0 ; i < 2 ; i = i + 1 ) {
@@ -94,12 +94,16 @@ Tile.prototype.Release = function() {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.Reset = function ( ) {
+Tile.prototype.Reset = function ( id ) {
    if(this.IsLoaded()) {
-      for (i in this.layers) {      
-         this.layers[i].Reset ( );
+      if( typeof(id)==='undefined' || id < 0 || id >= this.layers.length) {
+         for (i in this.layers) {      
+            this.layers[i].Reset ( );
+         }
       }
-
+      else {
+         this.layers[id].Reset ( );
+      }
       this.tex = null;
    }
 }
