@@ -181,7 +181,7 @@ a.triggerHUDSettings {
 
 /*-------------------------*/
 .panelCompositions {
-	width: 200px;
+	width: 220px;
 	color: #eee;
 	padding-left: 10px;
 }
@@ -198,6 +198,21 @@ a.triggerHUDSettings {
 	width: 45px;
 	margin-top: -9px !important;
 	margin-bottom: 0px !important;
+}
+
+/*-------------------------*/
+.panelLayerSettings {
+	width: 220px;
+	color: #eee;
+	padding-left: 10px;
+}
+
+.panelLayerSettingsTitle {
+	color: #eee;
+	font-size: 14px;
+	text-align: center;
+	margin-top: 7px;
+	margin-bottom: 23px;
 }
 
 /*-------------------------*/

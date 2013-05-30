@@ -1,15 +1,16 @@
 /*--------------------------------*/
 
-#selectArea {
-	background-color: #ddd;
+.selectArea {
+	background-color: #555;
 	width: 60px;
 	height: 60px;
     position: relative;
-    margin-top : 200px;
-    margin-left : 500px;
+	border-radius: 5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
 }
 
-#selector {
+.selector {
 	background-color: #fff;
 	width: 15px;
 	height: 15px;
@@ -17,4 +18,9 @@
 	border-radius: 50px;
 	-moz-border-radius:50px;
 	-webkit-border-radius:50px;
+}
+
+.zSelector {
+	width: 15px;
+	height: 60px;
 }

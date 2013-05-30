@@ -73,19 +73,21 @@ HUD.LATLON                 = "LatLon";
 HUD.MAPKEY                 = "MapKey";
 HUD.MAGNIFIER              = "Magnifier";
 HUD.COMPOSITIONS           = "Compositions";
+HUD.LAYER_SETTINGS         = "LayerSettings";
 HUD.SWITCH_IMAGES          = "SwitchImages";
 
 //----------------------------------------------------------------------//
 
 HUD.VIEWER_OPTIONS = {
-    "0" : {element : HUD.CONTROLS,     label : "Controls",        defaultDisableDrag : true  },
-    "1" : {element : HUD.SCALE,        label : "Scale",           defaultDisableDrag : false },
-    "2" : {element : HUD.GEOLOC,       label : "Geoloc",          defaultDisableDrag : false },
-    "3" : {element : HUD.COMPOSITIONS, label : "Compositions",    defaultDisableDrag : false },
-    "4" : {element : HUD.LATLON,       label : "Lat/Lon",         defaultDisableDrag : false },
-    "5" : {element : HUD.MAPKEY,       label : "Map Key",         defaultDisableDrag : false },
-    "6" : {element : HUD.MAGNIFIER,    label : "Magnifier",       defaultDisableDrag : false },
-    "7" : {element : HUD.SWITCH_IMAGES,label : "Switch Basemap",  defaultDisableDrag : true },
+    "0" : {element : HUD.CONTROLS,        label : "Controls",        defaultDisableDrag : true  },
+    "1" : {element : HUD.SCALE,           label : "Scale",           defaultDisableDrag : false },
+    "2" : {element : HUD.GEOLOC,          label : "Geoloc",          defaultDisableDrag : false },
+    "3" : {element : HUD.LATLON,          label : "Lat/Lon",         defaultDisableDrag : false },
+    "4" : {element : HUD.MAPKEY,          label : "Map Key",         defaultDisableDrag : false },
+    "5" : {element : HUD.SWITCH_IMAGES,   label : "Switch Basemap",  defaultDisableDrag : true },
+//    "6" : {element : HUD.COMPOSITIONS,    label : "Compositions",    defaultDisableDrag : false },
+//    "7" : {element : HUD.LAYER_SETTINGS,  label : "Layer Settings",  defaultDisableDrag : false },
+//    "8" : {element : HUD.MAGNIFIER,       label : "Magnifier",       defaultDisableDrag : false },
 }
 
 //----------------------------------------------------------------------//
@@ -106,17 +108,18 @@ HUD.applyDefaultHUD = function(config) {
 HUD.positions = [];
 
 HUD.positions[HUD.SETTINGS]      = { left  : "0",    top    : "0"   };
-HUD.positions[HUD.COMPOSITIONS]  = { left  : "0",    bottom : "120"   };
-HUD.positions[HUD.SWITCH_IMAGES] = { left : "10",    top    : "10"  };
+HUD.positions[HUD.COMPOSITIONS]  = { left  : "0",    bottom : "120" };
+HUD.positions[HUD.LAYER_SETTINGS]= { right : "5",    top    : "50%"   };
+HUD.positions[HUD.SWITCH_IMAGES] = { left  : "10",   top    : "10"  };
 HUD.positions[HUD.MAGNIFIER]     = { left  : "0",    bottom : "0"   };
 HUD.positions[HUD.COLORBAR]      = { left  : "0",    top    : "180" };
 HUD.positions[HUD.SCALE]         = { right : "10",   bottom : "10"  };
-HUD.positions[HUD.MAPKEY]        = { right : "0",    bottom : "0"   };
+HUD.positions[HUD.MAPKEY]        = { right : "5",    bottom : "0"   };
 HUD.positions[HUD.CONTROLS]      = { left  : "15",   top    : "40"  };
 HUD.positions[HUD.LATLON]        = { left  : "50%",  bottom : "0"   };
 HUD.positions[HUD.GEOLOC]        = { left  : "50%",  top    : "0"   };
 HUD.positions[HUD.DETAILS_MENU]  = { left  : "50%",  top    : "30%" };
-HUD.positions[HUD.QUICK_EDIT]    = { right : "0",    top    : "38", };
+HUD.positions[HUD.QUICK_EDIT]    = { right : "5",    top    : "38", };
 HUD.positions[HUD.ZOOMS]         = { left  : "50%",  bottom : "0"   };
 
 
@@ -159,6 +162,7 @@ HUD.prototype.initListeners = function () {
 
    $(window).on(MaperialEvents.STYLE_CHANGED, function(event, x, y){
       hud.refreshCompositionsPanel();
+      hud.refreshLayerSettingsPanel();
    });
 }
 
@@ -309,6 +313,9 @@ HUD.prototype.display = function(){
 
    if(this.maperial.config.hud.elements[HUD.COMPOSITIONS])
       this.refreshCompositionsPanel();
+
+   if(this.maperial.config.hud.elements[HUD.LAYER_SETTINGS])
+      this.refreshLayerSettingsPanel();
 
    if(this.maperial.config.hud.elements[HUD.SWITCH_IMAGES])
       this.refreshSwitchImagesPanel();
