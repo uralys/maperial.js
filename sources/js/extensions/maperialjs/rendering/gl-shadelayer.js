@@ -109,9 +109,8 @@ ShadeLayer.prototype.Update = function ( params ) {
       gl.bindTexture             (gl.TEXTURE_2D, tmpTex);
       gl.uniform1i               (prog.params.uSamplerTex1.name, 0);
 
-     // gl.uniform3fv              (prog.params.uLight.name   ,[-1.0,-1.0,-2.0] ); 
-      gl.uniform3fv              (prog.params.uLight.name   ,[0.0,0.0,-50.0] ); 
-      gl.uniform1f               (prog.params.uScale.name   , 10.0 ); 
+      gl.uniform3fv              (prog.params.uLight.name   , params.uLight);//[0.0,0.0,-50.0] ); 
+      gl.uniform1f               (prog.params.uScale.name   , params.uScale);//10.0 ); 
       var r = this.maperial.context.coordS.Resolution ( this.z );
       gl.uniform1f               (prog.params.uPixRes.name  , r ); 
          
