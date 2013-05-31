@@ -22,9 +22,9 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
    //-----------------------------------------------------//
 
    var nbSettings = 0
-   for(var i = App.maperial.config.layers.length - 1; i >= 0 ; i--) {
+   for(var i = this.maperial.config.layers.length - 1; i >= 0 ; i--) {
 
-      var layer = App.maperial.config.layers[i];
+      var layer = this.maperial.config.layers[i];
       switch(layer.type){
          case LayersManager.Images:
          case LayersManager.Raster:
@@ -62,7 +62,7 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
 
 HUD.prototype.buildShadeSettings = function(layerIndex) {
 
-   var layer = App.maperial.config.layers[layerIndex];
+   var layer = this.maperial.config.layers[layerIndex];
 
    var zSelector = "zSelector"+layerIndex;
    var selectArea = "selectArea"+layerIndex;
