@@ -63,7 +63,6 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
 HUD.prototype.buildShadeSettings = function(layerIndex) {
 
    var layer = this.maperial.config.layers[layerIndex];
-   var composition = this.maperial.config.layers[layerIndex].composition;
 
    var zSelector = "zSelector"+layerIndex;
    var scaleSelector = "scaleSelector"+layerIndex;
@@ -82,7 +81,6 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
    html += "</div>";
 
    this.element(HUD.LAYER_SETTINGS).append(html);
-   
 
    var width = $("#"+selectArea).width() - $("#"+selector).width()
    var height = $("#"+selectArea).height() - $("#"+selector).height()
@@ -94,11 +92,8 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
       containment: "parent" ,
       stop: function() {
          var position = $("#"+selector).position()
-         composition.params.uLight[0] = Math.round(100*position.left/width) - 50
-         composition.params.uLight[1] = Math.round(100*position.top/height) - 50
-
-         console.log("x light : " + composition.params.uLight[0] + " on layer " + layerIndex)
-         console.log("y light : " + composition.params.uLight[1] + " on layer " + layerIndex)
+         layer.params.uLight[0] = Math.round(100*position.left/width) - 50
+         layer.params.uLight[1] = Math.round(100*position.top/height) - 50
 
          $(window).trigger(MaperialEvents.XY_LIGHT_CHANGED, [layerIndex]);
       }
@@ -116,13 +111,12 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
          //-----
       }(zSelector),
 
-      change: function(zSelector, composition, layerIndex){
+      change: function(zSelector, layer, layerIndex){
          return function( event, ui ) {
             composition.params.uLight[2] = ui.value;
-            console.log("z light : " + composition.params.uLight[2] + " on layer " + layerIndex)
             $(window).trigger(MaperialEvents.Z_LIGHT_CHANGED, [layerIndex]);
          }
-      }(zSelector, composition, layerIndex)
+      }(zSelector, layer, layerIndex)
       
    });
    
@@ -137,13 +131,12 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
          //-----
       }(scaleSelector),
       
-      change: function(scaleSelector, composition, layerIndex){
+      change: function(scaleSelector, layer, layerIndex){
          return function( event, ui ) {
             composition.params.scale = ui.value;
-            console.log("scale : " + composition.params.scale + " on layer " + layerIndex)
             $(window).trigger(MaperialEvents.SCALE_CHANGED, [layerIndex]);
          }
-      }(scaleSelector, composition, layerIndex)
+      }(scaleSelector, layer, layerIndex)
       
    });
    

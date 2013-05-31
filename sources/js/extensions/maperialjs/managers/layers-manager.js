@@ -337,11 +337,12 @@ LayersManager.getShadeLayerConfig = function() {
          type: Source.SRTM,
       },
       params: {
-
+         uLight   : [ 0, 0, 50 ], 
+         scale    : 1.0
       },
       composition: {
          shader : Maperial.MulBlend,
-         params : { uLight : [ 0, 0, 50 ], scale : 1.0}
+         params : { uParams : [ 0.0, 0.0, 1 ]}
       }
    }
 }

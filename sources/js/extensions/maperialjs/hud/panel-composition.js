@@ -101,7 +101,6 @@ HUD.prototype.refreshCompositionsPanel = function() {
             slide: function(constrastId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[0] = ui.value;
-                  console.log("contrast : " + composition.params.uParams[0] + " on layer " + l)
                   $(window).trigger(MaperialEvents.CONTRAST_CHANGED, [l]);
                }
             }(constrastId, composition, l)
@@ -120,7 +119,6 @@ HUD.prototype.refreshCompositionsPanel = function() {
             slide: function(brightnessId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[1] = ui.value;
-                  console.log("brightness : " + composition.params.uParams[1] + " on layer " + l)
                   $(window).trigger(MaperialEvents.BRIGHTNESS_CHANGED, [l]);
                }
             }(brightnessId, composition, l)
@@ -139,7 +137,6 @@ HUD.prototype.refreshCompositionsPanel = function() {
             slide: function(bwId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[2] = ui.value;
-                  console.log("BW : " + composition.params.uParams[2] + " on layer " + l)
                   $(window).trigger(MaperialEvents.BW_METHOD_CHANGED, [l]);
                }
             }(bwId, composition, l)
@@ -179,7 +176,6 @@ HUD.prototype.refreshCompositionsPanel = function() {
             slide: function(alphaId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams = ui.value;
-                  console.log("alpha : " + composition.params.uParams + " on layer " + l)
                   $(window).trigger(MaperialEvents.ALPHA_CHANGED, [l]);
                }
             }(alphaId, composition, l)
