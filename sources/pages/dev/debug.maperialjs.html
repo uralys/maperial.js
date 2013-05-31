@@ -59,6 +59,7 @@
                      // hud
                      "/js/extensions/maperialjs/hud/hud.js",
                      "/js/extensions/maperialjs/hud/panel-composition.js",
+                     "/js/extensions/maperialjs/hud/panel-layer-settings.js",
                      "/js/extensions/maperialjs/hud/panel-switch.js",
                      "/js/extensions/maperialjs/hud/panel-controls.js",
                      "/js/extensions/maperialjs/hud/panel-latlon.js",
@@ -97,6 +98,7 @@
                   var config = maperial.emptyConfig();
 
                   config.hud.elements[HUD.COMPOSITIONS]  = {show : true,  type : HUD.PANEL,    label : "Composition", disableDrag : true };
+                  config.hud.elements[HUD.LAYER_SETTINGS]= {show : true, type : HUD.PANEL, label : "Layer Settings", disableDrag : true };
                   
                   config.layers.push(LayersManager.getShadeLayerConfig())
                   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))

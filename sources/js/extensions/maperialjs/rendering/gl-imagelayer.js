@@ -7,7 +7,6 @@ function ImageLayer (gl, inZoom) {
    this.w      = 0;
    this.h      = 0;
    this.z      = inZoom;
-   console.log("Image Constructor")
 }
 
 ImageLayer.prototype.GetType = function ( ) {
@@ -22,7 +21,6 @@ ImageLayer.prototype.Init = function ( data ) {
       this.h      = data.height; 
       this.data   = data;
    }
-   console.log("Image Init")
 }
 
 ImageLayer.prototype.Reset = function (  ) {
@@ -45,7 +43,6 @@ ImageLayer.prototype.Release = function (  ) {
       delete this.data;
       this.data = null;
    }
-   console.log("Image Release")
 }
 
 ImageLayer.prototype.IsUpToDate = function ( ) {
@@ -54,8 +51,11 @@ ImageLayer.prototype.IsUpToDate = function ( ) {
 
 ImageLayer.prototype.Update = function () {
    if (this.tex)
-      return 1;
+      return 0;
 
+   var date    = (new Date)
+   var startT  = date.getTime()
+   
    var gl = this.gl;
    
    if (this.data != null && this.data.width > 0) {
@@ -80,6 +80,6 @@ ImageLayer.prototype.Update = function () {
       this.h = 2;
    }
    
-   // Time it and return !!!
-   return 2
+   diffT   = date.getTime() - startT;   
+   return diffT
 }

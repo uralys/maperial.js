@@ -62,8 +62,11 @@ ShadeLayer.prototype.IsUpToDate = function ( ) {
 
 ShadeLayer.prototype.Update = function ( params ) {
    if (this.tex)
-      return 1;
+      return 0;
 
+   var date    = (new Date)
+   var startT  = date.getTime()
+   
    var gl = this.gl;
 
    if ( this.data ) {
@@ -109,8 +112,10 @@ ShadeLayer.prototype.Update = function ( params ) {
       gl.bindTexture             (gl.TEXTURE_2D, tmpTex);
       gl.uniform1i               (prog.params.uSamplerTex1.name, 0);
 
-      gl.uniform3fv              (prog.params.uLight.name   , params.uLight);//[0.0,0.0,-50.0] ); 
-      gl.uniform1f               (prog.params.uScale.name   , params.uScale);//10.0 ); 
+      //gl.uniform3fv              (prog.params.uLight.name   , params.uLight);//[0.0,0.0,-50.0] ); 
+      //gl.uniform1f               (prog.params.uScale.name   , params.uScale);//10.0 ); 
+      gl.uniform3fv              (prog.params.uLight.name   , [0.0,0.0,-50.0] ); 
+      gl.uniform1f               (prog.params.uScale.name   , 10.0 ); 
       var r = this.maperial.context.coordS.Resolution ( this.z );
       gl.uniform1f               (prog.params.uPixRes.name  , r ); 
          
@@ -135,6 +140,7 @@ ShadeLayer.prototype.Update = function ( params ) {
       this.w = 2;
       this.h = 2;
    }
-   // Time it and return !!!
-   return 2
+   
+   diffT   = date.getTime() - startT;   
+   return diffT
 }

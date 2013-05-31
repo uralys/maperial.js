@@ -58,8 +58,11 @@ RasterLayer.prototype.IsUpToDate = function ( ) {
 
 RasterLayer.prototype.Update = function ( params ) {
    if (this.tex)
-      return 1;
+      return 0;
 
+   var date    = (new Date)
+   var startT  = date.getTime()
+      
    var gl = this.gl;
    var colorbarUID = params.colorbars[params.selectedColorbar];
    var colorbar = this.maperial.colorbarsManager.getColorbar(colorbarUID).tex;
@@ -140,7 +143,7 @@ RasterLayer.prototype.Update = function ( params ) {
       this.w = 2;
       this.h = 2;
    }
-   
+   diffT   = date.getTime() - startT;   
    // Time it and return !!!
-   return 2
+   return diffT
 }

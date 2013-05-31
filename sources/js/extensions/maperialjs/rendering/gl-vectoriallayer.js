@@ -117,10 +117,15 @@ VectorialLayer.prototype.Update = function ( params, layerPosition ) {
 
    this.layerCount      = rendererStatus[0];
    
-   if (this.IsUpToDate())  // Render is finished, build GL Texture
+   var diffT = 0;
+   if (this.IsUpToDate()) { // Render is finished, build GL Texture
+      var date    = (new Date)
+      var startT  = date.getTime()
       this._BuildTexture();
+      diffT   = date.getTime() - startT;
+   }
    
-   return rendererStatus[1]
+   return rendererStatus[1] + diffT
 }
 
 VectorialLayer.prototype._BuildTexture = function (  ) {
