@@ -113,7 +113,7 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
 
       change: function(zSelector, layer, layerIndex){
          return function( event, ui ) {
-            composition.params.uLight[2] = ui.value;
+            layer.params.uLight[2] = ui.value;
             $(window).trigger(MaperialEvents.Z_LIGHT_CHANGED, [layerIndex]);
          }
       }(zSelector, layer, layerIndex)
@@ -133,7 +133,7 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
       
       change: function(scaleSelector, layer, layerIndex){
          return function( event, ui ) {
-            composition.params.scale = ui.value;
+            layer.params.scale = ui.value;
             $(window).trigger(MaperialEvents.SCALE_CHANGED, [layerIndex]);
          }
       }(scaleSelector, layer, layerIndex)
