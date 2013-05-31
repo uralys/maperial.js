@@ -184,25 +184,42 @@
       $("#baseSelectionWindow").modal("hide");
       
       switch(sourceType){
+
+         // ------------------------------------------//
+         // Sources for LayersManager.Vector
          
          case Source.MaperialOSM:
             MapCreationController.addOSMLayer(src);
-            break;
-
-         case Source.Raster:
-            MapCreationController.openSelectRasterWindow();
             break;
 
          case Source.Vector:
             console.log("addLayer Source.Vector | Not developed yet")
             break;
 
+         // ------------------------------------------//
+         // Sources for LayersManager.Raster
+            
+         case Source.Raster:
+            MapCreationController.openSelectRasterWindow();
+            break;
+
+
+         // ------------------------------------------//
+         // Sources for LayersManager.Images
+            
          case Source.Images:
             MapCreationController.addImagesLayer(src);
             break;
-            
+
          case Source.WMS:
             MapCreationController.openSelectWMSWindow();
+            break;
+            
+         // ------------------------------------------//
+         // Sources for LayersManager.Shade
+            
+         case Source.SRTM:
+            MapCreationController.addSRTMLayer();
             break;
       }
    }
@@ -248,6 +265,12 @@
       
       console.log("params : " + params)
       App.maperial.layersManager.addLayer(Source.MaperialOSM, params);
+   }
+
+   //--------------------------------------//
+
+   MapCreationController.addSRTMLayer = function(){
+      App.maperial.layersManager.addLayer(Source.SRTM);
    }
    
    //--------------------------------------//

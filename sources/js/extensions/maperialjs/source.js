@@ -2,8 +2,8 @@
 // Source.type
 
 Source.MaperialOSM      = "osm";
-Source.Raster           = "raster";
 Source.Vector           = "vector";
+Source.Raster           = "raster";
 Source.Images           = "images";
 Source.WMS              = "wms";
 Source.SRTM             = "srtm";

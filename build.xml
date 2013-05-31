@@ -123,6 +123,7 @@
 			<fileset file="sources/css/mapediting/colorpicker.css" />
 			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
 
+			<fileset file="sources/css/maperial/diskSelection.css" />
 			<fileset file="sources/css/maperial/global.css" />
 			<fileset file="sources/css/maperial/maperial.css" />
 			<fileset file="sources/css/maperial/sprites.css" />
@@ -551,6 +552,7 @@
 			<fileset file="sources/shaders/fragmentClut.json" />
 			<fileset file="sources/shaders/fragmentMulBlend.json" />
 			<fileset file="sources/shaders/fragmentTex.json" />
+			<fileset file="sources/shaders/fragmentShade.json" />
 			<fileset file="sources/shaders/vertex.json" />
 			<fileset file="sources/shaders/vertexTex.json" />
 		</delete>

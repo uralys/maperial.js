@@ -103,7 +103,7 @@ MapRenderer.prototype.sourceReady = function ( source, x, y, z ) {
    var key = x + "," + y + "," + z;
       
    if ( this.tileCache[key] != null ) {
-      this.tileCache[key].appendDataToLayers(source.type, this.maperial.sourcesManager.getData( source, x, y, z ));
+      this.tileCache[key].appendDataToLayers(source, this.maperial.sourcesManager.getData( source, x, y, z ));
    }
 }
 
