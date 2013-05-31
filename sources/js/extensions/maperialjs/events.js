@@ -41,6 +41,9 @@ MaperialEvents.BW_METHOD_CHANGED    = "MaperialEvents.BW_METHOD_CHANGED";
 MaperialEvents.ALPHA_CHANGED        = "MaperialEvents.ALPHA_CHANGED";
 MaperialEvents.DATA_SOURCE_CHANGED  = "MaperialEvents.DATA_SOURCE_CHANGED";
 
+MaperialEvents.XY_LIGHT_CHANGED     = "MaperialEvents.XY_LIGHT_CHANGED";
+MaperialEvents.Z_LIGHT_CHANGED      = "MaperialEvents.Z_LIGHT_CHANGED";
+MaperialEvents.SCALE_CHANGED        = "MaperialEvents.SCALE_CHANGED";
 
 //==================================================================//
 

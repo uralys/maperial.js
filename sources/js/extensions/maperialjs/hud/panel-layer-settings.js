@@ -34,7 +34,7 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
 
          case LayersManager.Shade:
             nbSettings ++
-            panelHeight += 100
+            panelHeight += 120
             this.buildShadeSettings(i);
             break;
       }
@@ -63,13 +63,16 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
 HUD.prototype.buildShadeSettings = function(layerIndex) {
 
    var layer = this.maperial.config.layers[layerIndex];
+   var composition = this.maperial.config.layers[layerIndex].composition;
 
    var zSelector = "zSelector"+layerIndex;
+   var scaleSelector = "scaleSelector"+layerIndex;
    var selectArea = "selectArea"+layerIndex;
    var selector = "selector"+layerIndex;
    
    var html = "";
 
+   html += "   <div id='"+scaleSelector+"' class='span1 offset1'></div>";
    html += "<div class=\"row-fluid marginbottom\" id=\"layer_"+layerIndex+"\">";
    html += "   <div class=\"span3 offset1\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(layer)+"></img></div>";
    html += "   <div id='"+zSelector+"' class='span1 offset1 zSelector'></div>";
@@ -91,8 +94,13 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
       containment: "parent" ,
       stop: function() {
          var position = $("#"+selector).position()
-         console.log("x : ", Math.round(100*position.left/width) - 50);
-         console.log("y : ", Math.round(100*position.top/height) - 50);
+         composition.params.uLight[0] = Math.round(100*position.left/width) - 50
+         composition.params.uLight[1] = Math.round(100*position.top/height) - 50
+
+         console.log("x light : " + composition.params.uLight[0] + " on layer " + layerIndex)
+         console.log("y light : " + composition.params.uLight[1] + " on layer " + layerIndex)
+
+         $(window).trigger(MaperialEvents.XY_LIGHT_CHANGED, [layerIndex]);
       }
    });
    
@@ -107,14 +115,38 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
       slide: function(zSelector){
          //-----
       }(zSelector),
-      change: function(zSelector, layer, layerIndex){
+
+      change: function(zSelector, composition, layerIndex){
          return function( event, ui ) {
-//            layer.params.z = ui.value;
-            console.log("z : " + ui.value + " on layer " + layerIndex)
-//            $(window).trigger(MaperialEvents.Z_LIGHT_HAS_CHANGED, [layerIndex]);
+            composition.params.uLight[2] = ui.value;
+            console.log("z light : " + composition.params.uLight[2] + " on layer " + layerIndex)
+            $(window).trigger(MaperialEvents.Z_LIGHT_CHANGED, [layerIndex]);
          }
-      }(zSelector, layer, layerIndex)
+      }(zSelector, composition, layerIndex)
+      
+   });
+   
+   
+   $( "#"+scaleSelector ).slider({
+      range: "min",
+      min: 0,
+      max: 100,
+      step: 1,
+      value: 50,
+      slide: function(scaleSelector){
+         //-----
+      }(scaleSelector),
+      
+      change: function(scaleSelector, composition, layerIndex){
+         return function( event, ui ) {
+            composition.params.scale = ui.value;
+            console.log("scale : " + composition.params.scale + " on layer " + layerIndex)
+            $(window).trigger(MaperialEvents.SCALE_CHANGED, [layerIndex]);
+         }
+      }(scaleSelector, composition, layerIndex)
+      
    });
    
    Utils.buildSliderStyle(zSelector);
+   Utils.buildSliderStyle(scaleSelector);
 }

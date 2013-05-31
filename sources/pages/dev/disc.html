@@ -3,14 +3,10 @@
 <head>
 <title>Demo Maperial- Disc</title>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
-<link href="/css/maperial/diskSelection.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-	<div id="zSelector"></div>
-	<div id="selectArea" class="">
-		<div id="selector"></div>
-	</div>
+Page tests de Chris
 </body>
 
 <script type="text/javascript" src="/js/tools/script-loader.js"></script>
@@ -19,45 +15,65 @@
    window.scriptLoader
          .getScripts(
                [
-                     "//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js",
-                     "http://code.jquery.com/ui/1.10.3/jquery-ui.js",
-
-                     // tools
                ],
                function() {
-			        var width = $("#selectArea").width() - $("#selector").width()
-			        var height = $("#selectArea").height() - $("#selector").height()
-			        
-					$("#selector").css("left", 	(width/2) 	+ "px")
-					$("#selector").css("top", 	(height/2) 	+ "px")
-					      
-					$("#selector").draggable({ 
-					  containment: "parent" ,
-				      stop: function() {
-				         var position = $("#selector").position()
-				         console.log("x : ", Math.round(100*position.left/width) - 50);
-				         console.log("y : ", Math.round(100*position.top/height) - 50);
-				      }
-					});
-			        
-			         $( "#zSelector" ).slider({
-			            orientation: "vertical",
-			            range: "min",
-			            min: 0,
-			            max: 100,
-			            step: 1,
-			            value: 50,
-			            slide: function(event, ui){
-			               return function( event, ui ) {
-			                  console.log("z : " + ui.value)
-			               }
-			            }(),
-			            change: function(){
-			               return function( event, ui ) {
-			                  console.log("_z : " + ui.value)
-			               }
-			            }()
-			         });
+                  /* 
+                  var i,j,k
+                  var m = 10
+                  k  = 0;
+                  
+                  for (i = 0; i < m; i++){
+	                  for (j = 0; j < m; j++){
+							k ++;          
+	                  }
+                  }
+					*/
+					
+                  var i,j
+                  var k = 0
+                   
+                  var step = 0
+                  var nextJ = 0
+                  var gap = 2
+                  var startX = 516
+                  var startY = 670
+                  var endX = 520
+                  var endY = 673
+					 
+ 			      for (step = 0; step < gap; step++){
+	 			      for (i = startX; i < endX; i++){
+		                  for (j = nextJ; j < endY; j++){
+							  k++;          
+		 			          j = j+gap-1;
+		 					  if(j > endY-gap+1){
+								 nextJ = (j+1)%endY	 					     
+		 					     break;
+		 					  }
+		                  }
+	                  }
+ 			      }
+
+				console.log("			k = " + k)
+/* 
+
+                  var n = 3
+                  var m = 10
+                  var nextJ = 0
+				
+			      for (l = 0; l < n; l++){
+	 			      for (var i = 0; i < m; i++){
+		                  for (var j = nextJ; j < m; j++){
+		 			          j = j+n-1;
+		 					  if(j > m-n+1){
+								 nextJ = (j+1)%m	 					     
+		 					     break;
+		 					  }
+		                  }
+	                  }
+			      }
+					  */
+					 
+					 
                });
 </script>
 

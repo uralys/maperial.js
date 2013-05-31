@@ -90,6 +90,24 @@ MapRenderer.prototype.initListeners = function () {
       }
    });
 
+   $(window).on(MaperialEvents.XY_LIGHT_CHANGED, function(event, layerIndex){
+      for (var key in renderer.tileCache) {
+         var tile = renderer.tileCache[key].Reset ( layerIndex );
+      }
+   });
+
+   $(window).on(MaperialEvents.Z_LIGHT_CHANGED, function(event, layerIndex){
+      for (var key in renderer.tileCache) {
+         var tile = renderer.tileCache[key].Reset ( layerIndex );
+      }
+   });
+
+   $(window).on(MaperialEvents.SCALE_CHANGED, function(event, layerIndex){
+      for (var key in renderer.tileCache) {
+         var tile = renderer.tileCache[key].Reset ( layerIndex );
+      }
+   });
+
    $(window).on(MaperialEvents.DATA_SOURCE_CHANGED, function(){
       //Reload ALL ???? and Redraw ??
       //renderer.DrawScene (true) 
@@ -311,10 +329,52 @@ MapRenderer.prototype.Start = function () {
 //----------------------------------------------------------------------//
 
 MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, forceTileRedraw) {
+   
    var keyList = [];
    
-   for ( tx = txB ; tx <= txE ; tx = tx + 1) {
-      for ( ty = tyB ; ty <= tyE ; ty = ty + 1) {
+//   var step
+//   var gap = 2
+//   var endX = txE
+//   var endY = tyE
+//   var nextY = tyB
+//
+//   console.log("-------------------")
+//   console.log("startX",txB)
+//   console.log("endX",endX)
+//   console.log("startY",tyB)
+//   console.log("endY",endY)
+//   console.log("nextY",nextY)
+//   console.log("-----")
+//
+//   for (step = 0; step < gap; step++){
+//      for (tx = txB; tx <= endX; tx++){
+//         console.log("tx",tx)
+//         for (ty = nextY; ty <= endY; ty++){
+//            console.log("  ty",ty)
+//
+//            var key = tx + "," + ty + "," + zoom;
+//            console.log(key)
+//            keyList.push(key)
+//
+//            if ( this.tileCache[key] == null ) {
+//               this.tileCache[key]  = new Tile ( this.maperial, tx, ty, zoom);
+//            }
+//
+//            ty = ty+gap-1;
+//
+//            if(ty > endY-gap+1){
+//               nextY = (ty+1)%endY                  
+//               break;
+//            }
+//         }
+//      }
+//   }    
+   
+//   
+//   
+   
+   for ( tx = txB ; tx <= txE ; tx++) {
+      for ( ty = tyB ; ty <= tyE ; ty++) {
          var key = tx + "," + ty + "," + zoom;
          keyList.push(key)
          
@@ -391,6 +451,7 @@ MapRenderer.prototype.DrawScene = function (forceGlobalRedraw,forceTileRedraw) {
       mat4.ortho       ( 0, w , h, 0 , 0, 1, pMatrix ); // Y swap !
       this.gl.viewport ( 0, 0, w , h);
       this.gl.clear    ( this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT );
+      
       for ( var wx = shift.x, tx = tileC.x ; wx < w ; wx = wx + Maperial.tileSize , tx = tx + 1) {
          for ( var wy = shift.y, ty = tileC.y ; wy < h ; wy = wy+ Maperial.tileSize , ty = ty - 1) {
             mat4.identity (mvMatrix);

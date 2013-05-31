@@ -95,10 +95,10 @@ HUD.prototype.refreshCompositionsPanel = function() {
             max: 1,
             step: 0.01,
             value: composition.params.uParams[0],
-            slide: function(constrastId){
-               //-----
-            }(constrastId),
-            change: function(constrastId, composition, l){
+//            slide: function(constrastId){
+//               //-----
+//            }(constrastId),
+            slide: function(constrastId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[0] = ui.value;
                   console.log("contrast : " + composition.params.uParams[0] + " on layer " + l)
@@ -114,10 +114,10 @@ HUD.prototype.refreshCompositionsPanel = function() {
             max: 1,
             step: 0.01,
             value: composition.params.uParams[1],
-            slide: function(brightnessId){
-               //-----
-            }(brightnessId),
-            change: function(brightnessId, composition, l){
+//            slide: function(brightnessId){
+//               //-----
+//            }(brightnessId),
+            slide: function(brightnessId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[1] = ui.value;
                   console.log("brightness : " + composition.params.uParams[1] + " on layer " + l)
@@ -133,10 +133,10 @@ HUD.prototype.refreshCompositionsPanel = function() {
             max: 4,
             step: 1,
             value: composition.params.uParams[2],
-            slide: function(bwId){
-               //-----
-            }(bwId),
-            change: function(bwId, composition, l){
+//            slide: function(bwId){
+//               //-----
+//            }(bwId),
+            slide: function(bwId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[2] = ui.value;
                   console.log("BW : " + composition.params.uParams[2] + " on layer " + l)
@@ -173,10 +173,10 @@ HUD.prototype.refreshCompositionsPanel = function() {
             max: 1,
             step: 0.01,
             value: composition.params.uParams,
-            slide: function(alphaId){
-               //-----
-            }(alphaId),
-            change: function(alphaId, composition, l){
+//            slide: function(alphaId){
+//               //-----
+//            }(alphaId),
+            slide: function(alphaId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams = ui.value;
                   console.log("alpha : " + composition.params.uParams + " on layer " + l)
