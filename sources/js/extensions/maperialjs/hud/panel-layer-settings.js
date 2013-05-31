@@ -90,7 +90,7 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
 
    $("#"+selector).draggable({ 
       containment: "parent" ,
-      stop: function() {
+      drag: function() {
          var position = $("#"+selector).position()
          layer.params.uLight[0] = Math.round(100*position.left/width) - 50
          layer.params.uLight[1] = Math.round(100*position.top/height) - 50
@@ -107,11 +107,7 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
       max: 100,
       step: 1,
       value: 50,
-      slide: function(zSelector){
-         //-----
-      }(zSelector),
-
-      change: function(zSelector, layer, layerIndex){
+      slide: function(zSelector, layer, layerIndex){
          return function( event, ui ) {
             layer.params.uLight[2] = ui.value;
             $(window).trigger(MaperialEvents.Z_LIGHT_CHANGED, [layerIndex]);
@@ -127,11 +123,7 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
       max: 100,
       step: 1,
       value: 50,
-      slide: function(scaleSelector){
-         //-----
-      }(scaleSelector),
-      
-      change: function(scaleSelector, layer, layerIndex){
+      slide: function(scaleSelector, layer, layerIndex){
          return function( event, ui ) {
             layer.params.scale = ui.value;
             $(window).trigger(MaperialEvents.SCALE_CHANGED, [layerIndex]);
