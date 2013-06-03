@@ -143,7 +143,6 @@ RasterLayer.prototype.Update = function ( params ) {
       this.w = 2;
       this.h = 2;
    }
-   diffT   = date.getTime() - startT;   
-   // Time it and return !!!
+   var diffT   = date.getTime() - startT;   
    return diffT
 }

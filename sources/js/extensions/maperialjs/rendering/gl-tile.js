@@ -94,15 +94,18 @@ Tile.prototype.Release = function() {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.Reset = function ( id ) {
+Tile.prototype.Reset = function ( id , onlyFuse) {
    if(this.IsLoaded()) {
-      if( typeof(id)==='undefined' || id < 0 || id >= this.layers.length) {
-         for (i in this.layers) {      
-            this.layers[i].Reset ( );
+      onlyFuse = (typeof(onlyFuse)==='undefined')?false:onlyFuse;
+      if (!onlyFuse) {
+         if( typeof(id)==='undefined' || id < 0 || id >= this.layers.length) {
+            for (i in this.layers) {      
+               this.layers[i].Reset ( );
+            }
          }
-      }
-      else {
-         this.layers[id].Reset ( );
+         else {
+            this.layers[id].Reset ( );
+         }
       }
       this.tex = null;
    }
@@ -193,27 +196,38 @@ Tile.prototype.Update = function ( maxTime ) {
    if (this.IsUpToDate() || !this.IsLoaded() )
       return maxTime - 1 ;
 
-   var timeRemaining = maxTime;
+   var date    = (new Date)
+   var startT  = date.getTime()
+   var diffT   = 0
+   //var timeRemaining = maxTime;
 
    for(var i = 0; i< this.config.layers.length; i++){
       if (! this.layers[i].IsUpToDate ( ) ) {
-         timeRemaining -= this.layers[i].Update( this.config.layers[i].params, i );
+         /*timeRemaining -= this.layers[i].Update( this.config.layers[i].params, i );
          if ( timeRemaining <= 0 )
+            break;
+            */
+         this.layers[i].Update( this.config.layers[i].params, i );
+         diffT   = date.getTime() - startT;
+         if ( maxTime - diffT <= 0 )
             break;
       }
    }
 
-   var ready = true;
-   for (var i in this.layers) {
-      if (! this.layers[i].IsUpToDate ( ) )
-         ready = false;
+   if ( maxTime - diffT > 0 ) {
+      var ready = true;
+      for (var i in this.layers) {
+         if (! this.layers[i].IsUpToDate ( ) )
+            ready = false;
+      }
+
+      // Get elapsed time !!
+      if ( ready ) {
+         this.Compose();
+         diffT   = date.getTime() - startT;
+      }
    }
-
-   // Get elapsed time !!
-   if ( ready )
-      this.Compose();
-
-   return timeRemaining; 
+   return maxTime - diffT; 
 }
 
 //----------------------------------------------------------------------------------------------------------------------//

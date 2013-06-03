@@ -80,6 +80,6 @@ ImageLayer.prototype.Update = function () {
       this.h = 2;
    }
    
-   diffT   = date.getTime() - startT;   
+   var diffT   = date.getTime() - startT;   
    return diffT
 }
