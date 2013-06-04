@@ -20,6 +20,7 @@ ShadeLayer.prototype.Init = function ( data ) {
       return;
    if (data) {
       var newV                   = []
+      /*
       for (var y = 255 ; y >= 0 ; y-- ) {
          for (var x = 0 ; x < 256 ; x++ ) {
             newV.push(data[y + x * 256] & 255)
@@ -28,6 +29,19 @@ ShadeLayer.prototype.Init = function ( data ) {
          }
       }
       var byteArray              = new Uint8Array        ( newV );
+      */
+      /*
+      for (var y = 0 ; y <= 256 ; y++ ) {
+         for (var x = 0 ; x < 256 ; x++ ) {
+            newV.push(data [y * 256 + x ] & 255)
+            newV.push((data[y * 256 + x ] >> 8) & 255)
+            newV.push(0)
+         }
+      }
+      var byteArray              = new Uint8Array        ( newV );
+      */
+      
+      var byteArray              = new Uint8Array        ( data );
       this.w                     = 256;      
       this.h                     = 256; 
       this.data                  = byteArray;
