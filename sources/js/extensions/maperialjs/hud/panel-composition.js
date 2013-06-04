@@ -34,6 +34,12 @@ HUD.prototype.refreshCompositionsPanel = function() {
       var shadersSelectionId = "shadersSelection_"+l;
 
       //-----------------------------------------------------//
+      
+      if(!composition.params){
+         composition.params = LayersManager.getDefaultParams(composition.shader)
+      }
+      
+      //-----------------------------------------------------//
       // layer header html
 
       var div = "<div class=\"row-fluid marginbottom\">";

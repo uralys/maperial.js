@@ -58,7 +58,7 @@ Source.IMAGES_STAMEN_TONER_BG       = "images.stamen.toner-background";
 
 Source.WMS_BRETAGNECANTONS          = "wms.bretagnecantons";
 Source.WMS_FRANCECOURSDEAU          = "wms.francecoursdeau";
-Source.WMS3                         = "wms.3";
+Source.WMS_SOLS_ILEETVILAINE        = "wms.sols_ileetvilaine";
 Source.WMS4                         = "wms.4";
 
 //-----------------------------------------------------------------------------------//

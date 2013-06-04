@@ -226,6 +226,8 @@
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/rendering/gl-vectoriallayer.js" />
 			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/gl-shadelayer.js" />
+			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/rendering/render-line.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/rendering/render-text.js" />

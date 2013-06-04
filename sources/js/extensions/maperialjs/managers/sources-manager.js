@@ -50,13 +50,8 @@ SourcesManager.prototype.buildSources = function(layers){
 
          case Source.Images:
          case Source.WMS:
-            
-            if(layers[i].source.params.src == Source.IMAGES_STAMEN_TERRAIN){
-               // US - only
-               this.maperial.forceCenter(40.68, -74.12, 7)
-            }
-               
-            params = {src : layers[i].source.params.src };
+            params = {src : layers[i].source.params.src }
+            this.placeMap(layers[i].source.params.src)
             break;
       }
 
@@ -65,6 +60,29 @@ SourcesManager.prototype.buildSources = function(layers){
    }
 
 }
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+SourcesManager.prototype.placeMap = function (src) {
+
+   switch(src){
+      // US - only
+      case Source.IMAGES_STAMEN_TERRAIN : 
+         this.maperial.forceCenter(40.68, -74.12, 7)
+         break;
+         
+      // Bretagne
+      case Source.WMS_BRETAGNECANTONS : 
+         this.maperial.forceCenter(48.27, -2.87, 9)
+         break;
+
+      // Rennes
+      case Source.WMS_SOLS_ILEETVILAINE : 
+         this.maperial.forceCenter(48.11, -1.78, 10)
+         break;
+   }
+}
+
 //----------------------------------------------------------------------------------------------------------------------//
 
 SourcesManager.prototype.releaseEverything = function () {
@@ -396,8 +414,12 @@ SourcesManager.prototype.getImageURL = function (source, tx, ty, z) {
 //-------------------------------------------//
 
 /**
- * Source.WMS_BRETAGNECANTONS | geo1 : "http://geobretagne.fr/geoserver/ows?SERVICE=WMS&LAYERS=d22%3AASS_LIN_22&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
- * Source.WMS_FRANCECOURSDEAU | geo2 : "http://geowww.agrocampus-ouest.fr/geoserver/ows?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
+ * Source.WMS_BRETAGNECANTONS 
+ *    geo1 : "http://geobretagne.fr/geoserver/ows?SERVICE=WMS&LAYERS=d22%3AASS_LIN_22&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
+ * 
+ * Source.WMS_FRANCECOURSDEAU 
+ * Source.WMS_SOLS_ILEETVILAINE 
+ *    geo2 : "http://geowww.agrocampus-ouest.fr/geoserver/ows?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
  */ 
 SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
 
@@ -425,6 +447,15 @@ SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
          var bottomRight   = bottomRightM;
 
          return("http://api.maperial.com/geo2?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+         break;
+
+      case Source.WMS_SOLS_ILEETVILAINE:
+         //http://www.mapmatters.org/wms/647148
+         
+         var topLeft       = topLeftM;
+         var bottomRight   = bottomRightM;
+         
+         return("http://api.maperial.com/geo2?SERVICE=WMS&LAYERS=igcs%3Aucs35&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
          break;
 
       case Source.WMS_3:

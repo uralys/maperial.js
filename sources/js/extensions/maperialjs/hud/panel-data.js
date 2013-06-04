@@ -32,11 +32,14 @@ HUD.prototype.buildDataPanel = function(params, callBack) {
       case HUD.WMS_DATA:
          html += "" +
             "<div class='row-fluid marginbottom'>" +
-            "   <div class='span3' title='Cantons de Bretagne' onclick='HUD.selectedData"+this.maperial.tagId+"(Source.WMS, Source.WMS_BRETAGNECANTONS)'>" +
+            "   <div id='wms1' class='span3' title='Cantons de Bretagne' onclick='HUD.selectedData"+this.maperial.tagId+"(Source.WMS, Source.WMS_BRETAGNECANTONS)'>" +
             "     <img src='http://static.maperial.localhost/images/buttons/sources/button.wms.bretagnecantons.png' class='bigbutton'></img>" +
             "   </div>" +
-            "   <div class='span3' title='Cantons de Bretagne' onclick='HUD.selectedData"+this.maperial.tagId+"(Source.WMS, Source.WMS_FRANCECOURSDEAU)'>" +
+            "   <div id='wms2' class='span3' title='Cours d eau en France' onclick='HUD.selectedData"+this.maperial.tagId+"(Source.WMS, Source.WMS_FRANCECOURSDEAU)'>" +
             "     <img src='http://static.maperial.localhost/images/buttons/sources/button.wms.francecoursdeau.png' class='bigbutton'></img>" +
+            "   </div>" +
+            "   <div id='wms3' class='span3' title='Ille et Vilaine : Unités Cartographiques de Sol' onclick='HUD.selectedData"+this.maperial.tagId+"(Source.WMS, Source.WMS_SOLS_ILEETVILAINE)'>" +
+            "     <img src='http://static.maperial.localhost/images/buttons/sources/button.wms.sols_ileetvilaine.png' class='bigbutton'></img>" +
             "   </div>" +
             "</div>"
             
@@ -45,4 +48,7 @@ HUD.prototype.buildDataPanel = function(params, callBack) {
    //-----------------------------------------------------//
    
    this.element(HUD.DATA).append(html)
+   $("#wms1").tooltip()
+   $("#wms2").tooltip()
+   $("#wms3").tooltip()
 }

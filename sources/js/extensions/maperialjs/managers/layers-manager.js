@@ -266,12 +266,15 @@ LayersManager.prototype.changeComposition = function(l, shader) {
       switch(shader){
          
          case Maperial.AlphaClip : 
+            composition.params = LayersManager.defaultAlphaClipParams
+            break;
+
          case Maperial.AlphaBlend : 
-               composition.params = { uParams : 1.0 }
+               composition.params = LayersManager.defaultAlphaBlendParams
             break;
             
          case Maperial.MulBlend : 
-               composition.params = { uParams : [ 0.0, 0.0, 1.0 ]}
+               composition.params = LayersManager.defaultMulBlendParams
             break;
       }
    }
@@ -300,7 +303,7 @@ LayersManager.getOSMLayerConfig = function(styleUIDs) {
       },
       composition: {
          shader : Maperial.MulBlend,
-         params : { uParams : [ 0.0, 0.0, 1.0 ]}
+         params : LayersManager.defaultMulBlendParams
       }
    }
 }
@@ -323,7 +326,7 @@ LayersManager.getRasterLayerConfig = function(rasterUID, colorbarUIDs) {
       },
       composition: {
          shader : Maperial.MulBlend,
-         params : { uParams : [ 0.0, 0.0, 1 ]}
+         params : LayersManager.defaultMulBlendParams
       }
    }
 }
@@ -342,7 +345,7 @@ LayersManager.getShadeLayerConfig = function() {
       },
       composition: {
          shader : Maperial.MulBlend,
-         params : { uParams : [ 0.0, 0.0, 1 ]}
+         params : LayersManager.defaultMulBlendParams
       }
    }
 }
@@ -360,7 +363,7 @@ LayersManager.getVectorLayerConfig = function() {
       },
       composition: {
          shader : Maperial.AlphaBlend,
-         params : { uParams : 0.5 }
+         params : LayersManager.defaultAlphaBlendParams
       }
    }
 }
@@ -374,9 +377,6 @@ LayersManager.getVectorLayerConfig = function() {
  */
 LayersManager.getImagesLayerConfig = function(sourceType, src) {
    
-   console.log(sourceType)
-   console.log(src)
-   
    return { 
       type: LayersManager.Images, 
       source: {
@@ -388,9 +388,37 @@ LayersManager.getImagesLayerConfig = function(sourceType, src) {
       },
       composition: {
          shader : Maperial.AlphaBlend,
-         params : { uParams : 0.5 }
+         params : LayersManager.defaultAlphaBlendParams
       }
    }
 }
 
 //-------------------------------------------//
+
+LayersManager.getDefaultParams = function(shader) {
+   switch(shader){
+      case Maperial.AlphaClip : 
+         return LayersManager.defaultAlphaClipParams
+
+      case Maperial.AlphaBlend : 
+         return LayersManager.defaultAlphaBlendParams
+         
+      case Maperial.MulBlend : 
+         return LayersManager.defaultMulBlendParams
+   }
+}
+
+//-------------------------------------------//
+      
+LayersManager.defaultMulBlendParams = {
+   uParams : [ 0.0, 0.0, 1 ]
+}
+
+
+LayersManager.defaultAlphaBlendParams = {
+   uParams : 0.5
+}
+
+LayersManager.defaultAlphaClipParams = {
+   uParams : 0.5
+}
