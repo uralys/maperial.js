@@ -252,6 +252,10 @@
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/panel-composition.js" />
 			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-data.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-basemaps.js" />
+			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/panel-layer-settings.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/panel-controls.js" />

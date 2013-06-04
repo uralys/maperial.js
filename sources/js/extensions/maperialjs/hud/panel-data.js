@@ -1,0 +1,48 @@
+
+
+HUD.prototype.buildDataPanel = function(params, callBack) {
+
+   console.log("     building Data Panel...");
+
+   //-----------------------------------------------------//
+
+   this.element(HUD.DATA).empty();
+   HUD["selectedData"+this.maperial.tagId] = callBack;
+
+   //-----------------------------------------------------//
+   
+   this.element(HUD.DATA).append("");
+   this.element(HUD.DATA).append("" +
+   		"<div class='row-fluid' onclick='HUD.selectedData"+this.maperial.tagId+"()'> "+
+         "   <div class='span6 offset2' }}>" +
+         "      <p class=\"compositionSettingsTitle\">Data</p>" +
+         "   </div>"+
+         "   <div class='span1 offset3 btn-small btn-primary' }}>"+
+         "      <i class='icon-arrow-right icon-white'></i>"+
+         "   </div>"+
+         "<div class='row-fluid'>");
+
+   //-----------------------------------------------------//
+
+   var html = ""
+
+   //-----------------------------------------------------//
+   
+   switch(params){
+      case HUD.WMS_DATA:
+         html += "" +
+            "<div class='row-fluid marginbottom'>" +
+            "   <div class='span3' title='Cantons de Bretagne' onclick='HUD.selectedData"+this.maperial.tagId+"(Source.WMS, Source.WMS_BRETAGNECANTONS)'>" +
+            "     <img src='http://static.maperial.localhost/images/buttons/sources/button.wms.bretagnecantons.png' class='bigbutton'></img>" +
+            "   </div>" +
+            "   <div class='span3' title='Cantons de Bretagne' onclick='HUD.selectedData"+this.maperial.tagId+"(Source.WMS, Source.WMS_FRANCECOURSDEAU)'>" +
+            "     <img src='http://static.maperial.localhost/images/buttons/sources/button.wms.francecoursdeau.png' class='bigbutton'></img>" +
+            "   </div>" +
+            "</div>"
+            
+   }
+
+   //-----------------------------------------------------//
+   
+   this.element(HUD.DATA).append(html)
+}

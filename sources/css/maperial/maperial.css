@@ -180,6 +180,23 @@ a.triggerHUDSettings {
 }
 
 /*-------------------------*/
+.panelBasemaps {
+	width: 500px;
+	color: #eee;
+	padding-left: 10px;
+	padding-right: 10px;
+	position:fixed;
+}
+
+.panelData {
+	width: 500px;
+	color: #eee;
+	padding-left: 10px;
+	padding-right: 10px;
+	position:fixed;
+}
+
+/*-------------------------*/
 .panelCompositions {
 	width: 220px;
 	color: #eee;
@@ -567,3 +584,6 @@ a.triggerColorBar {
 .attribution .link:hover {
 	color: #27a200;
 }
+
+
+/*--------------------------------------*/

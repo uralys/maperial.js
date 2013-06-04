@@ -84,7 +84,7 @@ LayersManager.prototype.deleteLayer = function(layerRemovedPosition) {
 LayersManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 
    if(this.maperial.config.layers[layerIndex].type == Source.Raster
-         && this.maperial.config.layers[layerIndex].source.params.uid != rasterUID){
+   && this.maperial.config.layers[layerIndex].source.params.uid != rasterUID){
 
       this.maperial.config.layers[layerIndex].source.params.uid = rasterUID;
       this.maperial.restart();
@@ -94,10 +94,10 @@ LayersManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 //=======================================================================================//
 
 LayersManager.prototype.changeImages = function(layerIndex, imagesSrc) {
-
+   
    if(this.maperial.config.layers[layerIndex].type == Source.Images
          && this.maperial.config.layers[layerIndex].source.params.src != imagesSrc){
-
+      
       this.maperial.config.layers[layerIndex].source.params.src = imagesSrc;
       this.maperial.restart();
    }
@@ -360,7 +360,7 @@ LayersManager.getVectorLayerConfig = function() {
       },
       composition: {
          shader : Maperial.AlphaBlend,
-         params : { uParams : 1.0 }
+         params : { uParams : 0.5 }
       }
    }
 }
@@ -388,7 +388,7 @@ LayersManager.getImagesLayerConfig = function(sourceType, src) {
       },
       composition: {
          shader : Maperial.AlphaBlend,
-         params : { uParams : 1.0 }
+         params : { uParams : 0.5 }
       }
    }
 }

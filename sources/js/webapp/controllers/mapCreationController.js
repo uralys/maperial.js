@@ -86,6 +86,8 @@
       config.hud.elements[HUD.CONTROLS]      = {show : false, type : HUD.PANEL,    label : "Controls",         disableDrag : true };
       config.hud.elements[HUD.SCALE]         = {show : false, type : HUD.PANEL,    label : "Scale" };
       config.hud.elements[HUD.GEOLOC]        = {show : false, type : HUD.PANEL,    label : "Location" };
+      config.hud.elements[HUD.BASEMAPS]      = {show : true,  type : HUD.PANEL,    disableHide : true,         disableDrag : true };
+      config.hud.elements[HUD.DATA]          = {show : true,  type : HUD.PANEL,    disableHide : true,         disableDrag : true };
       
       App.addMargins(config);      
 
@@ -135,7 +137,7 @@
          if(App.Globals.isTryscreen)
             MapCreationController.openDemoSelection();
          else
-            MapCreationController.openBaseSelection();
+            MapCreationController.openBasemaps();
       }
       else{
          config.layers = App.user.selectedMap.config.layers;
@@ -154,34 +156,86 @@
       $('#demoSelectionWindow').on('hidden', function(){
          setTimeout(function(){
             if(App.maperial.config.layers.length == 0)
-               MapCreationController.openBaseSelection()
-         }, 350);
-      });
-   }
-
-   MapCreationController.openBaseSelection = function(){
-      $("#baseSelectionWindow").modal();
-      $('#baseSelectionWindow').off('hidden');
-      $('#baseSelectionWindow').on('hidden', function(){
-         setTimeout(function(){
-            if(App.maperial.config.layers.length == 0)
-               MapCreationController.openBaseSelection()
+               MapCreationController.openBasemaps()
          }, 350);
       });
    }
 
    //--------------------------------------//
 
-   MapCreationController.openSourceSelection = function(){
-      $("#sourceSelectionWindow").modal();
-      
-      MapCreationController.currentLayerIndex = -1;
+   //old openSourceSelection  : MapCreationController.currentLayerIndex = -1;
+   MapCreationController.openBasemaps = function(){
+      App.maperial.hud.openBasemaps(
+         HUD.ALL_BASEMAPS,
+         MapCreationController.addBasemap
+      )
+   }
+
+   MapCreationController.addBasemap = function(sourceType, src){
+      MapCreationController.addLayer(sourceType, src)
+      MapCreationController.closeBasemaps()
+   }
+
+   MapCreationController.closeBasemaps = function(){
+      App.maperial.hud.closeBasemaps()
    }
    
    //--------------------------------------//
+   // Edit Images
+
+   MapCreationController.editImages = function(){
+      App.maperial.hud.openBasemaps(
+            HUD.IMAGE_BASEMAPS,
+            MapCreationController.changeImage
+      )
+   }
+
+   MapCreationController.changeImage = function(sourceType, src){
+      if(src != null)
+         App.maperial.layersManager.changeImages(MapCreationController.currentLayerIndex, src);
+      
+      MapCreationController.closeBasemaps()
+   }
+   
+   //--------------------------------------//
+   // Data
+   
+   MapCreationController.openData = function(){
+      App.maperial.hud.openData(
+         HUD.WMS_DATA,
+         MapCreationController.addData
+      )
+   }
+
+   MapCreationController.addData = function(dataType, src){
+      MapCreationController.addLayer(dataType, src)
+      MapCreationController.closeData()
+   }
+
+   MapCreationController.closeData = function(){
+      App.maperial.hud.closeData()
+   }
+
+   //--------------------------------------//
+   // Edit WMS
+
+   MapCreationController.editWMS = function(){
+      App.maperial.hud.openData(
+            HUD.WMS_DATA,
+            MapCreationController.changeWMS
+      )
+   }
+
+   MapCreationController.changeWMS = function(dataType, src){
+      if(src != null)
+         App.maperial.layersManager.changeImages(MapCreationController.currentLayerIndex, src);
+      
+      MapCreationController.closeData()
+   }
+   
+   //==============================================================//
 
    MapCreationController.addLayer = function(sourceType, src){
-      $("#baseSelectionWindow").modal("hide");
       
       switch(sourceType){
 
@@ -210,9 +264,9 @@
          case Source.Images:
             MapCreationController.addImagesLayer(src);
             break;
-
+            
          case Source.WMS:
-            MapCreationController.openSelectWMSWindow();
+            MapCreationController.addWMSLayer(src);
             break;
             
          // ------------------------------------------//
@@ -276,24 +330,13 @@
    //--------------------------------------//
    
    MapCreationController.addImagesLayer = function(src){
-      var yetAnotherImagesLayer = false;
-      
-      for(var i = 0; i < App.maperial.config.layers.length; i++){
-         if(App.maperial.config.layers[i].type == Source.Images){
-            yetAnotherImagesLayer = true;
-            break;
-         }
-      }
-      
-//      if(yetAnotherImagesLayer){
-//         // TODO :  ameliorer le UI avec bootstrap.alert
-//         alert("Il y a deja un layer basemap/fond de map");
-//      }
-//      else{
-//         App.maperial.layersManager.addLayer(Source.Images, [src]);
-//      }
-
       App.maperial.layersManager.addLayer(Source.Images, [src]);
+   }
+   
+   //--------------------------------------//
+
+   MapCreationController.addWMSLayer = function(src){
+      App.maperial.layersManager.addLayer(Source.WMS, [src]);
    }
    
    //--------------------------------------//
@@ -318,11 +361,11 @@
             break;
             
          case Source.Images:
-            MapCreationController.openSelectImagesWindow();
+            MapCreationController.editImages();
             break;
 
          case Source.WMS:
-            MapCreationController.openSelectWMSWindow();
+            MapCreationController.editWMS();
             break;
             
       }
@@ -342,7 +385,7 @@
       App.maperial.layersManager.deleteLayer(layerIndex);
       
       if(App.maperial.config.layers.length == 0)
-         MapCreationController.openBaseSelection()
+         MapCreationController.openBasemaps()
    }
    
    //=============================================================================//
@@ -388,18 +431,6 @@
    }
    
    //=============================================================================//
-   // WMS
-  
-   MapCreationController.openSelectWMSWindow = function(){
-      $("#selectWMSWindow").modal();
-   }
-
-   MapCreationController.selectWMS = function(src){
-      $("#selectWMSWindow").modal("hide");
-      App.maperial.layersManager.addLayer(Source.WMS, [src]);
-   }
-   
-   //=============================================================================//
    // Rasters
    
    MapCreationController.openSelectRasterWindow = function(){
@@ -417,19 +448,6 @@
          console.log("adding a new raster");
          App.maperial.layersManager.addLayer(Source.Raster, [raster.uid]);
       }
-   }
-   
-   //=============================================================================//
-   // Images
-   
-   MapCreationController.openSelectImagesWindow = function(){
-      $("#selectImagesWindow").modal();
-   }
-   
-   MapCreationController.selectImages = function(src){
-      $("#selectImagesWindow").modal("hide");
-      console.log("editing images");
-      App.maperial.layersManager.changeImages(MapCreationController.currentLayerIndex, src);
    }
    
    //=============================================================================//
@@ -823,24 +841,17 @@
       //---------------------//
       // layers actions
       
-      addBasemap: function(router, event){
-         MapCreationController.openBaseSelection()
-         $("#sourceSelectionWindow").modal("hide");
+      openBasemaps: function(router, event){
+         MapCreationController.openBasemaps()
       },
 
-      addData: function(router, event){
-         // pourlinstant ouvre les WMS
-         // TODO ouvre comme demo : choix open raster, wms, vectors
-         MapCreationController.openSelectWMSWindow()
-         $("#sourceSelectionWindow").modal("hide");
+      openData: function(router, event){
+         MapCreationController.openData()
       },
       
-      openSourceSelection: function(router, event){
-         MapCreationController.openSourceSelection();
-      },
+      //-----------//
       
       addLayer: function(router, event){
-
          console.log("addLayer : ",event.contexts)
          var source = event.contexts[0];
          var src    = event.contexts[1];
@@ -861,22 +872,6 @@
       selectRaster: function(router, event){
          var raster = event.context;
          MapCreationController.selectRaster(raster);
-      },
-
-      //--------------------------------------//
-      // images actions
-      
-      selectImages: function(router, event){
-         var src = event.context;
-         MapCreationController.selectImages(src);
-      },
-      
-      //--------------------------------------//
-      // WMS actions
-      
-      selectWMS: function(router, event){
-         var src = event.context;
-         MapCreationController.selectWMS(src);
       },
 
       //--------------------------------------//
@@ -913,7 +908,6 @@
       
       startDemo   : function(){
          $("#demoSelectionWindow").modal("hide");
-         $("#baseSelectionWindow").modal();
          App.user.set("isCreatingANewMap", true);  
 
          var config = MapCreationController.getLayersCreationConfig();

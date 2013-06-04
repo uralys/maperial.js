@@ -20,13 +20,13 @@ LayersHelper.prototype.refreshLayersPanel = function() {
 
    var me = this;
    $("#layers").empty(); 
-   var panelHeight = 35;
+   var panelHeight = 80;
 
    //------------------//
 
    for(var i = App.maperial.config.layers.length - 1; i >= 0 ; i--) {
       this.buildLayerEntry(i);
-      panelHeight += 64;
+      panelHeight += 57;
    }
 
    //------------------//
@@ -45,7 +45,6 @@ LayersHelper.prototype.refreshLayersPanel = function() {
    });
 
    $("#panelLayers"+this.maperial.tagId).css("height", panelHeight+"px");
-   $("#panelLayers"+this.maperial.tagId).removeClass("hide"); // maperial reset hideAllHUD + no layers => no HUD => orce show here
 }
 
 //--------------------------------------//
@@ -181,8 +180,6 @@ LayersHelper.prototype.buildOSMSets = function(layerCustomizedIndex){
 LayersHelper.prototype.buildDetailledSets = function(){
    $("#osmSetsDiv").empty();
 }
-
-
 
 
 //====================================================================================//

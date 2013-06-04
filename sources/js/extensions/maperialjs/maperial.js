@@ -140,6 +140,7 @@ Maperial.prototype.load = function() {
       });
    }
    else{
+      this.buildHUD();
       this.finishStartup();
    }
 }
@@ -485,11 +486,16 @@ Maperial.prototype.setCanvasSize = function() {
 }
 
 Maperial.prototype.refreshScreen = function() {
-
+   console.log(" refreshing screen...")
+   
    try{
       this.mapRenderer.fitToSize();
-      this.mapMover.resizeDrawers();
+   }
+   catch(e){}
+
+   try{
       this.hud.placeElements();
+      this.mapMover.resizeDrawers();
    }
    catch(e){}
 }

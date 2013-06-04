@@ -59,6 +59,8 @@ TemplateBuilder.prototype.buildHUD = function(){
    this.buildZooms();
    this.buildMagnifier();
    this.buildColorbar();
+   this.buildBasemapsPanel();
+   this.buildDataPanel();
 
    this.prepareAttribution();
 }
@@ -248,7 +250,7 @@ TemplateBuilder.prototype.buildMagnifier = function(){
 TemplateBuilder.prototype.buildColorbar = function(){
    
    var html = "";
-   html += "<div class=\"panel snapper hide\" id=\"panelColorBar"+this.tagId+"\" class=\"panelColorBar\">";
+   html += "<div class=\"panel snapper hide panelColorBar\" id=\"panelColorBar"+this.tagId+"\">";
    html += "    <div id=\"ColorBar"+this.tagId+"\">";
    html += "</div>";
    
@@ -267,3 +269,25 @@ TemplateBuilder.prototype.prepareAttribution = function(){
 }
 
 //==================================================================//
+
+TemplateBuilder.prototype.buildBasemapsPanel = function() {
+
+   var html = "";
+   html += "<div class=\"panel snapper hide panelBasemaps\" id=\"panelBasemaps"+this.tagId+"\" >";
+   html += "    <div id=\"Basemaps"+this.tagId+"\">";
+   html += "</div>"
+
+   this.container.append(html);
+}
+
+//==================================================================//
+
+TemplateBuilder.prototype.buildDataPanel = function() {
+   
+   var html = "";
+   html += "<div class=\"panel snapper hide panelData\" id=\"panelData"+this.tagId+"\" >";
+   html += "    <div id=\"Data"+this.tagId+"\">";
+   html += "</div>"
+      
+   this.container.append(html);
+}

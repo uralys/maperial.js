@@ -8,12 +8,15 @@ function HUD(maperial){
    this.maperial = maperial;
    this.context = this.maperial.context;
    
-   this.buildTriggers();
-   this.buildControls();
-   this.display();
-
-   this.initListeners();
-   this.updateScale();
+   if(this.maperial.config){
+      this.buildTriggers();
+      this.buildControls();
+      
+      this.display();
+      
+      this.initListeners();
+      this.updateScale();
+   }
 }
 
 //----------------------------------------------------------------------//
@@ -74,7 +77,18 @@ HUD.MAPKEY                 = "MapKey";
 HUD.MAGNIFIER              = "Magnifier";
 HUD.COMPOSITIONS           = "Compositions";
 HUD.LAYER_SETTINGS         = "LayerSettings";
+HUD.BASEMAPS               = "Basemaps";
+HUD.DATA                   = "Data";
 HUD.SWITCH_IMAGES          = "SwitchImages";
+
+//----------------------------------------------------------------------//
+
+HUD.ALL_BASEMAPS          = "HUD.ALL_BASEMAPS";
+HUD.STYLED_BASEMAPS       = "HUD.STYLED_BASEMAPS ";
+HUD.IMAGE_BASEMAPS        = "HUD.IMAGE_BASEMAPS ";
+
+HUD.WMS_DATA              = "HUD.WMS_DATA ";
+HUD.RASTER_DATA           = "HUD.RASTER_DATA ";
 
 //----------------------------------------------------------------------//
 
@@ -85,6 +99,8 @@ HUD.VIEWER_OPTIONS = {
     "3" : {element : HUD.LATLON,          label : "Lat/Lon",         defaultDisableDrag : false },
     "4" : {element : HUD.MAPKEY,          label : "Map Key",         defaultDisableDrag : false },
     "5" : {element : HUD.SWITCH_IMAGES,   label : "Switch Basemap",  defaultDisableDrag : true },
+    "6" : {element : HUD.BASEMAPS,        label : "Basemaps",        defaultDisableDrag : true },
+    "7" : {element : HUD.DATA,            label : "Data",            defaultDisableDrag : true },
 //    "6" : {element : HUD.COMPOSITIONS,    label : "Compositions",    defaultDisableDrag : false },
 //    "7" : {element : HUD.LAYER_SETTINGS,  label : "Layer Settings",  defaultDisableDrag : false },
 //    "8" : {element : HUD.MAGNIFIER,       label : "Magnifier",       defaultDisableDrag : false },
@@ -109,7 +125,7 @@ HUD.positions = [];
 
 HUD.positions[HUD.SETTINGS]      = { left  : "0",    top    : "0"   };
 HUD.positions[HUD.COMPOSITIONS]  = { left  : "0",    bottom : "120" };
-HUD.positions[HUD.LAYER_SETTINGS]= { right : "5",    top    : "50%"   };
+HUD.positions[HUD.LAYER_SETTINGS]= { right : "5",    top    : "50%" };
 HUD.positions[HUD.SWITCH_IMAGES] = { left  : "10",   top    : "10"  };
 HUD.positions[HUD.MAGNIFIER]     = { left  : "0",    bottom : "0"   };
 HUD.positions[HUD.COLORBAR]      = { left  : "0",    top    : "180" };
@@ -121,6 +137,8 @@ HUD.positions[HUD.GEOLOC]        = { left  : "50%",  top    : "0"   };
 HUD.positions[HUD.DETAILS_MENU]  = { left  : "50%",  top    : "30%" };
 HUD.positions[HUD.QUICK_EDIT]    = { right : "5",    top    : "38", };
 HUD.positions[HUD.ZOOMS]         = { left  : "50%",  bottom : "0"   };
+HUD.positions[HUD.BASEMAPS]      = { right : "-550", top    : "0"   };
+HUD.positions[HUD.DATA]          = { right : "-550", top    : "0"   };
 
 
 //----------------------------------------------------------------------//
@@ -319,6 +337,12 @@ HUD.prototype.display = function(){
 
    if(this.maperial.config.hud.elements[HUD.SWITCH_IMAGES])
       this.refreshSwitchImagesPanel();
+   
+//   if(this.maperial.config.hud.elements[HUD.BASEMAPS])
+//      this.createBasemapsPanel();
+//
+//   if(this.maperial.config.hud.elements[HUD.DATA])
+//      this.createDataPanel();
 }
 
 //==================================================================//
@@ -362,4 +386,72 @@ HUD.prototype.putOnTop = function(element){
    this.allPanels().css({ zIndex : 100 });
    this.trigger(element).css({ zIndex : 201 });
    this.panel(element).css({ zIndex : 200 });  
+}
+
+//====================================================================================//
+// SELECTION PANELS : TODO : extraire une "classe"
+//====================================================================================//
+
+HUD.prototype.closeBasemaps = function(params, callBack){
+   this.closePanel(params, callBack, HUD.BASEMAPS)
+}
+
+//-------------------------------------------------//
+
+HUD.prototype.openBasemaps = function(params, callBack){
+   this.buildBasemapsPanel(params, callBack);
+   this.openPanel(params, callBack, HUD.BASEMAPS)
+}
+
+//====================================================================================//
+
+HUD.prototype.closeData = function(params, callBack){
+   this.closePanel(params, callBack, HUD.DATA)
+}
+
+//-------------------------------------------------//
+
+HUD.prototype.openData = function(params, callBack){
+   this.buildDataPanel(params, callBack);
+   this.openPanel(params, callBack, HUD.DATA)
+}
+
+//====================================================================================//
+
+HUD.prototype.closePanel = function(params, callBack, panel){
+   
+   var mapWidth = this.context.mapCanvas[0].offsetWidth;
+   var mapLeft = this.context.mapCanvas[0].offsetLeft;
+   var margin = this.getMargin("right");
+   
+   var value = mapLeft + mapWidth + 550;
+   value -= this.panel(panel).width();
+   value -= margin;
+   value -= 10;
+   
+   this.panel(panel).animate({
+      left: value,
+      duration: 200,
+   });
+
+}
+
+//-------------------------------------------------//
+
+HUD.prototype.openPanel = function(params, callBack, panel){
+   
+   var mapWidth = this.context.mapCanvas[0].offsetWidth;
+   var mapLeft = this.context.mapCanvas[0].offsetLeft;
+   var margin = this.getMargin("right");
+   
+   var value = mapLeft + mapWidth - 220;
+   value -= this.panel(panel).width();
+   value -= margin;
+   value -= 10;
+   
+   this.panel(panel).animate({
+      left: value, 
+      duration: 200,
+   });
+   
 }
