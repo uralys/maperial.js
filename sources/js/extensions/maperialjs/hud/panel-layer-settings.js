@@ -106,7 +106,7 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
       min: 0,
       max: 100,
       step: 1,
-      value: 50,
+      value: layer.params.uLight[2],
       slide: function(zSelector, layer, layerIndex){
          return function( event, ui ) {
             layer.params.uLight[2] = ui.value;
@@ -122,7 +122,7 @@ HUD.prototype.buildShadeSettings = function(layerIndex) {
       min: 0,
       max: 100,
       step: 1,
-      value: 50,
+      value: layer.params.scale,
       slide: function(scaleSelector, layer, layerIndex){
          return function( event, ui ) {
             layer.params.scale = ui.value;

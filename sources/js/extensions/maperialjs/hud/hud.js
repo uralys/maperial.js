@@ -377,6 +377,7 @@ HUD.prototype.showAllHUD = function(){
       }
    }
 
+   $(".tooltip").remove();
 }
 
 //------------------------------------------------//
