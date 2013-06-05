@@ -11,6 +11,7 @@ function LayersManager(maperial){
 
 LayersManager.Vector = "vector";
 LayersManager.Raster = "raster";
+LayersManager.Srtm   = "srtm";
 LayersManager.Images = "images";
 LayersManager.Shade  = "shade";
 
@@ -342,6 +343,29 @@ LayersManager.getShadeLayerConfig = function() {
       params: {
          uLight   : [ 0, 0, 50 ], 
          scale    : 50
+      },
+      composition: {
+         shader : Maperial.MulBlend,
+         params : LayersManager.defaultMulBlendParams
+      }
+   }
+}
+
+//-------------------------------------------//
+
+LayersManager.getSrtmLayerConfig = function(colorbarUIDs) {
+   
+   var colorbars = (colorbarUIDs === undefined) ? [Maperial.DEFAULT_COLORBAR_UID] : colorbarUIDs; 
+   
+   return { 
+      type: LayersManager.Srtm, 
+      source: {
+         type: Source.SRTM,
+         params: {  }
+      },
+      params: {
+         colorbars: colorbars,
+         selectedColorbar : 0
       },
       composition: {
          shader : Maperial.MulBlend,

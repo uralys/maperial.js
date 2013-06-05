@@ -41,7 +41,7 @@ ShadeLayer.prototype.Init = function ( data ) {
       var byteArray              = new Uint8Array        ( newV );
       */
       
-      var byteArray              = new Uint8Array        ( data );
+      var byteArray              = new Uint8Array        ( data['s'] );
       this.w                     = 256;      
       this.h                     = 256; 
       this.data                  = byteArray;

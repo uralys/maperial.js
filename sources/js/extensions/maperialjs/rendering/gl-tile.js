@@ -51,9 +51,13 @@ Tile.prototype.initLayers = function () {
             break;
    
          case LayersManager.Raster:
-            this.layers[i] = new RasterLayer    ( this.maperial , this.z);
+            this.layers[i] = new RasterLayer8    ( this.maperial , this.z);
             break;
    
+         case LayersManager.Srtm:
+            this.layers[i] = new RasterLayer16    ( this.maperial , this.z);
+            break;
+            
          case LayersManager.Images:
             this.layers[i] = new ImageLayer     ( this.maperial.context.assets.ctx , this.z);
             break;
@@ -130,7 +134,8 @@ Tile.prototype.appendDataToLayers = function ( source, data ) {
          
       try{
          switch(source.type){
-            case Source.SRTM:
+            case Source.SRTM_Color:
+            case Source.SRTM_Shade:
             case Source.MaperialOSM:
             case Source.Raster:
                this.layers[i].Init( data );

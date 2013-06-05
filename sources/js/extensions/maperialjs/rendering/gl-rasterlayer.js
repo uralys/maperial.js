@@ -15,21 +15,6 @@ RasterLayer.prototype.GetType = function ( ) {
    return LayersManager.Raster;
 }
 
-RasterLayer.prototype.Init = function ( data ) {
-   if (this.tex)
-      return;
-   if (data) {
-      var byteArray              = new Uint8Array        ( data );
-      var nx                     = byteArray[0] + 1
-      byteArray                  = new Uint8Array        ( data.slice(1) );
-      var ny                     = byteArray.length / nx;
-      
-      this.w                     = nx;      
-      this.h                     = ny; 
-      this.data                  = byteArray;
-   }
-}
-
 RasterLayer.prototype.Reset = function (  ) {
    var gl = this.gl;
    if (this.tex) {
@@ -79,6 +64,7 @@ RasterLayer.prototype.Update = function ( params ) {
       gl.bindTexture             (gl.TEXTURE_2D, tmpTex);      
       gl.pixelStorei             (gl.UNPACK_FLIP_Y_WEBGL  , false );
       gl.texImage2D              (gl.TEXTURE_2D, 0, gl.LUMINANCE, this.w , this.h, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, this.data)
+      //this._glSetData            (  );
       gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
       gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_WRAP_S    , gl.CLAMP_TO_EDGE);
@@ -146,3 +132,64 @@ RasterLayer.prototype.Update = function ( params ) {
    var diffT   = date.getTime() - startT;   
    return diffT
 }
+
+function RasterLayer8 ( maperial , inZoom) {
+   //RasterLayer.call( this, maperial , inZoom );
+   this.__proto__.__proto__.constructor.apply(this, maperial , inZoom);
+}
+
+//RasterLayer8.prototype = new RasterLayer();
+RasterLayer8.prototype.__proto__ = RasterLayer.prototype; // Not ie compatible ???
+
+RasterLayer8.prototype.Init = function ( data ) {
+   if (this.tex)
+      return;
+   if (data) {
+      var byteArray              = new Uint8Array        ( data );
+      var nx                     = byteArray[0] + 1
+      byteArray                  = new Uint8Array        ( data.slice(1) );
+      var ny                     = byteArray.length / nx;
+      
+      this.w                     = nx;      
+      this.h                     = ny; 
+      this.data                  = byteArray;
+   }
+}
+
+/*
+RasterLayer8.prototype._glSetData = function ( ) {
+   gl.texImage2D              (gl.TEXTURE_2D, 0, gl.LUMINANCE, this.w , this.h, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, this.data)
+}
+*/
+function RasterLayer16 ( maperial , inZoom) {
+   //RasterLayer.call( this, maperial , inZoom );
+   this.__proto__.__proto__.constructor.apply(this, maperial , inZoom);
+}
+//RasterLayer16.prototype = new RasterLayer();
+RasterLayer16.prototype.__proto__ = RasterLayer.prototype; // Not ie compatible ???
+
+RasterLayer16.prototype.Init = function ( data ) {
+   if (this.tex)
+      return;
+   if (data) {
+      var newV                   = []
+      for (var y = 255 ; y >= 0 ; y-- ) {
+         for (var x = 0 ; x < 256 ; x++ ) {
+            //newV.push(data[y + x * 256] & 255)
+            //newV.push((data[y + x * 256] >> 8) & 255)
+            //newV.push(0)
+            newV.push( Math.ceil( data[y + x * 256] * 255 / 9322.0) )
+         }
+      }
+      var byteArray              = new Uint8Array        ( newV );
+      this.w                     = 256;      
+      this.h                     = 256; 
+      this.data                  = byteArray;
+   }
+}
+
+/*
+RasterLayer16.prototype._glSetData = function ( ) {
+   gl.texImage2D              (gl.TEXTURE_2D, 0, gl.RGB, this.w , this.h, 0, gl.RGB, gl.UNSIGNED_BYTE, this.data)
+}
+*/
