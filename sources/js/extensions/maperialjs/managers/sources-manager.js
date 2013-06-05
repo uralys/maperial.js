@@ -178,19 +178,20 @@ SourcesManager.prototype.LoadVectorial = function ( source, x, y, z ) {
       success  : function(data) {
          if ( ! data ) {
             me.errors[requestId] = true;
+            me.maperial.mapRenderer.sourceReady(source, x, y, z);
          }
          else {
             me.data[requestId] = data;
+            me.maperial.mapRenderer.sourceReady(source, data, x, y, z);
          }
 
          me.load[requestId] = true;
-         me.maperial.mapRenderer.sourceReady(source, x, y, z);
       },
       error : function() {
          me.errors[requestId]  = true;
          me.load[requestId]    = true;
 
-         me.maperial.mapRenderer.sourceReady(source, x, y, z);
+         me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
       }
    });
 }
@@ -213,13 +214,13 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
       me.load[requestId]  = true;
       me.data[requestId]  = img;
 
-      me.maperial.mapRenderer.sourceReady(source, x, y, z);
+      me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
    };
 
    this.requests[requestId].onerror = function (oEvent) {
       me.errors[requestId] = true;
       me.load[requestId]  = true;
-      me.maperial.mapRenderer.sourceReady(source, x, y, z);
+      me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
    }
 
    this.requests[requestId].abort = function () {
@@ -266,13 +267,13 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
       me.errors[requestId] = arrayBuffer != null;
       me.load[requestId]  = true;
       me.data[requestId]  = arrayBuffer;
-      me.maperial.mapRenderer.sourceReady(source, x, y, z);
+      me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
    };
 
    this.requests[requestId].onerror = function (oEvent) {
       me.errors[requestId] = true;
       me.load[requestId]  = true;
-      me.maperial.mapRenderer.sourceReady(source, x, y, z);
+      me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
    }
    
    function ajaxTimeout() { 
@@ -304,10 +305,10 @@ SourcesManager.prototype.isTileLoaded = function ( x, y, z) {
 
 //-------------------------------------------//
 
-SourcesManager.prototype.getData = function ( source, x, y, z) {
-   var requestId = this.requestId(source, x, y, z);
-   return this.data[requestId];
-}
+//SourcesManager.prototype.getData = function ( source, x, y, z) {
+//   var requestId = this.requestId(source, x, y, z);
+//   return this.data[requestId];
+//}
 
 //-------------------------------------------//
 

@@ -117,11 +117,12 @@ MapRenderer.prototype.initListeners = function () {
 
 //-------------------------------------------//
 
-MapRenderer.prototype.sourceReady = function ( source, x, y, z ) {
+MapRenderer.prototype.sourceReady = function ( source, data, x, y, z ) {
    var key = x + "," + y + "," + z;
+   console.log("sourceReady : " + key)
       
    if ( this.tileCache[key] != null ) {
-      this.tileCache[key].appendDataToLayers(source, this.maperial.sourcesManager.getData( source, x, y, z ));
+      this.tileCache[key].appendDataToLayers(source, data);
    }
 }
 

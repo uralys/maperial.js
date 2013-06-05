@@ -126,9 +126,6 @@ LayersManager.prototype.switchImagesTo = function(imagesSrc) {
  */
 LayersManager.prototype.exchangeLayers = function(exchangedIds) {
 
-   console.log("--------> exchangeLayers")
-   console.log(exchangedIds)
-  
    var newLayers = [];
    for(id in exchangedIds){
       newLayers.push(this.maperial.config.layers[exchangedIds[id]]);
@@ -137,9 +134,6 @@ LayersManager.prototype.exchangeLayers = function(exchangedIds) {
    for(i in this.maperial.config.map.osmSets)
       this.maperial.config.map.osmSets[i].layerPosition = exchangedIds[this.maperial.config.map.osmSets[i].layerPosition];
    
-   console.log("-------")
-   console.log(exchangedIds)
-
    this.maperial.config.layers = newLayers;
    this.maperial.restart();
 }

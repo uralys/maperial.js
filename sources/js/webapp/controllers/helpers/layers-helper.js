@@ -115,7 +115,7 @@ LayersHelper.prototype.exchangeLayers = function(){
       var layerIndex = $("#layers")[0].children[i].id.split("_")[1];
       var k = ($("#layers")[0].children.length-1) - i;
 
-      exchangedIds[layerIndex] = k;
+      exchangedIds[k] = layerIndex;
       $("#layer_"+layerIndex).attr("id", "layer_"+k);
 
    }

@@ -122,20 +122,24 @@ Tile.prototype.appendDataToLayers = function ( source, data ) {
    if(!data){
       this.nbErrors ++;
    }
-   
+
    for(var i = 0; i< this.config.layers.length; i++){
-      try{
+      
+      if(this.config.layers[i].source.type != source.type )
+         continue
          
+      try{
          switch(source.type){
             case Source.SRTM:
             case Source.MaperialOSM:
             case Source.Raster:
-               if ( this.config.layers[i].source.type == source.type )
-                  this.layers[i].Init( data );
+               this.layers[i].Init( data );
                break;
 
             case Source.Images:
             case Source.WMS:
+               console.log("-------> beware ", source.type,  this.config.layers[i].source.type )
+               console.log(source.params.src, data)
                if ( this.config.layers[i].source.params.src == source.params.src )
                   this.layers[i].Init( data );
                break;
