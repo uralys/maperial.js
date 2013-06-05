@@ -14,8 +14,10 @@ ImageLayer.prototype.GetType = function ( ) {
 }
 
 ImageLayer.prototype.Init = function ( data ) {
-   if (this.tex)
+   if (this.tex){
+      console.log("tex ready")
       return;
+   }
    if (data) {
       this.w      = data.width;      
       this.h      = data.height; 

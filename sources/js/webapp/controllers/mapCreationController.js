@@ -236,7 +236,7 @@
    //==============================================================//
 
    MapCreationController.addLayer = function(sourceType, src){
-      
+      console.log("-----> addLayer " + sourceType, src)
       switch(sourceType){
 
          // ------------------------------------------//
@@ -274,6 +274,10 @@
             
          case Source.SRTM:
             MapCreationController.addSRTMLayer();
+            break;
+
+         case Source.Shade:
+            MapCreationController.addShadeLayer();
             break;
       }
    }
@@ -325,6 +329,10 @@
 
    MapCreationController.addSRTMLayer = function(){
       App.maperial.layersManager.addLayer(Source.SRTM);
+   }
+   
+   MapCreationController.addShadeLayer = function(){
+      App.maperial.layersManager.addLayer(Source.Shade);
    }
    
    //--------------------------------------//
@@ -852,7 +860,7 @@
       //-----------//
       
       addLayer: function(router, event){
-         console.log("addLayer : ",event.contexts)
+         console.log("---------> addLayer : ", event.contexts)
          var source = event.contexts[0];
          var src    = event.contexts[1];
          MapCreationController.addLayer(source, src);

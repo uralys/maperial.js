@@ -20,10 +20,10 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
 
    var layerConfig;
    switch(sourceType){
-      
+
       // ------------------------------------------//
       // Sources for LayersManager.Vector
-      
+
       case Source.MaperialOSM :
          if(params != undefined && params != null )
             layerConfig = LayersManager.getOSMLayerConfig([params]);
@@ -34,36 +34,36 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
       case Source.Vector :
          layerConfig = LayersManager.getVectorLayerConfig();
          break;
-   
+
       // ------------------------------------------//
       // Sources for LayersManager.Raster
-         
+
       case Source.Raster :
          var rasterUID = params[0];
          layerConfig = LayersManager.getRasterLayerConfig(rasterUID);
          break;
-   
+
       // ------------------------------------------//
       // Sources for LayersManager.Images
-   
+
       case Source.Images :
       case Source.WMS:
          var src = params[0];
          layerConfig = LayersManager.getImagesLayerConfig(sourceType, src);
          break;
-         
+
       // ------------------------------------------//
       // Sources for LayersManager.Shade
-         
+
       case Source.SRTM :
-         layerConfig = LayersManager.getShadeLayerConfig();
+      case Source.Shade :
+         layerConfig = LayersManager.getShadeLayerConfig(sourceType);
          break;
-   
+
    }
 
    this.maperial.config.layers.push(layerConfig);
    this.maperial.restart();
-
 }
 
 //-------------------------------------------//
@@ -84,7 +84,7 @@ LayersManager.prototype.deleteLayer = function(layerRemovedPosition) {
 LayersManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 
    if(this.maperial.config.layers[layerIndex].type == Source.Raster
-   && this.maperial.config.layers[layerIndex].source.params.uid != rasterUID){
+         && this.maperial.config.layers[layerIndex].source.params.uid != rasterUID){
 
       this.maperial.config.layers[layerIndex].source.params.uid = rasterUID;
       this.maperial.config.layers[layerIndex].source.id         = rasterUID;
@@ -95,10 +95,10 @@ LayersManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 //=======================================================================================//
 
 LayersManager.prototype.changeImages = function(layerIndex, imagesSrc) {
-   
+
    if(this.maperial.config.layers[layerIndex].type == Source.Images
-   && this.maperial.config.layers[layerIndex].source.params.src != imagesSrc){
-      
+         && this.maperial.config.layers[layerIndex].source.params.src != imagesSrc){
+
       this.maperial.config.layers[layerIndex].source.params.src = imagesSrc;
       this.maperial.config.layers[layerIndex].source.id         = imagesSrc;
       this.maperial.restart();
@@ -135,7 +135,7 @@ LayersManager.prototype.exchangeLayers = function(exchangedIds) {
 
    for(i in this.maperial.config.map.osmSets)
       this.maperial.config.map.osmSets[i].layerPosition = exchangedIds[this.maperial.config.map.osmSets[i].layerPosition];
-   
+
    this.maperial.config.layers = newLayers;
    this.maperial.restart();
 }
@@ -249,51 +249,51 @@ LayersManager.buildOSMVisibilities = function(osmSets) {
 LayersManager.prototype.changeComposition = function(l, shader) {
 
    var composition = this.maperial.config.layers[l].composition;
-   
+
    //-----------------------------------------------//
    // storing previous params
-   
+
    if(!composition.storedparams)
       composition.storedparams = {}
-   
+
    composition.storedparams[composition.shader] = composition.params
-   
+
    //-----------------------------------------------//
-   
+
    composition.shader = shader;
-   
+
    if(composition.storedparams && composition.storedparams[shader])
       composition.params = composition.storedparams[shader]
    else{
       switch(shader){
-         
+
          case Maperial.AlphaClip : 
             composition.params = LayersManager.defaultAlphaClipParams
             break;
 
          case Maperial.AlphaBlend : 
-               composition.params = LayersManager.defaultAlphaBlendParams
+            composition.params = LayersManager.defaultAlphaBlendParams
             break;
-            
+
          case Maperial.MulBlend : 
-               composition.params = LayersManager.defaultMulBlendParams
+            composition.params = LayersManager.defaultMulBlendParams
             break;
       }
    }
 
    console.log("setting uParams : " + composition.params.uParams)
-   
+
    this.maperial.restart();   
 }
 
 //=======================================================================================//
-// Default configs
+//Default configs
 //-------------------------------------------//
 
 LayersManager.getOSMLayerConfig = function(styleUIDs) {
 
    var styles = (styleUIDs === undefined) ? [Maperial.DEFAULT_STYLE_UID] : styleUIDs; 
-   
+
    return { 
       type: LayersManager.Vector, 
       source: {
@@ -303,48 +303,6 @@ LayersManager.getOSMLayerConfig = function(styleUIDs) {
       params: {
          styles : styles,
          selectedStyle: 0
-      },
-      composition: {
-         shader : Maperial.MulBlend,
-         params : LayersManager.defaultMulBlendParams
-      }
-   }
-}
-
-//-------------------------------------------//
-
-LayersManager.getRasterLayerConfig = function(rasterUID, colorbarUIDs) {
-   
-   var colorbars = (colorbarUIDs === undefined) ? [Maperial.DEFAULT_COLORBAR_UID] : colorbarUIDs; 
-   
-   return { 
-      type: LayersManager.Raster, 
-      source: {
-         type: Source.Raster,
-         params: { uid : rasterUID }
-      },
-      params: {
-         colorbars: colorbars,
-         selectedColorbar : 0
-      },
-      composition: {
-         shader : Maperial.MulBlend,
-         params : LayersManager.defaultMulBlendParams
-      }
-   }
-}
-
-//-------------------------------------------//
-
-LayersManager.getShadeLayerConfig = function() {
-   return { 
-      type: LayersManager.Shade, 
-      source: {
-         type: Source.SRTM,
-      },
-      params: {
-         uLight   : [ 0, 0, 50 ], 
-         scale    : 50
       },
       composition: {
          shader : Maperial.MulBlend,
@@ -373,13 +331,36 @@ LayersManager.getVectorLayerConfig = function() {
 
 //-------------------------------------------//
 
+LayersManager.getRasterLayerConfig = function(rasterUID, colorbarUIDs) {
+
+   var colorbars = (colorbarUIDs === undefined) ? [Maperial.DEFAULT_COLORBAR_UID] : colorbarUIDs; 
+
+   return { 
+      type: LayersManager.Raster, 
+      source: {
+         type: Source.Raster,
+         params: { uid : rasterUID }
+      },
+      params: {
+         colorbars: colorbars,
+         selectedColorbar : 0
+      },
+      composition: {
+         shader : Maperial.MulBlend,
+         params : LayersManager.defaultMulBlendParams
+      }
+   }
+}
+
+//-------------------------------------------//
+
 /**
  * sourceType
  *    Source.IMAGES
  *    Source.WMS
  */
 LayersManager.getImagesLayerConfig = function(sourceType, src) {
-   
+
    return { 
       type: LayersManager.Images, 
       source: {
@@ -399,6 +380,26 @@ LayersManager.getImagesLayerConfig = function(sourceType, src) {
 
 //-------------------------------------------//
 
+LayersManager.getShadeLayerConfig = function(sourceType) {
+   return { 
+      type: LayersManager.Shade, 
+      source: {
+         type     : sourceType,
+         id       : LayersManager.Shade
+      },
+      params: {
+         uLight   : [ 0, 0, 50 ], 
+         scale    : 50
+      },
+      composition: {
+         shader : Maperial.MulBlend,
+         params : LayersManager.defaultMulBlendParams
+      }
+   }
+}
+
+//-------------------------------------------//
+
 LayersManager.getDefaultParams = function(shader) {
    switch(shader){
       case Maperial.AlphaClip : 
@@ -406,23 +407,23 @@ LayersManager.getDefaultParams = function(shader) {
 
       case Maperial.AlphaBlend : 
          return LayersManager.defaultAlphaBlendParams
-         
+
       case Maperial.MulBlend : 
          return LayersManager.defaultMulBlendParams
    }
 }
 
 //-------------------------------------------//
-      
+
 LayersManager.defaultMulBlendParams = {
-   uParams : [ 0.0, 0.0, 1 ]
+      uParams : [ 0.0, 0.0, 1 ]
 }
 
 
 LayersManager.defaultAlphaBlendParams = {
-   uParams : 0.5
+      uParams : 0.5
 }
 
 LayersManager.defaultAlphaClipParams = {
-   uParams : 0.5
+      uParams : 0.5
 }

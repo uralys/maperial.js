@@ -240,6 +240,9 @@ Utils.getSourceThumb = function(layer) {
 
       case Source.SRTM:
          return " src=\"http://static.maperial.localhost/images/icons/layer.srtm.png\"";
+
+      case Source.Shade:
+         return " src=\"http://static.maperial.localhost/images/icons/layer.shade.png\"";
          
       case Source.Raster:
       default:

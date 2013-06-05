@@ -24,7 +24,7 @@ LayersHelper.prototype.refreshLayersPanel = function() {
 
    //------------------//
 
-   for(var i = App.maperial.config.layers.length - 1; i >= 0 ; i--) {
+   for(var i = this.maperial.config.layers.length - 1; i >= 0 ; i--) {
       this.buildLayerEntry(i);
       panelHeight += 57;
    }
@@ -68,7 +68,7 @@ LayersHelper.prototype.buildLayerEntry = function(layerIndex) {
       tooltip  = "Empty !"
    }
    
-   var layer = App.maperial.config.layers[layerIndex];
+   var layer = this.maperial.config.layers[layerIndex];
    var html = "";
 
    html += "<div class=\"row-fluid movable marginbottom\" id=\"layer_"+layerIndex+"\">";

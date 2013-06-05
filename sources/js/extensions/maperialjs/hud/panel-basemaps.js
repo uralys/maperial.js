@@ -30,11 +30,14 @@ HUD.prototype.buildBasemapsPanel = function(params, callBack) {
       case HUD.ALL_BASEMAPS:
          html += "" +
          	"<div class='row-fluid marginbottom'>" +
-         	"   <div class='span3 basemap' title='Classic' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.MaperialOSM, Source.MAPERIAL_CLASSIC)'>" +
+         	"   <div class='span3 basemap' title='Maperial styles' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.MaperialOSM, Source.MAPERIAL_CLASSIC)'>" +
          	"      <img src='http://static.maperial.localhost/images/buttons/sources/button.maperial.classic.png' class='bigbutton'></img>" +
          	"   </div>" +
          	"   <div class='span3 basemap' title='SRTM' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.SRTM)'>" +
          	"      <img src='http://static.maperial.localhost/images/buttons/sources/button.srtm.png' class='bigbutton'></img>" +
+         	"   </div>" +
+         	"   <div class='span3 basemap' title='Shade' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Shade)'>" +
+         	"      <img src='http://static.maperial.localhost/images/buttons/sources/button.shade.png' class='bigbutton'></img>" +
          	"   </div>" +
          	"</div>" 
       

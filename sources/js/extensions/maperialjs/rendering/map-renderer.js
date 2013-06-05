@@ -28,7 +28,7 @@ MapRenderer.prototype.reset = function () {
       this.tileCache[key].Reset();
       delete this.tileCache[key];
    }
-   
+
    this.tileCache = {};
    this.dataCache = {};
    
@@ -113,13 +113,16 @@ MapRenderer.prototype.initListeners = function () {
       //renderer.DrawScene (true) 
    });
 
+//   $(window).on(MaperialEvents.ZOOM_CHANGED, function(event, x, y){
+//      renderer.maperial.sourcesManager.stopEverything()
+//   });
 }
 
 //-------------------------------------------//
 
 MapRenderer.prototype.sourceReady = function ( source, data, x, y, z ) {
    var key = x + "," + y + "," + z;
-      
+   
    if ( this.tileCache[key] != null ) {
       this.tileCache[key].appendDataToLayers(source, data);
    }
@@ -138,9 +141,7 @@ MapRenderer.prototype.removeListeners = function () {
    $(window).off(MaperialEvents.BW_METHOD_CHANGED);
    $(window).off(MaperialEvents.ALPHA_CHANGED);
    $(window).off(MaperialEvents.DATA_SOURCE_CHANGED);
-   
-   clearInterval(this.drawSceneInterval);
-   this.drawSceneInterval = null;
+//   $(window).off(MaperialEvents.ZOOM_CHANGED);
 }
 
 //----------------------------------------------------------------------//
@@ -303,6 +304,12 @@ MapRenderer.prototype.renderAllColorBars = function () {
       }
    }
    return true;
+}
+
+MapRenderer.prototype.Stop = function () {
+   console.log("  stopping rendering...");
+   clearInterval(this.drawSceneInterval);
+   this.drawSceneInterval = null;
 }
 
 MapRenderer.prototype.Start = function () {

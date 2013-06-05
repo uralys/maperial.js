@@ -3,10 +3,14 @@
 
 Source.MaperialOSM      = "osm";
 Source.Vector           = "vector";
+
 Source.Raster           = "raster";
+
 Source.Images           = "images";
 Source.WMS              = "wms";
+
 Source.SRTM             = "srtm";
+Source.Shade            = "shade";
 
 //-----------------------------------------------------------------------------------//
 // Maperial public default styles
@@ -59,6 +63,7 @@ Source.IMAGES_STAMEN_TONER_BG       = "images.stamen.toner-background";
 Source.WMS_BRETAGNECANTONS          = "wms.bretagnecantons";
 Source.WMS_FRANCECOURSDEAU          = "wms.francecoursdeau";
 Source.WMS_SOLS_ILEETVILAINE        = "wms.sols_ileetvilaine";
+Source.WMS_CORINE_LAND_COVER        = "wms.corine_land_cover";
 
 //-----------------------------------------------------------------------------------//
 
