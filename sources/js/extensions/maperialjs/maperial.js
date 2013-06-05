@@ -180,12 +180,45 @@ Maperial.prototype.checkConfig = function() {
    }
    else{
       console.log("  using custom layers...");
+      this.checkIds()
    }
 
    //--------------------------//
    // checking if Default style must be used
 
    this.changeStyle(Maperial.DEFAULT_STYLE_UID, 0, false);
+}
+
+/**
+ * to get source.id for old layers
+ * TMP : ids should be ok for maps from now on
+ */
+Maperial.prototype.checkIds = function() {
+
+   for(var i = 0; i < this.config.layers.length; i++){
+      if(!this.config.layers[i].source.id){
+         console.log("  -------> OLD MAP -------> looking for id...");
+         
+         switch(this.config.layers[i].source.type){
+            case Source.MaperialOSM:
+               this.config.layers[i].source.id = this.config.layers[i].params.styles[this.config.layers[i].params.selectedStyle]
+               break;
+
+            case Source.SRTM:
+               this.config.layers[i].source.id = Source.SRTM
+               break;
+
+            case Source.Raster:
+               this.config.layers[i].source.id = this.config.layers[i].source.params.uid
+               break;
+
+            case Source.Images:
+            case Source.WMS:
+               this.config.layers[i].source.id = this.config.layers[i].source.params.src
+               break;
+         }
+      }
+   }
 }
 
 //==================================================================//

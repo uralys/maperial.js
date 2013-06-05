@@ -26,22 +26,20 @@ function SourcesManager(maperial){
 SourcesManager.prototype.buildSources = function(layers){
 
    console.log("  fetching sources...");
-   var isRegisterdOSM;
-   var isRegisterdSRTM;
 
    for(var i = 0; i < layers.length; i++){
+      
+      if(this.sourceRegistered(layers[i].source.id))
+         continue
+         
       var type = layers[i].source.type;
       var params;
-
+      
       switch(type){
          case Source.MaperialOSM:
-            if(isRegisterdOSM) continue;
-            isRegisterdOSM = true;
             break;
 
          case Source.SRTM:
-            if(isRegisterdSRTM) continue;
-            isRegisterdSRTM = true;
             break;
             
          case Source.Raster:
@@ -55,10 +53,23 @@ SourcesManager.prototype.buildSources = function(layers){
             break;
       }
 
-      console.log("     adding source " + type);
-      this.sources.push(new Source(type, params));
+      console.log("     adding source " + layers[i].source.id);
+      this.sources.push(new Source(layers[i].source.id, type, params));
    }
 
+}
+
+/**
+ * Return true if the source with this id is already in this.sources
+ */
+SourcesManager.prototype.sourceRegistered = function(id){
+   
+   for(var i = 0; i < this.sources.length; i++){
+      if(this.sources[i].id == id)
+         return true
+   }
+   
+   return false
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -97,19 +108,7 @@ SourcesManager.prototype.releaseEverything = function () {
 //----------------------------------------------------------------------------------------------------------------------//
 
 SourcesManager.prototype.requestId = function (source, x, y, z) {
-   
-   switch(source.type){
-      case Source.SRTM:
-      case Source.MaperialOSM:
-      case Source.Raster:
-         return source.type + "_" + x + "_" + y + "_" + z;
-         break;
-
-      case Source.Images:
-      case Source.WMS:
-         return source.params.src + "_" + x + "_" + y + "_" + z;
-         break;
-   }
+   return source.id + "_" + x + "_" + y + "_" + z;
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -178,7 +177,7 @@ SourcesManager.prototype.LoadVectorial = function ( source, x, y, z ) {
       success  : function(data) {
          if ( ! data ) {
             me.errors[requestId] = true;
-            me.maperial.mapRenderer.sourceReady(source, x, y, z);
+            me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
          }
          else {
             me.data[requestId] = data;

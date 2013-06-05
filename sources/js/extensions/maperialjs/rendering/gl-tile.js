@@ -124,32 +124,17 @@ Tile.prototype.IsUpToDate = function ( ) {
 Tile.prototype.appendDataToLayers = function ( source, data ) {
    
    if(!data){
+      console.log("-------> DATA NULL !")
       this.nbErrors ++;
    }
 
    for(var i = 0; i< this.config.layers.length; i++){
       
-      if(this.config.layers[i].source.type != source.type )
-         continue
-         
-      try{
-         switch(source.type){
-            case Source.SRTM_Color:
-            case Source.SRTM_Shade:
-            case Source.MaperialOSM:
-            case Source.Raster:
-               this.layers[i].Init( data );
-               break;
+      if(this.config.layers[i].source.id != source.id )
+         continue;
 
-            case Source.Images:
-            case Source.WMS:
-               console.log("-------> beware ", source.type,  this.config.layers[i].source.type )
-               console.log(source.params.src, data)
-               if ( this.config.layers[i].source.params.src == source.params.src )
-                  this.layers[i].Init( data );
-               break;
-         }
-         
+      try{
+         this.layers[i].Init( data )
       }
       catch(e){
          console.log("-------> ERROR")

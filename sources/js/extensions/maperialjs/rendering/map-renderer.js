@@ -119,7 +119,6 @@ MapRenderer.prototype.initListeners = function () {
 
 MapRenderer.prototype.sourceReady = function ( source, data, x, y, z ) {
    var key = x + "," + y + "," + z;
-   console.log("sourceReady : " + key)
       
    if ( this.tileCache[key] != null ) {
       this.tileCache[key].appendDataToLayers(source, data);
