@@ -134,11 +134,9 @@ RasterLayer.prototype.Update = function ( params ) {
 }
 
 function RasterLayer8 ( maperial , inZoom) {
-   //RasterLayer.call( this, maperial , inZoom );
-   this.__proto__.__proto__.constructor.apply(this, maperial , inZoom);
+   this.__proto__.__proto__.constructor.apply(this, arguments);
 }
 
-//RasterLayer8.prototype = new RasterLayer();
 RasterLayer8.prototype.__proto__ = RasterLayer.prototype; // Not ie compatible ???
 
 RasterLayer8.prototype.Init = function ( data ) {
@@ -156,29 +154,21 @@ RasterLayer8.prototype.Init = function ( data ) {
    }
 }
 
-/*
-RasterLayer8.prototype._glSetData = function ( ) {
-   gl.texImage2D              (gl.TEXTURE_2D, 0, gl.LUMINANCE, this.w , this.h, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, this.data)
-}
-*/
 function RasterLayer16 ( maperial , inZoom) {
-   //RasterLayer.call( this, maperial , inZoom );
-   this.__proto__.__proto__.constructor.apply(this, maperial , inZoom);
+   this.__proto__.__proto__.constructor.apply(this, arguments);
 }
-//RasterLayer16.prototype = new RasterLayer();
+
 RasterLayer16.prototype.__proto__ = RasterLayer.prototype; // Not ie compatible ???
 
 RasterLayer16.prototype.Init = function ( data ) {
    if (this.tex)
       return;
    if (data) {
+      d = data['c']
       var newV                   = []
-      for (var y = 255 ; y >= 0 ; y-- ) {
+      for (var y = 0 ; y < 256 ; y++ ) {
          for (var x = 0 ; x < 256 ; x++ ) {
-            //newV.push(data[y + x * 256] & 255)
-            //newV.push((data[y + x * 256] >> 8) & 255)
-            //newV.push(0)
-            newV.push( Math.ceil( data[y + x * 256] * 255 / 9322.0) )
+            newV.push( Math.ceil( d[y * 256 + x ] * 255 / 9322.0) )
          }
       }
       var byteArray              = new Uint8Array        ( newV );
@@ -187,9 +177,3 @@ RasterLayer16.prototype.Init = function ( data ) {
       this.data                  = byteArray;
    }
 }
-
-/*
-RasterLayer16.prototype._glSetData = function ( ) {
-   gl.texImage2D              (gl.TEXTURE_2D, 0, gl.RGB, this.w , this.h, 0, gl.RGB, gl.UNSIGNED_BYTE, this.data)
-}
-*/
