@@ -87,6 +87,7 @@ LayersManager.prototype.changeRaster = function(layerIndex, rasterUID) {
    && this.maperial.config.layers[layerIndex].source.params.uid != rasterUID){
 
       this.maperial.config.layers[layerIndex].source.params.uid = rasterUID;
+      this.maperial.config.layers[layerIndex].source.id         = rasterUID;
       this.maperial.restart();
    }
 }
@@ -96,9 +97,10 @@ LayersManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 LayersManager.prototype.changeImages = function(layerIndex, imagesSrc) {
    
    if(this.maperial.config.layers[layerIndex].type == Source.Images
-         && this.maperial.config.layers[layerIndex].source.params.src != imagesSrc){
+   && this.maperial.config.layers[layerIndex].source.params.src != imagesSrc){
       
       this.maperial.config.layers[layerIndex].source.params.src = imagesSrc;
+      this.maperial.config.layers[layerIndex].source.id         = imagesSrc;
       this.maperial.restart();
    }
 }
@@ -295,10 +297,11 @@ LayersManager.getOSMLayerConfig = function(styleUIDs) {
    return { 
       type: LayersManager.Vector, 
       source: {
-         type: Source.MaperialOSM
+         type  : Source.MaperialOSM,
+         id    : styles[0]
       },
       params: {
-         styles: styles,
+         styles : styles,
          selectedStyle: 0
       },
       composition: {
@@ -380,8 +383,9 @@ LayersManager.getImagesLayerConfig = function(sourceType, src) {
    return { 
       type: LayersManager.Images, 
       source: {
-         type: sourceType,
-         params: { src: src }
+         type     : sourceType,
+         params   : { src: src },
+         id       : src
       },
       params: {
 

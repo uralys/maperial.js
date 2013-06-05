@@ -59,11 +59,11 @@ Source.IMAGES_STAMEN_TONER_BG       = "images.stamen.toner-background";
 Source.WMS_BRETAGNECANTONS          = "wms.bretagnecantons";
 Source.WMS_FRANCECOURSDEAU          = "wms.francecoursdeau";
 Source.WMS_SOLS_ILEETVILAINE        = "wms.sols_ileetvilaine";
-Source.WMS4                         = "wms.4";
 
 //-----------------------------------------------------------------------------------//
 
-function Source (type, params) {
+function Source (id, type, params) {
+   this.id     = id;
    this.type   = type;
    this.params = params;
 }
