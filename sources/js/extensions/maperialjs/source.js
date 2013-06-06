@@ -10,7 +10,6 @@ Source.Images           = "images";
 Source.WMS              = "wms";
 
 Source.SRTM             = "srtm";
-Source.Shade            = "shade";
 
 //-----------------------------------------------------------------------------------//
 // Maperial public default styles

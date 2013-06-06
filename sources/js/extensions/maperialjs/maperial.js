@@ -59,8 +59,11 @@ Maperial.MulBlend               = "MulBlend";
 
 Maperial.DEMO_MAP = {
    "0" : "1_map_13ee017c8dac3b49852",
-   "1" : "1_map_13e4686751744c4fb4b",
-   "2" : "1_map_13ee180b9258d9397bb",
+   "1" : "1_map_13f18ec522f1ec62e0b",
+   "2" : "1_map_13f196019c63431328a",
+   "3" : "1_map_13f1969e6d19a5e46a5",
+   "4" : "1_map_13f1976a6cea80a51d6",
+   "5" : "1_map_13f19833d3afac2f76a",
 }
 
 //==================================================================//
@@ -94,8 +97,6 @@ Maperial.prototype.reset = function(){
       this.mapRenderer.Stop();
       this.mapRenderer.reset();
    }catch(e){
-      console.log("pb resetting maprenderer");
-      console.log(e);
    }
 
    try{
@@ -103,8 +104,6 @@ Maperial.prototype.reset = function(){
       this.mapMouse.removeListeners();
       this.hud.reset();
    }catch(e){
-      console.log("pb resetting modules");
-      console.log(e);
    }
 
    try{
@@ -114,8 +113,6 @@ Maperial.prototype.reset = function(){
    try{
       this.sourcesManager.releaseEverything();
    }catch(e){
-      console.log("pb resetting sourcesManager");
-      console.log(e);
    }
    
    this.colorbarsManager = new ColorbarsManager(this);
@@ -216,8 +213,7 @@ Maperial.prototype.checkIds = function() {
                break;
 
             case Source.SRTM:
-            case Source.Shade:
-               this.config.layers[i].source.id = LayersManager.Shade
+               this.config.layers[i].source.id = Source.SRTM
                break;
 
             case Source.Raster:

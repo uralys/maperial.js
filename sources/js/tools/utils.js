@@ -229,7 +229,6 @@ Utils.thumbURL = function(uid, type, size)
 Utils.getSourceThumb = function(layer) {
    
    switch(layer.source.type){
-   
       case Source.MaperialOSM:
          return " src=\""+Utils.styleThumbURL(layer.params.styles[layer.params.selectedStyle], "l")+"\"";
    
@@ -237,17 +236,19 @@ Utils.getSourceThumb = function(layer) {
       case Source.Images:
       case Source.WMS:
          return " src=\"http://static.maperial.localhost/images/icons/layer."+layer.source.params.src+".png\"";
-
-      case Source.SRTM:
-         return " src=\"http://static.maperial.localhost/images/icons/layer.srtm.png\"";
-
-      case Source.Shade:
-         return " src=\"http://static.maperial.localhost/images/icons/layer.shade.png\"";
          
       case Source.Raster:
-      default:
          return " src=\"http://static.maperial.localhost/images/icons/layer.raster.png\""; // TODO : thumb du raster
+   }
+   
 
+   switch(layer.type){
+      case LayersManager.SRTM:
+         return " src=\"http://static.maperial.localhost/images/icons/layer.srtm.png\"";
+         
+      case LayersManager.Shade:
+      default:
+         return " src=\"http://static.maperial.localhost/images/icons/layer.shade.png\"";
    }
 }
 

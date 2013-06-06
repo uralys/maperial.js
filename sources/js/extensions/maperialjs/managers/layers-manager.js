@@ -13,6 +13,7 @@ LayersManager.Vector = "vector";
 LayersManager.Raster = "raster";
 LayersManager.Images = "images";
 LayersManager.Shade  = "shade";
+LayersManager.SRTM   = "SRTM";
 
 //-------------------------------------------//
 
@@ -53,11 +54,17 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
          break;
 
       // ------------------------------------------//
+      // Sources for LayersManager.SRTM
+
+      case LayersManager.SRTM :
+         layerConfig = LayersManager.getSrtmLayerConfig();
+         break;
+
+      // ------------------------------------------//
       // Sources for LayersManager.Shade
 
-      case Source.SRTM :
-      case Source.Shade :
-         layerConfig = LayersManager.getShadeLayerConfig(sourceType);
+      case LayersManager.Shade :
+         layerConfig = LayersManager.getShadeLayerConfig();
          break;
 
    }
@@ -380,16 +387,41 @@ LayersManager.getImagesLayerConfig = function(sourceType, src) {
 
 //-------------------------------------------//
 
-LayersManager.getShadeLayerConfig = function(sourceType) {
+LayersManager.getShadeLayerConfig = function() {
    return { 
       type: LayersManager.Shade, 
       source: {
-         type     : sourceType,
-         id       : LayersManager.Shade
+         type     : Source.SRTM,
+         id       : Source.SRTM,
+         params   : {  }
       },
       params: {
          uLight   : [ 0, 0, 50 ], 
          scale    : 50
+      },
+      composition: {
+         shader : Maperial.MulBlend,
+         params : LayersManager.defaultMulBlendParams
+      }
+   }
+}
+
+//-------------------------------------------//
+
+LayersManager.getSrtmLayerConfig = function(colorbarUIDs) {
+   
+   var colorbars = (colorbarUIDs === undefined) ? [Maperial.DEFAULT_COLORBAR_UID] : colorbarUIDs; 
+   
+   return { 
+      type: LayersManager.SRTM, 
+      source: {
+         type     : Source.SRTM,
+         id       : Source.SRTM,
+         params   : {  }
+      },
+      params: {
+         colorbars: colorbars,
+         selectedColorbar : 0
       },
       composition: {
          shader : Maperial.MulBlend,
