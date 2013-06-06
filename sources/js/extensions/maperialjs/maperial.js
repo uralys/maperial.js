@@ -206,7 +206,6 @@ Maperial.prototype.checkIds = function() {
    for(var i = 0; i < this.config.layers.length; i++){
       
       //--> Map having no source.id
-      
       if(!this.config.layers[i].source.id){
          console.log("  -------> OLD MAP -------> looking for id...");
          
@@ -230,8 +229,9 @@ Maperial.prototype.checkIds = function() {
          }
       }
 
-      //--> Map having no source.id
+      //--> Map having shade --> now source.SRTM
       else if(this.config.layers[i].source.id == "shade"){
+         console.log("  -------> OLD MAP with shade -------> switching to SRTM...");
          this.config.layers[i].source.type = Source.SRTM
          this.config.layers[i].source.id   = Source.SRTM
       }
