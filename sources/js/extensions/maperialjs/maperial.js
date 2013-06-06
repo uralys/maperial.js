@@ -204,6 +204,9 @@ Maperial.prototype.checkConfig = function() {
 Maperial.prototype.checkIds = function() {
 
    for(var i = 0; i < this.config.layers.length; i++){
+      
+      //--> Map having no source.id
+      
       if(!this.config.layers[i].source.id){
          console.log("  -------> OLD MAP -------> looking for id...");
          
@@ -225,6 +228,12 @@ Maperial.prototype.checkIds = function() {
                this.config.layers[i].source.id = this.config.layers[i].source.params.src
                break;
          }
+      }
+
+      //--> Map having no source.id
+      else if(this.config.layers[i].source.id == "shade"){
+         this.config.layers[i].source.type = Source.SRTM
+         this.config.layers[i].source.id   = Source.SRTM
       }
    }
 }
