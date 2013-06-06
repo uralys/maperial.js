@@ -40,7 +40,7 @@ Maperial.DEFAULT_LATITUDE       = 48.833;
 Maperial.DEFAULT_LONGITUDE      = 2.333;
 
 Maperial.refreshRate            = 15; // ms
-Maperial.tileDLTimeOut          = 5000; //ms
+Maperial.tileDLTimeOut          = 60000; //ms
 Maperial.tileSize               = 256;
 
 Maperial.autoMoveSpeedRate      = 0.2;
