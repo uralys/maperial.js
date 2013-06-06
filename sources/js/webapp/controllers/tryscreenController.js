@@ -50,7 +50,8 @@
 	App.TryscreenRouting = App.Page.extend({
 		route: '/tryscreen',
 		connectOutlets: function(router){
-			App.Router.openPage(router, "tryscreen");
+		   App.finishLoadings("tryscreen") 
+//			App.Router.openPage(router, "tryscreen");
 		},
       signin: function(){window.location.href="/?login"},
 	});
