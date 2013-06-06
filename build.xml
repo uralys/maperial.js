@@ -8,6 +8,7 @@
 		<echo>------------------------------------------------------</echo>
 		<echo>-----              Maperial 2013                  ----</echo>
 		<echo>Choose a target :</echo>
+		<echo>	build-prod</echo>
 		<echo>	build-all</echo>
 		<echo>	build-css</echo>
 		<echo>	build-js</echo>
@@ -30,6 +31,11 @@
 		<antcall target="build-shaders" />
 
 		<antcall target="copy-assets" />
+	</target>
+
+	<target name="build-prod">
+		<antcall target="build-all" />
+		<antcall target="delete-minjs" />
 	</target>
 
 	<target name="build-css">
@@ -543,6 +549,17 @@
 
 	</target>
 
+	<target name="delete-minjs">
+		<delete>
+			<fileset file="${dist}/js/maperial-webapp.min.localhost.js" />
+			<fileset file="${dist}/js/maperial-webapp.min.js" />
+			<fileset file="${dist}/js/maperial-js.min.localhost.js" />
+			<fileset file="${dist}/js/maperial-js.min.js" />
+			<fileset file="${dist}/js/maperial-builder.min.localhost.js" />
+			<fileset file="${dist}/js/maperial-builder.min.js" />
+		</delete>
+	</target>
+	
 	<target name="build-shaders">
 		<exec executable="python" dir="sources/shaders">
 			<arg value="mkjson.py" />
