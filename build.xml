@@ -205,6 +205,8 @@
 			<arg value="sources/js/libs/jquery.selectbox-0.2.min.js" />
 			<arg value="--js" />
 			<arg value="sources/js/tools/utils.js" />
+			<arg value="--js" />
+			<arg value="sources/js/tools/offscreen.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/libs/gl-matrix-min.js" />
