@@ -449,7 +449,7 @@ Maperial.prototype.finishStartup = function() {
    $(window).resize(Utils.apply ( this , "refreshScreen" ) );
    $(window).trigger(MaperialEvents.READY);
    
-   console.log("Maperial is ready")
+   console.log("maperial is ready")
 }
 
 //==================================================================//
