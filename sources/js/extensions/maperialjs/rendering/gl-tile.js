@@ -54,7 +54,7 @@ Tile.prototype.initLayers = function () {
             this.layers[i] = new RasterLayer8    ( this.maperial , this.z);
             break;
    
-         case LayersManager.Srtm:
+         case LayersManager.SRTM:
             this.layers[i] = new RasterLayer16    ( this.maperial , this.z);
             break;
             
@@ -141,8 +141,6 @@ Tile.prototype.appendDataToLayers = function ( source, data ) {
       }
       catch(e){
          console.log("-------> ERROR")
-         this.Release();
-         this.Reset();
       }
    }   
 }
