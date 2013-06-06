@@ -76,6 +76,14 @@ LayersHelper.prototype.buildLayerEntry = function(layerIndex) {
 
    switch(layer.type){
       case LayersManager.Images:
+         if(layer.source.type == Source.WMS){
+            icon = "icon-screenshot"
+            tooltip  = "Center"
+            html += "   <div class=\"span1 touchable\" onclick=\"App.maperial.sourcesManager.centerWMS('"+layer.source.params.src+"', 'place')\"><i id=\"eye_"+layerIndex+"\" class=\"icon-white "+icon+"\" title=\""+tooltip+"\"></i></div>";
+            html += "   <div class=\"span1 offset3\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
+            break;
+         }
+         // else :
       case LayersManager.Raster:
       case LayersManager.Shade:
          html += "   <div class=\"span1 offset4\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
