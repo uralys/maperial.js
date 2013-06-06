@@ -134,6 +134,8 @@
       var config = MapCreationController.getLayersCreationConfig();
       
       if(App.user.isCreatingANewMap){
+         App.maperial.apply(config);
+
          if(App.Globals.isTryscreen)
             MapCreationController.openDemoSelection();
          else
@@ -142,9 +144,9 @@
       else{
          config.layers = App.user.selectedMap.config.layers;
          config.map = App.user.selectedMap.config.map;
+         App.maperial.apply(config);
       }
 
-      App.maperial.apply(config);
    }
 
    //=============================================================================//

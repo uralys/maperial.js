@@ -49,7 +49,7 @@ SourcesManager.prototype.buildSources = function(layers){
          case Source.Images:
          case Source.WMS:
             params = {src : layers[i].source.params.src }
-            this.placeMap(layers[i].source.params.src)
+            this.centerWMS( layers[i].source.params.src, "prepare" )
             break;
       }
 
@@ -74,24 +74,27 @@ SourcesManager.prototype.sourceRegistered = function(id){
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.placeMap = function (src) {
-
+/**
+ * type = "prepare" or "place"
+ */
+SourcesManager.prototype.centerWMS = function (src, type) {
+   
    switch(src){
       // US - only
       case Source.IMAGES_STAMEN_TERRAIN : 
-         this.maperial.forceCenter(40.68, -74.12, 7)
-         break;
-         
-      // Bretagne
-      case Source.WMS_BRETAGNECANTONS : 
-         this.maperial.forceCenter(48.27, -2.87, 9)
+         this.maperial.centerMap(40.68, -74.12, 7, type)
          break;
 
-      // Rennes
-      case Source.WMS_SOLS_ILEETVILAINE : 
-         this.maperial.forceCenter(48.11, -1.78, 10)
+         // Bretagne
+      case Source.WMS_BRETAGNECANTONS : 
+         this.maperial.centerMap(48.27, -2.87, 9, type)
          break;
-   }
+
+         // Rennes
+      case Source.WMS_SOLS_ILEETVILAINE : 
+         this.maperial.centerMap(48.11, -1.78, 10, type)
+         break;
+   }   
 }
 
 //----------------------------------------------------------------------------------------------------------------------//

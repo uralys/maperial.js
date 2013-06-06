@@ -350,16 +350,11 @@
 .link {
 	cursor: hand;
 	cursor: pointer;
-	transition: font-size 0.2s;
-	-webkit-transition: font-size 0.2s;
 	text-decoration: none!important;
 	color: #000;
 }
 
 .link:hover {
-	font-size:15;
-	transition: font-size 0s;
-	-webkit-transition: font-size 0s;
 	color: #27a200;
 }
 /*--------------------------------*/

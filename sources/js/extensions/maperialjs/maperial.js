@@ -554,10 +554,43 @@ Maperial.prototype.refreshCurrentLatLon = function(){
    this.config.map.currentZoom  = this.context.zoom
 }
 
-Maperial.prototype.forceCenter = function(lat, lon, zoom){
+//==================================================================//
+
+Maperial.prototype.centerMap = function(lat, lon, zoom, type){
+
+   switch(type){
+      case "prepare" : 
+         this.prepareCenter(lat, lon, zoom)
+         break;
+      case "place" : 
+         this.placeMap(lat, lon, zoom)
+         break;
+   }  
+}
+
+/**
+ * Prepare the config being created to put the map at given x.y.z
+ */
+Maperial.prototype.prepareCenter = function(lat, lon, zoom){
+
+   console.log("prepareCenter")
+   console.log(this)
+   
    this.config.map.currentLat   = lat
    this.config.map.currentLon   = lon
    this.config.map.currentZoom  = zoom
+}
+
+/**
+ * Immediately put the map at given x.y.z
+ */
+Maperial.prototype.placeMap = function(lat, lon, zoom){
+
+   console.log("placeMap")
+   console.log(this)
+   
+   this.SetCenter (lat, lon)
+   this.SetZoom   (zoom)
 }
 
 //==================================================================//
