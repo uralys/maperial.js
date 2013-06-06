@@ -42,6 +42,9 @@ HUD.prototype.buildAttributions = function(isSmall){
    var requireMaperialAttribution   = false;
    var requireOSMAttribution        = false;
 
+   // aggregation d'attribution pour le meme server 
+   var geoSASAttribution            = false;
+
    if(this.maperial.config.layers.length > 1){
       maperialAttribution = "Fusion " + maperialAttribution;
       requireMaperialAttribution = true;
@@ -58,7 +61,6 @@ HUD.prototype.buildAttributions = function(isSmall){
             break;
 
          case Source.SRTM : 
-         case Source.Shade : 
             
             maperialAttribution        = "SRTM tiles" + (requireMaperialAttribution ? ", " : " ") + maperialAttribution
             requireMaperialAttribution = true
@@ -105,7 +107,11 @@ HUD.prototype.buildAttributions = function(isSmall){
                   break;
                   
                case Source.WMS_FRANCECOURSDEAU:
-                  dataAttribution += " WMS data by <a class=\"link\" target=\"_blank\" href=\"http://geowww.agrocampus-ouest.fr/\">GeoSAS</a>."+attributionEnding;
+               case Source.WMS_SOLS_ILEETVILAINE:
+                  if(!geoSASAttribution){
+                     dataAttribution += " WMS data by <a class=\"link\" target=\"_blank\" href=\"http://geowww.agrocampus-ouest.fr/\">GeoSAS</a>."+attributionEnding;
+                     geoSASAttribution = true;
+                  }
                   break;
                   
                case Source.WMS_CORINE_LAND_COVER:

@@ -20,6 +20,8 @@
       App.user.set("isCreatingANewMap", (App.user.selectedMap.uid == null));
       MapCreationController.wizardSetView(MapCreationController.LAYERS_CREATION);
       MapCreationController.openLayersCreation();
+
+      $(".demobutton").tooltip()
    }
    
    MapCreationController.terminate = function () {
@@ -272,14 +274,11 @@
             break;
             
          // ------------------------------------------//
-         // Sources for LayersManager.Shade
+         // Sources for LayersManager.Shade and LayersManager.SRTM
             
-         case Source.SRTM:
-            MapCreationController.addSRTMLayer();
-            break;
-
-         case Source.Shade:
-            MapCreationController.addShadeLayer();
+         case LayersManager.SRTM:
+         case LayersManager.Shade:
+            App.maperial.layersManager.addLayer(sourceType);
             break;
       }
    }
@@ -327,16 +326,6 @@
       App.maperial.layersManager.addLayer(Source.MaperialOSM, params);
    }
 
-   //--------------------------------------//
-
-   MapCreationController.addSRTMLayer = function(){
-      App.maperial.layersManager.addLayer(Source.SRTM);
-   }
-   
-   MapCreationController.addShadeLayer = function(){
-      App.maperial.layersManager.addLayer(Source.Shade);
-   }
-   
    //--------------------------------------//
    
    MapCreationController.addImagesLayer = function(src){

@@ -38,7 +38,6 @@ SourcesManager.prototype.buildSources = function(layers){
       switch(type){
          case Source.MaperialOSM:
          case Source.SRTM:
-         case Source.Shade:
             // no params required for SourcesManager
             break;
             
@@ -160,12 +159,11 @@ SourcesManager.prototype.loadSources = function (x, y ,z) {
          return false;
 
       switch(source.type){
-         case Source.Shade:
+         case Source.SRTM:
          case Source.MaperialOSM:
             this.LoadVectorial ( source, x, y, z );
             break;
 
-         case Source.SRTM:
          case Source.Raster:
             this.LoadRaster ( source, x, y, z );
             break;
@@ -338,13 +336,7 @@ SourcesManager.prototype.getURL = function (source, tx, ty, z) {
          return Maperial.apiURL + "/api/tile?x="+tx+"&y="+ty+"&z="+z;
 
       case Source.SRTM:
-         //return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
-         return "http://192.168.0.1:8081/api/srtm?x="+tx+"&y="+ty+"&z="+z;
-
-      case Source.Shade:
-         //return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
-         return "http://192.168.0.1:8081/api/srtm?x="+tx+"&y="+ty+"&z="+z;
-         
+         return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
          
       case Source.Raster:
          return Maperial.apiURL + "/api/tile/"+source.params.rasterUID+"?x="+tx+"&y="+ty+"&z="+z;
