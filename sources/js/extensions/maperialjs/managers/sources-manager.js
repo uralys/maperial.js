@@ -338,12 +338,12 @@ SourcesManager.prototype.getURL = function (source, tx, ty, z) {
          return Maperial.apiURL + "/api/tile?x="+tx+"&y="+ty+"&z="+z;
 
       case Source.SRTM:
-         return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
-         //return "http://192.168.0.1:8081/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+         //return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+         return "http://192.168.0.1:8081/api/srtm?x="+tx+"&y="+ty+"&z="+z;
 
       case Source.Shade:
-         return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
-         //return "http://192.168.0.1:8081/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+         //return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+         return "http://192.168.0.1:8081/api/srtm?x="+tx+"&y="+ty+"&z="+z;
          
          
       case Source.Raster:
