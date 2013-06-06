@@ -40,7 +40,7 @@ Maperial.DEFAULT_LATITUDE       = 48.833;
 Maperial.DEFAULT_LONGITUDE      = 2.333;
 
 Maperial.refreshRate            = 15; // ms
-Maperial.tileDLTimeOut          = 60000; //ms
+Maperial.tileDLTimeOut          = 5000; //ms
 Maperial.tileSize               = 256;
 
 Maperial.autoMoveSpeedRate      = 0.2;
@@ -69,6 +69,7 @@ Maperial.DEMO_MAP = {
  * Must be called whenever the config is changed, in order to build Maperial again
  */
 Maperial.prototype.restart = function(){
+   console.log("MaperialJS loads ", this.config);
    $(window).trigger(MaperialEvents.LOADING);
    this.reset();
    this.load();
@@ -90,14 +91,21 @@ Maperial.prototype.reset = function(){
    console.log("Reset maperial...");
 
    try{
+      this.mapRenderer.Stop();
       this.mapRenderer.reset();
-   }catch(e){}
+   }catch(e){
+      console.log("pb resetting maprenderer");
+      console.log(e);
+   }
 
    try{
       this.mapMover.removeListeners();
       this.mapMouse.removeListeners();
       this.hud.reset();
-   }catch(e){}
+   }catch(e){
+      console.log("pb resetting modules");
+      console.log(e);
+   }
 
    try{
       this.styleMenu.removeListeners();
@@ -105,7 +113,10 @@ Maperial.prototype.reset = function(){
 
    try{
       this.sourcesManager.releaseEverything();
-   }catch(e){}
+   }catch(e){
+      console.log("pb resetting sourcesManager");
+      console.log(e);
+   }
    
    this.colorbarsManager = new ColorbarsManager(this);
    this.stylesManager = new StylesManager(this);
@@ -205,7 +216,8 @@ Maperial.prototype.checkIds = function() {
                break;
 
             case Source.SRTM:
-               this.config.layers[i].source.id = Source.SRTM
+            case Source.Shade:
+               this.config.layers[i].source.id = LayersManager.Shade
                break;
 
             case Source.Raster:

@@ -37,9 +37,9 @@ SourcesManager.prototype.buildSources = function(layers){
       
       switch(type){
          case Source.MaperialOSM:
-            break;
-
          case Source.SRTM:
+         case Source.Shade:
+            // no params required for SourcesManager
             break;
             
          case Source.Raster:
@@ -97,12 +97,23 @@ SourcesManager.prototype.placeMap = function (src) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 SourcesManager.prototype.releaseEverything = function () {
+
+   this.stopEverything()
+   
    for(requestId in this.requests){
       try{
          this.requests[requestId].abort();
       }
       catch(e){}
    }
+}
+
+SourcesManager.prototype.stopEverything = function () {
+   //   cancel image downloads
+   if(window.stop !== undefined)
+      window.stop();
+   else if(document.execCommand !== undefined)
+      document.execCommand("Stop", false);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -118,10 +129,12 @@ SourcesManager.prototype.release = function (x, y ,z) {
    for(var i = 0; i< this.sources.length; i++){
       var requestId = this.requestId(this.sources[i], x, y, z);
 
-      try{
-         this.requests[requestId].abort();
+      if(!this.load[requestId]){
+         try{
+            this.requests[requestId].abort();
+         }
+         catch(e){}
       }
-      catch(e){}
       
       delete this.data[requestId];
       delete this.errors[requestId];
@@ -144,11 +157,12 @@ SourcesManager.prototype.loadSources = function (x, y ,z) {
          return false;
 
       switch(source.type){
-         case Source.SRTM:
+         case Source.Shade:
          case Source.MaperialOSM:
             this.LoadVectorial ( source, x, y, z );
             break;
 
+         case Source.SRTM:
          case Source.Raster:
             this.LoadRaster ( source, x, y, z );
             break;
@@ -223,19 +237,21 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
    }
 
    this.requests[requestId].abort = function () {
-      this.src = ''
+      me.requests[requestId].src = ""
    }
-
-   function ajaxTimeout() { 
-      if ( ! me.load[requestId] ) {
-         try{ 
-            me.requests[requestId].abort(); 
-         }catch(e){} 
-      }
-   }
-   var tm = setTimeout(ajaxTimeout, Maperial.tileDLTimeOut);
 
    this.requests[requestId].src = url;
+//
+//   this.requests[requestId].onabort = function () {
+//      me.requests[requestId] = new Image();
+//      me.requests[requestId].src = "http://static.maperial.localhost/images/global/nofound.png"
+//   }
+//
+//   setTimeout(function () { 
+//      if ( ! me.load[requestId] ) {
+//         me.requests[requestId].onabort();
+//      }
+//   }, Maperial.tileDLTimeOut);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -319,8 +335,12 @@ SourcesManager.prototype.getURL = function (source, tx, ty, z) {
          return Maperial.apiURL + "/api/tile?x="+tx+"&y="+ty+"&z="+z;
 
       case Source.SRTM:
-         //return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
-         return "http://192.168.0.1:8081/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+         return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+         //return "http://192.168.0.1:8081/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+
+      case Source.Shade:
+         return Maperial.apiURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+         //return "http://192.168.0.1:8081/api/srtm?x="+tx+"&y="+ty+"&z="+z;
          
          
       case Source.Raster:
@@ -420,6 +440,9 @@ SourcesManager.prototype.getImageURL = function (source, tx, ty, z) {
  * Source.WMS_FRANCECOURSDEAU 
  * Source.WMS_SOLS_ILEETVILAINE 
  *    geo2 : "http://geowww.agrocampus-ouest.fr/geoserver/ows?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
+
+ * Source.WMS_CORINE_LAND_COVER 
+ *    geo3 : "http://sd1878-2.sivit.org/geoserver/gwc/service/wms?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
  */ 
 SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
 
@@ -458,24 +481,21 @@ SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
          return("http://api.maperial.com/geo2?SERVICE=WMS&LAYERS=igcs%3Aucs35&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
          break;
 
-      case Source.WMS_3:
-         // http://www.mapmatters.org/wms/624097
-         // http://www.mapmatters.org/wms/603594
-         // http://www.mapmatters.org/server/4114
-         // Bretagne : http://www.mapmatters.org/server/3525   (leurs png n'ont pas dalpha :( )
+      case Source.WMS_CORINE_LAND_COVER:
+
+         var topLeft       = topLeftM;
+         var bottomRight   = bottomRightM;
+
+         return("http://api.maperial.com/geo3?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
          break;
 
          
 //      case Source.WMS4:
+         // http://www.mapmatters.org/wms/624097
+         // http://www.mapmatters.org/wms/603594
+         // http://www.mapmatters.org/server/4114
+         // Bretagne : http://www.mapmatters.org/server/3525   (leurs png n'ont pas dalpha :( )
 //         
-//         var source  = new Proj4js.Proj('EPSG:900913');   // Mercator
-//         var dest    = new Proj4js.Proj('EPSG:2154');     // Lambert 93
-//         
-//         var topLeft = new Proj4js.Point(topLeftM.x, topLeftM.y);
-//         Proj4js.transform(source, dest, topLeft); 
-//         
-//         var bottomRight = new Proj4js.Point(bottomRightM.x, bottomRightM.y);
-//         Proj4js.transform(source, dest, bottomRight); 
 //         
 //         console.log("http://ws.carmen.developpement-durable.gouv.fr/cgi-bin/mapserv?map=/mnt/data_carmen/PACA/Publication/environnement.map&LAYERS=layer227&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A2154&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
 //         break;

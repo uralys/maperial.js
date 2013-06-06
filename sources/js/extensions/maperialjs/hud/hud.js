@@ -337,12 +337,6 @@ HUD.prototype.display = function(){
 
    if(this.maperial.config.hud.elements[HUD.SWITCH_IMAGES])
       this.refreshSwitchImagesPanel();
-   
-//   if(this.maperial.config.hud.elements[HUD.BASEMAPS])
-//      this.createBasemapsPanel();
-//
-//   if(this.maperial.config.hud.elements[HUD.DATA])
-//      this.createDataPanel();
 }
 
 //==================================================================//

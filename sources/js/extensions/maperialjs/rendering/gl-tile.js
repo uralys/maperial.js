@@ -83,7 +83,7 @@ Tile.prototype.prepareBuffering = function () {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.Release = function() {
-
+   
    this.maperial.sourcesManager.release(this.x, this.y, this.z);
    
    for(var i = 0; i < this.config.layers.length; i++)
@@ -125,7 +125,10 @@ Tile.prototype.appendDataToLayers = function ( source, data ) {
    
    if(!data){
       console.log("-------> DATA NULL !")
-      this.nbErrors ++;
+      //this.nbErrors ++;
+      this.Release();
+      this.Reset();
+      return
    }
 
    for(var i = 0; i< this.config.layers.length; i++){
@@ -138,6 +141,8 @@ Tile.prototype.appendDataToLayers = function ( source, data ) {
       }
       catch(e){
          console.log("-------> ERROR")
+         this.Release();
+         this.Reset();
       }
    }   
 }
