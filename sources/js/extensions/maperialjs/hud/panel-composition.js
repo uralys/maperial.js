@@ -62,10 +62,8 @@ HUD.prototype.refreshCompositionsPanel = function() {
       $("#"+shadersSelectionId).selectbox({
          onChange: function(l){
             return function (val, inst) {
-               try{
-                  me.maperial.layersManager.changeComposition(l, inst.input[0][val].label);
-               }
-               catch(e){}
+               a tester sur ff 4 + ie 10
+               me.maperial.layersManager.changeComposition(l, inst.input[0][val].label);
             }
          }(l),
          effect: "slide"
