@@ -156,9 +156,9 @@ Colorbar.prototype.InitView = function(){
    // end tmp
 
    // register mouse event callbacks in canvas
-   $('#'+this.canvasId).mousedown(this.onMouseDown);
-   $('#'+this.canvasId).mouseup(this.onMouseUp);
-   $('#'+this.canvasId).mousemove(this.onMouseDrag);    
+   $('#'+this.canvasId).mousedown   ( function(event) { me.onMouseDown  (event) } );
+   $('#'+this.canvasId).mouseup     ( function(event) { me.onMouseUp    (event) } );
+   $('#'+this.canvasId).mousemove   ( function(event) { me.onMouseDrag  (event) } );    
 
    //configure the colorBar "window"
    /* 
@@ -467,17 +467,15 @@ Colorbar.prototype.getCursorY = function(canvas, event) {
 /////////////////////////                           
 Colorbar.prototype.onMouseDown = function(evt){
 
-   var curX = getCursorX(document.getElementById(this.canvasId),evt);
-   var curY = getCursorY(document.getElementById(this.canvasId),evt);
+   var curX = this.getCursorX(document.getElementById(this.canvasId),evt);
+   var curY = this.getCursorY(document.getElementById(this.canvasId),evt);
 
-   var curPos = Math.round((this.height - 1 - curY + this.offsetY ) * ( this.rainbow.DataSize - 1) / ( height - 1 ));   ///@todo check offset
+   var curPos = Math.round((this.height - 1 - curY + this.offsetY ) * ( this.rainbow.DataSize - 1) / ( this.height - 1 ));   ///@todo check offset
    var curPos2 = curPos;
 
    var id = this.rainbow.GetNextAndPreviousIndex(curPos);
    var nearestLowerIndex = id.previous;
    var nearestUpperIndex = id.next;
-
-   console.log(curPos,nearestLowerIndex,nearestUpperIndex);
 
    if ( ! this.clicked ){
       if ( Math.abs(nearestLowerIndex-curPos) < this.height/40 ){

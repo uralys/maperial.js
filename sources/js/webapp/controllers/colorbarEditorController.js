@@ -51,9 +51,14 @@
       // custom
       config.hud.elements["ColorbarEditorMenu"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true };
 
-      config.layers = [];
-      config.layers.push(LayersManager.getImagesLayerConfig(Source.IMAGES_MAPQUEST));
-      config.layers.push(LayersManager.getRasterLayerConfig("1_raster_13dcc4de76c874941ef", [App.colorbarsData.selectedColorbar.uid]));
+      // maperial hud
+      config.hud.elements[HUD.SETTINGS]      = {show : true,  type : HUD.TRIGGER,  disableHide : true, disableDrag : true };
+      config.hud.elements[HUD.COLORBAR]      = {show : true,  type : HUD.PANEL};
+
+      config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT));
+      config.layers.push(LayersManager.getSrtmLayerConfig())
+      
+//      config.layers.push(LayersManager.getRasterLayerConfig("1_raster_13dcc4de76c874941ef", [App.colorbarsData.selectedColorbar.uid]));
       
       App.addMargins(config);
       
