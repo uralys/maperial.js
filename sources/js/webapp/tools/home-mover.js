@@ -28,23 +28,7 @@ HomeMover.prototype.move = function() {
 
 // ----------------------------//
 
-HomeMover.prototype.loadTopImage = function () {
-   
-   var img = new Image()
-   
-   img.onload = function () {      
-      var position = document.getElementById('homeImage').style.backgroundPosition
-      document.getElementById('homeImage').style.background = "url('http://static.maperial.localhost/images/home/top.maperial.png') " + position ;
-   };
-
-   img.src = "http://static.maperial.localhost/images/home/top.maperial.png"
-}
-
-
-// ----------------------------//
-
 var homeMover = new HomeMover();
-setTimeout( homeMover.loadTopImage, 1000)
 setInterval( (function(homeMover){
    return function(){
       homeMover.move();

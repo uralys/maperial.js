@@ -8,7 +8,17 @@
 	
 	DashboardController.renderUI = function()
 	{ 
-	   
+      //------------------------------------------------------//
+      // gather epsg list
+
+      $.get(App.Globals.ASSETS_URL + '/epsg.txt', function(data){
+         var lines = data.split("\n");
+         for(var i=0; i< lines.length; i++){
+            if(lines[i][0] == "#")
+               App.Globals.epsg.push(lines[i].substr(2, lines[i].length-2));
+         }
+      });
+
 	}
 
 	DashboardController.cleanUI = function()
