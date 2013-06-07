@@ -8,20 +8,19 @@
 
 	MoreController.renderUI = function()
 	{
-	   
 	}
 
 	MoreController.cleanUI = function()
 	{
 	   
 	}
-
+   
 	//==================================================================//
 	// Controls
 
 	MoreController.openLoginWindow = function() 
 	{
-	   MaperialAuth.authorize()  
+//	   MaperialAuth.authorize()  
 		//$('#loginWindow').modal();
 	}
 	
