@@ -44,8 +44,8 @@ HUD.prototype.refreshCompositionsPanel = function() {
       // layer header html
 
       var div = "<div class=\"row-fluid marginbottom\">";
-      div += "<div class=\"span1 mapthumb top\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.maperial.config.layers[l])+"></img></div>";
-      div += "<div class=\"span1 mapthumb\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.maperial.config.layers[l-1])+"></img></div>";
+      div += "<div class=\"span1 mapthumb top\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.maperial.config.layers[l-1])+"></img></div>";
+      div += "<div class=\"span1 mapthumb\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.maperial.config.layers[l])+"></img></div>";
       
       div += "<div class=\"span4 offset3\"><select class=\"shaderSelectbox\" name=\""+shadersSelectionId+"\" id=\""+shadersSelectionId+"\">";
 

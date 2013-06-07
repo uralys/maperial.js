@@ -105,10 +105,15 @@ StyleMenu.prototype.initListeners = function (event) {
    $(window).on(MaperialEvents.OPEN_STYLE, function(event, layerIndex, layerId){
       styleMenu.ChangeSelectedSubLayer(layerIndex, layerId)
    });
+
+   this.maperial.context.mapCanvas.on(MaperialEvents.MOUSE_DOWN, function(){
+      $(".colorpicker").hide();
+   });
 }
 
 StyleMenu.prototype.removeListeners = function (event) {
    $(window).off(MaperialEvents.OPEN_STYLE);
+   this.maperial.context.mapCanvas.off(MaperialEvents.MOUSE_DOWN)
 }
 
 //==================================================================//
@@ -1131,7 +1136,7 @@ StyleMenu.prototype.linkedUIDs = function (uid) {
 //--------------------------------------------------------------------------//
 
 StyleMenu.prototype.refresh = function () {
-   
+
    var data = this.GetGroupNameFilterFromLayerId(this.currentLayerId);
    if ( data.group != null && data.name != null ){
       this.refreshWidget(data.group, data.name, data.uid);

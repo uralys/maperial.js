@@ -3,7 +3,7 @@
 //=================================================================//
 
 function MapManager(){
-   this.demoMapBackUp
+   this.demoConfigBackUp
 }
 
 //-------------------------------------------//
@@ -19,13 +19,12 @@ MapManager.prototype.createNewMap = function(uid){
 
 /** Used when switching from mapCreation to styleEditor as App.Globals.isTryscreen */
 MapManager.prototype.backUpMap = function(){
-   this.demoMapBackUp = App.user.selectedMap
-   this.demoMapBackUp.uid = "currentDemo"
+   this.demoConfigBackUp = App.maperial.config
 }
 
 /** Used when switching back from styleEditor to mapCreation as App.Globals.isTryscreen */
 MapManager.prototype.retrieveMap = function(){
-   var map = this.demoMapBackUp
+   var map = {uid: "currentDemo", name: "New Map", config: this.demoConfigBackUp};
    App.user.set("selectedMap", map);
 }
 

@@ -86,8 +86,12 @@ Tile.prototype.Release = function() {
    
    this.maperial.sourcesManager.release(this.x, this.y, this.z);
    
-   for(var i = 0; i < this.config.layers.length; i++)
-      this.layers[i].Release();
+   for(var i = 0; i < this.config.layers.length; i++){
+      try{
+         this.layers[i].Release();
+      }
+      catch(e){}
+   }
    
    var gl = this.gl;
    for ( var i = 0 ; i < 2 ; i = i + 1 ) {
