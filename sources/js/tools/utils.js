@@ -267,6 +267,8 @@ Utils.buildSliderStyle = function (id){
    $("#" + id + " a").css({borderBottomLeftRadius:"30px"});
    $("#" + id + " a").css({borderBottomRightRadius:"30px"});
    $("#" + id + " a").css({outline:"none"});
+   $("#" + id + " a").css({cursor:"pointer"});
+   $("#" + id + " a").css({cursor:"hand"});
 
 }
 
