@@ -215,6 +215,7 @@ a.triggerHUDSettings {
 	width: 45px;
 	margin-top: -9px !important;
 	margin-bottom: 0px !important;
+	border-radius: 5px;
 }
 
 /*-------------------------*/

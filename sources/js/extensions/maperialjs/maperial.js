@@ -94,24 +94,33 @@ Maperial.prototype.reset = function(){
    console.log("Reset maperial...");
 
    try{
-      this.mapRenderer.Stop();
-      this.mapRenderer.reset();
+      if(this.mapRenderer){
+         this.mapRenderer.Stop();
+         this.mapRenderer.reset();
+      }
    }catch(e){
    }
 
    try{
-      this.mapMover.removeListeners();
-      this.mapMouse.removeListeners();
-      this.hud.reset();
+      if(this.mapMover)
+         this.mapMover.removeListeners();
+      
+      if(this.mapMouse)
+         this.mapMouse.removeListeners();
+      
+      if(this.hud)
+         this.hud.reset();
    }catch(e){
    }
 
    try{
-      this.styleMenu.removeListeners();
+      if(this.styleMenu)
+         this.styleMenu.removeListeners();
    }catch(e){}
 
    try{
-      this.sourcesManager.releaseEverything();
+      if(this.sourcesManager)
+         this.sourcesManager.releaseEverything();
    }catch(e){
    }
    

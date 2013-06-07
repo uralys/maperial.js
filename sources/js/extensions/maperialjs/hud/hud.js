@@ -179,8 +179,7 @@ HUD.prototype.initListeners = function () {
    });
 
    $(window).on(MaperialEvents.STYLE_CHANGED, function(event, x, y){
-      hud.refreshCompositionsPanel();
-      hud.refreshLayerSettingsPanel();
+      hud.display();
    });
 }
 

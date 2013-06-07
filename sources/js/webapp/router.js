@@ -86,8 +86,7 @@
 	   
       console.log("openPage " + page);
 		if(webappPage
-//		&& page != "tryscreen" 
-	   && page != "mapCreation" 
+	   && (page != "mapCreation" && page != "styleEditor" && !App.Globals.isTryscreen) 
 		&& !App.user.loggedIn)
 		{
 			console.log("Not connected ! Redirected to the home page");

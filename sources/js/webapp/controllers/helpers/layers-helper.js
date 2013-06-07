@@ -90,7 +90,8 @@ LayersHelper.prototype.buildLayerEntry = function(layerIndex) {
          break;
       case LayersManager.Vector:
          html += "   <div class=\"span1 touchable\" onclick=\"App.MapCreationController.customizeLayer("+layerIndex+")\"><i id=\"eye_"+layerIndex+"\" class=\"icon-white "+icon+"\" title=\""+tooltip+"\"></i></div>";
-         html += "   <div class=\"span1 offset3\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
+         html += "   <div class=\"span1 offset1 touchable\" onclick=\"App.MapCreationController.editStyle("+layerIndex+")\"><i id=\"edit_"+layerIndex+"\" class=\"icon-white icon-pencil\" title=\"Edit\"></i></div>";
+         html += "   <div class=\"span1 offset1\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
          break;
    }
 
@@ -98,6 +99,7 @@ LayersHelper.prototype.buildLayerEntry = function(layerIndex) {
 
    $("#layers").append(html); 
    $( "#eye_"+layerIndex ).tooltip()
+   $( "#edit_"+layerIndex ).tooltip()
 }
 
 //=======================================================================//

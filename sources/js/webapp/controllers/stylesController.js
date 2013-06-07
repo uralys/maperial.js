@@ -42,9 +42,20 @@
 	
 	StylesController.editStyle = function(style) 
 	{
+	   if(App.Globals.isTryscreen){
+	      $("#selectStyleWindow").modal("hide");
+	      StylesController.backUpMap = App.maperial.config
+	   }
+	      
 		App.stylesData.set("selectedStyle", style);
 		App.stylesData.set("editingStyle", true);
 		App.get('router').transitionTo('styleEditor');
+	}
+	
+	StylesController.backToDemo = function() 
+	{
+      App.mapManager.retrieveMap()
+	   App.get('router').transitionTo('mapCreation');
 	}
 	
 	//------------------------------------------------//

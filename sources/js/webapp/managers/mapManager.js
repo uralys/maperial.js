@@ -3,7 +3,7 @@
 //=================================================================//
 
 function MapManager(){
-
+   this.demoMapBackUp
 }
 
 //-------------------------------------------//
@@ -12,8 +12,19 @@ MapManager.CHECK_EXPORT_MILLIS = 500;
 
 //=================================================================//
 
-MapManager.prototype.createNewMap = function(){
-   var map = {uid: null, name: "New Map", config: App.maperial.defaultConfig()};
+MapManager.prototype.createNewMap = function(uid){
+   var map = {uid: uid, name: "New Map", config: App.maperial.defaultConfig()};
+   App.user.set("selectedMap", map);
+}
+
+/** Used when switching from mapCreation to styleEditor as App.Globals.isTryscreen */
+MapManager.prototype.backUpMap = function(){
+   this.demoMapBackUp = App.maperial.config
+}
+
+/** Used when switching back from styleEditor to mapCreation as App.Globals.isTryscreen */
+MapManager.prototype.retrieveMap = function(){
+   var map = this.demoMapBackUp
    App.user.set("selectedMap", map);
 }
 

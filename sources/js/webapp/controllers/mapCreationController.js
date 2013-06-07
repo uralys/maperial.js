@@ -380,6 +380,15 @@
    
    //--------------------------------------//
    
+   MapCreationController.editStyle = function(layerIndex){
+      var layer = App.maperial.config.layers[layerIndex];
+      App.mapManager.backUpMap()
+      App.stylesData.set("selectedStyle.uid", layer.params.styles[layer.params.selectedStyle])
+      App.StylesController.editStyle(App.stylesData.selectedStyle)
+   }
+   
+   //--------------------------------------//
+   
    MapCreationController.deleteLayer = function(layerIndex){
       App.maperial.layersManager.deleteLayer(layerIndex);
       

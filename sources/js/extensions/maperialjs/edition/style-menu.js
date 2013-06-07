@@ -93,7 +93,7 @@ function StyleMenu(container, container2, container3, maperial){
    this.initListeners();
    
    // style edition default 
-   this.ChangeSelectedSubLayer(this.currentLayerId);
+   this.ChangeSelectedSubLayer(this.currentLayerIndex, this.currentLayerId);
 }
 
 //==================================================================//

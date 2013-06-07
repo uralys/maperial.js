@@ -321,10 +321,10 @@ SourcesManager.prototype.isTileLoaded = function ( x, y, z) {
 
 //-------------------------------------------//
 
-//SourcesManager.prototype.getData = function ( source, x, y, z) {
-//   var requestId = this.requestId(source, x, y, z);
-//   return this.data[requestId];
-//}
+SourcesManager.prototype.getData = function ( source, x, y, z) {
+   var requestId = this.requestId(source, x, y, z);
+   return this.data[requestId];
+}
 
 //-------------------------------------------//
 

@@ -52,11 +52,11 @@
       var config = App.maperial.emptyConfig();
 
       // custom
-      config.hud.elements["StyleEditorMenu"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true };
+      config.hud.elements["StyleEditorMenu"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true, disableDrag : true  };
 
       // maperial hud
       config.hud.elements[HUD.SETTINGS]      = {show : true,  type : HUD.TRIGGER,  disableHide : true, disableDrag : true };
-      config.hud.elements[HUD.GEOLOC]        = {show : true,  type : HUD.PANEL,  label : "Location" };
+      config.hud.elements[HUD.GEOLOC]        = {show : false, type : HUD.PANEL,  label : "Location" };
       config.hud.elements[HUD.QUICK_EDIT]    = {show : true,  type : HUD.PANEL,  label : "Quick Edition", disableDrag : true};
       config.hud.elements[HUD.DETAILS_MENU]  = {show : false, type : HUD.PANEL,  label : "Style Details" };
       config.hud.elements[HUD.ZOOMS]         = {show : false, type : HUD.PANEL,  label : "Zooms" };
