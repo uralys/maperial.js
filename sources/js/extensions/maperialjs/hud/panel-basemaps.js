@@ -13,7 +13,7 @@ HUD.prototype.buildBasemapsPanel = function(params, callBack) {
    this.element(HUD.BASEMAPS).append("" +
    		"<div class='row-fluid' onclick='HUD.selectedBasemap"+this.maperial.tagId+"()'> "+
          "   <div class='span6 offset1' }}>" +
-         "      <p class=\"compositionSettingsTitle\">Maperial customisable basemaps</p>" +
+         "      <p class=\"compositionSettingsTitle\">__Maperial customisable basemaps</p>" +
          "   </div>"+
          "   <div class='span1 offset3 btn-small btn-primary' }}>"+
          "      <i class='icon-arrow-right icon-white'></i>"+
