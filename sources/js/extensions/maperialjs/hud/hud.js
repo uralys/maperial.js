@@ -179,7 +179,7 @@ HUD.prototype.initListeners = function () {
    });
 
    $(window).on(MaperialEvents.STYLE_CHANGED, function(event, x, y){
-      hud.display();
+      hud.display(true);
    });
 }
 
@@ -322,8 +322,8 @@ HUD.prototype.placeElementAt = function(element, value, property){
    }
 }
 
-HUD.prototype.display = function(){
-   this.showAllHUD();
+HUD.prototype.display = function(dontHideColorpickers){
+   this.showAllHUD(dontHideColorpickers);
 
    if(this.maperial.config.hud.elements[HUD.SETTINGS])
       this.refreshSettingsPanel();
@@ -362,7 +362,7 @@ HUD.prototype.hideAllHUD = function(){
 
 //------------------------------------------------//
 
-HUD.prototype.showAllHUD = function(){
+HUD.prototype.showAllHUD = function(dontHideColorpickers){
 
    for (element in this.maperial.config.hud.elements) {
       if(this.maperial.config.hud.elements[element].show == true){
@@ -371,6 +371,9 @@ HUD.prototype.showAllHUD = function(){
    }
 
    $(".tooltip").remove();
+   
+   if(!dontHideColorpickers)
+      $(".colorpicker").hide();
 }
 
 //------------------------------------------------//

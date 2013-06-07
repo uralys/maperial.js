@@ -17,6 +17,8 @@
 
       $(window).on(  MaperialEvents.READY, MapCreationController.maperialReady);
 
+      console.log("mapCreation", App.user.selectedMap)
+      
       App.user.set("isCreatingANewMap", (App.user.selectedMap.uid == null));
       MapCreationController.wizardSetView(MapCreationController.LAYERS_CREATION);
       MapCreationController.openLayersCreation();

@@ -105,7 +105,6 @@ StyleMenu.prototype.initListeners = function (event) {
    $(window).on(MaperialEvents.OPEN_STYLE, function(event, layerIndex, layerId){
       styleMenu.ChangeSelectedSubLayer(layerIndex, layerId)
    });
-
 }
 
 StyleMenu.prototype.removeListeners = function (event) {
@@ -695,8 +694,8 @@ StyleMenu.prototype.Accordion = function(_group,_name,uid){
    n = $("#styleMenu_menu_groupaccordion_div_group_"+groupNum+" h2").index($("#styleMenu_menu_headeraccordion_" + uid));
    //console.log($("#styleMenu_menu_groupaccordion_div_group_"+groupNum+" h2"));
    //console.log(n);
-   $("#styleMenu_menu_accordion" ).accordion('activate', groupNum);
-   $("#styleMenu_menu_groupaccordion_div_group_" + groupNum).accordion('activate', n);
+   $("#styleMenu_menu_accordion").accordion("option", "active", groupNum);
+   $("#styleMenu_menu_groupaccordion_div_group_" + groupNum).accordion("option", "active", n);
 }
 
 StyleMenu.prototype.GetFilterAlias = function(group,name,uid){

@@ -139,7 +139,7 @@
          }
          else{
             App.Globals.set("isTryscreen", true);
-            App.mapManager.createNewMap("demoMap");
+            App.mapManager.createNewMap();
             App.get('router').transitionTo('mapCreation');
          }
       }

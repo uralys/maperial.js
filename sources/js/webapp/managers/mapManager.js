@@ -19,7 +19,8 @@ MapManager.prototype.createNewMap = function(uid){
 
 /** Used when switching from mapCreation to styleEditor as App.Globals.isTryscreen */
 MapManager.prototype.backUpMap = function(){
-   this.demoMapBackUp = App.maperial.config
+   this.demoMapBackUp = App.user.selectedMap
+   this.demoMapBackUp.uid = "currentDemo"
 }
 
 /** Used when switching back from styleEditor to mapCreation as App.Globals.isTryscreen */

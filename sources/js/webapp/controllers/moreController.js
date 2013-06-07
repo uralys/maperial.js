@@ -21,7 +21,8 @@
 
 	MoreController.openLoginWindow = function() 
 	{
-		$('#loginWindow').modal();
+	   MaperialAuth.authorize()  
+		//$('#loginWindow').modal();
 	}
 	
 	MoreController.openVideoWindow = function() 

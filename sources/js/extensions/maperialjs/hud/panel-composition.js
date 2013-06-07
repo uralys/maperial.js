@@ -4,7 +4,8 @@
 HUD.prototype.refreshCompositionsPanel = function() {
 
    console.log("     building compositions...");
-
+   this.buildingComposition = true
+   
    //-----------------------------------------------------//
 
    this.element(HUD.COMPOSITIONS).empty();
@@ -62,8 +63,8 @@ HUD.prototype.refreshCompositionsPanel = function() {
       $("#"+shadersSelectionId).selectbox({
          onChange: function(l){
             return function (val, inst) {
-               a tester sur ff 4 + ie 10
-               me.maperial.layersManager.changeComposition(l, inst.input[0][val].label);
+               if(!me.buildingComposition)
+                  me.maperial.layersManager.changeComposition(l, inst.input[0][val].label);
             }
          }(l),
          effect: "slide"
@@ -196,4 +197,5 @@ HUD.prototype.refreshCompositionsPanel = function() {
    }
 
    this.panel(HUD.COMPOSITIONS).css("height", panelHeight+"px");
+   this.buildingComposition = false
 }

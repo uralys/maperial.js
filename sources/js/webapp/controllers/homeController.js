@@ -32,7 +32,9 @@
 
 	HomeController.openLoginWindow = function() 
 	{
-		$('#loginWindow').modal();
+	   console.log("------> Old dev ?? ")
+//	   MaperialAuth.authorize()
+	//	$('#loginWindow').modal();
 	}
 	
 	HomeController.openVideoWindow = function() 
