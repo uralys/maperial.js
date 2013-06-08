@@ -219,6 +219,11 @@
 /*--------------------------------*/
 #playImage {
 	margin-top: -245px;
+	opacity:0.85;
+}
+
+#playImage:hover {
+	opacity:1;
 }
 
 #part1 {

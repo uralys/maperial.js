@@ -51,7 +51,7 @@ YoutubeManager.prototype.load = function() {
    this.player = new YT.Player('maperialVideo', {
       width: '843',
       height: '480',
-      videoId: 'c9_pf_YZZg4',
+      videoId: '2BvMpUnixEw',
       events: {
          'onStateChange': function (event) {
             switch (event.data) {
