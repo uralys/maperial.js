@@ -26,6 +26,12 @@
 	}
 }
 
+.rounded {
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+
 /*--------------------------------*/
 .btn-primary {
 	background-color: #f66c00;

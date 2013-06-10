@@ -124,6 +124,7 @@
     "Screenshot6Text"	: "Demo",
 
     "ReadMore"			: "Lire la suite",
+    "SeeAll"			: "Toutes les voir",
     
     "New1Title"			: "maperial.com",
     "New1Text"			: "Ca y est ! Le site est ouvert au public. Vous y découvrirez ce qu'est Maperial, et s'il ne répond pas à toutes vos questions vous pouvez nous joindre à tout moment.",
@@ -141,7 +142,13 @@
     "New5Text"			: "Grâce à Stamen Design et OpenCycleMaps, nous vous proposons maintenant de nouveaux fonds de cartes. Essayez les !",
     
     "New6Title"			: "Plus de démos",
-    "New6Text"			: "Nos tuiles SRTM sont maintenant prêtes pour vos cartes ! Nous avons créé quelques exemples simples, et vous pouvez construire vos cartes dans notre page de test.",
+    "New6Text"			: "Nous avons créé quelques exemples simples, et vous pouvez désormais construire vos propres cartes dans notre page de test.",
+    
+    "New7Title"			: "SRTM en place",
+    "New7Text"			: "Les tuiles SRTM sont maintenant prêtes pour vos cartes ! Nos tuiles rajoutent du relief sur vos cartes et vous pouvez régler la direction de la lumière et le niveau du relief dynamiquement.",
+
+    "New8Title"			: "Bathymétrie",
+    "New8Text"			: "Nous travaillons actuellement sur un nouvel algorithme de calcul de topographie basé sur la bathymétrie. Nous vous proposerons bientôt de nouvelles tuiles pour des cartes encore plus belles.",
     
     "KeepInMind"		: "N'oubliez pas que cette liste de fonctionnalités est entièrement adaptable à votre besoin (formats, représentations...). Contactez nous !",
     

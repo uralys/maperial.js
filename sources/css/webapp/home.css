@@ -175,12 +175,16 @@
 
 /*--------------------------------*/
 #titleNews {
-	left: 82px;
+	left: 20px;
 	position: relative;
-	bottom: -56px;
+	bottom: -10px;
 	z-index: 3;
 	font-size: 40px;
 	width: 0px;
+}
+
+.subtitleNews {
+	margin-left: 45px;
 }
 
 .titleNew {
@@ -189,6 +193,7 @@
 	margin-bottom:20px;
 	margin-top: 40px;
 }
+
 
 .moreNew {
 	color: #27a200;

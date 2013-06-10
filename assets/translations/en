@@ -125,6 +125,7 @@
     "Screenshot6Text"	: "Screenshot",
 
     "ReadMore"			: "Read more",
+    "SeeAll"			: "see all",
     
     "New1Title"			: "maperial.com",
     "New1Text"			: "Here we are ! The website is now open to everyone. It'll strive to help you discover what is Maperial, and if any question remains, we are here to answer anytime.",
@@ -142,7 +143,13 @@
     "New5Text"			: "Thanks to Stamen Design and OpenCycleMaps, we now provide more basemaps. Try them out !",
 
     "New6Title"			: "More demos",
-    "New6Text"			: "Now we have our SRTM ready : We built demos to show you quick examples, and you can build yours on our free try screen !",
+    "New6Text"			: "We built demos to show you quick examples, and you can now build your own maps on our free try screen.",
+
+    "New7Title"			: "SRTM ready",
+    "New7Text"			: "Now we have our SRTM ready : our new tiles provides elevation for your maps. You have tools to customise dynamically the lightning and scale of the elevation.",
+
+    "New8Title"			: "Bathymetry",
+    "New8Text"			: "We are currently working on another algorithm measuring bathymetry, and will provide soon new beautiful tiles for your maps.",
     
     "KeepInMind"		: "Keep in mind this list is entirely customisable to suit your needs (Formats, representations). Contact us !",
     
