@@ -88,8 +88,9 @@
 ************************************************/	
 
 .SocialIconsWidget {
-	
-}	
+	margin-top: 35px;
+}
+
 .SocialIconsWidget ul {
 	margin: 0;
 	padding: 0;	

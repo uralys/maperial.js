@@ -70,8 +70,6 @@
 		// actions
 		
 		openMore           : Ember.Route.transitionTo('more'),
-		openScreenshots    : Ember.Route.transitionTo('screenshots'),
-		openAllNews        : Ember.Route.transitionTo('allNews'),
 		openLoginWindow    : function(){App.HomeController.openLoginWindow()},
 		showVideo          : function(){App.HomeController.openVideoWindow()},
 		

@@ -16,6 +16,8 @@
 			openPresentation: Ember.Route.transitionTo('presentation'),
 			openPrices     : Ember.Route.transitionTo('prices'),
 			openDemos      : Ember.Route.transitionTo('cartotheque'),
+	      openScreenshots: Ember.Route.transitionTo('screenshots'),
+	      openAllNews    : Ember.Route.transitionTo('allNews'),
 			openDashboard  : Ember.Route.transitionTo('dashboard'),
 
 			translateEn    : function(){ App.translator.setLang('en') },
