@@ -9,7 +9,7 @@
 	padding: 0px 0px 0px 30px;
 	background: url(http://static.maperial.localhost/images/home/column_bkg.gif) no-repeat left -2px;
 }	
-.homepage_top .three:first-child .widget_sp_image {
+.homepage_top  .widget_sp_image.first-child {
 	background: none;
 }
 .homepage_top .widget_sp_image img {
@@ -105,7 +105,7 @@
 }
 
 .home-container {
-	margin-bottom:50px;
+	margin-bottom:25px;
 }
 
 .home-details p {
@@ -144,7 +144,7 @@
 	background: url('http://static.maperial.localhost/images/home/top.maperial.init.jpg');
 	background-repeat: repeat-x;
 	background-position-x: 0px;
-	height: 350px;
+	height: 300px;
 }
 
 #videoWindow {
@@ -223,7 +223,7 @@
 
 /*--------------------------------*/
 #playImage {
-	margin-top: -245px;
+	margin-top: -215px;
 	opacity:0.85;
 }
 
@@ -261,6 +261,7 @@
 	color: #fff;
 	font-size: 19px;
 	margin-bottom: 14px;
+	margin-top: 32px!important;
 }
 
 .homeSubtitle {
@@ -280,4 +281,8 @@
 .homeActionSeparator {
 	margin-top: 0px;
 	margin-bottom: -1px;
+}
+
+#workflow{
+	margin-top: -30px;	
 }
