@@ -5,21 +5,30 @@ function YoutubeManager(){
    this.cancelNextPlay = false;
 }
 
-YoutubeManager.prototype.openVideoWindow = function() 
+YoutubeManager.prototype.openVideoWindow = function(lang) 
 {
    var me = this;
+   this.lang = lang;
+
    $("#videoWindow").modal();
    $('#videoWindow').off("hide");
    $('#videoWindow').off("show");
-   
+
    $('#videoWindow').on("hide", function(){
       me.stop();
    });
 
-   this.load();
+   var me = this;
+   
+   $("#maperialVideo").remove()
+   $('#videoWindow').append("<div id='maperialVideo'></div>")
 
-//   $("#videoWindow").css("left", $(window).width() - $("#videoWindow").width() );
-   $("#videoWindow").css("left", "40%" );
+   this.load();
+   
+   // center.....dont ask me about the + 285 stuff
+   var left = ($(window).width()/2 - $("#videoWindow").width()/2) + 285
+   
+   $("#videoWindow").css("left",left+"px");
 }
 
 YoutubeManager.prototype.stop = function() {
@@ -36,48 +45,42 @@ YoutubeManager.prototype.play = function() {
    }
 
    this.player.clearVideo();
+   this.player.setPlaybackQuality("hd1080")
    this.player.playVideo();
 }
 
 YoutubeManager.prototype.load = function() {
-   
-   if(this.player){
-      this.play();
-      return;
-   }
-   
-   var me = this;
 
    this.player = new YT.Player('maperialVideo', {
       width: '843',
       height: '480',
-      videoId: '2BvMpUnixEw',
       events: {
          'onStateChange': function (event) {
             switch (event.data) {
-            case -1:
-//               console.log ('unstarted');
-               me.play();
-               break;
-            case 0:
-//               console.log ('ended');
-               me.stop();
-               break;
-            case 1:
-//               console.log ('playing');
-               break;
-            case 2:
-//               console.log ('paused');
-               break;
-            case 3:
-//               console.log ('buffering');
-               break;
-            case 5:
-//               console.log ('video cued');
-               break;
+               case -1:
+                console.log ('unstarted');
+                  me.play();
+                  break;
+               case 0:
+                console.log ('ended');
+                  me.stop();
+                  break;
+               case 1:
+                console.log ('playing');
+                  break;
+               case 2:
+                console.log ('paused');
+                  break;
+               case 3:
+                console.log ('buffering');
+                  break;
+               case 5:
+                console.log ('video cued');
+                  break;
             }
          }
-      }
+      },
+      videoId: this.lang == "en" ? "mcgmeJcLxHU" : "yI0nY6x3Fkc"
    });
 }
 
