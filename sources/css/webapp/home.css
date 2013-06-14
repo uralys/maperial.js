@@ -104,6 +104,16 @@
 	margin-bottom: 10px;
 }
 
+.homeText {
+	margin-bottom: 0px;
+	font-size: 15px!important;
+}
+
+.home-separator {
+	margin-top: 10px;
+	margin-bottom: -20px;
+}
+
 .home-container {
 	margin-bottom:25px;
 }
@@ -253,8 +263,8 @@
 
 /*--------------------------------*/
 .homeIcon {
-	margin-top: 30px!important;
-	margin-bottom: 30px!important;
+	margin-top: 16px!important;
+	margin-bottom: -3px!important;
 }
 
 .homeTitle {

@@ -147,10 +147,17 @@ MapRenderer.prototype.removeListeners = function () {
 //----------------------------------------------------------------------//
 
 MapRenderer.prototype.fitToSize = function () {
+   console.log("fitToSize")
+
    if(this.gl){
       this.gl.viewportWidth  = this.context.mapCanvas.width();
       this.gl.viewportHeight = this.context.mapCanvas.height();
+      console.log(this.gl.viewportWidth, this.gl.viewportHeight)
    }
+   else{
+      console.log("---------> NUBMP")      
+   }
+   
 }
 
 //----------------------------------------------------------------------//
@@ -319,7 +326,8 @@ MapRenderer.prototype.Start = function () {
    try {
       this.gl = this.context.mapCanvas[0].getContext("experimental-webgl");
       this.fitToSize();
-   } catch (e) { }
+   } catch (e) {}
+   
    if (!this.gl) {
       console.log("Could not initialise WebGL")
       window.location.href = "http://www.maperial.com/#/usechrome";

@@ -90,7 +90,10 @@ Tile.prototype.Release = function() {
       try{
          this.layers[i].Release();
       }
-      catch(e){}
+      catch(e){
+         console.log("------------> tile.Release")
+         console.log(e)
+      } 
    }
    
    var gl = this.gl;

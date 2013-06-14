@@ -100,14 +100,18 @@ SourcesManager.prototype.centerWMS = function (src, type) {
 
 SourcesManager.prototype.releaseEverything = function () {
 
-   this.stopEverything()
-   
    for(requestId in this.requests){
       try{
          this.requests[requestId].abort();
       }
-      catch(e){}
+      catch(e){
+         console.log("------------> releaseEverything")
+         console.log(e)
+      }
    }
+
+   this.stopEverything()
+   
 }
 
 SourcesManager.prototype.stopEverything = function () {
@@ -135,7 +139,10 @@ SourcesManager.prototype.release = function (x, y ,z) {
          try{
             this.requests[requestId].abort();
          }
-         catch(e){}
+         catch(e){
+            console.log("------------> release")
+            console.log(e)
+         }
       }
       
       delete this.data[requestId];
@@ -296,7 +303,10 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
       if ( ! me.load[requestId] ) {
          try{ 
             me.requests[requestId].abort(); 
-         }catch(e){} 
+         }catch(e){
+            console.log("------------> LoadRaster")
+            console.log(e)
+         } 
       }
    }
    var tm = setTimeout(ajaxTimeout, Maperial.tileDLTimeOut);
