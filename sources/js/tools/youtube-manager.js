@@ -80,7 +80,7 @@ YoutubeManager.prototype.load = function() {
             }
          }
       },
-      videoId: this.lang == "en" ? "mcgmeJcLxHU" : "yI0nY6x3Fkc"
+      videoId: this.lang == "en" ? "Ba7Iwek--SU" : "Z2XgfBkJjj4"
    });
 }
 
