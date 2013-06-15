@@ -17,8 +17,8 @@ HUD.prototype.buildDataPanel = function(params, callBack) {
          "   <div class='span6 offset2' }}>" +
          "      <p class=\"compositionSettingsTitle\">Data</p>" +
          "   </div>"+
-         "   <div class='span1 offset3 btn-small btn-primary' }}>"+
-         "      <i class='icon-arrow-right icon-white'></i>"+
+         "   <div class='span1 offset3 touchable' }}>"+
+         "      <i class='icon-remove icon-white'></i>"+
          "   </div>"+
          "<div class='row-fluid'>");
 

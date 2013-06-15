@@ -15,8 +15,8 @@ HUD.prototype.buildBasemapsPanel = function(params, callBack) {
          "   <div class='span6 offset1' }}>" +
          "      <p class=\"compositionSettingsTitle\">__Maperial customisable basemaps</p>" +
          "   </div>"+
-         "   <div class='span1 offset3 btn-small btn-primary' }}>"+
-         "      <i class='icon-arrow-right icon-white'></i>"+
+         "   <div class='span1 offset4 touchable' }}>"+
+         "      <i class='icon-remove icon-white'></i>"+
          "   </div>"+
          "<div class='row-fluid'>");
 

@@ -535,6 +535,11 @@
 .touchable {
 	cursor: hand;
 	cursor: pointer;
+	opacity:0.8;
+}
+
+.touchable:hover {
+	opacity:1;
 }
 
 .movable {
