@@ -9,20 +9,6 @@ function Tile (maperial, x, y, z) {
    this.x         = x;
    this.y         = y;
    this.z         = z;
-   
-   this.layers    = {};
-
-   this.assets       = maperial.context.assets;
-   this.gl           = this.assets.ctx;
-
-   // preparing double buffering to render as texture !
-   this.frameBufferL = [];
-   this.texL         = [];
-   this.tex          = null;
-
-   //--------------------------------//
-
-   this.nbErrors     = 0;
 
    //--------------------------------//
 
@@ -32,15 +18,27 @@ function Tile (maperial, x, y, z) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.Init = function () {
+
+   this.assets       = this.maperial.context.assets;
+   this.gl           = this.assets.ctx;
+
+   // preparing double buffering to render as texture !
+   this.frameBufferL = [];
+   this.texL         = [];
+   this.tex          = null;
    this.nbErrors = 0;
-   this.initLayers();
+   
+   this.buildLayers();
    this.maperial.sourcesManager.loadSources(this.x, this.y, this.z);
+
    this.prepareBuffering();
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.initLayers = function () {
+Tile.prototype.buildLayers = function () {
+
+   this.layers    = {};
 
    for(var i = 0; i< this.config.layers.length; i++){
 
@@ -92,7 +90,7 @@ Tile.prototype.Release = function() {
       }
       catch(e){
          console.log("------------> tile.Release")
-         console.log(e)
+         console.log(e, this.layers[i])
       } 
    }
    
@@ -106,20 +104,21 @@ Tile.prototype.Release = function() {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.Reset = function ( id , onlyFuse) {
-   if(this.IsLoaded()) {
-      onlyFuse = (typeof(onlyFuse)==='undefined')?false:onlyFuse;
-      if (!onlyFuse) {
-         if( typeof(id)==='undefined' || id < 0 || id >= this.layers.length) {
-            for (i in this.layers) {      
-               this.layers[i].Reset ( );
-            }
-         }
-         else {
-            this.layers[id].Reset ( );
+
+   onlyFuse = (typeof(onlyFuse)==='undefined')?false:onlyFuse;
+   if (!onlyFuse) {
+      if( typeof(id)==='undefined' || id < 0 || id >= this.layers.length) {
+         for (i in this.layers) {      
+            this.layers[i].Reset ( );
          }
       }
-      this.tex = null;
+      else {
+         if(this.layers[id])
+            this.layers[id].Reset ( );
+      }
    }
+   this.tex = null;
+   
 }
 
 Tile.prototype.IsUpToDate = function ( ) {
@@ -128,10 +127,10 @@ Tile.prototype.IsUpToDate = function ( ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.appendDataToLayers = function ( source, data ) {
+Tile.prototype.sourceReady = function ( source, data ) {
    
    if(!data){
-      console.log("-------> DATA NULL !")
+      console.log("-------> tile.sourceReady : DATA NULL !")
       //this.nbErrors ++;
       this.Release();
       this.Reset();

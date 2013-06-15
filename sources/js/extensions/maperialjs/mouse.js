@@ -101,7 +101,7 @@ MapMouse.prototype.wheel = function (event, delta) {
    
    if(this.hasJustWheeled())
       return;
-
+   
    if (delta > 0) {
       this.context.zoom = Math.min(18, this.context.zoom + 1);
       this.context.centerM = this.convertCanvasPointToMeters(this.context.mouseP);
@@ -132,6 +132,7 @@ MapMouse.prototype.wheel = function (event, delta) {
 MapMouse.prototype.hasJustWheeled = function () {
    var hasJustWheeled = new Date().getTime() - this.lastWheelMillis < 300;
    this.lastWheelMillis = new Date().getTime();
+
    return hasJustWheeled;
 }
 

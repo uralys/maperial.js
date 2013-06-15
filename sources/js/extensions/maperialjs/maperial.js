@@ -80,6 +80,17 @@ Maperial.prototype.restart = function(){
 
 //==================================================================//
 
+/**
+ * Must be called whenever the config is changed, in order to build Maperial again
+ */
+Maperial.prototype.refresh = function(){
+   console.log("Refreshing MaperialJS...", this.config);
+   this.mapRenderer.refresh();
+   this.hud.display()
+}
+
+//==================================================================//
+
 Maperial.prototype.apply = function(config){
    console.log("MaperialJS applies ", config);
    this.config = config;
@@ -89,18 +100,31 @@ Maperial.prototype.apply = function(config){
 
 //==================================================================//
 
-Maperial.prototype.reset = function(){
-
-   console.log("Reset maperial...");
+Maperial.prototype.stop = function(){
 
    try{
       if(this.mapRenderer){
          this.mapRenderer.Stop();
-         this.mapRenderer.reset();
       }
    }catch(e){
    }
 
+}
+//==================================================================//
+
+Maperial.prototype.reset = function(){
+
+   console.log("Reset maperial...");
+
+   this.stop();
+
+   try{
+      if(this.mapRenderer){
+         this.mapRenderer.reset();
+      }
+   }catch(e){
+   }
+   
    try{
       if(this.mapMover)
          this.mapMover.removeListeners();
@@ -550,13 +574,19 @@ Maperial.prototype.refreshScreen = function() {
    try{
       this.mapRenderer.fitToSize();
    }
-   catch(e){}
+   catch(e){
+      console.log("------------> fito size pb")
+      console.log(e)
+   }
 
    try{
       this.hud.placeElements();
       this.mapMover.resizeDrawers();
    }
-   catch(e){}
+   catch(e){
+      console.log("------------> placing pb")
+      console.log(e)
+   }
 }
 
 //==================================================================//

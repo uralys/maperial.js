@@ -28,34 +28,39 @@ SourcesManager.prototype.buildSources = function(layers){
    console.log("  fetching sources...");
 
    for(var i = 0; i < layers.length; i++){
-      
-      if(this.sourceRegistered(layers[i].source.id))
-         continue
-         
-      var type = layers[i].source.type;
-      var params;
-      
-      switch(type){
-         case Source.MaperialOSM:
-         case Source.SRTM:
-            // no params required for SourcesManager
-            break;
-            
-         case Source.Raster:
-            params = {rasterUID : layers[i].source.params.uid };
-            break;
-
-         case Source.Images:
-         case Source.WMS:
-            params = {src : layers[i].source.params.src }
-            this.centerWMS( layers[i].source.params.src, "prepare" )
-            break;
-      }
-
-      console.log("     adding source " + layers[i].source.id);
-      this.sources.push(new Source(layers[i].source.id, type, params));
+      this.addSource(layers[i])
    }
 
+}
+
+
+SourcesManager.prototype.addSource = function(layer){
+   
+   if(this.sourceRegistered(layer.source.id))
+      return
+      
+   var type = layer.source.type;
+   var params;
+   
+   switch(type){
+      case Source.MaperialOSM:
+      case Source.SRTM:
+         // no params required for SourcesManager
+         break;
+         
+      case Source.Raster:
+         params = {rasterUID : layer.source.params.uid };
+         break;
+
+      case Source.Images:
+      case Source.WMS:
+         params = {src : layer.source.params.src }
+         this.centerWMS( layer.source.params.src, "prepare" )
+         break;
+   }
+
+   console.log("     adding source " + layer.source.id);
+   this.sources.push(new Source(layer.source.id, type, params));
 }
 
 /**
@@ -140,8 +145,7 @@ SourcesManager.prototype.release = function (x, y ,z) {
             this.requests[requestId].abort();
          }
          catch(e){
-            console.log("------------> release")
-            console.log(e)
+            console.log("------------> release ", e)
          }
       }
       
@@ -162,8 +166,11 @@ SourcesManager.prototype.loadSources = function (x, y ,z) {
       var source = this.sources[i];
       var requestId = this.requestId(source, x, y, z);
 
-      if (this.requests[requestId])
-         return false;
+      if (this.requests[requestId]){
+         continue
+      }
+
+      console.log("------> load source " + requestId)
 
       switch(source.type){
          case Source.SRTM:
@@ -199,7 +206,7 @@ SourcesManager.prototype.LoadVectorial = function ( source, x, y, z ) {
       success  : function(data) {
          if ( ! data ) {
             me.errors[requestId] = true;
-            me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
+            //me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
          }
          else {
             me.data[requestId] = data;
@@ -212,7 +219,7 @@ SourcesManager.prototype.LoadVectorial = function ( source, x, y, z ) {
          me.errors[requestId]  = true;
          me.load[requestId]    = true;
 
-         me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
+         //me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
       }
    });
 }
@@ -241,7 +248,7 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
    this.requests[requestId].onerror = function (oEvent) {
       me.errors[requestId] = true;
       me.load[requestId]  = true;
-      me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
+     // me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
    }
 
    this.requests[requestId].abort = function () {
@@ -296,7 +303,7 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
    this.requests[requestId].onerror = function (oEvent) {
       me.errors[requestId] = true;
       me.load[requestId]  = true;
-      me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
+      //me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
    }
    
    function ajaxTimeout() { 
@@ -317,7 +324,7 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 SourcesManager.prototype.isTileLoaded = function ( x, y, z) {
-
+   
    for(var i = 0; i< this.sources.length; i++){
       var source = this.sources[i];
       var requestId = this.requestId(source, x, y, z);

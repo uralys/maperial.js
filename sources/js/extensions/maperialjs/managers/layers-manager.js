@@ -68,9 +68,10 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
          break;
 
    }
-
+   
    this.maperial.config.layers.push(layerConfig);
-   this.maperial.restart();
+   this.maperial.sourcesManager.addSource(layerConfig)
+   this.maperial.refresh()
 }
 
 //-------------------------------------------//
@@ -144,7 +145,8 @@ LayersManager.prototype.exchangeLayers = function(exchangedIds) {
       this.maperial.config.map.osmSets[i].layerPosition = exchangedIds[this.maperial.config.map.osmSets[i].layerPosition];
 
    this.maperial.config.layers = newLayers;
-   this.maperial.restart();
+   //this.maperial.restart();
+   this.maperial.refresh()
 }
 
 

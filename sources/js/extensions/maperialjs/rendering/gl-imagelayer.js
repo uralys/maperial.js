@@ -26,9 +26,8 @@ ImageLayer.prototype.Init = function ( data ) {
 }
 
 ImageLayer.prototype.Reset = function (  ) {
-   var gl = this.gl;
    if (this.tex) {
-      gl.deleteTexture ( this.tex );
+      this.gl.deleteTexture ( this.tex );
       delete this.tex;
       this.tex = null;
    }

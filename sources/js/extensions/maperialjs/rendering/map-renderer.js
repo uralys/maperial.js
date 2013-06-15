@@ -34,6 +34,18 @@ MapRenderer.prototype.reset = function () {
    
    this.DrawScene(true, true);
 }
+
+//----------------------------------------------------------------------//
+
+MapRenderer.prototype.refresh = function () {
+
+   for (var key in this.tileCache) {
+      this.tileCache[key].Init();
+   }
+   
+   // affiner + de toute facon ca marche pas ? 
+   this.DrawScene(true, true);
+}
    
 //----------------------------------------------------------------------//
    
@@ -124,7 +136,7 @@ MapRenderer.prototype.sourceReady = function ( source, data, x, y, z ) {
    var key = x + "," + y + "," + z;
    
    if ( this.tileCache[key] != null ) {
-      this.tileCache[key].appendDataToLayers(source, data);
+      this.tileCache[key].sourceReady(source, data);
    }
 }
 
@@ -324,7 +336,11 @@ MapRenderer.prototype.Start = function () {
    console.log("  starting rendering...");
 
    try {
-      this.gl = this.context.mapCanvas[0].getContext("experimental-webgl");
+      this.gl = null;
+      
+      // Try to grab the standard context. If it fails, fallback to experimental.
+      this.gl = this.context.mapCanvas[0].getContext("webgl") || this.context.mapCanvas[0].getContext("experimental-webgl");
+//      this.gl = this.context.mapCanvas[0].getContext("experimental-webgl");
       this.fitToSize();
    } catch (e) {}
    

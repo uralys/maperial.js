@@ -281,6 +281,7 @@
          case LayersManager.SRTM:
          case LayersManager.Shade:
             App.maperial.layersManager.addLayer(sourceType);
+            MapCreationController.refreshLayersPanel()
             break;
       }
    }
@@ -326,18 +327,21 @@
       
       console.log("params : " + params)
       App.maperial.layersManager.addLayer(Source.MaperialOSM, params);
+      MapCreationController.refreshLayersPanel()
    }
 
    //--------------------------------------//
    
    MapCreationController.addImagesLayer = function(src){
       App.maperial.layersManager.addLayer(Source.Images, [src]);
+      MapCreationController.refreshLayersPanel()
    }
    
    //--------------------------------------//
 
    MapCreationController.addWMSLayer = function(src){
       App.maperial.layersManager.addLayer(Source.WMS, [src]);
+      MapCreationController.refreshLayersPanel()
    }
    
    //--------------------------------------//
@@ -457,6 +461,7 @@
       else{
          console.log("adding a new raster");
          App.maperial.layersManager.addLayer(Source.Raster, [raster.uid]);
+         MapCreationController.refreshLayersPanel()
       }
    }
    

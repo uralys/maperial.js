@@ -108,7 +108,7 @@ MapMover.prototype.moveMap = function (dx, dy) {
    this.context.centerM.x -= dx * r;
    this.context.centerM.y += dy * r;
    this.maperial.refreshCurrentLatLon();
-
+   
    $(window).trigger(MaperialEvents.MAP_MOVING);
 }
 
