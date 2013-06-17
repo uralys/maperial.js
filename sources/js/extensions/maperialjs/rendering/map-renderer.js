@@ -25,7 +25,7 @@ MapRenderer.prototype.reset = function () {
    // unload every tile
    for (var key in this.tileCache) {
       this.tileCache[key].Release();
-      this.tileCache[key].Reset();
+      this.tileCache[key].Reset(false);
       delete this.tileCache[key];
    }
 
@@ -37,16 +37,59 @@ MapRenderer.prototype.reset = function () {
 
 //----------------------------------------------------------------------//
 
-MapRenderer.prototype.refresh = function () {
-
-   for (var key in this.tileCache) {
-      this.tileCache[key].Init();
-   }
-   
-   // affiner + de toute facon ca marche pas ? 
-   this.DrawScene(true, true);
+MapRenderer.prototype.Stop = function () {
+   console.log("  stopping rendering...");
+   clearInterval(this.drawSceneInterval);
+   this.drawSceneInterval = null;
 }
+
+MapRenderer.prototype.Start = function () {
+
+   console.log("  starting rendering...");
+
+   try {
+      this.gl = null;
+      
+      // Try to grab the standard context. If it fails, fallback to experimental.
+      this.gl = this.context.mapCanvas[0].getContext("webgl") || this.context.mapCanvas[0].getContext("experimental-webgl");
+//      this.gl = this.context.mapCanvas[0].getContext("experimental-webgl");
+      this.fitToSize();
+   } catch (e) {}
    
+   if (!this.gl) {
+      console.log("Could not initialise WebGL")
+      window.location.href = "http://www.maperial.com/#/usechrome";
+      return false;
+   }
+
+   this.gltools = new GLTools ()
+   this.InitGL()
+   
+   this.drawSceneInterval = setInterval( Utils.apply ( this, "DrawScene" ) , Maperial.refreshRate + 5 );
+   return true;
+} 
+
+//----------------------------------------------------------------------//
+
+
+MapRenderer.prototype.addLayer = function (layer) {
+   for (var key in this.tileCache) {
+      this.tileCache[key].addLayer(layer);
+   }
+}
+
+MapRenderer.prototype.removeLayer = function (position) {
+   for (var key in this.tileCache) {
+      this.tileCache[key].removeLayer(position);
+   }
+}
+
+MapRenderer.prototype.exchangeLayers = function (exchangedIds) {
+   for (var key in this.tileCache) {
+      this.tileCache[key].exchangeLayers(exchangedIds);
+   }
+}
+
 //----------------------------------------------------------------------//
    
 MapRenderer.prototype.initListeners = function () {
@@ -67,56 +110,56 @@ MapRenderer.prototype.initListeners = function () {
 
    $(window).on(MaperialEvents.STYLE_CHANGED, function(event, layerIndex){
       for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Reset ( layerIndex , false);
+         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
       }
    });
    
    $(window).on(MaperialEvents.COLORBAR_CHANGED, function(event, layerIndex){
       renderer.renderAllColorBars(); //optim : refresh que de la colorbar modifiée non ?
       for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Reset ( layerIndex , false);
+         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
       }
    });
    
    $(window).on(MaperialEvents.CONTRAST_CHANGED, function(event, layerIndex){
       for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Reset ( layerIndex , true);
+         var tile = renderer.tileCache[key].Refresh();
       }
    });
    
    $(window).on(MaperialEvents.BRIGHTNESS_CHANGED, function(event, layerIndex){
       for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Reset ( layerIndex , true);
+         var tile = renderer.tileCache[key].Refresh();
       }
    });
    
    $(window).on(MaperialEvents.BW_METHOD_CHANGED, function(event, layerIndex){
       for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Reset ( layerIndex , true);
+         var tile = renderer.tileCache[key].Refresh();
       }
    });
    
    $(window).on(MaperialEvents.ALPHA_CHANGED, function(event, layerIndex){
       for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Reset ( layerIndex , true);
+         var tile = renderer.tileCache[key].Refresh();
       }
    });
 
    $(window).on(MaperialEvents.XY_LIGHT_CHANGED, function(event, layerIndex){
       for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Reset ( layerIndex , false);
+         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
       }
    });
 
    $(window).on(MaperialEvents.Z_LIGHT_CHANGED, function(event, layerIndex){
       for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Reset ( layerIndex , false);
+         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
       }
    });
 
    $(window).on(MaperialEvents.SCALE_CHANGED, function(event, layerIndex){
       for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Reset ( layerIndex , false);
+         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
       }
    });
 
@@ -324,38 +367,6 @@ MapRenderer.prototype.renderAllColorBars = function () {
    }
    return true;
 }
-
-MapRenderer.prototype.Stop = function () {
-   console.log("  stopping rendering...");
-   clearInterval(this.drawSceneInterval);
-   this.drawSceneInterval = null;
-}
-
-MapRenderer.prototype.Start = function () {
-
-   console.log("  starting rendering...");
-
-   try {
-      this.gl = null;
-      
-      // Try to grab the standard context. If it fails, fallback to experimental.
-      this.gl = this.context.mapCanvas[0].getContext("webgl") || this.context.mapCanvas[0].getContext("experimental-webgl");
-//      this.gl = this.context.mapCanvas[0].getContext("experimental-webgl");
-      this.fitToSize();
-   } catch (e) {}
-   
-   if (!this.gl) {
-      console.log("Could not initialise WebGL")
-      window.location.href = "http://www.maperial.com/#/usechrome";
-      return false;
-   }
-
-   this.gltools = new GLTools ()
-   this.InitGL()
-   
-   this.drawSceneInterval = setInterval( Utils.apply ( this, "DrawScene" ) , Maperial.refreshRate + 5 );
-   return true;
-} 
 
 //----------------------------------------------------------------------//
 

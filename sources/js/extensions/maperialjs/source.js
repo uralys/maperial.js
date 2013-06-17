@@ -70,6 +70,8 @@ function Source (id, type, params) {
    this.id     = id;
    this.type   = type;
    this.params = params;
+   
+   this.nbLayers = 1;
 }
 
 //-----------------------------------------------------------------------------------//

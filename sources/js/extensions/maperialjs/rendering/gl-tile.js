@@ -26,44 +26,49 @@ Tile.prototype.Init = function () {
    this.frameBufferL = [];
    this.texL         = [];
    this.tex          = null;
-   this.nbErrors = 0;
+   this.nbErrors     = 0;
+
+   this.prepareBuffering();
    
    this.buildLayers();
    this.maperial.sourcesManager.loadSources(this.x, this.y, this.z);
-
-   this.prepareBuffering();
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.buildLayers = function () {
 
-   this.layers    = {};
+Tile.prototype.buildLayers = function () {
+   this.layers = [];
 
    for(var i = 0; i< this.config.layers.length; i++){
+      this.createLayerFromConfig(this.config.layers[i], i)
+   }
+}
 
-      switch(this.config.layers[i].type){
+//----------------------------------------------------------------------------------------------------------------------//
+
+Tile.prototype.createLayerFromConfig = function (layer, index) {
    
-         case LayersManager.Vector:
-            this.layers[i] = new VectorialLayer ( this.maperial , this.z);
-            break;
-   
-         case LayersManager.Raster:
-            this.layers[i] = new RasterLayer8    ( this.maperial , this.z);
-            break;
-   
-         case LayersManager.SRTM:
-            this.layers[i] = new RasterLayer16    ( this.maperial , this.z);
-            break;
-            
-         case LayersManager.Images:
-            this.layers[i] = new ImageLayer     ( this.maperial.context.assets.ctx , this.z);
-            break;
-            
-         case LayersManager.Shade:
-            this.layers[i] = new ShadeLayer    ( this.maperial , this.z);
-            break;
-      }
+   switch(layer.type){
+      case LayersManager.Vector:
+         this.layers.splice(index, 0, new VectorialLayer ( this.maperial , this.z));
+         break;
+         
+      case LayersManager.Raster:
+         this.layers.splice(index, 0, new RasterLayer8    ( this.maperial , this.z));
+         break;
+         
+      case LayersManager.SRTM:
+         this.layers.splice(index, 0, new RasterLayer16    ( this.maperial , this.z));
+         break;
+         
+      case LayersManager.Images:
+         this.layers.splice(index, 0, new ImageLayer     ( this.maperial.context.assets.ctx , this.z));
+         break;
+         
+      case LayersManager.Shade:
+         this.layers.splice(index, 0, new ShadeLayer    ( this.maperial , this.z));
+         break;
    }
 }
 
@@ -76,6 +81,46 @@ Tile.prototype.prepareBuffering = function () {
       this.frameBufferL.push        ( fbtx[0] );
       this.texL.push                ( fbtx[1] );
    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------//
+// PUBLIC
+//----------------------------------------------------------------------------------------------------------------------//
+
+Tile.prototype.addLayer = function (layerConfig) {
+   this.createLayerFromConfig(layerConfig, this.config.layers.length - 1)
+   this.maperial.sourcesManager.loadSources(this.x, this.y, this.z);
+   this.Refresh();
+}
+
+Tile.prototype.removeLayer = function (position) {
+   if(this.layers.length > 0){
+      this.layers[position].Release();
+      this.layers.splice(position, 1)
+      this.Refresh();
+   }
+   //  else : all layers are released because no layer remains
+}
+
+/**
+ * Exactly the same as LayersManager.exchangeLayers
+ * exchangedIds contains a mapping between old layerIndexes and the new one, after a layer reposition
+ * example, with 3 layers, after moving layer0 (ui bottom) to the top (becomes layer 2) : 
+ * exchangedIds = {
+     {0: 1},
+     {1: 2},
+     {2: 0}
+   } 
+ */
+Tile.prototype.exchangeLayers = function(exchangedIds) {
+
+   var newLayers = [];
+   for(id in exchangedIds){
+      newLayers.push(this.layers[exchangedIds[id]]);
+   }
+
+   this.layers = newLayers;
+   this.Refresh();
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -103,26 +148,35 @@ Tile.prototype.Release = function() {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.Reset = function ( id , onlyFuse) {
-
-   onlyFuse = (typeof(onlyFuse)==='undefined')?false:onlyFuse;
-   if (!onlyFuse) {
-      if( typeof(id)==='undefined' || id < 0 || id >= this.layers.length) {
-         for (i in this.layers) {      
-            this.layers[i].Reset ( );
-         }
-      }
-      else {
-         if(this.layers[id])
-            this.layers[id].Reset ( );
-      }
-   }
+Tile.prototype.Refresh = function () {
    this.tex = null;
-   
 }
 
 Tile.prototype.IsUpToDate = function ( ) {
    return this.tex;
+}
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+Tile.prototype.ResetLayer = function (id) {
+
+   if(this.layers[id])
+      this.layers[id].Reset();
+   
+   this.Refresh();
+}
+
+Tile.prototype.Reset = function (onlyFuse) {
+   
+   onlyFuse = (typeof(onlyFuse)==='undefined')?false:onlyFuse;
+   
+   if (!onlyFuse) {
+      for (var i = 0; i < this.layers.length; i++) {      
+         this.layers[i].Reset();
+      }
+   }
+
+   this.Refresh();
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -154,7 +208,7 @@ Tile.prototype.sourceReady = function ( source, data ) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.RenderVectorialLayers = function ( context, wx, wy ) {
-   for (i in this.layers) {
+   for (var i = 0; i < this.layers.length; i++) {
       if (this.layers[i].GetType() == LayersManager.Vector && this.layers[i].IsUpToDate() && this.layers[i].cnv) {
          context.drawImage(this.layers[i].cnv, wx, wy);
       }
@@ -219,7 +273,7 @@ Tile.prototype.Update = function ( maxTime ) {
 
    if ( maxTime - diffT > 0 ) {
       var ready = true;
-      for (var i in this.layers) {
+      for (var i = 0; i < this.layers.length; i++) {
          if (! this.layers[i].IsUpToDate ( ) )
             ready = false;
       }

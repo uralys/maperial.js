@@ -24,20 +24,21 @@ function SourcesManager(maperial){
  */
 //TODO : tout pourri ! on doit pouvoir avoir plusieurs rasters
 SourcesManager.prototype.buildSources = function(layers){
-
    console.log("  fetching sources...");
 
    for(var i = 0; i < layers.length; i++){
       this.addSource(layers[i])
    }
-
 }
-
 
 SourcesManager.prototype.addSource = function(layer){
    
-   if(this.sourceRegistered(layer.source.id))
+   var sourceRegistered = this.getSource(layer.source.id)
+   
+   if(sourceRegistered){
+      sourceRegistered.nbLayersUsingTheSource ++
       return
+   }
       
    var type = layer.source.type;
    var params;
@@ -64,16 +65,33 @@ SourcesManager.prototype.addSource = function(layer){
 }
 
 /**
- * Return true if the source with this id is already in this.sources
+ * Return the source with this id is already in this.sources
  */
-SourcesManager.prototype.sourceRegistered = function(id){
+SourcesManager.prototype.getSource = function(id){
    
    for(var i = 0; i < this.sources.length; i++){
       if(this.sources[i].id == id)
-         return true
+         return this.sources[i]
    }
    
-   return false
+   return null
+}
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+SourcesManager.prototype.removeSource = function(layer){
+
+   var source = this.getSource(layer.source.id)
+   source.nbLayers --
+   
+   if(source.nbLayers == 0){
+      for(var i = 0; i < this.sources.length; i++){
+         if(this.sources[i].id == layer.source.id)
+            break;
+      }
+      
+      this.sources.splice(i, 1);
+   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -167,10 +185,9 @@ SourcesManager.prototype.loadSources = function (x, y ,z) {
       var requestId = this.requestId(source, x, y, z);
 
       if (this.requests[requestId]){
+         this.maperial.mapRenderer.sourceReady(source, this.data[requestId], x, y, z);
          continue
       }
-
-      console.log("------> load source " + requestId)
 
       switch(source.type){
          case Source.SRTM:
