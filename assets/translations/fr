@@ -104,7 +104,7 @@
     "vivienText2"		: "",
 
     "JobsText"			: "Nous travaillons en méthode Agile avec les dernières technologies Web, pour proposer un outil à la fois moderne, souple et puissant.",
-    "JobsText2"			: "Vous êtes experts jQuery, EmberJS, Play framework ou Python et n'avez pas peur de ne plus dormir la nuit ? Votre profil pourrait nous intéresser.",
+    "JobsText2"			: "Vous êtes experts jQuery, EmberJS, Play framework ou Python ? Votre profil pourrait nous intéresser.",
     
     "CreditsTitle"		: "Nos outils",
     "CreditsTitle2"		: "Plugins jQuery",
