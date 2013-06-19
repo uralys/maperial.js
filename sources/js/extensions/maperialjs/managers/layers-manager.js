@@ -69,9 +69,34 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
 
    }
    
+   //-----------------------//
+
+   // la config est modifiee ici plutot que dans le refresh
+   // ainsi a la fin de cet appel, la config est prete dans tous les cas, meme Source.MaperialOSM
+   // et donc mapCreationController va pouvoir faire son refresh de panel a partir de la config sans pb.
    this.maperial.config.layers.push(layerConfig);
-   this.maperial.sourcesManager.addSource(layerConfig)
-   this.maperial.refresh()
+   
+   //-----------------------//
+   
+   var me = this
+   var refresh = function() { return me.refreshMaperialForLayerAdded(layerConfig) }
+   
+   if(sourceType == Source.MaperialOSM)
+      this.maperial.stylesManager.fetchStyles([layerConfig.params.styles[layerConfig.params.selectedStyle]], refresh)
+   else
+      this.refreshMaperialForLayerAdded(layerConfig)
+   
+}
+
+LayersManager.prototype.refreshMaperialForLayerAdded = function(layerConfig) {
+   if(this.maperial.config.layers.length == 1){
+      this.maperial.restart()      
+   }
+   else{
+      this.maperial.sourcesManager.addSource(layerConfig)
+      this.maperial.mapRenderer.addLayer(layerConfig)
+      this.maperial.hud.refresh()
+   }
 }
 
 //-------------------------------------------//
@@ -84,7 +109,17 @@ LayersManager.prototype.deleteLayer = function(layerRemovedPosition) {
          this.maperial.config.map.osmSets[i].layerPosition--;
    }
 
-   this.maperial.restart();
+   //-----------------------//
+   
+   if(this.maperial.config.layers.length == 0){
+      this.maperial.mapRenderer.Stop()
+      this.maperial.mapRenderer.reset()
+   }
+   
+   this.maperial.sourcesManager.removeSource(layerRemoved)
+   this.maperial.mapRenderer.removeLayer(layerRemovedPosition)
+   this.maperial.hud.refresh()
+   
 }
 
 //=======================================================================================//
@@ -145,8 +180,9 @@ LayersManager.prototype.exchangeLayers = function(exchangedIds) {
       this.maperial.config.map.osmSets[i].layerPosition = exchangedIds[this.maperial.config.map.osmSets[i].layerPosition];
 
    this.maperial.config.layers = newLayers;
-   //this.maperial.restart();
-   this.maperial.refresh()
+
+   this.maperial.mapRenderer.exchangeLayers(exchangedIds)
+   this.maperial.hud.refresh()
 }
 
 

@@ -397,7 +397,8 @@
    
    MapCreationController.deleteLayer = function(layerIndex){
       App.maperial.layersManager.deleteLayer(layerIndex);
-      
+      MapCreationController.refreshLayersPanel()
+
       if(App.maperial.config.layers.length == 0)
          MapCreationController.openBasemaps()
    }

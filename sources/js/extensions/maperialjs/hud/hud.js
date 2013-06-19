@@ -4,55 +4,19 @@
 function HUD(maperial){
 
    console.log("  building HUD...");
-   
+
    this.maperial = maperial;
    this.context = this.maperial.context;
-   
+
    if(this.maperial.config){
       this.buildTriggers();
       this.buildControls();
-      
-      this.display();
-      
+
+      this.refreshDisplay();
+
       this.initListeners();
       this.updateScale();
    }
-}
-
-//----------------------------------------------------------------------//
-
-HUD.prototype.element = function(name){
-   return $("#"+name+this.maperial.tagId);
-}
-
-HUD.prototype.panel = function(name){
-   return this.element(HUD.PANEL+name);
-}
-
-HUD.prototype.trigger = function(name){
-   return this.element(HUD.TRIGGER+name);
-}
-
-HUD.prototype.icon = function(name){
-   return this.element(HUD.ICON+name);
-}
-
-HUD.prototype.allPanels = function(){
-   var panels = $("#"+this.maperial.tagId).find("."+HUD.PANEL);
-   var panelsWebapp = $(".panel-webapp");
-   
-   return $.merge(panels, panelsWebapp);
-}
-
-HUD.prototype.allTriggers = function(){
-   var triggers = $("#"+this.maperial.tagId).find("."+HUD.TRIGGER);
-   var triggersWebapp = $(".trigger-webapp");
-   
-   return $.merge(triggers, triggersWebapp);
-}
-
-HUD.prototype.controlZoomCursor = function(){
-   return $("#control-zoom"+this.maperial.tagId+" a");
 }
 
 //----------------------------------------------------------------------//
@@ -61,14 +25,14 @@ HUD.TRIGGER                = "trigger";
 HUD.PANEL                  = "panel";
 HUD.ICON                   = "icon";
 
-// hud options user only
+//hud options user only
 HUD.SETTINGS               = "HUDSettings";
 HUD.COLORBAR               = "ColorBar";
 HUD.QUICK_EDIT             = "QuickEdit";
 HUD.DETAILS_MENU           = "DetailsMenu";
 HUD.ZOOMS                  = "Zooms";
 
-// hud options user + viewer
+//hud options user + viewer
 HUD.CONTROLS               = "Controls";
 HUD.SCALE                  = "Scale";
 HUD.GEOLOC                 = "Geoloc";
@@ -93,30 +57,17 @@ HUD.RASTER_DATA           = "HUD.RASTER_DATA ";
 //----------------------------------------------------------------------//
 
 HUD.VIEWER_OPTIONS = {
-    "0" : {element : HUD.CONTROLS,        label : "Controls",        defaultDisableDrag : true  },
-    "1" : {element : HUD.SCALE,           label : "Scale",           defaultDisableDrag : false },
-    "2" : {element : HUD.GEOLOC,          label : "Geoloc",          defaultDisableDrag : false },
-    "3" : {element : HUD.LATLON,          label : "Lat/Lon",         defaultDisableDrag : false },
-    "4" : {element : HUD.MAPKEY,          label : "Map Key",         defaultDisableDrag : false },
-    "5" : {element : HUD.SWITCH_IMAGES,   label : "Switch Basemap",  defaultDisableDrag : true },
-    "6" : {element : HUD.BASEMAPS,        label : "Basemaps",        defaultDisableDrag : true },
-    "7" : {element : HUD.DATA,            label : "Data",            defaultDisableDrag : true },
+      "0" : {element : HUD.CONTROLS,        label : "Controls",        defaultDisableDrag : true  },
+      "1" : {element : HUD.SCALE,           label : "Scale",           defaultDisableDrag : false },
+      "2" : {element : HUD.GEOLOC,          label : "Geoloc",          defaultDisableDrag : false },
+      "3" : {element : HUD.LATLON,          label : "Lat/Lon",         defaultDisableDrag : false },
+      "4" : {element : HUD.MAPKEY,          label : "Map Key",         defaultDisableDrag : false },
+      "5" : {element : HUD.SWITCH_IMAGES,   label : "Switch Basemap",  defaultDisableDrag : true },
+      "6" : {element : HUD.BASEMAPS,        label : "Basemaps",        defaultDisableDrag : true },
+      "7" : {element : HUD.DATA,            label : "Data",            defaultDisableDrag : true },
 //    "6" : {element : HUD.COMPOSITIONS,    label : "Compositions",    defaultDisableDrag : false },
 //    "7" : {element : HUD.LAYER_SETTINGS,  label : "Layer Settings",  defaultDisableDrag : false },
 //    "8" : {element : HUD.MAGNIFIER,       label : "Magnifier",       defaultDisableDrag : false },
-}
-
-//----------------------------------------------------------------------//
-
-HUD.applyDefaultHUD = function(config) {
-
-   for (i in HUD.VIEWER_OPTIONS) {
-      var element             = HUD.VIEWER_OPTIONS[i].element;
-      var label               = HUD.VIEWER_OPTIONS[i].label;
-      var defaultDisableDrag  = HUD.VIEWER_OPTIONS[i].defaultDisableDrag;
-
-      config.hud.elements[element] = {show : false, type : HUD.PANEL, label : label, disableDrag : defaultDisableDrag };
-   }
 }
 
 //----------------------------------------------------------------------//
@@ -140,7 +91,6 @@ HUD.positions[HUD.ZOOMS]         = { left  : "50%",  bottom : "0"   };
 HUD.positions[HUD.BASEMAPS]      = { right : "-550", top    : "0"   };
 HUD.positions[HUD.DATA]          = { right : "-550", top    : "0"   };
 
-
 //----------------------------------------------------------------------//
 
 HUD.prototype.reset = function () {
@@ -151,9 +101,24 @@ HUD.prototype.reset = function () {
 //----------------------------------------------------------------------//
 
 HUD.prototype.refresh = function () {
+   console.log("refreshing HUD...");
    this.hideAllHUD();
+   this.refreshDisplay();
    this.placeElements();
-   this.showAllHUD();
+   console.log("HUD ready");
+}
+
+//----------------------------------------------------------------------//
+
+HUD.applyDefaultHUD = function(config) {
+
+   for (i in HUD.VIEWER_OPTIONS) {
+      var element             = HUD.VIEWER_OPTIONS[i].element;
+      var label               = HUD.VIEWER_OPTIONS[i].label;
+      var defaultDisableDrag  = HUD.VIEWER_OPTIONS[i].defaultDisableDrag;
+
+      config.hud.elements[element] = {show : false, type : HUD.PANEL, label : label, disableDrag : defaultDisableDrag };
+   }
 }
 
 //----------------------------------------------------------------------//
@@ -161,7 +126,7 @@ HUD.prototype.refresh = function () {
 HUD.prototype.initListeners = function () {
 
    var hud = this;
-   
+
    this.context.mapCanvas.on(MaperialEvents.UPDATE_LATLON, function(event, x, y){
       hud.updateLatLon();
    });
@@ -179,7 +144,7 @@ HUD.prototype.initListeners = function () {
    });
 
    $(window).on(MaperialEvents.STYLE_CHANGED, function(event, x, y){
-      hud.display(true);
+      hud.refreshDisplay(true);
    });
 }
 
@@ -191,7 +156,7 @@ HUD.prototype.removeListeners = function () {
    $(window).off(MaperialEvents.MAP_MOVING);
    $(window).off(MaperialEvents.ZOOM_CHANGED);
    $(window).off(MaperialEvents.ZOOM_TO_REFRESH);
-   
+
    this.allTriggers().unbind("click");
    this.allPanels().unbind("click");
    this.allTriggers().unbind("dragstart");
@@ -221,20 +186,20 @@ HUD.prototype.getMargin = function (property) {
 //----------------------------------------------------------------------//
 
 HUD.prototype.placeElements = function () {
-   
+
    for (element in this.maperial.config.hud.elements) {
 
       var position = HUD.positions[element];
-      
+
       // position in config overrides default position
       if(this.maperial.config.hud.elements[element].position){
          position = this.maperial.config.hud.elements[element].position;
       }
 
       for (property in position) {
-         
+
          var value = position[property];
-         
+
          if(position[property].indexOf("%") == -1){
             value = parseInt(value);
             this.placeElementAt(element, value, property);
@@ -245,7 +210,7 @@ HUD.prototype.placeElements = function () {
             var triggerHeight = this.trigger(element).height();
             var panelWidth = this.panel(element).width();
             var panelHeight = this.panel(element).height();
-            
+
             switch(property){
                case "top":
                case "bottom":
@@ -265,10 +230,10 @@ HUD.prototype.placeElements = function () {
 
             this.placeElementAt(element, value, property)
          }
-         
+
       }
    }
-   
+
    this.refreshAttribution()
 }
 
@@ -281,14 +246,14 @@ HUD.prototype.placeElementAt = function(element, value, property){
       elementName = element
       element = this.element(this.maperial.config.hud.elements[elementName].type+elementName)
    }
-      
+
    var margin = this.getMargin(property);
 
    var mapTop = this.context.mapCanvas[0].offsetTop;
    var mapLeft = this.context.mapCanvas[0].offsetLeft;
    var mapWidth = this.context.mapCanvas[0].offsetWidth;
    var mapHeight = this.context.mapCanvas[0].offsetHeight;
-   
+
    switch(property){
       case "top":
          value += mapTop;
@@ -313,16 +278,16 @@ HUD.prototype.placeElementAt = function(element, value, property){
          property = "left";
          break;
    }
-   
+
    element.css(property, value+"px");
-   
+
    if(elementName){
       this.panel(elementName).css(property, value+"px");
       this.trigger(elementName).css(property, value+"px");
    }
 }
 
-HUD.prototype.display = function(dontHideColorpickers){
+HUD.prototype.refreshDisplay = function(dontHideColorpickers){
    this.showAllHUD(dontHideColorpickers);
 
    if(this.maperial.config.hud.elements[HUD.SETTINGS])
@@ -344,13 +309,13 @@ HUD.prototype.display = function(dontHideColorpickers){
  * slider.change calls refreshZoom => infinite loop if no shunt !
  */
 HUD.prototype.refreshZoom = function(shuntSlider){
-   
+
    if(!shuntSlider)
       this.element("control-zoom").slider({value: this.context.zoom});
-   
+
    this.controlZoomCursor().html(this.context.zoom);
    $(window).trigger(MaperialEvents.ZOOM_CHANGED);
-   
+
 }
 
 //====================================================================================//
@@ -371,7 +336,7 @@ HUD.prototype.showAllHUD = function(dontHideColorpickers){
    }
 
    $(".tooltip").remove();
-   
+
    if(!dontHideColorpickers)
       $(".colorpicker").hide();
 }
@@ -386,7 +351,7 @@ HUD.prototype.putOnTop = function(element){
 }
 
 //====================================================================================//
-// SELECTION PANELS : TODO : extraire une "classe"
+//SELECTION PANELS : TODO : extraire une "classe"
 //====================================================================================//
 
 HUD.prototype.closeBasemaps = function(params, callBack){
@@ -416,16 +381,16 @@ HUD.prototype.openData = function(params, callBack){
 //====================================================================================//
 
 HUD.prototype.closePanel = function(params, callBack, panel){
-   
+
    var mapWidth = this.context.mapCanvas[0].offsetWidth;
    var mapLeft = this.context.mapCanvas[0].offsetLeft;
    var margin = this.getMargin("right");
-   
+
    var value = mapLeft + mapWidth + 550;
    value -= this.panel(panel).width();
    value -= margin;
    value -= 10;
-   
+
    this.panel(panel).animate({
       left: value,
       duration: 200,
@@ -436,19 +401,55 @@ HUD.prototype.closePanel = function(params, callBack, panel){
 //-------------------------------------------------//
 
 HUD.prototype.openPanel = function(params, callBack, panel){
-   
+
    var mapWidth = this.context.mapCanvas[0].offsetWidth;
    var mapLeft = this.context.mapCanvas[0].offsetLeft;
    var margin = this.getMargin("right");
-   
+
    var value = mapLeft + mapWidth - 220;
    value -= this.panel(panel).width();
    value -= margin;
    value -= 10;
-   
+
    this.panel(panel).animate({
       left: value, 
       duration: 200,
    });
-   
+
+}
+
+//----------------------------------------------------------------------//
+
+HUD.prototype.element = function(name){
+   return $("#"+name+this.maperial.tagId);
+}
+
+HUD.prototype.panel = function(name){
+   return this.element(HUD.PANEL+name);
+}
+
+HUD.prototype.trigger = function(name){
+   return this.element(HUD.TRIGGER+name);
+}
+
+HUD.prototype.icon = function(name){
+   return this.element(HUD.ICON+name);
+}
+
+HUD.prototype.allPanels = function(){
+   var panels = $("#"+this.maperial.tagId).find("."+HUD.PANEL);
+   var panelsWebapp = $(".panel-webapp");
+
+   return $.merge(panels, panelsWebapp);
+}
+
+HUD.prototype.allTriggers = function(){
+   var triggers = $("#"+this.maperial.tagId).find("."+HUD.TRIGGER);
+   var triggersWebapp = $(".trigger-webapp");
+
+   return $.merge(triggers, triggersWebapp);
+}
+
+HUD.prototype.controlZoomCursor = function(){
+   return $("#control-zoom"+this.maperial.tagId+" a");
 }

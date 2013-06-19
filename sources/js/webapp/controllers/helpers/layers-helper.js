@@ -126,11 +126,10 @@ LayersHelper.prototype.exchangeLayers = function(){
       var k = ($("#layers")[0].children.length-1) - i;
 
       exchangedIds[k] = layerIndex;
-      $("#layer_"+layerIndex).attr("id", "layer_"+k);
-
    }
-
+   
    this.maperial.layersManager.exchangeLayers(exchangedIds);
+   this.refreshLayersPanel()
 }
 
 //=================================================================================================================//
