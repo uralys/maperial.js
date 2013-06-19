@@ -40,11 +40,29 @@ ShadeLayer.prototype.Init = function ( data ) {
       }
       var byteArray              = new Uint8Array        ( newV );
       */
-      
+      /*
       var byteArray              = new Uint8Array        ( data['s'] );
       this.w                     = 256;      
       this.h                     = 256; 
       this.data                  = byteArray;
+      */
+      var byteArray              = new Uint8Array        ( data );
+      var nl = []
+      for ( var i = 0 ; i < 256*256*2 ; i = i+2 ) {
+         var a = ( byteArray[i] / 255.0 ) * 2.0 - 1.0;
+         var b = ( byteArray[i+1] / 255.0 ) * 2.0 - 1.0;
+         var tmp = - (a*a) - (b*b) + 1.0
+         var c = Math.sqrt( tmp );
+         
+         var tt = (a*a) + (b*b) + (c*c);
+         
+         nl.push(  Math.ceil( ((a + 1.0)/2.0) * 255));
+         nl.push(  Math.ceil( ((b + 1.0)/2.0) * 255));
+         nl.push(  Math.ceil( ((c + 1.0)/2.0) * 255));
+      }
+      this.data = new Uint8Array  (nl)
+      this.w                     = 256;      
+      this.h                     = 256; 
    }
 }
 
