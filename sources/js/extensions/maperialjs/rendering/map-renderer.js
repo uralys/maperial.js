@@ -58,7 +58,10 @@ MapRenderer.prototype.Start = function () {
    
    if (!this.gl) {
       console.log("Could not initialise WebGL")
-      window.location.href = "http://www.maperial.com/#/usechrome";
+      
+      if(window.location.hostname.indexOf("localhost") == -1)
+         window.location.href = "http://www.maperial.com/#/usechrome";
+      
       return false;
    }
 
