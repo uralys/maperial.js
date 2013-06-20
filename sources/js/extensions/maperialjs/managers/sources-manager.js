@@ -190,11 +190,11 @@ SourcesManager.prototype.loadSources = function (x, y ,z) {
       }
 
       switch(source.type){
-         case Source.SRTM:
          case Source.MaperialOSM:
             this.LoadVectorial ( source, x, y, z );
             break;
 
+         case Source.SRTM:
          case Source.Raster:
             this.LoadRaster ( source, x, y, z );
             break;

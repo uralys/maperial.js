@@ -164,7 +164,11 @@ RasterLayer16.prototype.Init = function ( data ) {
    if (this.tex)
       return;
    if (data) {
-      d = data['c']
+      this.data = new Uint8Array  (data.slice (256*256*2))
+      this.w                     = 256;      
+      this.h                     = 256; 
+
+      /*d = data['c']
       var newV                   = []
       for (var y = 0 ; y < 256 ; y++ ) {
          for (var x = 0 ; x < 256 ; x++ ) {
@@ -175,5 +179,6 @@ RasterLayer16.prototype.Init = function ( data ) {
       this.w                     = 256;      
       this.h                     = 256; 
       this.data                  = byteArray;
+      */
    }
 }
