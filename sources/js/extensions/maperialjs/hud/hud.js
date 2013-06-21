@@ -44,6 +44,7 @@ HUD.LAYER_SETTINGS         = "LayerSettings";
 HUD.BASEMAPS               = "Basemaps";
 HUD.DATA                   = "Data";
 HUD.SWITCH_IMAGES          = "SwitchImages";
+HUD.LENS                   = "Lens";
 
 //----------------------------------------------------------------------//
 
@@ -65,6 +66,7 @@ HUD.VIEWER_OPTIONS = {
       "5" : {element : HUD.SWITCH_IMAGES,   label : "Switch Basemap",  defaultDisableDrag : true },
       "6" : {element : HUD.BASEMAPS,        label : "Basemaps",        defaultDisableDrag : true },
       "7" : {element : HUD.DATA,            label : "Data",            defaultDisableDrag : true },
+      "8" : {element : HUD.LENS,            label : "Lens",            defaultDisableDrag : false },
 //    "6" : {element : HUD.COMPOSITIONS,    label : "Compositions",    defaultDisableDrag : false },
 //    "7" : {element : HUD.LAYER_SETTINGS,  label : "Layer Settings",  defaultDisableDrag : false },
 //    "8" : {element : HUD.MAGNIFIER,       label : "Magnifier",       defaultDisableDrag : false },
@@ -90,6 +92,7 @@ HUD.positions[HUD.QUICK_EDIT]    = { right : "5",    top    : "38", };
 HUD.positions[HUD.ZOOMS]         = { left  : "50%",  bottom : "0"   };
 HUD.positions[HUD.BASEMAPS]      = { right : "-550", top    : "0"   };
 HUD.positions[HUD.DATA]          = { right : "-550", top    : "0"   };
+HUD.positions[HUD.LENS]          = { left  : "50%",   top    : "50%" };
 
 //----------------------------------------------------------------------//
 
@@ -187,8 +190,11 @@ HUD.prototype.getMargin = function (property) {
 
 HUD.prototype.placeElements = function () {
 
+   console.log("-----> placeElements")
+   
    for (element in this.maperial.config.hud.elements) {
 
+      console.log(element)
       var position = HUD.positions[element];
 
       // position in config overrides default position
@@ -229,11 +235,21 @@ HUD.prototype.placeElements = function () {
             }
 
             this.placeElementAt(element, value, property)
+
          }
 
       }
+
+      if(element == HUD.LENS){
+         var offset = this.panel(HUD.LENS).offset()
+         this.lensCenterX   = offset.left + this.panel(HUD.LENS).width()/2 
+         this.lensCenterY   = offset.top  + this.panel(HUD.LENS).height()/2
+         
+         console.log("-----> init lens position ", this.lensCenterX, this.lensCenterY)
+      }
    }
 
+   
    this.refreshAttribution()
 }
 
@@ -301,6 +317,9 @@ HUD.prototype.refreshDisplay = function(dontHideColorpickers){
 
    if(this.maperial.config.hud.elements[HUD.SWITCH_IMAGES])
       this.refreshSwitchImagesPanel();
+
+   if(this.maperial.config.hud.elements[HUD.LENS])
+      this.buildLens();
 }
 
 //==================================================================//

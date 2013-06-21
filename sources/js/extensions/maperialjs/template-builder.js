@@ -17,7 +17,7 @@ TemplateBuilder.prototype.build = function(maperial){
    
    this.container = $("#"+this.tagId);
    this.container.empty();
-   this.container.addClass("maperial-container");
+   this.container.addClass(this.maperial.type);
 
    console.log("drawing template "+this.tagId+"...");
    
@@ -30,7 +30,7 @@ TemplateBuilder.prototype.build = function(maperial){
 TemplateBuilder.prototype.buildMap = function(){
    
    var html = "";
-   html += "<canvas id=\"Map"+this.tagId+"\" class=\"maperial-map\"></canvas>";
+   html += "<canvas id=\"Map"+this.tagId+"\" class=\"maperial-map canvas-"+this.maperial.type+"\"></canvas>";
    html += "<canvas id=\"fakeCanvas\" class=\"hide\"></canvas>";
    
    if(this.config.map.requireBoundingBoxDrawer){
@@ -45,24 +45,33 @@ TemplateBuilder.prototype.buildMap = function(){
 //==================================================================//
 
 TemplateBuilder.prototype.buildHUD = function(){
-   this.buildHUDSettings();
-   this.buildSwitchImages();
-   this.buildCompositions();
-   this.buildLayerSettings();
-   this.buildLatLon();
-   this.buildScale();
-   this.buildMapKey();
-   this.buildControls();
-   this.buildGeoloc();
-   this.buildDetailsMenu();
-   this.buildQuickEdit();
-   this.buildZooms();
-   this.buildMagnifier();
-   this.buildColorbar();
-   this.buildBasemapsPanel();
-   this.buildDataPanel();
+   
+   switch(this.maperial.type){
+      case Maperial.LENS : 
+         break;
 
-   this.prepareAttribution();
+      case Maperial.COMPLETE : 
+         this.buildHUDSettings();
+         this.buildSwitchImages();
+         this.buildCompositions();
+         this.buildLayerSettings();
+         this.buildLatLon();
+         this.buildScale();
+         this.buildMapKey();
+         this.buildControls();
+         this.buildGeoloc();
+         this.buildDetailsMenu();
+         this.buildQuickEdit();
+         this.buildZooms();
+         this.buildMagnifier();
+         this.buildColorbar();
+         this.buildBasemapsPanel();
+         this.buildDataPanel();
+         this.buildLensPanel();
+         
+         this.prepareAttribution();
+         break;
+   }
 }
 
 //==================================================================//
@@ -287,6 +296,18 @@ TemplateBuilder.prototype.buildDataPanel = function() {
    var html = "";
    html += "<div class=\"panel snapper hide panelData\" id=\"panelData"+this.tagId+"\" >";
    html += "    <div id=\"Data"+this.tagId+"\">";
+   html += "</div>"
+      
+   this.container.append(html);
+}
+
+//==================================================================//
+
+TemplateBuilder.prototype.buildLensPanel = function() {
+   
+   var html = "";
+   html += "<div class=\"panel hide panelLens\" id=\"panelLens"+this.tagId+"\" >";
+   html += "    <div id=\"Lens"+this.tagId+"\">";
    html += "</div>"
       
    this.container.append(html);

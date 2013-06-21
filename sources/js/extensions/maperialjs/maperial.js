@@ -1,32 +1,40 @@
 //==================================================================//
 
-function Maperial(tagId, width, height){
+function Maperial(options){
 
-   this.tagId = tagId || "_maperial";
-   this.width = width;
-   this.height = height;
+   this.tagId              = (options && options.tagId)  || "_maperial"
+   this.type               = (options && options.type)   || Maperial.COMPLETE
+   this.width              = (options && options.width)  || $(window).width() 
+   this.height             = (options && options.height) || $(window).height();
 
-   this.config = null;
-   this.context = null;
+   this.config             = null;
+   this.context            = null;
 
-   this.mapRenderer = null;
-   this.mapMover = null;
-   this.mapMouse = null;
-   this.hud = null;
+   this.mapRenderer        = null;
+   this.mapMover           = null;
+   this.mapMouse           = null;
+   this.hud                = null;
 
-   this.stylesManager = null;
-   this.colorbarsManager = null;
-   this.layersManager = null;
-   this.sourcesManager = null;
+   this.stylesManager      = null;
+   this.colorbarsManager   = null;
+   this.layersManager      = null;
+   this.sourcesManager     = null;
 
-   this.geoloc = null;
-   this.styleMenu = null;
-   this.colorbarRenderer = null;
+   this.geoloc             = null;
+   this.styleMenu          = null;
+   this.colorbarRenderer   = null;
 
-   this.templateBuilder = new TemplateBuilder();
+   this.templateBuilder    = new TemplateBuilder();
 
-   this.shaders = [Maperial.AlphaClip, Maperial.AlphaBlend, Maperial.MulBlend];
+   this.shaders            = [Maperial.AlphaClip, Maperial.AlphaBlend, Maperial.MulBlend];
+   
 };
+
+//==================================================================//
+//  TYPE = css class
+
+Maperial.COMPLETE   = "maperial-container";
+Maperial.LENS       = "maperial-lens";
 
 //==================================================================//
 
@@ -527,14 +535,8 @@ Maperial.prototype.buildHUD = function() {
 
 Maperial.prototype.setCanvasSize = function() {
 
-   var w = $(window).width(); 
-   var h = $(window).height();
-
-   if(this.width)
-      w = this.width;
-
-   if(this.height)
-      h = this.height;
+   var w = this.width;
+   var h = this.height;
 
    if(this.context.mapCanvas[0]){
       this.context.mapCanvas.css("width", w);

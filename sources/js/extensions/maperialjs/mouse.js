@@ -2,6 +2,7 @@
 
 function MapMouse(maperial){
 
+      
    console.log("  listening mouse...");
    
    this.maperial           = maperial;
@@ -20,13 +21,24 @@ MapMouse.prototype.initListeners = function () {
 
    var mouse = this;
    
-   this.context.mapCanvas
-   .mousedown  ( Utils.apply ( this , "down" ))
-   .mouseup    ( Utils.apply ( this , "up" ))
-   .mousemove  ( Utils.apply ( this , "move" ))
-   .mouseleave ( Utils.apply ( this , "leave" ))
-   .dblclick   ( Utils.apply ( this , "doubleClick" ))
-   .bind('mousewheel', Utils.apply ( this , "wheel"));   
+   switch(this.maperial.type){
+
+      case Maperial.COMPLETE:
+         this.context.mapCanvas
+         .mousedown  ( Utils.apply ( this , "down" ))
+         .mouseup    ( Utils.apply ( this , "up" ))
+         .mouseleave ( Utils.apply ( this , "leave" ))
+         .mousemove  ( Utils.apply ( this , "move" ))
+         .dblclick   ( Utils.apply ( this , "doubleClick" ))
+         .bind('mousewheel', Utils.apply ( this , "wheel"))   
+
+      case Maperial.LENS:
+         this.context.mapCanvas
+         .mousemove  ( Utils.apply ( this , "move" ))
+         .dblclick   ( Utils.apply ( this , "doubleClick" ))
+         .bind('mousewheel', Utils.apply ( this , "wheelLens"))   
+         break;
+   }
 
 }
 
@@ -95,6 +107,8 @@ MapMouse.prototype.doubleClick = function (event) {
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
 }
 
+//----------------------------------------------------------------------//
+
 MapMouse.prototype.wheel = function (event, delta) {
 
    event.preventDefault();
@@ -122,6 +136,23 @@ MapMouse.prototype.wheel = function (event, delta) {
    this.context.mouseP = Utils.getPoint(event);
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
+   this.maperial.refreshCurrentLatLon();
+   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
+}
+
+MapMouse.prototype.wheelLens = function (event, delta) {
+   
+   event.preventDefault();
+   
+   if(this.hasJustWheeled() || delta == 0)
+      return;
+   
+   this.context.zoom = Math.min(18, this.context.zoom + 1 * delta/Math.abs(delta));
+   
+   // refresh mouse
+   this.context.mouseP = Utils.getPoint(event);
+   this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
+   
    this.maperial.refreshCurrentLatLon();
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
 }
