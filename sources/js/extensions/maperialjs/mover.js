@@ -34,8 +34,10 @@ MapMover.prototype.initListeners = function (event) {
       mover.receivedMouseUp();
    });
 
-   this.context.mapCanvas.on(MaperialEvents.DRAGGING_MAP, function(){
-      mover.drag();
+   $(window).on(MaperialEvents.DRAGGING_MAP, function(event, maperialId){
+      if(mover.maperial.tagId == maperialId){
+         mover.drag();
+      }
    });
 
    this.context.mapCanvas.on(MaperialEvents.CONTROL_UP, function(){
@@ -61,12 +63,13 @@ MapMover.prototype.removeListeners = function () {
 
    this.context.mapCanvas.off(MaperialEvents.MOUSE_DOWN);
    this.context.mapCanvas.off(MaperialEvents.MOUSE_UP);
-   this.context.mapCanvas.off(MaperialEvents.DRAGGING_MAP);
 
-   $(window).off(MaperialEvents.CONTROL_UP);
-   $(window).off(MaperialEvents.CONTROL_DOWN);
-   $(window).off(MaperialEvents.CONTROL_RIGHT);
-   $(window).off(MaperialEvents.CONTROL_LEFT);
+   this.context.mapCanvas.off(MaperialEvents.CONTROL_UP);
+   this.context.mapCanvas.off(MaperialEvents.CONTROL_DOWN);
+   this.context.mapCanvas.off(MaperialEvents.CONTROL_RIGHT);
+   this.context.mapCanvas.off(MaperialEvents.CONTROL_LEFT);
+
+   $(window).off(MaperialEvents.DRAGGING_MAP);
 }
 
 //==================================================================//
@@ -108,6 +111,10 @@ MapMover.prototype.moveMap = function (dx, dy) {
    this.context.centerM.x -= dx * r;
    this.context.centerM.y += dy * r;
    this.maperial.refreshCurrentLatLon();
+
+   if(this.maperial.hasLens()){
+      this.maperial.hud.lens.mapMover.moveMap(dx, dy);
+   }
    
    $(window).trigger(MaperialEvents.MAP_MOVING);
 }

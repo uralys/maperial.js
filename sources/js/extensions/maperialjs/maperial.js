@@ -2,10 +2,11 @@
 
 function Maperial(options){
 
-   this.tagId              = (options && options.tagId)  || "_maperial"
-   this.type               = (options && options.type)   || Maperial.COMPLETE
-   this.width              = (options && options.width)  || $(window).width() 
-   this.height             = (options && options.height) || $(window).height();
+   this.tagId              = (options && options.tagId) ? options.tagId : "_maperial"
+   this.type               = (options && options.type) ? options.type : Maperial.COMPLETE
+   this.parent             = (options && options.parent) ? options.parent : null
+   this.width              = (options && options.width) ? options.width : $(window).width() 
+   this.height             = (options && options.height) ? options.height : $(window).height();
 
    this.config             = null;
    this.context            = null;
@@ -662,4 +663,10 @@ Maperial.prototype.deactivateBoundingBoxDrawing = function(){
 
 Maperial.prototype.activateBoundingBoxDrawing = function(){
    this.boundingBoxDrawer.activateDrawing();
+}
+
+//==================================================================//
+
+Maperial.prototype.hasLens = function(){
+   return this.config.hud.elements[HUD.LENS]
 }

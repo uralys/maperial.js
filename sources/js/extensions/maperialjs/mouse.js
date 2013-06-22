@@ -2,7 +2,6 @@
 
 function MapMouse(maperial){
 
-      
    console.log("  listening mouse...");
    
    this.maperial           = maperial;
@@ -31,10 +30,11 @@ MapMouse.prototype.initListeners = function () {
          .mousemove  ( Utils.apply ( this , "move" ))
          .dblclick   ( Utils.apply ( this , "doubleClick" ))
          .bind('mousewheel', Utils.apply ( this , "wheel"))   
+         break;
 
       case Maperial.LENS:
          this.context.mapCanvas
-         .mousemove  ( Utils.apply ( this , "move" ))
+         .mousemove  ( Utils.apply ( this , "moveLens" ))
          .dblclick   ( Utils.apply ( this , "doubleClick" ))
          .bind('mousewheel', Utils.apply ( this , "wheelLens"))   
          break;
@@ -74,6 +74,27 @@ MapMouse.prototype.up = function (event) {
    this.context.mapCanvas.trigger(MaperialEvents.MOUSE_UP);
 }
 
+MapMouse.prototype.moveLens = function (event) {
+   
+   if(isNaN(this.lensCenterX)){
+      var offset = this.maperial.parent.hud.panel(HUD.LENS).offset();
+      this.lensCenterX = offset.left  + this.maperial.parent.hud.panel(HUD.LENS).width()/2 
+      this.lensCenterY = offset.top   + this.maperial.parent.hud.panel(HUD.LENS).height()/2
+   }
+   
+   var offset = this.maperial.parent.hud.panel(HUD.LENS).offset();
+   var newX = offset.left  + this.maperial.parent.hud.panel(HUD.LENS).width()/2 
+   var newY = offset.top   + this.maperial.parent.hud.panel(HUD.LENS).height()/2
+   
+   var deltaX = this.lensCenterX - newX
+   var deltaY = this.lensCenterY - newY
+   this.lensCenterX = newX
+   this.lensCenterY = newY;
+
+   this.maperial.mapMover.moveMap(deltaX, deltaY);
+   this.maperial.mapRenderer.DrawScene(true, true)
+}
+
 MapMouse.prototype.move = function (event) {
    
    event.preventDefault();
@@ -89,7 +110,7 @@ MapMouse.prototype.move = function (event) {
    }
    else{
       this.context.mapCanvas.addClass( 'movable' )
-      this.context.mapCanvas.trigger(MaperialEvents.DRAGGING_MAP);
+      $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.maperial.tagId]);
    }
 
 }

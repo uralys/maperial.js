@@ -318,7 +318,7 @@ HUD.prototype.refreshDisplay = function(dontHideColorpickers){
    if(this.maperial.config.hud.elements[HUD.SWITCH_IMAGES])
       this.refreshSwitchImagesPanel();
 
-   if(this.maperial.config.hud.elements[HUD.LENS])
+   if(this.maperial.hasLens())
       this.buildLens();
 }
 
