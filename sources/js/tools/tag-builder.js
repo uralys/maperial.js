@@ -16,7 +16,7 @@ MaperialBuilder.prototype.loadTags = function(){
       for(a in tags[s].attributes)
          map[tags[s].attributes[a].nodeName] = tags[s].attributes[a].nodeValue;
 
-      map.tagId = "_" + map.uid + "_" + s;
+      map.name = "_" + map.uid + "_" + s;
 
       try{
          map.width = tags[s].attributes["width"].nodeValue;
@@ -24,7 +24,7 @@ MaperialBuilder.prototype.loadTags = function(){
       }
       catch(e){}
 
-      $("#"+tags[s].parentElement.id).append("<div id=\"" + map.tagId + "\"></div")
+      $("#"+tags[s].parentElement.id).append("<div id=\"" + map.name + "\"></div")
 
       this.build(map);
    }
@@ -39,7 +39,7 @@ MaperialBuilder.prototype.build = function(map){
       dataType : 'json',
 
       success : function(config) {
-         builder[map.tagId] = new Maperial(map.tagId, map.width, map.height).apply(config);
+         builder[map.name] = new Maperial(map.name, map.width, map.height).apply(config);
       },
    });
 }

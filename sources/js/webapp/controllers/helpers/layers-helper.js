@@ -44,7 +44,7 @@ LayersHelper.prototype.refreshLayersPanel = function() {
       }
    });
 
-   $("#panelLayers"+this.maperial.tagId).css("height", panelHeight+"px");
+   $("#panelLayers"+this.maperial.name).css("height", panelHeight+"px");
 }
 
 //--------------------------------------//
@@ -214,7 +214,7 @@ LayersHelper.prototype.refreshHUDViewerSettings = function() {
       if(element == HUD.SWITCH_IMAGES && !this.maperial.layersManager.atLeastOneImageLayer())
          continue;
 
-      var nameInTag = element + this.maperial.tagId; 
+      var nameInTag = element + this.maperial.name; 
       
       // ----- appending div
       var div = "<div class=\"row-fluid marginbottom\">" +

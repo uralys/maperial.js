@@ -428,11 +428,11 @@ SourcesManager.prototype.getImageURL = function (source, tx, ty, z) {
        
        case Source.IMAGES_STAMEN_TONER :
           var s = Utils.random0(3);
-          return "http://"+server[s]+".tile.stamen.com/toner/"+z+"/"+tx+"/"+gty+".jpg"
+          return "http://"+server[s]+".tile.stamen.com/toner/"+z+"/"+tx+"/"+gty+".png"
   
        case Source.IMAGES_STAMEN_TONER_BG :
           var s = Utils.random0(3);
-          return "http://"+server[s]+".tile.stamen.com/toner-background/"+z+"/"+tx+"/"+gty+".jpg"
+          return "http://"+server[s]+".tile.stamen.com/toner-background/"+z+"/"+tx+"/"+gty+".png"
    
          
       case Source.IMAGES_OSM:  // http://wiki.openstreetmap.org/wiki/Tile_usage_policy

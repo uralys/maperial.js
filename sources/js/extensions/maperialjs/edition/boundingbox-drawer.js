@@ -90,7 +90,7 @@ BoundingBoxDrawer.prototype.init = function(boundingBox){
 
    //------- init Fabric
 
-   this.drawBoard = new fabric.Canvas("drawBoard"+this.maperial.tagId);
+   this.drawBoard = new fabric.Canvas("drawBoard"+this.maperial.name);
    this.drawBoard.setHeight(this.context.mapCanvas.height());
    this.drawBoard.setWidth(this.context.mapCanvas.width());
 
@@ -149,7 +149,7 @@ BoundingBoxDrawer.prototype.init = function(boundingBox){
       drawer.draw();
    });
 
-   $("#drawBoardContainer"+this.maperial.tagId).bind('mousewheel', function(event, delta) {
+   $("#drawBoardContainer"+this.maperial.name).bind('mousewheel', function(event, delta) {
       drawer.maperial.mapMouse.wheel(event, delta);
       drawer.setBoundingsForZoom(drawer.context.zoom, false);
    });

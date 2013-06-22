@@ -5,13 +5,13 @@ HUD.prototype.buildBasemapsPanel = function(params, callBack) {
    //-----------------------------------------------------//
 
    this.element(HUD.BASEMAPS).empty();
-   HUD["selectedBasemap"+this.maperial.tagId] = callBack;
+   HUD["selectedBasemap"+this.maperial.name] = callBack;
 
    //-----------------------------------------------------//
    
    this.element(HUD.BASEMAPS).append("");
    this.element(HUD.BASEMAPS).append("" +
-   		"<div class='row-fluid' onclick='HUD.selectedBasemap"+this.maperial.tagId+"()'> "+
+   		"<div class='row-fluid' onclick='HUD.selectedBasemap"+this.maperial.name+"()'> "+
          "   <div class='span6 offset1' }}>" +
          "      <p class=\"compositionSettingsTitle\">__Maperial customisable basemaps</p>" +
          "   </div>"+
@@ -30,32 +30,32 @@ HUD.prototype.buildBasemapsPanel = function(params, callBack) {
       case HUD.ALL_BASEMAPS:
          html += "" +
          	"<div class='row-fluid marginbottom'>" +
-         	"   <div class='span3 basemap' title='__Maperial classic' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.MaperialOSM, Source.MAPERIAL_CLASSIC)'>" +
+         	"   <div class='span3 basemap' title='__Maperial classic' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.MaperialOSM, Source.MAPERIAL_CLASSIC)'>" +
          	"      <img src='http://static.maperial.localhost/images/buttons/sources/button.maperial.classic.png' class='bigbutton'></img>" +
          	"   </div>" +
-         	"   <div class='span3 basemap' title='__Maperial brownie' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.MaperialOSM, Source.MAPERIAL_BROWNIE)'>" +
+         	"   <div class='span3 basemap' title='__Maperial brownie' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.MaperialOSM, Source.MAPERIAL_BROWNIE)'>" +
          	"      <img src='http://static.maperial.localhost/images/buttons/sources/button.maperial.brownie.png' class='bigbutton'></img>" +
          	"   </div>" +
-         	"   <div class='span3 basemap' title='__Maperial light' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.MaperialOSM, Source.MAPERIAL_LIGHT)'>" +
+         	"   <div class='span3 basemap' title='__Maperial light' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.MaperialOSM, Source.MAPERIAL_LIGHT)'>" +
          	"      <img src='http://static.maperial.localhost/images/buttons/sources/button.maperial.light.png' class='bigbutton'></img>" +
          	"   </div>" +
-         	"   <div class='span3 basemap' title='__Maperial yellow' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.MaperialOSM, Source.MAPERIAL_YELLOW)'>" +
+         	"   <div class='span3 basemap' title='__Maperial yellow' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.MaperialOSM, Source.MAPERIAL_YELLOW)'>" +
          	"      <img src='http://static.maperial.localhost/images/buttons/sources/button.maperial.yellow.png' class='bigbutton'></img>" +
          	"   </div>" +
          	"</div>" 
 
       	html += "" +
          	"<div class='row-fluid marginbottom'>" +
-         	"   <div class='span3 basemap' title='__Maperial green' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.MaperialOSM, Source.MAPERIAL_GREEN)'>" +
+         	"   <div class='span3 basemap' title='__Maperial green' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.MaperialOSM, Source.MAPERIAL_GREEN)'>" +
          	"      <img src='http://static.maperial.localhost/images/buttons/sources/button.maperial.green.png' class='bigbutton'></img>" +
          	"   </div>" +
-         	"   <div class='span3 basemap' title='__Maperial pink' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.MaperialOSM, Source.MAPERIAL_PINK)'>" +
+         	"   <div class='span3 basemap' title='__Maperial pink' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.MaperialOSM, Source.MAPERIAL_PINK)'>" +
          	"      <img src='http://static.maperial.localhost/images/buttons/sources/button.maperial.pink.png' class='bigbutton'></img>" +
          	"   </div>" +
-         	//"   <div class='span3 basemap' title='SRTM' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(LayersManager.SRTM)'>" +
+         	//"   <div class='span3 basemap' title='SRTM' onclick='HUD.selectedBasemap"+this.maperial.name+"(LayersManager.SRTM)'>" +
          	//"      <img src='http://static.maperial.localhost/images/buttons/sources/button.srtm.png' class='bigbutton'></img>" +
          	//"   </div>" +
-         	"   <div class='span3 basemap' title='Shade' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(LayersManager.Shade)'>" +
+         	"   <div class='span3 basemap' title='Shade' onclick='HUD.selectedBasemap"+this.maperial.name+"(LayersManager.Shade)'>" +
          	"      <img src='http://static.maperial.localhost/images/buttons/sources/button.shade.png' class='bigbutton'></img>" +
          	"   </div>" +
          	"</div>" 
@@ -68,42 +68,42 @@ HUD.prototype.buildBasemapsPanel = function(params, callBack) {
             "   </div>"+
             "</div>"+
             "<div class='row-fluid marginbottom'>" +
-            "   <div class='span3 basemap' title='Mapquest' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Images, Source.IMAGES_MAPQUEST)'>" +
+            "   <div class='span3 basemap' title='Mapquest' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.Images, Source.IMAGES_MAPQUEST)'>" +
             "     <img src='http://static.maperial.localhost/images/buttons/sources/button.images.mapquest.png' class='bigbutton'></img>" +
             "   </div>" +
-            "   <div class='span3 basemap' title='Satellite' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Images, Source.IMAGES_MAPQUEST_SATELLITE)'>" +
+            "   <div class='span3 basemap' title='Satellite' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.Images, Source.IMAGES_MAPQUEST_SATELLITE)'>" +
             "      <img src='http://static.maperial.localhost/images/buttons/sources/button.images.mapquest.satellite.png' class='bigbutton'></img>" +
             "   </div>" +
-            "   <div class='span3 basemap' title='OSM' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Images, Source.IMAGES_OSM)'>" +
+            "   <div class='span3 basemap' title='OSM' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.Images, Source.IMAGES_OSM)'>" +
             "      <img src='http://static.maperial.localhost/images/buttons/sources/button.images.osm.png' class='bigbutton'></img>" +
             "   </div>" +
-            "   <div class='span3 basemap' title='OpenCycleMap' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Images, Source.IMAGES_OCM_CYCLE)'>" +
+            "   <div class='span3 basemap' title='OpenCycleMap' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.Images, Source.IMAGES_OCM_CYCLE)'>" +
             "      <img src='http://static.maperial.localhost/images/buttons/sources/button.images.ocm.cycle.png' class='bigbutton'></img>" +
             "   </div>" +
             "</div>"
             
          html += ""+
             "<div class='row-fluid marginbottom'>" +
-            "   <div class='span3 basemap' title='Watercolor' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR)'>" +
+            "   <div class='span3 basemap' title='Watercolor' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR)'>" +
             "      <img src='http://static.maperial.localhost/images/buttons/sources/button.images.stamen.watercolor.png' class='bigbutton'></img>" +
             "   </div>" +
-            "   <div class='span3 basemap' title='Terrain' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Images, Source.IMAGES_STAMEN_TERRAIN)'>" +
+            "   <div class='span3 basemap' title='Terrain' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.Images, Source.IMAGES_STAMEN_TERRAIN)'>" +
             "      <img src='http://static.maperial.localhost/images/buttons/sources/button.images.stamen.terrain.png' class='bigbutton'></img>" +
             "   </div>" +
-            "   <div class='span3 basemap' title='Toner' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Images, Source.IMAGES_STAMEN_TONER)'>" +
+            "   <div class='span3 basemap' title='Toner' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.Images, Source.IMAGES_STAMEN_TONER)'>" +
             "      <img src='http://static.maperial.localhost/images/buttons/sources/button.images.stamen.toner.png' class='bigbutton'></img>" +
             "   </div>" +
-            "   <div class='span3 basemap' title='Toner BG' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Images, Source.IMAGES_STAMEN_TONER_BG)'>" +
+            "   <div class='span3 basemap' title='Toner BG' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.Images, Source.IMAGES_STAMEN_TONER_BG)'>" +
             "      <img src='http://static.maperial.localhost/images/buttons/sources/button.images.stamen.toner-background.png' class='bigbutton'></img>" +
             "   </div>" +
             "</div>"
             
          html += ""+
             "<div class='row-fluid marginbottom'>" +
-            "  <div class='span3 basemap' title='Transport' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Images, Source.IMAGES_OCM_TRANSPORT)'>" +
+            "  <div class='span3 basemap' title='Transport' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.Images, Source.IMAGES_OCM_TRANSPORT)'>" +
             "     <img src='http://static.maperial.localhost/images/buttons/sources/button.images.ocm.transport.png' class='bigbutton'></img>" +
             "   </div>" +
-            "   <div class='span3 basemap' title='Landscape' onclick='HUD.selectedBasemap"+this.maperial.tagId+"(Source.Images, Source.IMAGES_OCM_LANDSCAPE)'>" +
+            "   <div class='span3 basemap' title='Landscape' onclick='HUD.selectedBasemap"+this.maperial.name+"(Source.Images, Source.IMAGES_OCM_LANDSCAPE)'>" +
             "      <img src='http://static.maperial.localhost/images/buttons/sources/button.images.ocm.landscape.png' class='bigbutton'></img>" +
             "   </div>" +
             "</div>"

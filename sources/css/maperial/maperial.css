@@ -197,25 +197,6 @@ a.triggerHUDSettings {
 }
 
 /*-------------------------*/
-
-.panelLens {
-	width: 250px;
-	height: 250px;
-	padding: 3px;
-	border-radius: 135px;
-	opacity: 1;
-}
-
-.canvas-maperial-lens {
-	-moz-border-radius: 125px;
-	-webkit-border-radius: 125px;
-	border-radius: 125px;
-	-khtml-border-radius: 125px;
-    overflow: hidden;
-	 -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-}
-
-/*-------------------------*/
 .panelCompositions {
 	width: 220px;
 	color: #eee;

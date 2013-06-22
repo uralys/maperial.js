@@ -50,8 +50,8 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
 
    //-----------------------------------------------------//
 
-   $("#panelLayers"+this.maperial.tagId).css("height", panelHeight+"px");
-   $("#panelLayers"+this.maperial.tagId).removeClass("hide"); // maperial reset hideAllHUD + no layers => no HUD => orce show here
+   $("#panelLayers"+this.maperial.name).css("height", panelHeight+"px");
+   $("#panelLayers"+this.maperial.name).removeClass("hide"); // maperial reset hideAllHUD + no layers => no HUD => orce show here
    
    //-----------------------------------------------------//
 

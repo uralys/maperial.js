@@ -35,7 +35,7 @@ MapMover.prototype.initListeners = function (event) {
    });
 
    $(window).on(MaperialEvents.DRAGGING_MAP, function(event, maperialId){
-      if(mover.maperial.tagId == maperialId){
+      if(mover.maperial.name == maperialId){
          mover.drag();
       }
    });
@@ -107,13 +107,15 @@ MapMover.prototype.drag = function () {
 //==================================================================//
 
 MapMover.prototype.moveMap = function (dx, dy) {
+   
    var r = this.context.coordS.Resolution ( this.context.zoom );
    this.context.centerM.x -= dx * r;
    this.context.centerM.y += dy * r;
+
    this.maperial.refreshCurrentLatLon();
 
-   if(this.maperial.hasLens()){
-      this.maperial.hud.lens.mapMover.moveMap(dx, dy);
+   for(var i = 0; i < this.maperial.children.length; i++){
+      this.maperial.childrenManager.refreshChild(this.maperial.children[i]);
    }
    
    $(window).trigger(MaperialEvents.MAP_MOVING);

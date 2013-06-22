@@ -8,7 +8,7 @@
 </head>
 
 <body>
-	<div id="_maperial"></div>
+	<div id="maperial"></div>
 	<img id="waitingSpin" src="http://static.maperial.localhost/images/mapediting/spin.gif" />
 </body>
 
@@ -74,6 +74,7 @@
                      "/js/extensions/maperialjs/managers/colorbars-manager.js",
                      "/js/extensions/maperialjs/managers/layers-manager.js",
                      "/js/extensions/maperialjs/managers/sources-manager.js",
+                     "/js/extensions/maperialjs/managers/children-manager.js",
 
                      // edition
                      "/js/extensions/maperialjs/edition/boundingbox-drawer.js",
@@ -95,22 +96,51 @@
                      $("#waitingSpin").css("display", "none")
                   })
 
-                  var maperial = new Maperial()
+                  var maperial = new Maperial({name:"maperial"})
                   var config = maperial.emptyConfig();
 
-                  config.hud.elements[HUD.COMPOSITIONS]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
-                  config.hud.elements[HUD.LAYER_SETTINGS]	= {show : true, 	type : HUD.PANEL, 	label : "Layer Settings", disableDrag : true };
-                  config.hud.elements[HUD.LENS]				= {show : true, 	type : HUD.PANEL, 	label : "Lens" };
+                  config.hud.elements[HUD.LATLON]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
                   
-                  //config.layers.push(LayersManager.getShadeLayerConfig())
-                  //config.layers.push(LayersManager.getSrtmLayerConfig())
+                  var lensConfig = maperial.emptyConfig();
+                  lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
                   
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
+                  var lens = {
+                     type  		: Maperial.LENS,
+                     name 		: "Lens",
+					 config		: lensConfig,
+                     draggable 	: true,
+                     //width 		: 250,
+                     //height		: 250,
+                     //position 	: { 
+                     //   left	: "50%", 
+                     //   top    	: "50%" 
+                     //},
+                     //borderRadius : 10,
+                  }
+
+                  var minifierConfig = maperial.emptyConfig();
+                  minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER))
                   
-                  //config.layers.push(LayersManager.getOSMLayerConfig(["1_style_13ed75438c8b2ed8914"]))
+                  var minifier = {
+                     type  		: Maperial.MINIFIER,
+                     name 		: "Minifier",
+					 config		: minifierConfig,
+                     draggable 	: true,
+                     width 		: 250,
+                     height		: 250,
+                     position 	: { 
+                        right	: "50", 
+                        top    	: "50" 
+                     },
+                     borderRadius : 130,
+                  }
+                  
+                  // default
+                  //config.children.push({})
+                  
+                  config.children.push(lens)
+                  config.children.push(minifier)
+                  config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
                   
                   maperial.apply(config)
                });

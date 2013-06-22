@@ -33,10 +33,10 @@ MapMouse.prototype.initListeners = function () {
          break;
 
       case Maperial.LENS:
+      case Maperial.MINIFIER:
          this.context.mapCanvas
-         .mousemove  ( Utils.apply ( this , "moveLens" ))
          .dblclick   ( Utils.apply ( this , "doubleClick" ))
-         .bind('mousewheel', Utils.apply ( this , "wheelLens"))   
+         .bind('mousewheel', Utils.apply ( this , "wheelOnChild"))   
          break;
    }
 
@@ -74,27 +74,6 @@ MapMouse.prototype.up = function (event) {
    this.context.mapCanvas.trigger(MaperialEvents.MOUSE_UP);
 }
 
-MapMouse.prototype.moveLens = function (event) {
-   
-   if(isNaN(this.lensCenterX)){
-      var offset = this.maperial.parent.hud.panel(HUD.LENS).offset();
-      this.lensCenterX = offset.left  + this.maperial.parent.hud.panel(HUD.LENS).width()/2 
-      this.lensCenterY = offset.top   + this.maperial.parent.hud.panel(HUD.LENS).height()/2
-   }
-   
-   var offset = this.maperial.parent.hud.panel(HUD.LENS).offset();
-   var newX = offset.left  + this.maperial.parent.hud.panel(HUD.LENS).width()/2 
-   var newY = offset.top   + this.maperial.parent.hud.panel(HUD.LENS).height()/2
-   
-   var deltaX = this.lensCenterX - newX
-   var deltaY = this.lensCenterY - newY
-   this.lensCenterX = newX
-   this.lensCenterY = newY;
-
-   this.maperial.mapMover.moveMap(deltaX, deltaY);
-   this.maperial.mapRenderer.DrawScene(true, true)
-}
-
 MapMouse.prototype.move = function (event) {
    
    event.preventDefault();
@@ -110,7 +89,7 @@ MapMouse.prototype.move = function (event) {
    }
    else{
       this.context.mapCanvas.addClass( 'movable' )
-      $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.maperial.tagId]);
+      $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.maperial.name]);
    }
 
 }
@@ -159,9 +138,13 @@ MapMouse.prototype.wheel = function (event, delta) {
 
    this.maperial.refreshCurrentLatLon();
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
+
+   for(var i = 0; i < this.maperial.children.length; i++){
+      this.maperial.childrenManager.refreshChild(this.maperial.children[i]);
+   }
 }
 
-MapMouse.prototype.wheelLens = function (event, delta) {
+MapMouse.prototype.wheelOnChild = function (event, delta) {
    
    event.preventDefault();
    

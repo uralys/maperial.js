@@ -2,14 +2,16 @@
 
 function Maperial(options){
 
-   this.tagId              = (options && options.tagId) ? options.tagId : "_maperial"
-   this.type               = (options && options.type) ? options.type : Maperial.COMPLETE
-   this.parent             = (options && options.parent) ? options.parent : null
-   this.width              = (options && options.width) ? options.width : $(window).width() 
-   this.height             = (options && options.height) ? options.height : $(window).height();
+   this.type               = (options && options.type)   ? options.type    : Maperial.COMPLETE
+   this.parent             = (options && options.parent) ? options.parent  : null
+   this.width              = (options && options.width)  ? options.width   : $(window).width() 
+   this.height             = (options && options.height) ? options.height  : $(window).height()
+
+   this.name               = ((options && options.name)  ? options.name : Utils.generateGuid()) + (this.parent ? "_" + this.parent.name : "")
 
    this.config             = null;
    this.context            = null;
+   this.children           = null;
 
    this.mapRenderer        = null;
    this.mapMover           = null;
@@ -20,6 +22,7 @@ function Maperial(options){
    this.colorbarsManager   = null;
    this.layersManager      = null;
    this.sourcesManager     = null;
+   this.childrenManager    = null;
 
    this.geoloc             = null;
    this.styleMenu          = null;
@@ -28,14 +31,14 @@ function Maperial(options){
    this.templateBuilder    = new TemplateBuilder();
 
    this.shaders            = [Maperial.AlphaClip, Maperial.AlphaBlend, Maperial.MulBlend];
-   
 };
 
 //==================================================================//
 //  TYPE = css class
 
-Maperial.COMPLETE   = "maperial-container";
-Maperial.LENS       = "maperial-lens";
+Maperial.COMPLETE   = "maperial-container";  // Main maperial with all HUD
+Maperial.LENS       = "maperial-lens";       // Child maperial with camera centered on what is under it
+Maperial.MINIFIER   = "maperial-minifier";   // Child maperial with camera centered on the parent's center
 
 //==================================================================//
 
@@ -81,7 +84,7 @@ Maperial.DEMO_MAP = {
  * Must be called whenever the config is changed, in order to build Maperial again
  */
 Maperial.prototype.restart = function(){
-   console.log("MaperialJS loads ", this.config);
+   console.log("MaperialJS loads ", this.name, this.type, this.config);
    $(window).trigger(MaperialEvents.LOADING);
    this.reset();
    this.load();
@@ -106,6 +109,13 @@ Maperial.prototype.reset = function(){
       if(this.mapRenderer){
          this.mapRenderer.Stop();
          this.mapRenderer.reset();
+      }
+   }catch(e){
+   }
+
+   try{
+      if(this.childrenManager){
+         this.childrenManager.resetAllChildren();
       }
    }catch(e){
    }
@@ -137,6 +147,7 @@ Maperial.prototype.reset = function(){
    this.stylesManager = new StylesManager(this);
    this.layersManager = new LayersManager(this);
    this.sourcesManager = new SourcesManager(this);
+   this.childrenManager = new ChildrenManager(this);
 
    console.log("stylesCache : ", window.maperialStyles);
 }
@@ -192,9 +203,19 @@ Maperial.prototype.checkConfig = function() {
    if(!this.config.layers)
       this.config.layers = [];
 
+   if(!this.config.children)
+      this.config.children = [];
+
+   //--------------------------//
+   // checking children config
+   
+   for(var i = 0; i < this.config.children.length; i++){
+      if(!this.config.children[i].name)
+         this.config.children[i].name = Utils.generateGuid() + (this.parent ? "_" + this.parent.name : "")
+   }
+
    //--------------------------//
    // checking layer config
-
    if(this.config.layers.length == 0){
       if(this.config.map.layersCreation){
          console.log("  using no layer...");
@@ -259,7 +280,7 @@ Maperial.prototype.checkIds = function() {
 //==================================================================//
 
 Maperial.prototype.emptyConfig = function() {
-   return config = {hud:{elements:{}, options:{}}, map: {defaultZoom: Maperial.DEFAULT_ZOOM}, layers:[]};
+   return config = {hud:{elements:{}, options:{}}, map: {defaultZoom: Maperial.DEFAULT_ZOOM}, layers:[], children:[]};
 }
 
 Maperial.prototype.defaultConfig = function() {
@@ -292,11 +313,11 @@ Maperial.prototype.createContext = function() {
    //----------------------------------------------------------
    // set new divs (ember erase and build new divs)
 
-   this.context.mapCanvas = $("#Map"+this.tagId);
+   this.context.mapCanvas = $("#Map"+this.name);
    this.setCanvasSize();
 
    if(this.config.hud.elements[HUD.MAGNIFIER]){
-      this.context.magnifierCanvas = $("#Magnifier"+this.tagId);
+      this.context.magnifierCanvas = $("#Magnifier"+this.name);
    }
 
    //----------------------------------------------------------
@@ -461,6 +482,10 @@ Maperial.prototype.build = function() {
 
    //--------------------------//
 
+   this.buildChildren();
+   
+   //--------------------------//
+
    this.finishStartup();
 }
 
@@ -505,20 +530,20 @@ Maperial.prototype.requireGeoloc = function() {
 }
 
 Maperial.prototype.initGeoloc = function() {
-   this.geoloc = new GeoLoc(this, "GeoLoc"+this.tagId, $("#GeoLocGo"+this.tagId), false);
+   this.geoloc = new GeoLoc(this, "GeoLoc"+this.name, $("#GeoLocGo"+this.name), false);
 }
 
 //==================================================================//
 
 Maperial.prototype.buildStyleMenu = function() {
-   this.styleMenu = new StyleMenu($("#DetailsMenu"+this.tagId) , $("#QuickEdit"+this.tagId) , $("#Zooms"+this.tagId) , this);
+   this.styleMenu = new StyleMenu($("#DetailsMenu"+this.name) , $("#QuickEdit"+this.name) , $("#Zooms"+this.name) , this);
 }
 
 //==================================================================//
 
 Maperial.prototype.buildColorbar = function() {
    this.colorbar = new Colorbar(
-         $("#ColorBar"+this.tagId),
+         $("#ColorBar"+this.name),
          this.colorbarsManager.getColorbar(Maperial.DEFAULT_COLORBAR_UID),
          50,355,50,40,true,25.4,375.89
    );
@@ -650,11 +675,11 @@ Maperial.prototype.ZoomOut = function(){
 
 Maperial.prototype.showBoundingBox = function(boundingBox){
    this.boundingBoxDrawer.init(boundingBox);
-   $("#drawBoardContainer"+this.tagId).removeClass("hide");
+   $("#drawBoardContainer"+this.name).removeClass("hide");
 }
 
 Maperial.prototype.hideBoundingBox = function(){
-   $("#drawBoardContainer"+this.tagId).addClass("hide");
+   $("#drawBoardContainer"+this.name).addClass("hide");
 }
 
 Maperial.prototype.deactivateBoundingBoxDrawing = function(){
@@ -667,6 +692,15 @@ Maperial.prototype.activateBoundingBoxDrawing = function(){
 
 //==================================================================//
 
-Maperial.prototype.hasLens = function(){
-   return this.config.hud.elements[HUD.LENS]
+Maperial.prototype.buildChildren = function(){
+   this.children = []
+   for(var i = 0; i < this.config.children.length; i++){
+      this.childrenManager.add(this.config.children[i])
+   }
+}
+
+//==================================================================//
+
+Maperial.prototype.getFullName = function(childName){
+   return childName + "_" + this.name
 }

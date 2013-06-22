@@ -383,13 +383,13 @@ StyleMenu.prototype.BuildElements = function(){
 
    this.styleMenuParentEl.hide(); // hide me during loading
 
-   this.mainDiv = $('<div id="styleMenu_menu_maindiv'+this.maperial.tagId+'" class="styleMenu_menu_maindiv"></div>');
+   this.mainDiv = $('<div id="styleMenu_menu_maindiv'+this.maperial.name+'" class="styleMenu_menu_maindiv"></div>');
    this.mainDiv.appendTo(this.styleMenuParentEl);
 
-   this.widgetDiv = $('<div id="styleMenu_menu_widgetDiv'+this.maperial.tagId+'" class="styleMenu_menu_widgetDiv"></div>');
+   this.widgetDiv = $('<div id="styleMenu_menu_widgetDiv'+this.maperial.name+'" class="styleMenu_menu_widgetDiv"></div>');
    this.widgetDiv.appendTo(this.styleMenuParentEl2);
 
-   this.zoomDiv = $('<div id="styleMenu_menu_zoomDiv'+this.maperial.tagId+'" class="styleMenu_menu_zoomDiv" ></div>');
+   this.zoomDiv = $('<div id="styleMenu_menu_zoomDiv'+this.maperial.name+'" class="styleMenu_menu_zoomDiv" ></div>');
    this.zoomDiv.appendTo(this.styleMenuParentEl3);
 
    //this.__FillZoomDef();

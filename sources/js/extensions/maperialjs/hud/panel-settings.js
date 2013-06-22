@@ -16,7 +16,7 @@ HUD.prototype.refreshSettingsPanel = function() {
          continue;
       }  
       
-      var nameInTag = name + this.maperial.tagId; 
+      var nameInTag = name + this.maperial.name; 
 
       // ----- appending div
       var div = "<div class=\"row-fluid marginbottom\">" +
