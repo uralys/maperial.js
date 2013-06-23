@@ -39,7 +39,12 @@ MaperialBuilder.prototype.build = function(map){
       dataType : 'json',
 
       success : function(config) {
-         builder[map.name] = new Maperial(map.name, map.width, map.height).apply(config);
+         var options = {
+            name     : map.name,
+            width    : map.width, 
+            height   : map.height
+         }
+         builder[map.name] = new Maperial(options).apply(config);
       },
    });
 }
