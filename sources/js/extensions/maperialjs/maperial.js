@@ -151,6 +151,12 @@ Maperial.prototype.reset = function(){
    window.maperialSourcesManager = window.maperialSourcesManager || new SourcesManager();  // cache containing all previously loaded sources
    window.maperialSourcesManager.addReceiver(this)
 
+   for(var i = 0; i < this.config.layers.length; i++){
+      if(this.config.layers[i].source.type == Source.WMS){
+         this.centerWMS( this.config.layers[i].source.params.src, "prepare" )
+      }
+   }
+   
    console.log("stylesCache : ", window.maperialStyles);
    console.log("sourcesManager : ", window.maperialSourcesManager);
 }
@@ -707,3 +713,29 @@ Maperial.prototype.buildChildren = function(){
 Maperial.prototype.getFullName = function(childName){
    return childName + "_" + this.name
 }
+
+//==================================================================//
+
+/**
+ * type = "prepare" or "place"
+ */
+Maperial.prototype.centerWMS = function (src, type) {
+   
+   switch(src){
+      // US - only
+      case Source.IMAGES_STAMEN_TERRAIN : 
+         this.centerMap(40.68, -74.12, 7, type)
+         break;
+
+         // Bretagne
+      case Source.WMS_BRETAGNECANTONS : 
+         this.centerMap(48.27, -2.87, 9, type)
+         break;
+
+         // Rennes
+      case Source.WMS_SOLS_ILEETVILAINE : 
+         this.centerMap(48.11, -1.78, 10, type)
+         break;
+   }   
+}
+

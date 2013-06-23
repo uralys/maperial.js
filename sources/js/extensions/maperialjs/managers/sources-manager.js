@@ -10,6 +10,7 @@ function SourcesManager(){
    this.errors    = {};
 
    this.sources   = [];
+   this.receivers = [];
 
    this.requestsCounter = new HashMap();
 }
@@ -27,6 +28,8 @@ SourcesManager.prototype.addReceiver = function(receiver){
    for(var i = 0; i < receiver.config.layers.length; i++){
       this.addSource(receiver.name, receiver.config.layers[i])
    }
+   
+   this.receivers.push(receiver)
 }
 
 SourcesManager.prototype.addSource = function(receiverName, layer){
@@ -57,7 +60,7 @@ SourcesManager.prototype.addSource = function(receiverName, layer){
       case Source.Images:
       case Source.WMS:
          params = {src : layer.source.params.src }
-         this.centerWMS( layer.source.params.src, "prepare" )
+         //this.centerWMS( layer.source.params.src, "prepare", receiverName )
          break;
    }
 
@@ -97,48 +100,36 @@ SourcesManager.prototype.detachSource = function(sourceId, receiverName){
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-/**
- * type = "prepare" or "place"
- */
-SourcesManager.prototype.centerWMS = function (src, type) {
-   
-   switch(src){
-      // US - only
-      case Source.IMAGES_STAMEN_TERRAIN : 
-         this.maperial.centerMap(40.68, -74.12, 7, type)
-         break;
-
-         // Bretagne
-      case Source.WMS_BRETAGNECANTONS : 
-         this.maperial.centerMap(48.27, -2.87, 9, type)
-         break;
-
-         // Rennes
-      case Source.WMS_SOLS_ILEETVILAINE : 
-         this.maperial.centerMap(48.11, -1.78, 10, type)
-         break;
-   }   
-}
-
-//----------------------------------------------------------------------------------------------------------------------//
-
 SourcesManager.prototype.releaseReceiver = function (receiverName) {
    
    for(var i = 0; i < this.sources.length; i++){
       for(var r = 0; r < this.sources[i].receivers.length; r++){
          if(this.sources[i].isForMe(receiverName)){
             var requestId = this.requestId(this.sources[i], x, y, z)
+            var nbRequests = this.requestsCounter.get(requestId) || 0
             
-            try{
-               this.requests[requestId].abort();
+            if(nbRequests > 1){
+               this.requestsCounter.put(requestId, nbRequests - 1)
             }
-            catch(e){
-               console.log("------------> release " + receiverName + " failed to abort request " + requestId)
+            else{
+               try{
+                  this.requests[requestId].abort();
+               }
+               catch(e){
+                  console.log("------------> release " + receiverName + " failed to abort request " + requestId)
+               }
             }
          }
          
       }
    }
+   
+   for(var i = 0; i < this.receivers.length; i++){
+      if(this.receivers[i].name == receiverName)
+         break;
+   }
+   
+   this.receivers.splice(i, 1);
    
 }
 
@@ -254,7 +245,7 @@ SourcesManager.prototype.loadSources = function (x, y, z, receiverName) {
 
          case Source.Images:
          case Source.WMS:
-            this.LoadImage ( source, x, y, z );
+            this.LoadImage ( source, x, y, z, receiverName );
             break;
 
       }
@@ -294,9 +285,9 @@ SourcesManager.prototype.LoadVectorial = function ( source, x, y, z ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
+SourcesManager.prototype.LoadImage = function ( source, x, y, z, receiverName ) {
    var me         = this;   
-   var url        = this.getURL(source, x, y, z);
+   var url        = this.getURL(source, x, y, z, receiverName);
    var requestId  = this.requestId(source, x, y, z);
 
    this.requests[requestId] = new Image();
@@ -417,7 +408,7 @@ SourcesManager.prototype.getData = function ( source, x, y, z) {
 
 //-------------------------------------------//
 
-SourcesManager.prototype.getURL = function (source, tx, ty, z) {
+SourcesManager.prototype.getURL = function (source, tx, ty, z, receiverName) {
 
    switch(source.type){
 
@@ -434,7 +425,7 @@ SourcesManager.prototype.getURL = function (source, tx, ty, z) {
          return this.getImageURL(source, tx, ty, z)
 
       case Source.WMS:
-         return this.getWMSURL(source, tx, ty, z)
+         return this.getWMSURL(source, tx, ty, z, receiverName)
    }
 }
 
@@ -528,13 +519,20 @@ SourcesManager.prototype.getImageURL = function (source, tx, ty, z) {
  * Source.WMS_CORINE_LAND_COVER 
  *    geo3 : "http://sd1878-2.sivit.org/geoserver/gwc/service/wms?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
  */ 
-SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
-
+SourcesManager.prototype.getWMSURL = function (source, tx, ty, z, receiverName) {
+   
+   for(var i = 0; i < this.receivers.length; i++){
+      if(this.receivers[i].name == receiverName){
+         var receiver = this.receivers[i]
+         break;
+      }
+   }
+   
    var topLeftP     = new Point(tx * Maperial.tileSize, ty*Maperial.tileSize)
-   var topLeftM     = this.maperial.context.coordS.PixelsToMeters(topLeftP.x, topLeftP.y, this.maperial.context.zoom)
+   var topLeftM     = receiver.context.coordS.PixelsToMeters(topLeftP.x, topLeftP.y, receiver.context.zoom)
    
    var bottomRightP = new Point(topLeftP.x + Maperial.tileSize, topLeftP.y + Maperial.tileSize)
-   var bottomRightM = this.maperial.context.coordS.PixelsToMeters(bottomRightP.x, bottomRightP.y, this.maperial.context.zoom)
+   var bottomRightM = receiver.context.coordS.PixelsToMeters(bottomRightP.x, bottomRightP.y, receiver.context.zoom)
 
    switch(source.params.src){
       
