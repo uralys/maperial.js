@@ -62,8 +62,11 @@ ChildrenManager.prototype.add = function(options){
    
    //------------------------//
    
-   var offset = panel.offset();
-   child.startCenterP = new Point(offset.left , offset.top);
+   var parentCanvas    = this.maperial.context.mapCanvas
+   var parentOffset  = parentCanvas.offset();
+   var centerParent  = new Point(parentCanvas.width()/2 + parentOffset.left, parentCanvas.height()/2 + parentOffset.top)
+
+   child.startPosition = new Point(centerParent.x - panel.width()/2, centerParent.y - panel.height()/2);
    
    this.refreshChild(child)
 }
@@ -98,10 +101,10 @@ ChildrenManager.prototype.refreshChild = function (child) {
          break;
 
       case Maperial.LENS :
-         var offset = $("#panel"+child.name).offset();
+         var childPosition = $("#panel"+child.name).offset();
 
          var centerP = this.maperial.context.coordS.MetersToPixels(this.maperial.context.centerM.x, this.maperial.context.centerM.y, this.maperial.context.zoom);
-         var lensCenterP = new Point( centerP.x + offset.left - child.startCenterP.x , centerP.y - offset.top + child.startCenterP.y);
+         var lensCenterP = new Point( centerP.x - (child.startPosition.x - childPosition.left) , centerP.y + (child.startPosition.y - childPosition.top));
 
          child.context.centerM = child.context.coordS.PixelsToMeters ( lensCenterP.x, lensCenterP.y, this.maperial.context.zoom );
          child.mapRenderer.DrawScene()

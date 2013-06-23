@@ -28,7 +28,7 @@ TemplateBuilder.prototype.build = function(maperial){
 TemplateBuilder.prototype.buildMap = function(){
    
    var html = "";
-   html += "<canvas id=\"Map"+this.name+"\" class=\"maperial-map canvas-"+this.maperial.type+"\"></canvas>";
+   html += "<canvas id=\"Map_"+this.name+"\" class=\"maperial-map canvas-"+this.maperial.type+"\"></canvas>";
    html += "<canvas id=\"fakeCanvas\" class=\"hide\"></canvas>";
    
    if(this.config.map.requireBoundingBoxDrawer){

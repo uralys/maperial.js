@@ -139,6 +139,7 @@
 			<fileset file="sources/css/webapp/home.css" />
 			<fileset file="sources/css/webapp/mapCreation.css" />
 			<fileset file="sources/css/webapp/styleEditor.css" />
+			<fileset file="sources/css/webapp/demos.css" />
 		</concat>
 		<exec executable="java">
 			<arg value="-Xmx128m" />

@@ -99,38 +99,40 @@
                   var maperial = new Maperial({name:"maperial"})
                   var config = maperial.emptyConfig();
 
-                  config.hud.elements[HUD.LATLON]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
-                  
-                  var lensConfig = maperial.emptyConfig();
-                  lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  
-                  var lens = {
-                     type  		: Maperial.LENS,
-                     name 		: "Lens",
-					 config		: lensConfig,
-                     draggable 	: true,
-                  }
+            	   var lensConfig = maperial.emptyConfig();
+            	   lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
 
-                  var minifierConfig = maperial.emptyConfig();
-                  minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  
-                  var minifier = {
-                     type  		: Maperial.MINIFIER,
-                     name 		: "Minifier",
-					 config		: minifierConfig,
-                     width 		: 250,
-                     height		: 250,
-                     position 	: { 
-                        right	: "50", 
-                        top    	: "50" 
-                     },
-                     borderRadius : 130,
-                  }
-                  
-                  config.children.push(lens)
-                  config.children.push(minifier)
-                  config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  
+            	   var lens = {
+            	      type       : Maperial.LENS,
+            	      name       : "Lens",
+            	      config     : lensConfig,
+            	      draggable  : true,
+            	      position   : { 
+            	         left    : "0%", 
+            	         top  : "0%" 
+            	      },
+            	   }
+
+            	   var minifierConfig = maperial.emptyConfig();
+            	   minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+
+            	   var minifier = {
+            	      type       : Maperial.MINIFIER,
+            	      name       : "Minifier",
+            	      config     : minifierConfig,
+            	      width      : 250,
+            	      height     : 250,
+            	      position   : { 
+            	         right : "25", 
+            	         top   : "25" 
+            	      },
+            	      borderRadius : 130,
+            	   }
+
+            	   config.children.push(lens)
+            	   config.children.push(minifier)
+            	   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER))
+            	   
                   maperial.apply(config)
                });
 </script>

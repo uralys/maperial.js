@@ -250,7 +250,7 @@ HUD.prototype.placeElement = function(element, position, type){
 
 HUD.prototype.placeChild = function(options){
    var childPanel    = $("#panel"   + this.maperial.getFullName(options.name))
-   var childCanvas   = $("#Map"     + this.maperial.getFullName(options.name))
+   var childCanvas   = $("#Map_"     + this.maperial.getFullName(options.name))
    
    childPanel.css ("width",                  options.width              )
    childPanel.css ("height",                 options.height             )

@@ -2,10 +2,17 @@
 
 function Maperial(options){
 
+   console.log(" NEW MAPERIAL ", options)
+   
    this.type               = (options && options.type)   ? options.type    : Maperial.COMPLETE
    this.parent             = (options && options.parent) ? options.parent  : null
-   this.width              = (options && options.width)  ? options.width   : $(window).width() 
+   
+   $('body').css('overflow', 'hidden');
+   this.width              = (options && options.width)  ? options.width   : $(window).width()
    this.height             = (options && options.height) ? options.height  : $(window).height()
+   $('body').css('overflow', 'auto');
+
+         console.log(this.width, this.height)
 
    this.name               = ((options && options.name)  ? options.name : Utils.generateGuid()) + (this.parent ? "_" + this.parent.name : "")
 
@@ -322,7 +329,7 @@ Maperial.prototype.createContext = function() {
    //----------------------------------------------------------
    // set new divs (ember erase and build new divs)
 
-   this.context.mapCanvas = $("#Map"+this.name);
+   this.context.mapCanvas = $("#Map_"+this.name);
    this.setCanvasSize();
 
    if(this.config.hud.elements[HUD.MAGNIFIER]){
@@ -572,6 +579,8 @@ Maperial.prototype.setCanvasSize = function() {
 
    var w = this.width;
    var h = this.height;
+   
+   console.log("--->set canvas size", w, h)
 
    if(this.context.mapCanvas[0]){
       this.context.mapCanvas.css("width", w);
