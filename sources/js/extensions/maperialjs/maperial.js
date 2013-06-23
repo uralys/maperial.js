@@ -38,6 +38,7 @@ function Maperial(options){
 Maperial.COMPLETE   = "maperial-container";  // Main maperial with all HUD
 Maperial.LENS       = "maperial-lens";       // Child maperial with camera centered on what is under it
 Maperial.MINIFIER   = "maperial-minifier";   // Child maperial with camera centered on the parent's center
+Maperial.MAGNIFIER  = "maperial-magnifier";  // Child maperial with camera centered on what is under the mouse
 
 //==================================================================//
 
@@ -532,20 +533,20 @@ Maperial.prototype.requireGeoloc = function() {
 }
 
 Maperial.prototype.initGeoloc = function() {
-   this.geoloc = new GeoLoc(this, "GeoLoc"+this.name, $("#GeoLocGo"+this.name), false);
+   this.geoloc = new GeoLoc(this, "GeoLoc_"+this.name, $("#GeoLocGo_"+this.name), false);
 }
 
 //==================================================================//
 
 Maperial.prototype.buildStyleMenu = function() {
-   this.styleMenu = new StyleMenu($("#DetailsMenu"+this.name) , $("#QuickEdit"+this.name) , $("#Zooms"+this.name) , this);
+   this.styleMenu = new StyleMenu($("#DetailsMenu_"+this.name) , $("#QuickEdit_"+this.name) , $("#Zooms_"+this.name) , this);
 }
 
 //==================================================================//
 
 Maperial.prototype.buildColorbar = function() {
    this.colorbar = new Colorbar(
-         $("#ColorBar"+this.name),
+         $("#ColorBar_"+this.name),
          this.colorbarsManager.getColorbar(Maperial.DEFAULT_COLORBAR_UID),
          50,355,50,40,true,25.4,375.89
    );

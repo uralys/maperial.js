@@ -92,6 +92,10 @@ MapMouse.prototype.move = function (event) {
       $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.maperial.name]);
    }
 
+   for(var i = 0; i < this.maperial.children.length; i++){
+      if(this.maperial.children[i].type == Maperial.MAGNIFIER)
+         this.maperial.childrenManager.refreshChild(this.maperial.children[i]);
+   }
 }
 
 MapMouse.prototype.doubleClick = function (event) {
@@ -105,6 +109,10 @@ MapMouse.prototype.doubleClick = function (event) {
 
    this.maperial.refreshCurrentLatLon();
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
+
+   for(var i = 0; i < this.maperial.children.length; i++){
+      this.maperial.childrenManager.refreshChild(this.maperial.children[i]);
+   }
 }
 
 //----------------------------------------------------------------------//

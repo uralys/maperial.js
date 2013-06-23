@@ -61,7 +61,6 @@ TemplateBuilder.prototype.buildHUD = function(){
          this.buildDetailsMenu();
          this.buildQuickEdit();
          this.buildZooms();
-         this.buildMagnifier();
          this.buildColorbar();
          this.buildBasemapsPanel();
          this.buildDataPanel();
@@ -223,15 +222,15 @@ TemplateBuilder.prototype.buildZooms = function(){
 
 //==================================================================//
 
-TemplateBuilder.prototype.buildMagnifier = function(){
-   
-   var html = "";
-   html += "<div class=\"panel panelMagnifier snapper hide\" id=\"panelMagnifier_"+this.name+"\" >";
-   html += "    <canvas id=\"Magnifier_"+this.name+"\" class=\"maperial-magnifier\" width=\"200\" height=\"200\"></canvas>";
-   html += "</div>";
-   
-   this.container.append(html);
-}
+//TemplateBuilder.prototype.buildMagnifier = function(){
+//   
+//   var html = "";
+//   html += "<div class=\"panel panelMagnifier snapper hide\" id=\"panelMagnifier_"+this.name+"\" >";
+//   html += "    <canvas id=\"Magnifier_"+this.name+"\" class=\"maperial-magnifier\" width=\"200\" height=\"200\"></canvas>";
+//   html += "</div>";
+//   
+//   this.container.append(html);
+//}
 
 //==================================================================//
 

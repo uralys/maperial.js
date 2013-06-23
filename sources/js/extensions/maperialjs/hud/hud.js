@@ -38,7 +38,6 @@ HUD.SCALE                  = "Scale";
 HUD.GEOLOC                 = "Geoloc";
 HUD.LATLON                 = "LatLon";
 HUD.MAPKEY                 = "MapKey";
-HUD.MAGNIFIER              = "Magnifier";
 HUD.COMPOSITIONS           = "Compositions";
 HUD.LAYER_SETTINGS         = "LayerSettings";
 HUD.BASEMAPS               = "Basemaps";
@@ -67,7 +66,6 @@ HUD.VIEWER_OPTIONS = {
       "7" : {element : HUD.DATA,            label : "Data",            defaultDisableDrag : true },
 //    "6" : {element : HUD.COMPOSITIONS,    label : "Compositions",    defaultDisableDrag : false },
 //    "7" : {element : HUD.LAYER_SETTINGS,  label : "Layer Settings",  defaultDisableDrag : false },
-//    "8" : {element : HUD.MAGNIFIER,       label : "Magnifier",       defaultDisableDrag : false },
 }
 
 //----------------------------------------------------------------------//
@@ -78,7 +76,6 @@ HUD.positions[HUD.SETTINGS]      = { left  : "0",    top    : "0"   };
 HUD.positions[HUD.COMPOSITIONS]  = { left  : "0",    bottom : "120" };
 HUD.positions[HUD.LAYER_SETTINGS]= { right : "5",    top    : "50%" };
 HUD.positions[HUD.SWITCH_IMAGES] = { left  : "10",   top    : "10"  };
-HUD.positions[HUD.MAGNIFIER]     = { left  : "0",    bottom : "0"   };
 HUD.positions[HUD.COLORBAR]      = { left  : "0",    top    : "180" };
 HUD.positions[HUD.SCALE]         = { left  : "20",   bottom : "10"  };
 HUD.positions[HUD.MAPKEY]        = { right : "5",    bottom : "0"   };
@@ -186,11 +183,8 @@ HUD.prototype.getMargin = function (property) {
 
 HUD.prototype.placeElements = function () {
 
-   console.log("-----> placeElements")
-   
    for (element in this.maperial.config.hud.elements) {
 
-      console.log(element)
       var position = HUD.positions[element];
 
       // position in config overrides default position
@@ -198,7 +192,6 @@ HUD.prototype.placeElements = function () {
          position = this.maperial.config.hud.elements[element].position;
       }
       
-      console.log(position)
       this.placeElement(element, position, this.maperial.config.hud.elements[element].type)
    }
    
@@ -209,7 +202,6 @@ HUD.prototype.placeElements = function () {
 
 HUD.prototype.placeElement = function(element, position, type){
    
-   console.log("-----> placeElement", element, position, type)
    for (property in position) {
 
       var value = position[property];
@@ -232,8 +224,6 @@ HUD.prototype.placeElement = function(element, position, type){
             var panelHeight      = element.height();
          }
 
-         console.log(panelWidth, panelHeight)
-         
          switch(property){
             case "top":
             case "bottom":
@@ -277,22 +267,8 @@ HUD.prototype.placeChild = function(options){
    childCanvas.css("-khtml-border-radius",   options.borderRadius       )
    childCanvas.css("overflow",               "hidden"                   )
    childCanvas.css("-webkit-mask-image",     "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC)")
-
-   
    
    this.placeElement(childPanel, options.position, HUD.PANEL)
-   
-   /**
-      
-      .canvas-maperial-lens {
-         -moz-border-radius: 125px;
-         -webkit-border-radius: 125px;
-         border-radius: 125px;
-         -khtml-border-radius: 125px;
-          overflow: hidden;
-          -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-      }
-    */
 }
 
 //==================================================================//

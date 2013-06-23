@@ -410,7 +410,7 @@ a.triggerDetailsMenu {
 }
 
 /*-------------------------*/
-.panelMagnifier {
+/* .panelMagnifier {
 	width: 200px;
 	height: 200px;
 	opacity: 1;
@@ -426,7 +426,7 @@ a.triggerDetailsMenu {
 	-webkit-border-top-right-radius: 6px;
 	-moz-border-radius-bottomright: 6px;
 	-webkit-border-bottom-right-radius: 6px;
-}
+} */
 
 /*-------------------------*/
 a.triggerZooms {

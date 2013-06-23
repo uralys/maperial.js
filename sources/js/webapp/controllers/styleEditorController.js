@@ -60,21 +60,29 @@
       config.hud.elements[HUD.QUICK_EDIT]    = {show : true,  type : HUD.PANEL,  label : "Quick Edition", disableDrag : true};
       config.hud.elements[HUD.DETAILS_MENU]  = {show : false, type : HUD.PANEL,  label : "Style Details" };
       config.hud.elements[HUD.ZOOMS]         = {show : false, type : HUD.PANEL,  label : "Zooms" };
-      config.hud.elements[HUD.MAGNIFIER]     = {show : true,  type : HUD.PANEL,  label : "Magnifier" };
 
-      config.layers = 
-         [{ 
-            type: LayersManager.Vector, 
-            source: {
-               type: Source.MaperialOSM
-            },
-            params: {
-               styles: [App.stylesData.selectedStyle.uid],
-               selectedStyle: 0,
-               group : 0 
-            }
-         }];
+      config.layers.push(LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
 
+      var magnifierConfig = App.maperial.emptyConfig();
+      magnifierConfig.layers.push(LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
+      
+      var magnifier = {
+         type        : Maperial.MAGNIFIER,
+         name        : "Magnifier",
+         config      : magnifierConfig,
+         width       : 250,
+         height      : 250,
+         position    : { 
+            left     : "20", 
+            bottom   : "20" 
+         },
+         draggable   : true,
+         padding     : 3,
+         borderRadius : 130,
+      }
+      
+      config.children.push(magnifier)
+      
       config.map.edition = true;
       
       App.addMargins(config);

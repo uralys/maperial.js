@@ -240,8 +240,6 @@ SourcesManager.prototype.loadSources = function (x, y, z, receiverName) {
          continue
       }
 
-      console.log("loadSources", receiverName, x ,y , z)
-
       //------------------------------------------//
 
       switch(source.type){

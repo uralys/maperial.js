@@ -20,7 +20,7 @@ ChildrenManager.prototype.add = function(options){
    //------------------------//
 
    options.parent          = this.maperial
-   options.type            = options.type ? (options.type == Maperial.LENS || options.type == Maperial.MINIFIER ? options.type : Maperial.LENS) : Maperial.LENS
+   options.type            = options.type ? (options.type == Maperial.LENS || options.type == Maperial.MINIFIER || options.type == Maperial.MAGNIFIER ? options.type : Maperial.LENS) : Maperial.LENS
    options.width           = options.width            || 150
    options.height          = options.height           || 150
    options.position        = options.position         || { left  : "50%", top      : "50%" }
@@ -64,6 +64,8 @@ ChildrenManager.prototype.add = function(options){
    
    var offset = panel.offset();
    child.startCenterP = new Point(offset.left , offset.top);
+   
+   this.refreshChild(child)
 }
 
 //==================================================================//
@@ -88,6 +90,11 @@ ChildrenManager.prototype.refreshChild = function (child) {
    switch(child.type){
       case Maperial.MINIFIER : 
          child.context.centerM = this.maperial.context.centerM
+         break;
+
+      case Maperial.MAGNIFIER : 
+         child.context.zoom    = this.maperial.context.zoom + 1
+         child.context.centerM = this.maperial.context.mouseM
          break;
 
       case Maperial.LENS :
