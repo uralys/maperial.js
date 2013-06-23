@@ -25,7 +25,7 @@ ChildrenManager.prototype.add = function(options){
    options.height          = options.height           || 150
    options.position        = options.position         || { left  : "50%", top      : "50%" }
    options.opacity         = options.opacity          || 1
-   options.padding         = options.padding          || 2
+   options.padding         = options.padding          || 0
    options.borderRadius    = options.borderRadius     || 0
 
    //------------------------//

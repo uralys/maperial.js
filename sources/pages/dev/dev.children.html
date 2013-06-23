@@ -102,30 +102,22 @@
                   config.hud.elements[HUD.LATLON]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
                   
                   var lensConfig = maperial.emptyConfig();
-                  lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
+                  lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
                   
                   var lens = {
                      type  		: Maperial.LENS,
                      name 		: "Lens",
 					 config		: lensConfig,
                      draggable 	: true,
-                     //width 		: 250,
-                     //height		: 250,
-                     //position 	: { 
-                     //   left	: "50%", 
-                     //   top    	: "50%" 
-                     //},
-                     //borderRadius : 10,
                   }
 
                   var minifierConfig = maperial.emptyConfig();
-                  minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER))
+                  minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
                   
                   var minifier = {
                      type  		: Maperial.MINIFIER,
                      name 		: "Minifier",
 					 config		: minifierConfig,
-                     draggable 	: true,
                      width 		: 250,
                      height		: 250,
                      position 	: { 
@@ -134,9 +126,6 @@
                      },
                      borderRadius : 130,
                   }
-                  
-                  // default
-                  //config.children.push({})
                   
                   config.children.push(lens)
                   config.children.push(minifier)

@@ -11,8 +11,6 @@ function Tile (maperial, x, y, z) {
    this.z         = z;
 
    //--------------------------------//
-
-   this.Init();
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -31,7 +29,7 @@ Tile.prototype.Init = function () {
    this.prepareBuffering();
    
    this.buildLayers();
-   this.maperial.sourcesManager.loadSources(this.x, this.y, this.z);
+   window.maperialSourcesManager.loadSources(this.x, this.y, this.z, this.maperial.name);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -89,15 +87,15 @@ Tile.prototype.prepareBuffering = function () {
 
 Tile.prototype.addLayer = function (layerConfig) {
    this.createLayerFromConfig(layerConfig, this.config.layers.length - 1)
-   this.maperial.sourcesManager.loadSources(this.x, this.y, this.z);
-   this.Refresh();
+   window.maperialSourcesManager.loadSources(this.x, this.y, this.z, this.maperial.name)
+   this.Refresh()
 }
 
 Tile.prototype.removeLayer = function (position) {
    if(this.layers.length > 0){
-      this.layers[position].Release();
+      this.layers[position].Release()
       this.layers.splice(position, 1)
-      this.Refresh();
+      this.Refresh()
    }
    //  else : all layers are released because no layer remains
 }
@@ -127,7 +125,7 @@ Tile.prototype.exchangeLayers = function(exchangedIds) {
 
 Tile.prototype.Release = function() {
    
-   this.maperial.sourcesManager.release(this.x, this.y, this.z);
+   window.maperialSourcesManager.release(this.x, this.y, this.z, this.maperial.name);
    
    for(var i = 0; i < this.config.layers.length; i++){
       try{
@@ -182,7 +180,7 @@ Tile.prototype.Reset = function (onlyFuse) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.sourceReady = function ( source, data ) {
-   
+  
    if(!data){
       console.log("-------> tile.sourceReady : DATA NULL !")
       //this.nbErrors ++;
@@ -237,7 +235,7 @@ Tile.prototype.FindSubLayerId = function ( tileClickCoord, zoom, styleContent ) 
       if(this.config.layers[i].source.type != Source.MaperialOSM)
          continue;
 
-      var data = this.maperial.sourcesManager.getData(this.config.layers[i].source, this.x, this.y, this.z);
+      var data = window.maperialSourcesManager.getData(this.config.layers[i].source, this.x, this.y, this.z);
       var subLayerId = TileRenderer.FindSubLayerId(tileClickCoord , ctx , data , zoom, styleContent, i, this.maperial.context.osmVisibilities );
 
       if(subLayerId)
@@ -419,7 +417,7 @@ Tile.prototype.Compose = function (  ) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.IsLoaded = function () {
-   return this.maperial.sourcesManager.isTileLoaded(this.x, this.y, this.z);
+   return window.maperialSourcesManager.isTileLoaded(this.x, this.y, this.z, this.maperial.name);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//

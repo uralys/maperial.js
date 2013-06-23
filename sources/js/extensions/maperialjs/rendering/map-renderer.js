@@ -171,6 +171,12 @@ MapRenderer.prototype.initListeners = function () {
       //renderer.DrawScene (true) 
    });
 
+   $(window).on(MaperialEvents.SOURCE_READY, function(event, source, data, x, y, z){
+      if(source.isForMe(renderer.maperial.name)){
+         renderer.sourceReady(source, data, x, y, z);
+      }
+   });
+
 //   $(window).on(MaperialEvents.ZOOM_CHANGED, function(event, x, y){
 //      renderer.maperial.sourcesManager.stopEverything()
 //   });
@@ -179,6 +185,7 @@ MapRenderer.prototype.initListeners = function () {
 //-------------------------------------------//
 
 MapRenderer.prototype.sourceReady = function ( source, data, x, y, z ) {
+
    var key = x + "," + y + "," + z;
    
    if ( this.tileCache[key] != null ) {
@@ -422,7 +429,8 @@ MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, f
          keyList.push(key)
          
          if ( this.tileCache[key] == null ) {
-            this.tileCache[key]  = new Tile ( this.maperial, tx, ty, zoom);
+            this.tileCache[key] = new Tile ( this.maperial, tx, ty, zoom);
+            this.tileCache[key].Init();
          }
       }
    }

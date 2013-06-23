@@ -21,7 +21,6 @@ function Maperial(options){
    this.stylesManager      = null;
    this.colorbarsManager   = null;
    this.layersManager      = null;
-   this.sourcesManager     = null;
    this.childrenManager    = null;
 
    this.geoloc             = null;
@@ -80,6 +79,15 @@ Maperial.DEMO_MAP = {
 
 //==================================================================//
 
+Maperial.prototype.apply = function(config){
+   console.log("MaperialJS applies ", config);
+   this.config = config;
+   this.checkConfig();
+   this.restart();
+}
+
+//==================================================================//
+
 /**
  * Must be called whenever the config is changed, in order to build Maperial again
  */
@@ -88,15 +96,6 @@ Maperial.prototype.restart = function(){
    $(window).trigger(MaperialEvents.LOADING);
    this.reset();
    this.load();
-}
-
-//==================================================================//
-
-Maperial.prototype.apply = function(config){
-   console.log("MaperialJS applies ", config);
-   this.config = config;
-   this.checkConfig();
-   this.restart();
 }
 
 //==================================================================//
@@ -138,18 +137,21 @@ Maperial.prototype.reset = function(){
    }catch(e){}
 
    try{
-      if(this.sourcesManager)
-         this.sourcesManager.releaseEverything();
+      if(window.maperialSourcesManager)
+         window.maperialSourcesManager.releaseReceiver(this.name);
    }catch(e){
    }
    
    this.colorbarsManager = new ColorbarsManager(this);
    this.stylesManager = new StylesManager(this);
    this.layersManager = new LayersManager(this);
-   this.sourcesManager = new SourcesManager(this);
    this.childrenManager = new ChildrenManager(this);
+   
+   window.maperialSourcesManager = window.maperialSourcesManager || new SourcesManager();  // cache containing all previously loaded sources
+   window.maperialSourcesManager.addReceiver(this)
 
    console.log("stylesCache : ", window.maperialStyles);
+   console.log("sourcesManager : ", window.maperialSourcesManager);
 }
 
 //==================================================================//

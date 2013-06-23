@@ -116,7 +116,7 @@ LayersManager.prototype.deleteLayer = function(layerRemovedPosition) {
       this.maperial.mapRenderer.reset()
    }
    
-   this.maperial.sourcesManager.removeSource(layerRemoved)
+   window.maperialSourcesManager.detachSource(layerRemoved.source.id, this.maperial.name)
    this.maperial.mapRenderer.removeLayer(layerRemovedPosition)
    this.maperial.hud.refresh()
    

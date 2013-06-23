@@ -14,8 +14,10 @@ ImageLayer.prototype.GetType = function ( ) {
 }
 
 ImageLayer.prototype.Init = function ( data ) {
+
    if (this.tex){
       console.log("tex ready")
+      //this.Reset()
       return;
    }
    if (data) {

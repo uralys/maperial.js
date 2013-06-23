@@ -2,17 +2,16 @@
 //- SourcesManager
 //-------------------------------------------//
 
-function SourcesManager(maperial){
-   this.maperial = maperial;
+function SourcesManager(){
 
    this.data      = {};
    this.requests  = {};
-   this.load      = {};
+   this.complete  = {};
    this.errors    = {};
 
    this.sources   = [];
 
-   this.buildSources(this.maperial.config.layers);
+   this.requestsCounter = new HashMap();
 }
 
 //---------------------------------------------------------------------------//
@@ -22,21 +21,23 @@ function SourcesManager(maperial){
  * if many layers require the same source, this source is put once in this.sources.
  * This way, only one source is loaded, and the data is copied in each layer.
  */
-//TODO : tout pourri ! on doit pouvoir avoir plusieurs rasters
-SourcesManager.prototype.buildSources = function(layers){
-   console.log("  fetching sources...");
+SourcesManager.prototype.addReceiver = function(receiver){
+   console.log("  fetching sources for receiver " + receiver.name + "...");
 
-   for(var i = 0; i < layers.length; i++){
-      this.addSource(layers[i])
+   for(var i = 0; i < receiver.config.layers.length; i++){
+      this.addSource(receiver.name, receiver.config.layers[i])
    }
 }
 
-SourcesManager.prototype.addSource = function(layer){
+SourcesManager.prototype.addSource = function(receiverName, layer){
    
-   var sourceRegistered = this.getSource(layer.source.id)
+   console.log("     adding source " + layer.source.id + " for receiver " + receiverName );
+
+   var source = this.getSource(layer.source.id)
    
-   if(sourceRegistered){
-      sourceRegistered.nbLayersUsingTheSource ++
+   if(source){
+      var nbLayers = source.receivers.get(receiverName) || 0
+      source.receivers.put(receiverName, nbLayers + 1)
       return
    }
       
@@ -60,8 +61,8 @@ SourcesManager.prototype.addSource = function(layer){
          break;
    }
 
-   console.log("     adding source " + layer.source.id);
-   this.sources.push(new Source(layer.source.id, type, params));
+   console.log("     adding source " + layer.source.id + " in sources");
+   this.sources.push(new Source(layer.source.id, type, params, receiverName));
 }
 
 /**
@@ -79,12 +80,12 @@ SourcesManager.prototype.getSource = function(id){
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.removeSource = function(layer){
+SourcesManager.prototype.detachSource = function(sourceId, receiverName){
 
    var source = this.getSource(layer.source.id)
-   source.nbLayers --
+   source.receivers[receiverName] --
    
-   if(source.nbLayers == 0){
+   if(source.receivers[receiverName] == 0){
       for(var i = 0; i < this.sources.length; i++){
          if(this.sources[i].id == layer.source.id)
             break;
@@ -121,21 +122,43 @@ SourcesManager.prototype.centerWMS = function (src, type) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.releaseEverything = function () {
-
-   for(requestId in this.requests){
-      try{
-         this.requests[requestId].abort();
-      }
-      catch(e){
-         console.log("------------> releaseEverything")
-         console.log(e)
+SourcesManager.prototype.releaseReceiver = function (receiverName) {
+   
+   for(var i = 0; i < this.sources.length; i++){
+      for(var r = 0; r < this.sources[i].receivers.length; r++){
+         if(this.sources[i].isForMe(receiverName)){
+            var requestId = this.requestId(this.sources[i], x, y, z)
+            
+            try{
+               this.requests[requestId].abort();
+            }
+            catch(e){
+               console.log("------------> release " + receiverName + " failed to abort request " + requestId)
+            }
+         }
+         
       }
    }
-
-   this.stopEverything()
    
 }
+
+//----------------------------------------------------------------------------------------------------------------------//
+//
+//SourcesManager.prototype.releaseEverything = function () {
+//   
+//   for(requestId in this.requests){
+//      try{
+//         this.requests[requestId].abort();
+//      }
+//      catch(e){
+//         console.log("------------> releaseEverything")
+//         console.log(e)
+//      }
+//   }
+//   
+//   this.stopEverything()
+//   
+//}
 
 SourcesManager.prototype.stopEverything = function () {
    //   cancel image downloads
@@ -153,41 +176,73 @@ SourcesManager.prototype.requestId = function (source, x, y, z) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.release = function (x, y ,z) {
+SourcesManager.prototype.release = function (x, y, z, receiverName) {
 
    for(var i = 0; i< this.sources.length; i++){
-      var requestId = this.requestId(this.sources[i], x, y, z);
 
-      if(!this.load[requestId]){
-         try{
-            this.requests[requestId].abort();
-         }
-         catch(e){
-            console.log("------------> release ", e)
-         }
-      }
+      if(!this.sources[i].isForMe(receiverName))
+         continue
+         
+      var requestId = this.requestId(this.sources[i], x, y, z);
+      var nbRequests = this.requestsCounter.get(requestId) || 0
       
-      delete this.data[requestId];
-      delete this.errors[requestId];
-      delete this.load[requestId];
-      delete this.requests[requestId];
+      if(nbRequests > 1){
+         this.requestsCounter.put(requestId, nbRequests - 1)
+      }
+      else{
+         if(!this.complete[requestId]){
+            
+            try{
+               this.requests[requestId].abort();
+            }
+            catch(e){
+               console.log("------------> release ", e)
+            }
+      
+         }
+
+         delete this.data[requestId];
+         delete this.errors[requestId];
+         delete this.complete[requestId];
+         delete this.requests[requestId];
+      }
    }
 
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.loadSources = function (x, y ,z) {
+SourcesManager.prototype.loadSources = function (x, y, z, receiverName) {
 
    for(var i = 0; i< this.sources.length; i++){
 
+      //------------------------------------------//
+
       var source = this.sources[i];
+      if(!source.isForMe(receiverName))
+         continue
+      
+      //------------------------------------------//
+         
       var requestId = this.requestId(source, x, y, z);
+      
+      //------------------------------------------//
+      
+      var nbRequests = this.requestsCounter.get(requestId) || 0
+      this.requestsCounter.put(requestId, nbRequests + 1)
+
+      //------------------------------------------//
 
       if (this.requests[requestId]){
-         this.maperial.mapRenderer.sourceReady(source, this.data[requestId], x, y, z);
+         if (this.complete[requestId])
+            $(window).trigger(MaperialEvents.SOURCE_READY, [source, this.data[requestId], x, y, z])
+         
          continue
       }
+
+      console.log("loadSources", receiverName, x ,y , z)
+
+      //------------------------------------------//
 
       switch(source.type){
          case Source.MaperialOSM:
@@ -223,20 +278,18 @@ SourcesManager.prototype.LoadVectorial = function ( source, x, y, z ) {
       success  : function(data) {
          if ( ! data ) {
             me.errors[requestId] = true;
-            //me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
          }
          else {
             me.data[requestId] = data;
-            me.maperial.mapRenderer.sourceReady(source, data, x, y, z);
+            $(window).trigger(MaperialEvents.SOURCE_READY, [source, data, x, y, z])
+//            me.maperial.mapRenderer.sourceReady(source, data, x, y, z);
          }
 
-         me.load[requestId] = true;
+         me.complete[requestId] = true;
       },
       error : function() {
          me.errors[requestId]  = true;
-         me.load[requestId]    = true;
-
-         //me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
+         me.complete[requestId]    = true;
       }
    });
 }
@@ -256,16 +309,16 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
    this.requests[requestId].onload = function (oEvent) {      
       var img = me.requests[requestId]
       me.errors[requestId] = false;
-      me.load[requestId]  = true;
+      me.complete[requestId]  = true;
       me.data[requestId]  = img;
 
-      me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
+      $(window).trigger(MaperialEvents.SOURCE_READY, [source, me.data[requestId], x, y, z])
+//      me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
    };
 
    this.requests[requestId].onerror = function (oEvent) {
       me.errors[requestId] = true;
-      me.load[requestId]  = true;
-     // me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
+      me.complete[requestId]  = true;
    }
 
    this.requests[requestId].abort = function () {
@@ -280,7 +333,7 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
 //   }
 //
 //   setTimeout(function () { 
-//      if ( ! me.load[requestId] ) {
+//      if ( ! me.complete[requestId] ) {
 //         me.requests[requestId].onabort();
 //      }
 //   }, Maperial.tileDLTimeOut);
@@ -294,7 +347,7 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
 
    if ( ! this.getURL(source, x, y, z) ) {
       this.errors[requestId] = true;
-      this.load[requestId] = true;
+      this.complete[requestId] = true;
       return ;
    }
 
@@ -312,19 +365,20 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
       }
 
       me.errors[requestId] = arrayBuffer != null;
-      me.load[requestId]  = true;
+      me.complete[requestId]  = true;
       me.data[requestId]  = arrayBuffer;
-      me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
+
+      $(window).trigger(MaperialEvents.SOURCE_READY, [source, me.data[requestId], x, y, z])
+     // me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
    };
 
    this.requests[requestId].onerror = function (oEvent) {
       me.errors[requestId] = true;
-      me.load[requestId]  = true;
-      //me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
+      me.complete[requestId]  = true;
    }
    
    function ajaxTimeout() { 
-      if ( ! me.load[requestId] ) {
+      if ( ! me.complete[requestId] ) {
          try{ 
             me.requests[requestId].abort(); 
          }catch(e){
@@ -340,13 +394,16 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.isTileLoaded = function ( x, y, z) {
+SourcesManager.prototype.isTileLoaded = function ( x, y, z, receiverName) {
    
    for(var i = 0; i< this.sources.length; i++){
       var source = this.sources[i];
+      if(!source.isForMe(receiverName))
+         continue
+         
       var requestId = this.requestId(source, x, y, z);
 
-      if (!this.load[requestId])
+      if (!this.complete[requestId])
          return false;
    }
 
