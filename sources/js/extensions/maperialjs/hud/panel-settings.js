@@ -6,7 +6,7 @@ HUD.prototype.refreshSettingsPanel = function() {
 
    this.element(HUD.SETTINGS).empty(); 
    var panelHeight = 0;
-   var configHUD = this.maperial.config.hud;
+   var configHUD = this.mapView.config.hud;
    var hud = this;
 
    for (name in configHUD.elements) {
@@ -16,7 +16,7 @@ HUD.prototype.refreshSettingsPanel = function() {
          continue;
       }  
       
-      var nameInTag = name + this.maperial.name; 
+      var nameInTag = name + this.mapView.name; 
 
       // ----- appending div
       var div = "<div class=\"row-fluid marginbottom\">" +

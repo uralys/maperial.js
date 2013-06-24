@@ -1,10 +1,10 @@
 //------------------------------------------------------------//
 
-function GeoLoc (maperial, inputId, goButton, geolocGranted) {
+function GeoLoc (mapView, inputId, goButton, geolocGranted) {
 
    console.log("  linking geoloc...");
 
-   this.maperial = maperial;
+   this.mapView = mapView;
    this.inputId = inputId;
    this.geolocGranted = geolocGranted;
 
@@ -37,7 +37,7 @@ GeoLoc.prototype.positionFound = function(position){
    var lat = position.coords.latitude;
    var lon = position.coords.longitude;
    var zoom = 13;
-   this.maperial.SetCenter(lat,lon);
+   this.mapView.SetCenter(lat,lon);
    this.initAutocomplete();
 }  
 
@@ -74,6 +74,6 @@ GeoLoc.prototype.locationFound = function(results, status) {
    if (status == google.maps.GeocoderStatus.OK) {
       var lat = results[0].geometry.location.lat();    
       var lon = results[0].geometry.location.lng();   
-      this.maperial.SetCenter(lat,lon);
+      this.mapView.SetCenter(lat,lon);
    }
 }

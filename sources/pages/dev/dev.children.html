@@ -70,6 +70,7 @@
                      "/js/extensions/maperialjs/hud/triggers.js",
 
                      // managers
+                     "/js/extensions/maperialjs/managers/config-manager.js",
                      "/js/extensions/maperialjs/managers/styles-manager.js",
                      "/js/extensions/maperialjs/managers/colorbars-manager.js",
                      "/js/extensions/maperialjs/managers/layers-manager.js",
@@ -86,6 +87,7 @@
                      "/js/extensions/maperialjs/colorbar/colorbar-rainbow.js",
                      "/js/extensions/maperialjs/colorbar/colorbar.js",
 
+                     "/js/extensions/maperialjs/mapView.js",
                      "/js/extensions/maperialjs/maperial.js",
 
                      // google - geoloc
@@ -96,10 +98,9 @@
                      $("#waitingSpin").css("display", "none")
                   })
 
-                  var maperial = new Maperial({name:"maperial"})
-                  var config = maperial.emptyConfig();
+                  var config = ConfigManager.emptyConfig();
 
-            	   var lensConfig = maperial.emptyConfig();
+            	   var lensConfig = ConfigManager.emptyConfig();
             	   lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
 
             	   var lens = {
@@ -108,12 +109,12 @@
             	      config     : lensConfig,
             	      draggable  : true,
             	      position   : { 
-            	         left    : "0%", 
-            	         top  : "0%" 
+            	         left    : "20%", 
+            	         top  : "20%" 
             	      },
             	   }
 
-            	   var minifierConfig = maperial.emptyConfig();
+            	   var minifierConfig = ConfigManager.emptyConfig();
             	   minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
 
             	   var minifier = {
@@ -133,7 +134,12 @@
             	   config.children.push(minifier)
             	   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER))
             	   
-                  maperial.apply(config)
+
+                  var maperial = new Maperial()
+            	  maperial.build([{
+            	     options : { name:"maperial" },
+            	     config : config
+            	  }])
                });
 </script>
 

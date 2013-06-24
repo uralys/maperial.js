@@ -13,7 +13,7 @@ MapManager.CHECK_EXPORT_MILLIS = 500;
 //=================================================================//
 
 MapManager.prototype.createNewMap = function(uid){
-   var map = {uid: uid, name: "New Map", config: App.maperial.defaultConfig()};
+   var map = {uid: uid, name: "New Map", config: ConfigManager.defaultConfig()};
    App.user.set("selectedMap", map);
 }
 

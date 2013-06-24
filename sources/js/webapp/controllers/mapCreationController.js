@@ -13,7 +13,8 @@
    // Rendering
    
    MapCreationController.init = function() {
-      App.layersHelper = new LayersHelper(App.maperial, App.MapCreationController);
+      MapCreationController.mapView = App.maperial.views[0]
+      App.layersHelper = new LayersHelper(MapCreationController.mapView, App.MapCreationController);
 
       $(window).on(  MaperialEvents.READY, MapCreationController.maperialReady);
 
@@ -57,7 +58,7 @@
 
    // init : once maperial is ready, getSelectedStyle is also the selected one in the styleSelectionWindow
    MapCreationController.setSelectedStyle = function (){
-      App.stylesData.set("selectedStyle", App.maperial.stylesManager.getSelectedStyle());
+      App.stylesData.set("selectedStyle", MapCreationController.mapView.stylesManager.getSelectedStyle());
    }
    
    //==================================================================//
@@ -76,7 +77,7 @@
    
    MapCreationController.getLayersCreationConfig = function(){
 
-      var config = App.maperial.emptyConfig();
+      var config = ConfigManager.emptyConfig();
 
       config.map.layersCreation = true;
       
@@ -102,7 +103,7 @@
    
    MapCreationController.getSettingsConfig = function(){
 
-      var config = App.maperial.emptyConfig()
+      var config = ConfigManager.emptyConfig()
       
       // map viewer hud config
       config.hud = App.user.selectedMap.config.hud
@@ -122,9 +123,9 @@
       App.addMargins(config)
 
       // layers + map options previously chosen
-      config.layers = App.maperial.config.layers
+      config.layers = MapCreationController.mapView.config.layers
 
-      config.map = App.maperial.config.map
+      config.map = MapCreationController.mapView.config.map
       config.map.requireBoundingBoxDrawer = true
       
       return config
@@ -136,9 +137,13 @@
    MapCreationController.openLayersCreation = function()
    {
       var config = MapCreationController.getLayersCreationConfig();
+      var options = { name:"maperial" }
       
       if(App.user.isCreatingANewMap){
-         App.maperial.apply(config);
+         App.maperial.build([{
+            options : options, 
+            config : config
+         }])
 
          if(App.Globals.isTryscreen)
             MapCreationController.openDemoSelection();
@@ -148,7 +153,11 @@
       else{
          config.layers = App.user.selectedMap.config.layers;
          config.map = App.user.selectedMap.config.map;
-         App.maperial.apply(config);
+
+         App.maperial.build([{
+            options : options, 
+            config : config
+         }])
       }
 
    }
@@ -161,7 +170,7 @@
       $('#demoSelectionWindow').off('hidden');
       $('#demoSelectionWindow').on('hidden', function(){
          setTimeout(function(){
-            if(App.maperial.config.layers.length == 0)
+            if(MapCreationController.mapView.config.layers.length == 0)
                MapCreationController.openBasemaps()
          }, 350);
       });
@@ -171,7 +180,7 @@
 
    //old openSourceSelection  : MapCreationController.currentLayerIndex = -1;
    MapCreationController.openBasemaps = function(){
-      App.maperial.hud.openBasemaps(
+      MapCreationController.mapView.hud.openBasemaps(
          HUD.ALL_BASEMAPS,
          MapCreationController.addBasemap
       )
@@ -183,14 +192,14 @@
    }
 
    MapCreationController.closeBasemaps = function(){
-      App.maperial.hud.closeBasemaps()
+      MapCreationController.mapView.hud.closeBasemaps()
    }
    
    //--------------------------------------//
    // Edit Images
 
    MapCreationController.editImages = function(){
-      App.maperial.hud.openBasemaps(
+      MapCreationController.mapView.hud.openBasemaps(
             HUD.IMAGE_BASEMAPS,
             MapCreationController.changeImage
       )
@@ -198,7 +207,7 @@
 
    MapCreationController.changeImage = function(sourceType, src){
       if(src != null)
-         App.maperial.layersManager.changeImages(MapCreationController.currentLayerIndex, src);
+         MapCreationController.mapView.layersManager.changeImages(MapCreationController.currentLayerIndex, src);
       
       MapCreationController.closeBasemaps()
    }
@@ -207,7 +216,7 @@
    // Data
    
    MapCreationController.openData = function(){
-      App.maperial.hud.openData(
+      MapCreationController.mapView.hud.openData(
          HUD.WMS_DATA,
          MapCreationController.addData
       )
@@ -219,14 +228,14 @@
    }
 
    MapCreationController.closeData = function(){
-      App.maperial.hud.closeData()
+      MapCreationController.mapView.hud.closeData()
    }
 
    //--------------------------------------//
    // Edit WMS
 
    MapCreationController.editWMS = function(){
-      App.maperial.hud.openData(
+      MapCreationController.mapView.hud.openData(
             HUD.WMS_DATA,
             MapCreationController.changeWMS
       )
@@ -234,7 +243,7 @@
 
    MapCreationController.changeWMS = function(dataType, src){
       if(src != null)
-         App.maperial.layersManager.changeImages(MapCreationController.currentLayerIndex, src);
+         MapCreationController.mapView.layersManager.changeImages(MapCreationController.currentLayerIndex, src);
       
       MapCreationController.closeData()
    }
@@ -280,7 +289,7 @@
             
          case LayersManager.SRTM:
          case LayersManager.Shade:
-            App.maperial.layersManager.addLayer(sourceType);
+            MapCreationController.mapView.layersManager.addLayer(sourceType);
             MapCreationController.refreshLayersPanel()
             break;
       }
@@ -289,8 +298,8 @@
    //--------------------------------------//
 
    MapCreationController.addOSMLayer = function(src){
-//      if(App.maperial.config.layers.length > 0 
-//      && App.maperial.config.layers[App.maperial.config.layers.length-1].source.type == Source.MaperialOSM){
+//      if(MapCreationController.mapView.config.layers.length > 0 
+//      && MapCreationController.mapView.config.layers[MapCreationController.mapView.config.layers.length-1].source.type == Source.MaperialOSM){
 //         // TODO :  ameliorer le UI avec bootstrap.alert
 //         alert("Le layer du dessus est deja OSM");
 //      }
@@ -326,21 +335,21 @@
       }
       
       console.log("params : " + params)
-      App.maperial.layersManager.addLayer(Source.MaperialOSM, params);
+      MapCreationController.mapView.layersManager.addLayer(Source.MaperialOSM, params);
       MapCreationController.refreshLayersPanel()
    }
 
    //--------------------------------------//
    
    MapCreationController.addImagesLayer = function(src){
-      App.maperial.layersManager.addLayer(Source.Images, [src]);
+      MapCreationController.mapView.layersManager.addLayer(Source.Images, [src]);
       MapCreationController.refreshLayersPanel()
    }
    
    //--------------------------------------//
 
    MapCreationController.addWMSLayer = function(src){
-      App.maperial.layersManager.addLayer(Source.WMS, [src]);
+      MapCreationController.mapView.layersManager.addLayer(Source.WMS, [src]);
       MapCreationController.refreshLayersPanel()
    }
    
@@ -353,7 +362,7 @@
          return;
       }
          
-      var layer = App.maperial.config.layers[layerIndex];
+      var layer = MapCreationController.mapView.config.layers[layerIndex];
       MapCreationController.currentLayerIndex = layerIndex;
       
       switch(layer.source.type){
@@ -379,7 +388,7 @@
    //--------------------------------------//
    
    MapCreationController.customizeLayer = function(layerIndex){
-      var layer = App.maperial.config.layers[layerIndex];
+      var layer = MapCreationController.mapView.config.layers[layerIndex];
       MapCreationController.currentLayerIndex = layerIndex;
       MapCreationController.openCustomizeLayerWindow(layer);
    }
@@ -387,7 +396,7 @@
    //--------------------------------------//
    
    MapCreationController.editStyle = function(layerIndex){
-      var layer = App.maperial.config.layers[layerIndex];
+      var layer = MapCreationController.mapView.config.layers[layerIndex];
       App.mapManager.backUpMap()
       App.stylesData.set("selectedStyle.uid", layer.params.styles[layer.params.selectedStyle])
       App.StylesController.editStyle(App.stylesData.selectedStyle)
@@ -396,10 +405,10 @@
    //--------------------------------------//
    
    MapCreationController.deleteLayer = function(layerIndex){
-      App.maperial.layersManager.deleteLayer(layerIndex);
+      MapCreationController.mapView.layersManager.deleteLayer(layerIndex);
       MapCreationController.refreshLayersPanel()
 
-      if(App.maperial.config.layers.length == 0)
+      if(MapCreationController.mapView.config.layers.length == 0)
          MapCreationController.openBasemaps()
    }
    
@@ -419,7 +428,7 @@
 
    //** called from StylesController.changeStyle()... 
    MapCreationController.changeStyle = function(){
-      App.maperial.changeStyle(App.stylesData.selectedStyle.uid);
+      MapCreationController.mapView.changeStyle(App.stylesData.selectedStyle.uid);
       $("#selectStyleWindow").modal("hide");
    }
 
@@ -457,11 +466,11 @@
       
       if(MapCreationController.currentLayerIndex >= 0){
          console.log("editing a raster");
-         App.maperial.layersManager.changeRaster(MapCreationController.currentLayerIndex, raster.uid);
+         MapCreationController.mapView.layersManager.changeRaster(MapCreationController.currentLayerIndex, raster.uid);
       }
       else{
          console.log("adding a new raster");
-         App.maperial.layersManager.addLayer(Source.Raster, [raster.uid]);
+         MapCreationController.mapView.layersManager.addLayer(Source.Raster, [raster.uid]);
          MapCreationController.refreshLayersPanel()
       }
    }
@@ -471,7 +480,7 @@
 
    MapCreationController.openSettings = function(){
       MapCreationController.wizardSetView(MapCreationController.SETTINGS);
-      App.maperial.apply(MapCreationController.getSettingsConfig());
+      MapCreationController.mapView.apply(MapCreationController.getSettingsConfig());
       MapCreationController.buildZoomSlider();
    }
 
@@ -480,10 +489,10 @@
       MapCreationController.wizardSetView(MapCreationController.LAYERS_CREATION);
       
       var config = MapCreationController.getLayersCreationConfig();
-      config.layers = App.maperial.config.layers;
-      config.map = App.maperial.config.map;
+      config.layers = MapCreationController.mapView.config.layers;
+      config.map = MapCreationController.mapView.config.map;
 
-      App.maperial.apply(config);
+      MapCreationController.mapView.apply(config);
    }
    
    MapCreationController.closeSettings = function(){
@@ -518,13 +527,13 @@
       //------------------------------------------------//
       // Build HUD for this screen 
       
-      App.maperial.config.hud = {elements:{}, options:{}};
-      App.maperial.config.hud.elements["Settings"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true, disableDrag : true };
-      App.maperial.config.hud.elements[HUD.LATLON] = {show : true, type : HUD.PANEL, position : { left: "0", top: "0"}, disableHide : true, disableDrag : true };
+      MapCreationController.mapView.config.hud = {elements:{}, options:{}};
+      MapCreationController.mapView.config.hud.elements["Settings"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true, disableDrag : true };
+      MapCreationController.mapView.config.hud.elements[HUD.LATLON] = {show : true, type : HUD.PANEL, position : { left: "0", top: "0"}, disableHide : true, disableDrag : true };
       
-      App.addMargins(App.maperial.config);
+      App.addMargins(MapCreationController.mapView.config);
       
-      App.maperial.hud.refresh();
+      MapCreationController.mapView.hud.refresh();
 
       //------------------------------------------------//
       // listen to BB changes 
@@ -543,7 +552,7 @@
          boundingBox.lonMax = App.user.selectedMap.config.map.lonMax;
       }
       
-      App.maperial.showBoundingBox(boundingBox);
+      MapCreationController.mapView.showBoundingBox(boundingBox);
 
       //------------------------------------------------//
       // show/hide Webapp panels + button-mode
@@ -560,19 +569,19 @@
       $("#buttonMapMode").click(function(){
          $("#buttonMapMode").addClass("hide");
          $("#buttonDrawMode").removeClass("hide");
-         App.maperial.deactivateBoundingBoxDrawing();
+         MapCreationController.mapView.deactivateBoundingBoxDrawing();
          return false;
       });
 
       $("#buttonDrawMode").click(function(){
          $("#buttonDrawMode").addClass("hide");
          $("#buttonMapMode").removeClass("hide");
-         App.maperial.activateBoundingBoxDrawing();
+         MapCreationController.mapView.activateBoundingBoxDrawing();
          return false;
       });
       
       $("#buttonCenter").click(function(){
-         App.maperial.boundingBoxDrawer.center();
+         MapCreationController.mapView.boundingBoxDrawer.center();
          return false;
       });
       
@@ -693,12 +702,12 @@
    }
 
    MapCreationController.cancelBoundingBox = function(){
-      App.maperial.boundingBoxDrawer.cancelEdition();
+      MapCreationController.mapView.boundingBoxDrawer.cancelEdition();
       
-      var latMin = App.maperial.boundingBoxDrawer.initLatMin;
-      var latMax = App.maperial.boundingBoxDrawer.initLatMax;
-      var lonMin = App.maperial.boundingBoxDrawer.initLonMin;
-      var lonMax = App.maperial.boundingBoxDrawer.initLonMax;
+      var latMin = MapCreationController.mapView.boundingBoxDrawer.initLatMin;
+      var latMax = MapCreationController.mapView.boundingBoxDrawer.initLatMax;
+      var lonMin = MapCreationController.mapView.boundingBoxDrawer.initLonMin;
+      var lonMax = MapCreationController.mapView.boundingBoxDrawer.initLonMax;
       
       App.user.set("selectedMap.config.map.latMin", latMin);
       App.user.set("selectedMap.config.map.latMax", latMax);
@@ -719,7 +728,7 @@
    MapCreationController.closeBoundingBox = function(){
       
       $(window).off(MaperialEvents.NEW_BOUNDING_BOX);
-      App.maperial.hideBoundingBox();
+      MapCreationController.mapView.hideBoundingBox();
       $("#buttonMapMode").unbind("click");
       $("#buttonDrawMode").unbind("click");
       $("#buttonCenter").unbind("click");
@@ -728,17 +737,17 @@
       $("#globalSettings").removeClass("hide");
       $("#boundingBoxSettings").addClass("hide");
 
-      App.maperial.config.hud = App.user.selectedMap.config.hud;
-      App.maperial.hud.refresh();
+      MapCreationController.mapView.config.hud = App.user.selectedMap.config.hud;
+      MapCreationController.mapView.hud.refresh();
    }
 
    //-----------------------------------//
 
    MapCreationController.resetInputs = function(){
-      var latMin = App.maperial.boundingBoxDrawer.latMin;
-      var latMax = App.maperial.boundingBoxDrawer.latMax;
-      var lonMin = App.maperial.boundingBoxDrawer.lonMin;
-      var lonMax = App.maperial.boundingBoxDrawer.lonMax;
+      var latMin = MapCreationController.mapView.boundingBoxDrawer.latMin;
+      var latMax = MapCreationController.mapView.boundingBoxDrawer.latMax;
+      var lonMin = MapCreationController.mapView.boundingBoxDrawer.lonMin;
+      var lonMax = MapCreationController.mapView.boundingBoxDrawer.lonMax;
       
       $("#latMinInput").val(latMin);
       $("#latMaxInput").val(latMax);
@@ -758,7 +767,7 @@
          var lonMin = parseFloat($("#lonMinInput").val());
          var lonMax = parseFloat($("#lonMaxInput").val());
          
-         App.maperial.boundingBoxDrawer.forceLatLon(latMin, lonMin, latMax, lonMax);
+         MapCreationController.mapView.boundingBoxDrawer.forceLatLon(latMin, lonMin, latMax, lonMax);
       }
    }
    
@@ -770,14 +779,14 @@
       MapCreationController.closeSettings();
       
       // remove custom settingView stuffs from config
-      delete App.maperial.config.hud.elements["Settings"];
-      delete App.maperial.config.map.requireBoundingBoxDrawer;
-      delete App.maperial.config.map.layersCreation;
+      delete MapCreationController.mapView.config.hud.elements["Settings"];
+      delete MapCreationController.mapView.config.map.requireBoundingBoxDrawer;
+      delete MapCreationController.mapView.config.map.layersCreation;
 
-      App.removeMargins(App.maperial.config);
+      App.removeMargins(MapCreationController.mapView.config);
       
       // update the selectedMap
-      App.user.set('selectedMap.config', App.maperial.config);
+      App.user.set('selectedMap.config', MapCreationController.mapView.config);
       App.user.set('selectedMap.name', $("#mapNameInput").val());
 
       // Save the map server side !
@@ -927,7 +936,10 @@
          App.user.set("isCreatingANewMap", true);  
 
          var config = MapCreationController.getLayersCreationConfig();
-         App.maperial.apply(config);
+         App.maperial.build([{
+            options  :  { name : "maperial"},
+            config   :  config
+         }]);
       },
 
       loadDemo1    : function(){ MapCreationController.loadDemo(0) },

@@ -5,12 +5,14 @@
     "AwesomeMaps"		: "Vos données à la carte",
     "Everywhere"		: "et dans le Cloud",
 
+    "Contact"			: "Contact",
+    "Demos"				: "Démos",
     "Try"				: "Essayer",
+  	"LogIn"				: "Se logguer",
+
     "TryNow"			: "Essayez !",
     "FindOutMore"		: "En savoir plus",
-    "Demos"				: "Démos",
     "Screenshots"		: "Galerie",
-  	"LogIn"				: "Se logguer",
   	
     "openMoreText"		: "Découvrez plus en détails tout ce que vous propose Maperial.",
     "openDemosText"		: "Parcourez une sélection de cartes dynamiques dans notre cartothèque de démonstration",

@@ -8,28 +8,33 @@
 
 	CartothequeController.renderUI = function()
 	{
-	   App.maperial = new Maperial({
-	      name:"maperialDemos",
-	      width : 4*$(window).width()/5,
-	      height : $(window).height()
-	     
-	   })
-	   CartothequeController.applyConfig1()
+	   var options = {
+         name:"maperialDemos",
+         width : 4*$(window).width()/5,
+         height : $(window).height()
+	   }
+	   
+	   var config = CartothequeController.config1()
+	   
+	   App.maperial.build([{
+	      options : options, 
+	      config : config
+	   }])
 	}
 
 	CartothequeController.cleanUI = function()
 	{
-	   
+
 	}
 
 	//==================================================================//
 	
 	
-	CartothequeController.applyConfig1 = function()
+	CartothequeController.config1 = function()
 	{
-	   var config = App.maperial.emptyConfig();
+	   var config = ConfigManager.emptyConfig();
 
-	   var lensConfig = App.maperial.emptyConfig();
+	   var lensConfig = ConfigManager.emptyConfig();
 	   lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
 
 	   var lens = {
@@ -43,7 +48,7 @@
 	      },
 	   }
 
-	   var minifierConfig = App.maperial.emptyConfig();
+	   var minifierConfig = ConfigManager.emptyConfig();
 	   minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
 
 	   var minifier = {
@@ -63,7 +68,7 @@
 	   config.children.push(minifier)
 	   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER))
 
-	   App.maperial.apply(config)
+	   return config
 	}
 	
 	//==================================================================//

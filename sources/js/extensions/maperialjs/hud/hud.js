@@ -1,14 +1,14 @@
 
 //==================================================================//
 
-function HUD(maperial){
+function HUD(mapView){
 
    console.log("  building HUD...");
 
-   this.maperial = maperial;
-   this.context = this.maperial.context;
+   this.mapView = mapView;
+   this.context = this.mapView.context;
 
-   if(this.maperial.config){
+   if(this.mapView.config){
       this.buildTriggers();
       this.buildControls();
 
@@ -173,26 +173,26 @@ HUD.prototype.removeListeners = function () {
 //----------------------------------------------------------------------//
 
 HUD.prototype.getMargin = function (property) {
-   if(!this.maperial.config.hud.options["margin-"+property])
+   if(!this.mapView.config.hud.options["margin-"+property])
       return 0;
    else
-      return this.maperial.config.hud.options["margin-"+property];
+      return this.mapView.config.hud.options["margin-"+property];
 }
 
 //----------------------------------------------------------------------//
 
 HUD.prototype.placeElements = function () {
 
-   for (element in this.maperial.config.hud.elements) {
+   for (element in this.mapView.config.hud.elements) {
 
       var position = HUD.positions[element];
 
       // position in config overrides default position
-      if(this.maperial.config.hud.elements[element].position){
-         position = this.maperial.config.hud.elements[element].position;
+      if(this.mapView.config.hud.elements[element].position){
+         position = this.mapView.config.hud.elements[element].position;
       }
       
-      this.placeElement(element, position, this.maperial.config.hud.elements[element].type)
+      this.placeElement(element, position, this.mapView.config.hud.elements[element].type)
    }
    
    this.refreshAttribution()
@@ -213,7 +213,7 @@ HUD.prototype.placeElement = function(element, position, type){
       else{
          var percentage = position[property].split("%")[0];
          
-         if(this.maperial.config.hud.elements[element]){
+         if(this.mapView.config.hud.elements[element]){
             var triggerWidth     = this.trigger(element).width();
             var triggerHeight    = this.trigger(element).height();
             var panelWidth       = this.panel(element).width();
@@ -249,8 +249,8 @@ HUD.prototype.placeElement = function(element, position, type){
 //==================================================================//
 
 HUD.prototype.placeChild = function(options){
-   var childPanel    = $("#panel"   + this.maperial.getFullName(options.name))
-   var childCanvas   = $("#Map_"     + this.maperial.getFullName(options.name))
+   var childPanel    = $("#panel"   + this.mapView.getFullName(options.name))
+   var childCanvas   = $("#Map_"     + this.mapView.getFullName(options.name))
    
    childPanel.css ("width",                  options.width              )
    childPanel.css ("height",                 options.height             )
@@ -276,9 +276,9 @@ HUD.prototype.placeChild = function(options){
 HUD.prototype.placeElementAt = function(element, value, property){
 
    var elementName
-   if(this.maperial.config.hud.elements[element]){
+   if(this.mapView.config.hud.elements[element]){
       elementName = element
-      element = this.element(this.maperial.config.hud.elements[elementName].type+elementName)
+      element = this.element(this.mapView.config.hud.elements[elementName].type+elementName)
    }
 
    var margin = this.getMargin(property);
@@ -324,16 +324,16 @@ HUD.prototype.placeElementAt = function(element, value, property){
 HUD.prototype.refreshDisplay = function(dontHideColorpickers){
    this.showAllHUD(dontHideColorpickers);
 
-   if(this.maperial.config.hud.elements[HUD.SETTINGS])
+   if(this.mapView.config.hud.elements[HUD.SETTINGS])
       this.refreshSettingsPanel();
 
-   if(this.maperial.config.hud.elements[HUD.COMPOSITIONS])
+   if(this.mapView.config.hud.elements[HUD.COMPOSITIONS])
       this.refreshCompositionsPanel();
 
-   if(this.maperial.config.hud.elements[HUD.LAYER_SETTINGS])
+   if(this.mapView.config.hud.elements[HUD.LAYER_SETTINGS])
       this.refreshLayerSettingsPanel();
 
-   if(this.maperial.config.hud.elements[HUD.SWITCH_IMAGES])
+   if(this.mapView.config.hud.elements[HUD.SWITCH_IMAGES])
       this.refreshSwitchImagesPanel();
 }
 
@@ -363,9 +363,9 @@ HUD.prototype.hideAllHUD = function(){
 
 HUD.prototype.showAllHUD = function(dontHideColorpickers){
 
-   for (element in this.maperial.config.hud.elements) {
-      if(this.maperial.config.hud.elements[element].show == true){
-         this.element(this.maperial.config.hud.elements[element].type + element).removeClass("hide");
+   for (element in this.mapView.config.hud.elements) {
+      if(this.mapView.config.hud.elements[element].show == true){
+         this.element(this.mapView.config.hud.elements[element].type + element).removeClass("hide");
       }
    }
 
@@ -455,7 +455,7 @@ HUD.prototype.openPanel = function(params, callBack, panel){
 //----------------------------------------------------------------------//
 
 HUD.prototype.element = function(name){
-   return $("#"+this.maperial.getFullName(name));
+   return $("#"+this.mapView.getFullName(name));
 }
 
 HUD.prototype.panel = function(name){
@@ -471,19 +471,19 @@ HUD.prototype.icon = function(name){
 }
 
 HUD.prototype.allPanels = function(){
-   var panels = $("#"+this.maperial.name).find("."+HUD.PANEL);
+   var panels = $("#"+this.mapView.name).find("."+HUD.PANEL);
    var panelsWebapp = $(".panel-webapp");
 
    return $.merge(panels, panelsWebapp);
 }
 
 HUD.prototype.allTriggers = function(){
-   var triggers = $("#"+this.maperial.name).find("."+HUD.TRIGGER);
+   var triggers = $("#"+this.mapView.name).find("."+HUD.TRIGGER);
    var triggersWebapp = $(".trigger-webapp");
 
    return $.merge(triggers, triggersWebapp);
 }
 
 HUD.prototype.controlZoomCursor = function(){
-   return $("#control-zoom"+this.maperial.name+" a");
+   return $("#control-zoom"+this.mapView.name+" a");
 }

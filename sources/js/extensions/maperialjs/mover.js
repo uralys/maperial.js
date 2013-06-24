@@ -1,12 +1,12 @@
 //==================================================================//
 
-function MapMover(maperial){
+function MapMover(mapView){
 
    console.log("  building mover...");
    
-   this.maperial     = maperial;
-   this.config       = maperial.config;
-   this.context      = maperial.context;
+   this.mapView      = mapView;
+   this.config       = mapView.config;
+   this.context      = mapView.context;
 
    this.lastMouseX   = null;
    this.lastMouseY   = null;
@@ -35,7 +35,7 @@ MapMover.prototype.initListeners = function (event) {
    });
 
    $(window).on(MaperialEvents.DRAGGING_MAP, function(event, maperialId){
-      if(mover.maperial.name == maperialId){
+      if(mover.mapView.name == maperialId){
          mover.drag();
       }
    });
@@ -112,10 +112,10 @@ MapMover.prototype.moveMap = function (dx, dy) {
    this.context.centerM.x -= dx * r;
    this.context.centerM.y += dy * r;
 
-   this.maperial.refreshCurrentLatLon();
+   this.mapView.refreshCurrentLatLon();
 
-   for(var i = 0; i < this.maperial.children.length; i++){
-      this.maperial.childrenManager.refreshChild(this.maperial.children[i]);
+   for(var i = 0; i < this.mapView.children.length; i++){
+      this.mapView.childrenManager.refreshChild(this.mapView.children[i]);
    }
    
    $(window).trigger(MaperialEvents.MAP_MOVING);

@@ -2,9 +2,9 @@
 //- StylesManager - note: "StyleManager" exists as webapp.managers.styleManager...
 //-------------------------------------------//
 
-function StylesManager(maperial){
+function StylesManager(mapView){
 
-   this.maperial = maperial;
+   this.mapView = mapView;
 
    this.stylesToLoad = null;
    this.nextFunction = null;
@@ -25,8 +25,8 @@ StylesManager.prototype.styleCacheEmpty = function() {
  */
 StylesManager.prototype.getSelectedStyle = function() {
 
-   for(var i = 0; i < this.maperial.config.layers.length; i++){
-      var layerParams = this.maperial.config.layers[i].params;
+   for(var i = 0; i < this.mapView.config.layers.length; i++){
+      var layerParams = this.mapView.config.layers[i].params;
       if(layerParams.styles){
          var styleUID = layerParams.styles[layerParams.selectedStyle];
          return window.maperialStyles[styleUID];

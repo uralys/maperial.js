@@ -2,9 +2,9 @@
 //- ColorbarsManager - note: "ColorbarManager" exists as webapp.managers.colorbarManager...
 //-------------------------------------------//
 
-function ColorbarsManager(maperial){
+function ColorbarsManager(mapView){
 
-   this.maperial = maperial;
+   this.mapView = mapView;
 
    this.colorbarsToLoad = null;
    this.nextFunction = null;
@@ -22,7 +22,7 @@ ColorbarsManager.prototype.colorbarCacheEmpty = function() {
 
 ColorbarsManager.prototype.getSelectedColorbar = function(layerIndex) {
 
-   var layerParams = this.maperial.config.layers[layerIndex].params;
+   var layerParams = this.mapView.config.layers[layerIndex].params;
    if(layerParams.colorbars){
       var colorbarUID = layerParams.colorbars[layerParams.selectedColorbar];
       return window.maperialColorbars[colorbarUID];

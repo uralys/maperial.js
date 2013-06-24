@@ -1,12 +1,12 @@
 //==================================================================//
 
-function MapMouse(maperial){
+function MapMouse(mapView){
 
    console.log("  listening mouse...");
    
-   this.maperial           = maperial;
-   this.config             = maperial.config;
-   this.context            = maperial.context;
+   this.mapView            = mapView;
+   this.config             = mapView.config;
+   this.context            = mapView.context;
    
    this.mouseDown          = false;
    this.lastWheelMillis    = new Date().getTime();
@@ -20,7 +20,7 @@ MapMouse.prototype.initListeners = function () {
 
    var mouse = this;
    
-   switch(this.maperial.type){
+   switch(this.mapView.type){
 
       case Maperial.COMPLETE:
          this.context.mapCanvas
@@ -89,12 +89,12 @@ MapMouse.prototype.move = function (event) {
    }
    else{
       this.context.mapCanvas.addClass( 'movable' )
-      $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.maperial.name]);
+      $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.mapView.name]);
    }
 
-   for(var i = 0; i < this.maperial.children.length; i++){
-      if(this.maperial.children[i].type == Maperial.MAGNIFIER)
-         this.maperial.childrenManager.refreshChild(this.maperial.children[i]);
+   for(var i = 0; i < this.mapView.children.length; i++){
+      if(this.mapView.children[i].type == Maperial.MAGNIFIER)
+         this.mapView.childrenManager.refreshChild(this.mapView.children[i]);
    }
 }
 
@@ -107,11 +107,11 @@ MapMouse.prototype.doubleClick = function (event) {
    this.context.mouseP = Utils.getPoint(event);
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
-   this.maperial.refreshCurrentLatLon();
+   this.mapView.refreshCurrentLatLon();
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
 
-   for(var i = 0; i < this.maperial.children.length; i++){
-      this.maperial.childrenManager.refreshChild(this.maperial.children[i]);
+   for(var i = 0; i < this.mapView.children.length; i++){
+      this.mapView.childrenManager.refreshChild(this.mapView.children[i]);
    }
 }
 
@@ -144,11 +144,11 @@ MapMouse.prototype.wheel = function (event, delta) {
    this.context.mouseP = Utils.getPoint(event);
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
-   this.maperial.refreshCurrentLatLon();
+   this.mapView.refreshCurrentLatLon();
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
 
-   for(var i = 0; i < this.maperial.children.length; i++){
-      this.maperial.childrenManager.refreshChild(this.maperial.children[i]);
+   for(var i = 0; i < this.mapView.children.length; i++){
+      this.mapView.childrenManager.refreshChild(this.mapView.children[i]);
    }
 }
 
@@ -165,7 +165,7 @@ MapMouse.prototype.wheelOnChild = function (event, delta) {
    this.context.mouseP = Utils.getPoint(event);
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
    
-   this.maperial.refreshCurrentLatLon();
+   this.mapView.refreshCurrentLatLon();
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
 }
 

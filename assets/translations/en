@@ -5,12 +5,14 @@
     "AwesomeMaps"		: "Awesome maps",
     "Everywhere"		: "In the Cloud",
 
+  	"Contact"			: "Contact",
+    "Demos"				: "Demos",
     "Try"				: "Try",
+  	"LogIn"				: "Log In",
+
     "TryNow"			: "Try now !",
     "FindOutMore"		: "Find out more",
-    "Demos"				: "Demos",
     "Screenshots"		: "Screenshots",
-  	"LogIn"				: "Log In",
 
     "openMoreText"		: "Read full details about Maperial.",
     "openDemosText"		: "Discover many dynamic maps in our showcase.",

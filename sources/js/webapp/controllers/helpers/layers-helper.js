@@ -1,7 +1,7 @@
 //----------------------------//
 
-function LayersHelper (maperial, mapCreationController) {
-   this.maperial = maperial;
+function LayersHelper (mapView, mapCreationController) {
+   this.maperial = mapView;
    this.mapCreationController = mapCreationController;
    this.layerBeingDraggedIndex = null;
 }

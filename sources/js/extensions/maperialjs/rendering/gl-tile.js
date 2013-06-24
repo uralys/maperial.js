@@ -1,10 +1,10 @@
 
-function Tile (maperial, x, y, z) {
+function Tile (mapView, x, y, z) {
 
    //--------------------------------//
 
-   this.maperial = maperial;
-   this.config = maperial.config;
+   this.mapView = mapView;
+   this.config = mapView.config;
 
    this.x         = x;
    this.y         = y;
@@ -17,7 +17,7 @@ function Tile (maperial, x, y, z) {
 
 Tile.prototype.Init = function () {
 
-   this.assets       = this.maperial.context.assets;
+   this.assets       = this.mapView.context.assets;
    this.gl           = this.assets.ctx;
 
    // preparing double buffering to render as texture !
@@ -29,7 +29,7 @@ Tile.prototype.Init = function () {
    this.prepareBuffering();
    
    this.buildLayers();
-   window.maperialSourcesManager.loadSources(this.x, this.y, this.z, this.maperial.name);
+   window.maperialSourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -49,23 +49,23 @@ Tile.prototype.createLayerFromConfig = function (layer, index) {
    
    switch(layer.type){
       case LayersManager.Vector:
-         this.layers.splice(index, 0, new VectorialLayer ( this.maperial , this.z));
+         this.layers.splice(index, 0, new VectorialLayer ( this.mapView , this.z));
          break;
          
       case LayersManager.Raster:
-         this.layers.splice(index, 0, new RasterLayer8    ( this.maperial , this.z));
+         this.layers.splice(index, 0, new RasterLayer8    ( this.mapView , this.z));
          break;
          
       case LayersManager.SRTM:
-         this.layers.splice(index, 0, new RasterLayer16    ( this.maperial , this.z));
+         this.layers.splice(index, 0, new RasterLayer16    ( this.mapView , this.z));
          break;
          
       case LayersManager.Images:
-         this.layers.splice(index, 0, new ImageLayer     ( this.maperial.context.assets.ctx , this.z));
+         this.layers.splice(index, 0, new ImageLayer     ( this.mapView.context.assets.ctx , this.z));
          break;
          
       case LayersManager.Shade:
-         this.layers.splice(index, 0, new ShadeLayer    ( this.maperial , this.z));
+         this.layers.splice(index, 0, new ShadeLayer    ( this.mapView , this.z));
          break;
    }
 }
@@ -87,7 +87,7 @@ Tile.prototype.prepareBuffering = function () {
 
 Tile.prototype.addLayer = function (layerConfig) {
    this.createLayerFromConfig(layerConfig, this.config.layers.length - 1)
-   window.maperialSourcesManager.loadSources(this.x, this.y, this.z, this.maperial.name)
+   window.maperialSourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name)
    this.Refresh()
 }
 
@@ -125,7 +125,7 @@ Tile.prototype.exchangeLayers = function(exchangedIds) {
 
 Tile.prototype.Release = function() {
    
-   window.maperialSourcesManager.release(this.x, this.y, this.z, this.maperial.name);
+   window.maperialSourcesManager.release(this.x, this.y, this.z, this.mapView.name);
    
    for(var i = 0; i < this.config.layers.length; i++){
       try{
@@ -236,7 +236,7 @@ Tile.prototype.FindSubLayerId = function ( tileClickCoord, zoom, styleContent ) 
          continue;
 
       var data = window.maperialSourcesManager.getData(this.config.layers[i].source, this.x, this.y, this.z);
-      var subLayerId = TileRenderer.FindSubLayerId(tileClickCoord , ctx , data , zoom, styleContent, i, this.maperial.context.osmVisibilities );
+      var subLayerId = TileRenderer.FindSubLayerId(tileClickCoord , ctx , data , zoom, styleContent, i, this.mapView.context.osmVisibilities );
 
       if(subLayerId)
          return [i, subLayerId];
@@ -417,7 +417,7 @@ Tile.prototype.Compose = function (  ) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.IsLoaded = function () {
-   return window.maperialSourcesManager.isTileLoaded(this.x, this.y, this.z, this.maperial.name);
+   return window.maperialSourcesManager.isTileLoaded(this.x, this.y, this.z, this.mapView.name);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//

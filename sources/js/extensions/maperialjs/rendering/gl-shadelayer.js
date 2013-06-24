@@ -1,7 +1,7 @@
 
-function ShadeLayer ( maperial , inZoom) {
-   this.maperial = maperial;
-   this.assets = maperial.context.assets;
+function ShadeLayer ( mapView , inZoom) {
+   this.mapView = mapView;
+   this.assets = mapView.context.assets;
    this.gl     = this.assets.ctx;
    
    this.tex    = null;
@@ -148,7 +148,7 @@ ShadeLayer.prototype.Update = function ( params ) {
       gl.uniform1f               (prog.params.uScale.name   , params.scale);
       //gl.uniform3fv              (prog.params.uLight.name   , [0.0,0.0,-50.0] ); 
       //gl.uniform1f               (prog.params.uScale.name   , 1); 
-      var r = this.maperial.context.coordS.Resolution ( this.z );
+      var r                      = this.mapView.context.coordS.Resolution ( this.z );
       gl.uniform1f               (prog.params.uPixRes.name  , r ); 
          
       gl.drawArrays              (gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);

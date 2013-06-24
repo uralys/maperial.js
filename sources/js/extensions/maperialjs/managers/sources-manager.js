@@ -72,7 +72,8 @@ SourcesManager.prototype.addSource = function(receiverName, layer){
  * Return the source with this id is already in this.sources
  */
 SourcesManager.prototype.getSource = function(id){
-   
+
+   console.log("getSource " + id, "nb sources : " + this.sources.length)
    for(var i = 0; i < this.sources.length; i++){
       if(this.sources[i].id == id)
          return this.sources[i]
@@ -83,17 +84,27 @@ SourcesManager.prototype.getSource = function(id){
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.detachSource = function(sourceId, receiverName){
+SourcesManager.prototype.detachSource = function(sourceId, receiverName, removeAll){
 
-   var source = this.getSource(layer.source.id)
-   source.receivers[receiverName] --
+   var source = this.getSource(sourceId)
    
-   if(source.receivers[receiverName] == 0){
+   var nbLayers = source.receivers.get(receiverName) || 0
+   
+   if(removeAll)
+      source.receivers.put(receiverName, 0)
+   else
+      source.receivers.put(receiverName, nbLayers - 1)
+   
+   
+   if(source.receivers.get(receiverName) == 0){
+      console.log("SourceManager.detachSource", sourceId, receiverName)
+
       for(var i = 0; i < this.sources.length; i++){
-         if(this.sources[i].id == layer.source.id)
+         if(this.sources[i].id == sourceId)
             break;
       }
       
+      console.log("---> done")
       this.sources.splice(i, 1);
    }
 }
@@ -102,35 +113,43 @@ SourcesManager.prototype.detachSource = function(sourceId, receiverName){
 
 SourcesManager.prototype.releaseReceiver = function (receiverName) {
    
+   console.log("SourceManager.release", receiverName)
+   
+   var sourcesToDetach = []
    for(var i = 0; i < this.sources.length; i++){
-      for(var r = 0; r < this.sources[i].receivers.length; r++){
-         if(this.sources[i].isForMe(receiverName)){
-            var requestId = this.requestId(this.sources[i], x, y, z)
-            var nbRequests = this.requestsCounter.get(requestId) || 0
-            
-            if(nbRequests > 1){
-               this.requestsCounter.put(requestId, nbRequests - 1)
-            }
-            else{
-               try{
-                  this.requests[requestId].abort();
-               }
-               catch(e){
-                  console.log("------------> release " + receiverName + " failed to abort request " + requestId)
-               }
-            }
-         }
+      console.log("checking ", this.sources[i].id)
          
+      if(this.sources[i].isForMe(receiverName)){
+         sourcesToDetach.push(this.sources[i].id)
       }
+         
+   }
+
+   for(var i = 0; i < sourcesToDetach.length; i++){
+      console.log("detach " + sourcesToDetach[i])
+      this.detachSource(sourcesToDetach[i], receiverName, true)
    }
    
    for(var i = 0; i < this.receivers.length; i++){
-      if(this.receivers[i].name == receiverName)
+      if(this.receivers[i].name == receiverName){
+         for(var j = 0; j < this.receivers[i].children.length; j++){
+            this.releaseReceiver(this.receivers[i].children[j].name)
+         }
          break;
+      }
    }
    
    this.receivers.splice(i, 1);
    
+}
+
+//---------------------------------------------------------------------------//
+
+SourcesManager.prototype.releaseAllReceivers = function(){
+
+   while(this.receivers.length > 0)
+      this.releaseReceiver(this.receivers[0].name)
+            
 }
 
 //----------------------------------------------------------------------------------------------------------------------//

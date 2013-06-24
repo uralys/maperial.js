@@ -5,15 +5,15 @@ function TemplateBuilder(){}
 
 //==================================================================//
 
-TemplateBuilder.prototype.build = function(maperial){
+TemplateBuilder.prototype.build = function(mapView){
 
-   this.maperial  = maperial;
-   this.config    = maperial.config;
-   this.name     = maperial.name;
+   this.mapView  = mapView;
+   this.config   = mapView.config;
+   this.name     = mapView.name;
    
    this.container = $("#"+this.name);
    this.container.empty();
-   this.container.addClass(this.maperial.type);
+   this.container.addClass(this.mapView.type);
 
    console.log("drawing template "+this.name+"...");
    
@@ -28,7 +28,7 @@ TemplateBuilder.prototype.build = function(maperial){
 TemplateBuilder.prototype.buildMap = function(){
    
    var html = "";
-   html += "<canvas id=\"Map_"+this.name+"\" class=\"maperial-map canvas-"+this.maperial.type+"\"></canvas>";
+   html += "<canvas id=\"Map_"+this.name+"\" class=\"maperial-map canvas-"+this.mapView.type+"\"></canvas>";
    html += "<canvas id=\"fakeCanvas\" class=\"hide\"></canvas>";
    
    if(this.config.map.requireBoundingBoxDrawer){
@@ -44,7 +44,7 @@ TemplateBuilder.prototype.buildMap = function(){
 
 TemplateBuilder.prototype.buildHUD = function(){
    
-   switch(this.maperial.type){
+   switch(this.mapView.type){
       case Maperial.LENS : 
          break;
 
@@ -75,8 +75,8 @@ TemplateBuilder.prototype.buildHUD = function(){
 TemplateBuilder.prototype.buildPanel = function(name, show){
    
    var html = "";
-   html += "<div class=\"panel panel"+name+" snapper "+(show ? "" : "hide")+"\" id=\"panel"+this.maperial.getFullName(name)+"\" >";
-   html += "    <div id=\""+this.maperial.getFullName(name)+"\"></div>";
+   html += "<div class=\"panel panel"+name+" snapper "+(show ? "" : "hide")+"\" id=\"panel"+this.mapView.getFullName(name)+"\" >";
+   html += "    <div id=\""+this.mapView.getFullName(name)+"\"></div>";
    html += "</div>";
    
    this.container.append(html);
@@ -87,8 +87,8 @@ TemplateBuilder.prototype.buildPanel = function(name, show){
 TemplateBuilder.prototype.buildHUDSettings = function(){
 
    var html = "";
-   html += "<a class=\"trigger snapper trigger"+this.maperial.getFullName(HUD.SETTINGS)+" hide\" id=\"trigger"+this.maperial.getFullName(HUD.SETTINGS)+"\" href=\"#\"><i id=\"icon"+this.maperial.getFullName(HUD.SETTINGS)+"\" class=\"icon-cog icon-white\"></i></a>";
-   html += "<div class=\"panel snapper panel"+this.maperial.getFullName(HUD.SETTINGS)+" hide\" id=\"panel"+this.maperial.getFullName(HUD.SETTINGS)+"\" >";
+   html += "<a class=\"trigger snapper trigger"+this.mapView.getFullName(HUD.SETTINGS)+" hide\" id=\"trigger"+this.mapView.getFullName(HUD.SETTINGS)+"\" href=\"#\"><i id=\"icon"+this.mapView.getFullName(HUD.SETTINGS)+"\" class=\"icon-cog icon-white\"></i></a>";
+   html += "<div class=\"panel snapper panel"+this.mapView.getFullName(HUD.SETTINGS)+" hide\" id=\"panel"+this.mapView.getFullName(HUD.SETTINGS)+"\" >";
    html += "    <div id=\"HUDSettings"+this.name+"\"></div>";
    html += "</div>";
       
@@ -100,8 +100,8 @@ TemplateBuilder.prototype.buildHUDSettings = function(){
 TemplateBuilder.prototype.buildSwitchImages = function(){
 
    var html = "";
-   html += "<div class=\"panel panel"+this.maperial.getFullName(HUD.SWITCH_IMAGES)+" snapper hide\" id=\"panel"+this.maperial.getFullName(HUD.SWITCH_IMAGES)+"\" >";
-   html += "    <div id=\""+this.maperial.getFullName(HUD.SWITCH_IMAGES)+"\">";
+   html += "<div class=\"panel panel"+this.mapView.getFullName(HUD.SWITCH_IMAGES)+" snapper hide\" id=\"panel"+this.mapView.getFullName(HUD.SWITCH_IMAGES)+"\" >";
+   html += "    <div id=\""+this.mapView.getFullName(HUD.SWITCH_IMAGES)+"\">";
    html += "         <img id=\"imagesMapquest"+this.name+"\" class=\"sourceThumb touchable\" src=\"http://static.maperial.localhost/images/icons/layer.images.mapquest.png\"></img>";
    html += "         <img id=\"imagesMapquestSatellite"+this.name+"\" class=\"sourceThumb touchable\" src=\"http://static.maperial.localhost/images/icons/layer.images.mapquest.satellite.png\"></img>";
    html += "         <img id=\"imagesOSM"+this.name+"\" class=\"sourceThumb touchable\" src=\"http://static.maperial.localhost/images/icons/layer.images.osm.png\"></img>";
@@ -128,8 +128,8 @@ TemplateBuilder.prototype.buildLayerSettings = function(){
 TemplateBuilder.prototype.buildLatLon = function(){
    
    var html = "";
-   html += "<div class=\"panel panel"+HUD.LATLON+" snapper hide\" id=\"panel"+this.maperial.getFullName(HUD.LATLON)+"\"  >";
-   html += "    <div id=\""+this.maperial.getFullName(HUD.LATLON)+"\" class=\"row-fluid latlon\">";
+   html += "<div class=\"panel panel"+HUD.LATLON+" snapper hide\" id=\"panel"+this.mapView.getFullName(HUD.LATLON)+"\"  >";
+   html += "    <div id=\""+this.mapView.getFullName(HUD.LATLON)+"\" class=\"row-fluid latlon\">";
    html += "         <div id=\"latitude_"+this.name+"\" class=\"span6\"></div>";
    html += "         <div id=\"longitude_"+this.name+"\" class=\"span6\"></div>";
    html += "    </div>";

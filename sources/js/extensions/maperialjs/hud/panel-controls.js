@@ -18,12 +18,12 @@ HUD.prototype.buildControls = function(){
       }
     });
    
-   this.element("control-up")    .click( function(){ me.maperial.context.mapCanvas.trigger(MaperialEvents.CONTROL_UP);     } );
-   this.element("control-down")  .click( function(){ me.maperial.context.mapCanvas.trigger(MaperialEvents.CONTROL_DOWN);   } );
-   this.element("control-left")  .click( function(){ me.maperial.context.mapCanvas.trigger(MaperialEvents.CONTROL_LEFT);   } );
-   this.element("control-right") .click( function(){ me.maperial.context.mapCanvas.trigger(MaperialEvents.CONTROL_RIGHT);  } );
+   this.element("control-up")    .click( function(){ me.mapView.context.mapCanvas.trigger(MaperialEvents.CONTROL_UP);     } );
+   this.element("control-down")  .click( function(){ me.mapView.context.mapCanvas.trigger(MaperialEvents.CONTROL_DOWN);   } );
+   this.element("control-left")  .click( function(){ me.mapView.context.mapCanvas.trigger(MaperialEvents.CONTROL_LEFT);   } );
+   this.element("control-right") .click( function(){ me.mapView.context.mapCanvas.trigger(MaperialEvents.CONTROL_RIGHT);  } );
    
-   Utils.buildSliderStyle("control-zoom"+this.maperial.name);
+   Utils.buildSliderStyle("control-zoom"+this.mapView.name);
 
    this.refreshZoom();
 }

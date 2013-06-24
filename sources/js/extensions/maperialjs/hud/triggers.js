@@ -9,7 +9,7 @@ HUD.prototype.buildTriggers = function(){
    // Init Triggers
 
    this.allPanels().click(function(){
-      var element = $(this).context.id.replace("panel","").replace(hud.maperial.name,"");
+      var element = $(this).context.id.replace("panel","").replace(hud.mapView.name,"");
       hud.putOnTop(element);
    });
 
@@ -24,14 +24,14 @@ HUD.prototype.buildTriggers = function(){
    //-----------------
    // snapping
 
-   this.allPanels().draggable({ snap: ".snapper", containment: "#Map_"+this.maperial.name, scroll: false });
-   this.allTriggers().draggable({ snap: ".snapper", containment: "#Map_"+this.maperial.name, scroll: false });
+   this.allPanels().draggable({ snap: ".snapper", containment: "#Map_"+this.mapView.name, scroll: false });
+   this.allTriggers().draggable({ snap: ".snapper", containment: "#Map_"+this.mapView.name, scroll: false });
 
    //------------------
    // disable dragging
 
-   for (element in this.maperial.config.hud.elements) {
-      if(this.maperial.config.hud.elements[element].disableDrag){
+   for (element in this.mapView.config.hud.elements) {
+      if(this.mapView.config.hud.elements[element].disableDrag){
          this.panel(element).draggable( 'disable' );
          this.trigger(element).draggable( 'disable' );
       }
@@ -43,7 +43,7 @@ HUD.prototype.buildTriggers = function(){
    this.allPanels().bind('dragstart',function( event ){
 
       var id = $(this).context.id;
-      var element = id.replace("panel","").replace(hud.maperial.name,"");
+      var element = id.replace("panel","").replace(hud.mapView.name,"");
 
       hud.putOnTop(element);
 
@@ -70,7 +70,7 @@ HUD.prototype.buildTriggers = function(){
 
    this.allPanels().bind('dragstop',function( event ){
       var id = $(this).context.id;
-      var element = id.replace("panel","").replace(hud.maperial.name,"");
+      var element = id.replace("panel","").replace(hud.mapView.name,"");
       var newTop = $("#"+id).css("top");
       var newLeft = $("#"+id).css("left");
 
@@ -90,13 +90,13 @@ HUD.prototype.buildTriggers = function(){
       $(this).css('right', 'auto');
       $(this).css('bottom', 'auto');
 
-      var element = $(this).context.id.replace("trigger","").replace(hud.maperial.name,"");
+      var element = $(this).context.id.replace("trigger","").replace(hud.mapView.name,"");
       hud.putOnTop(element);
    });
 
    this.allTriggers().bind('dragstop',function( event ){
       var id = $(this).context.id;
-      var element = id.replace("trigger","").replace(hud.maperial.name,"");
+      var element = id.replace("trigger","").replace(hud.mapView.name,"");
 
       var newTop = $("#"+id).css("top");
       var newLeft = $("#"+id).css("left");
@@ -127,7 +127,7 @@ HUD.prototype.hideTrigger = function(element){
 //------------------------------------------------//
 
 HUD.prototype.clickOnTrigger = function(trigger){
-   var element = trigger[0].id.replace("trigger","").replace(this.maperial.name,"");
+   var element = trigger[0].id.replace("trigger","").replace(this.mapView.name,"");
    this.putOnTop(element);
 
    if (trigger.hasClass('beingdrag')) {
@@ -135,7 +135,7 @@ HUD.prototype.clickOnTrigger = function(trigger){
    }
    else {
 
-      if (trigger.hasClass('active') && !this.maperial.config.hud.elements[element].disableDrag) {
+      if (trigger.hasClass('active') && !this.mapView.config.hud.elements[element].disableDrag) {
          trigger.draggable("enable");
       }
       else{

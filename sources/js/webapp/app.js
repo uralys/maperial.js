@@ -57,6 +57,8 @@
 
    App.finishLoadings = function(nextPage){
 
+      console.log("finish Loading")
+      
       if(App.Globals.APP_READY){
          App.appReadyToOpenPage(nextPage);
          return;
@@ -90,8 +92,8 @@
 
       var maperialJSScripts = "";
       
-      if(!App.Globals.isDev)
-         scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.localhost.js"); 
+//      if(!App.Globals.isDev)
+//         scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.localhost.js"); 
 
       scripts.push("http://fabricjs.com/lib/fabric.js");
 
@@ -118,7 +120,6 @@
 
          //-------------------------------------//
 
-         App.maperial = new Maperial({name:"maperial"});
          App.appReadyToOpenPage(nextPage);
 
          //-------------------------------------//

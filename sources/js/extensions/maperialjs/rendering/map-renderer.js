@@ -1,15 +1,15 @@
 
 //=====================================================================================//
 
-function MapRenderer(maperial) {
+function MapRenderer(mapView) {
 
    console.log("  building map renderer...");
    
    this.drawSceneInterval = null;
    
-   this.maperial = maperial;
-   this.config = maperial.config;
-   this.context = maperial.context;
+   this.mapView   = mapView;
+   this.config    = mapView.config;
+   this.context   = mapView.context;
    
    this.tileCache = {};
    this.dataCache = {};
@@ -60,7 +60,7 @@ MapRenderer.prototype.Start = function () {
       console.log("Could not initialise WebGL")
       
       if(window.location.hostname.indexOf("localhost") == -1)
-         window.location.href = "http://www.maperial.com/#/usechrome";
+         window.location.href = "http://www.mapView.com/#/usechrome";
       
       return false;
    }
@@ -172,13 +172,13 @@ MapRenderer.prototype.initListeners = function () {
    });
 
    $(window).on(MaperialEvents.SOURCE_READY, function(event, source, data, x, y, z){
-      if(source.isForMe(renderer.maperial.name)){
+      if(source.isForMe(renderer.mapView.name)){
          renderer.sourceReady(source, data, x, y, z);
       }
    });
 
 //   $(window).on(MaperialEvents.ZOOM_CHANGED, function(event, x, y){
-//      renderer.maperial.sourcesManager.stopEverything()
+//      renderer.mapView.sourcesManager.stopEverything()
 //   });
 }
 
@@ -335,7 +335,7 @@ MapRenderer.prototype.InitGL = function () {
 
 MapRenderer.prototype.renderAllColorBars = function () {
 
-   var colorbarUIDs = this.maperial.colorbarsManager.allColorbars();
+   var colorbarUIDs = this.mapView.colorbarsManager.allColorbars();
    
    this.gl.flush ()
    this.gl.finish()
@@ -407,7 +407,7 @@ MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, f
 //            keyList.push(key)
 //
 //            if ( this.tileCache[key] == null ) {
-//               this.tileCache[key]  = new Tile ( this.maperial, tx, ty, zoom);
+//               this.tileCache[key]  = new Tile ( this.mapView, tx, ty, zoom);
 //            }
 //
 //            ty = ty+gap-1;
@@ -429,7 +429,7 @@ MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, f
          keyList.push(key)
          
          if ( this.tileCache[key] == null ) {
-            this.tileCache[key] = new Tile ( this.maperial, tx, ty, zoom);
+            this.tileCache[key] = new Tile ( this.mapView, tx, ty, zoom);
             this.tileCache[key].Init();
          }
       }
@@ -536,7 +536,7 @@ MapRenderer.prototype.FindLayerId = function () {
    var clickP = this.context.coordS.MetersToPixels ( this.context.mouseM.x, this.context.mouseM.y, this.context.zoom );
    var tileClickCoord = new Point(Math.floor (clickP.x - tileCoord.x*Maperial.tileSize), Math.floor ( (tileCoord.y+1) * Maperial.tileSize - clickP.y ) );
    
-   var style = this.maperial.stylesManager.getSelectedStyle();
+   var style = this.mapView.stylesManager.getSelectedStyle();
    var result = tile.FindSubLayerId( tileClickCoord , this.context.zoom, style.content ) ;
 
    var layerIndex = result[0];

@@ -2,15 +2,15 @@
 //- ChildrenManager 
 //-------------------------------------------//
 
-function ChildrenManager(maperial){
-   this.maperial = maperial;
+function ChildrenManager(mapView){
+   this.mapView = mapView;
 }
 
 //-------------------------------------------//
 
 ChildrenManager.prototype.resetAllChildren = function(){
-   for(var i = 0; i < this.maperial.children.length; i++)
-      this.maperial.children[i].reset()
+   for(var i = 0; i < this.mapView.children.length; i++)
+      this.mapView.children[i].reset()
 }
 
 //-------------------------------------------//
@@ -19,7 +19,7 @@ ChildrenManager.prototype.add = function(options){
 
    //------------------------//
 
-   options.parent          = this.maperial
+   options.parent          = this.mapView
    options.type            = options.type ? (options.type == Maperial.LENS || options.type == Maperial.MINIFIER || options.type == Maperial.MAGNIFIER ? options.type : Maperial.LENS) : Maperial.LENS
    options.width           = options.width            || 150
    options.height          = options.height           || 150
@@ -30,7 +30,7 @@ ChildrenManager.prototype.add = function(options){
 
    //------------------------//
 
-   var child = new Maperial(options)
+   var child = new MapView(options)
    child.apply(options.config)
 
    //------------------------//
@@ -57,12 +57,12 @@ ChildrenManager.prototype.add = function(options){
    
    //------------------------//
 
-   this.maperial.children.push(child)
-   this.maperial.hud.placeChild(options)
+   this.mapView.children.push(child)
+   this.mapView.hud.placeChild(options)
    
    //------------------------//
    
-   var parentCanvas    = this.maperial.context.mapCanvas
+   var parentCanvas    = this.mapView.context.mapCanvas
    var parentOffset  = parentCanvas.offset();
    var centerParent  = new Point(parentCanvas.width()/2 + parentOffset.left, parentCanvas.height()/2 + parentOffset.top)
 
@@ -74,9 +74,9 @@ ChildrenManager.prototype.add = function(options){
 //==================================================================//
 
 ChildrenManager.prototype.getChild = function (name) {
-   for(var i = 0; i < this.maperial.children.length; i++){
-      if(this.maperial.children[i].name == name)
-         return this.maperial.children[i]
+   for(var i = 0; i < this.mapView.children.length; i++){
+      if(this.mapView.children[i].name == name)
+         return this.mapView.children[i]
    }
 }
 
@@ -92,21 +92,21 @@ ChildrenManager.prototype.moveChild = function (name) {
 ChildrenManager.prototype.refreshChild = function (child) {
    switch(child.type){
       case Maperial.MINIFIER : 
-         child.context.centerM = this.maperial.context.centerM
+         child.context.centerM = this.mapView.context.centerM
          break;
 
       case Maperial.MAGNIFIER : 
-         child.context.zoom    = this.maperial.context.zoom + 1
-         child.context.centerM = this.maperial.context.mouseM
+         child.context.zoom    = this.mapView.context.zoom + 1
+         child.context.centerM = this.mapView.context.mouseM
          break;
 
       case Maperial.LENS :
          var childPosition = $("#panel"+child.name).offset();
 
-         var centerP = this.maperial.context.coordS.MetersToPixels(this.maperial.context.centerM.x, this.maperial.context.centerM.y, this.maperial.context.zoom);
+         var centerP = this.mapView.context.coordS.MetersToPixels(this.mapView.context.centerM.x, this.mapView.context.centerM.y, this.mapView.context.zoom);
          var lensCenterP = new Point( centerP.x - (child.startPosition.x - childPosition.left) , centerP.y + (child.startPosition.y - childPosition.top));
 
-         child.context.centerM = child.context.coordS.PixelsToMeters ( lensCenterP.x, lensCenterP.y, this.maperial.context.zoom );
+         child.context.centerM = child.context.coordS.PixelsToMeters ( lensCenterP.x, lensCenterP.y, this.mapView.context.zoom );
          child.mapRenderer.DrawScene()
          break;
    }

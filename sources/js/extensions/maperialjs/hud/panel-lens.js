@@ -14,8 +14,8 @@
 //
 //   var options = {
 //      type  : Maperial.LENS,
-//      parent: this.maperial,
-//      name : HUD.LENS+this.maperial.name, 
+//      parent: this.mapView,
+//      name : HUD.LENS+this.mapView.name, 
 //      width : 250,
 //      height: 250
 //   }

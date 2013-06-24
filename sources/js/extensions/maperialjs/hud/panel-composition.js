@@ -12,7 +12,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
 
    //-----------------------------------------------------//
    
-   if(this.maperial.config.layers.length < 2){
+   if(this.mapView.config.layers.length < 2){
       this.panel(HUD.COMPOSITIONS).addClass("hide"); 
       return;
    }
@@ -29,9 +29,9 @@ HUD.prototype.refreshCompositionsPanel = function() {
 
    //-----------------------------------------------------//
 
-   for(var l = (this.maperial.config.layers.length-1); l>0 ; l--){
+   for(var l = (this.mapView.config.layers.length-1); l>0 ; l--){
 
-      var composition = this.maperial.config.layers[l].composition;
+      var composition = this.mapView.config.layers[l].composition;
       var shadersSelectionId = "shadersSelection_"+l;
 
       //-----------------------------------------------------//
@@ -44,13 +44,13 @@ HUD.prototype.refreshCompositionsPanel = function() {
       // layer header html
 
       var div = "<div class=\"row-fluid marginbottom\">";
-      div += "<div class=\"span1 mapthumb top\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.maperial.config.layers[l-1])+"></img></div>";
-      div += "<div class=\"span1 mapthumb\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.maperial.config.layers[l])+"></img></div>";
+      div += "<div class=\"span1 mapthumb top\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.mapView.config.layers[l-1])+"></img></div>";
+      div += "<div class=\"span1 mapthumb\"><img class=\"sourceThumb\" "+Utils.getSourceThumb(this.mapView.config.layers[l])+"></img></div>";
       
       div += "<div class=\"span4 offset3\"><select class=\"shaderSelectbox\" name=\""+shadersSelectionId+"\" id=\""+shadersSelectionId+"\">";
 
-      for(var s=0; s< this.maperial.shaders.length; s++) 
-         div += "<option value=\""+s+"\">"+this.maperial.shaders[s]+"</option>";
+      for(var s=0; s< this.mapView.shaders.length; s++) 
+         div += "<option value=\""+s+"\">"+this.mapView.shaders[s]+"</option>";
 
       div += "</select></div>";
       div += "</div>";
@@ -64,7 +64,7 @@ HUD.prototype.refreshCompositionsPanel = function() {
          onChange: function(l){
             return function (val, inst) {
                if(!me.buildingComposition)
-                  me.maperial.layersManager.changeComposition(l, inst.input[0][val].label);
+                  me.mapView.layersManager.changeComposition(l, inst.input[0][val].label);
             }
          }(l),
          effect: "slide"
