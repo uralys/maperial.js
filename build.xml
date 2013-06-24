@@ -246,6 +246,8 @@
 			<arg value="sources/js/extensions/maperialjs/rendering/map-renderer.js" />
 
 			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/mapView.js" />
+			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/events.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/source.js" />
@@ -291,6 +293,8 @@
 			<arg value="sources/js/extensions/maperialjs/managers/layers-manager.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/managers/children-manager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/managers/config-manager.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/edition/boundingbox-drawer.js" />
