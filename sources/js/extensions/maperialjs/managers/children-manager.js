@@ -89,14 +89,19 @@ ChildrenManager.prototype.moveChild = function (name) {
 
 //==================================================================//
 
+ChildrenManager.prototype.setZoom = function (child, zoom) {
+   child.context.zoom = zoom + child.deltaZoom;
+   return child.context.zoom
+}
+
 ChildrenManager.prototype.refreshChild = function (child) {
+   
    switch(child.type){
       case Maperial.MINIFIER : 
          child.context.centerM = this.mapView.context.centerM
          break;
 
       case Maperial.MAGNIFIER : 
-         child.context.zoom    = this.mapView.context.zoom + 1
          child.context.centerM = this.mapView.context.mouseM
          break;
 

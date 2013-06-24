@@ -3,18 +3,43 @@
 function MapView(options){
 
    console.log(" NEW MapView ", options)
+
+   //--------------------------------------------------------------//
    
-   this.type               = (options && options.type)   ? options.type    : Maperial.COMPLETE
-   this.parent             = (options && options.parent) ? options.parent  : null
+   this.type        = (options && options.type)   ? options.type    : Maperial.COMPLETE
+   this.parent      = (options && options.parent) ? options.parent  : null
+   this.zoomable    = (options && options.zoomable != null) ? options.zoomable : true
+   this.deltaZoom   = (options && options.deltaZoom != null) ? options.deltaZoom : 1
    
+   this.name        = ((options && options.name)  ? options.name : Utils.generateGuid()) + (this.parent ? "_" + this.parent.name : "")
+   
+   //--------------------------------------------------------------//
+         
    $('body').css('overflow', 'hidden');
-   this.width              = (options && options.width)  ? options.width   : $(window).width()
-   this.height             = (options && options.height) ? options.height  : $(window).height()
+   if(options && options.width && typeof options.width == "string"){
+      var parentWidth   = this.parent ? this.parent.width : $(window).width()
+      var widthParams   = options.width.split("%")
+      if(widthParams.length > 1)
+         this.width = widthParams[0] * parentWidth/100
+      else
+         this.width =  options.width
+   }
+   else
+      this.width =  $(window).width()
+
+   if(options && options.height && typeof options.height == "string"){
+      var parentHeight   = this.parent ? this.parent.height : $(window).height()
+      var heightParams   = options.height.split("%")
+      if(heightParams.length > 1)
+         this.height = heightParams[0] * parentHeight/100
+      else
+         this.height =  options.height
+   }
+   else
+      this.height =  $(window).height()
    $('body').css('overflow', 'auto');
 
-         console.log(this.width, this.height)
-
-   this.name               = ((options && options.name)  ? options.name : Utils.generateGuid()) + (this.parent ? "_" + this.parent.name : "")
+   //--------------------------------------------------------------//
 
    this.config             = null;
    this.context            = null;
@@ -299,8 +324,11 @@ MapView.prototype.startLongitude = function() {
 }
 
 MapView.prototype.startZoom = function() {
+   
    if(this.config.map.currentZoom)
       return this.config.map.currentZoom
+   else if(this.parent && this.parent.config.map.defaultZoom)
+      return  this.parent.childrenManager.setZoom(this, this.parent.config.map.defaultZoom);
    else if(this.config.map.defaultZoom)
       return this.config.map.defaultZoom;
    else

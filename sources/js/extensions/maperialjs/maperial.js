@@ -24,8 +24,8 @@ Maperial.shaderURL              = (window.location.hostname.indexOf("localhost")
 Maperial.apiURL                 = 'http://api.maperial.com';
 
 Maperial.DEFAULT_ZOOM           = 10;
-Maperial.DEFAULT_LATITUDE       = 48.833;
-Maperial.DEFAULT_LONGITUDE      = 2.333;
+Maperial.DEFAULT_LATITUDE       = 48.813;
+Maperial.DEFAULT_LONGITUDE      = 2.313;
 
 Maperial.refreshRate            = 15; // ms
 Maperial.tileDLTimeOut          = 60000; //ms

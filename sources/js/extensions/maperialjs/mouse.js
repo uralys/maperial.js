@@ -100,6 +100,9 @@ MapMouse.prototype.move = function (event) {
 
 MapMouse.prototype.doubleClick = function (event) {
    
+   if(!this.mapView.zoomable)
+      return
+      
    this.context.zoom = Math.min(18, this.context.zoom + 1);
    this.context.centerM = this.convertCanvasPointToMeters(this.context.mouseP);
    
@@ -111,6 +114,7 @@ MapMouse.prototype.doubleClick = function (event) {
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
 
    for(var i = 0; i < this.mapView.children.length; i++){
+      this.mapView.childrenManager.setZoom(this.mapView.children[i], this.context.zoom);
       this.mapView.childrenManager.refreshChild(this.mapView.children[i]);
    }
 }
@@ -119,10 +123,15 @@ MapMouse.prototype.doubleClick = function (event) {
 
 MapMouse.prototype.wheel = function (event, delta) {
 
+   if(!this.mapView.zoomable)
+      return
+      
    event.preventDefault();
    
    if(this.hasJustWheeled())
       return;
+   
+   var previousZoom = this.context.zoom
    
    if (delta > 0) {
       this.context.zoom = Math.min(18, this.context.zoom + 1);
@@ -148,12 +157,16 @@ MapMouse.prototype.wheel = function (event, delta) {
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
 
    for(var i = 0; i < this.mapView.children.length; i++){
+      this.mapView.childrenManager.setZoom(this.mapView.children[i], this.context.zoom);
       this.mapView.childrenManager.refreshChild(this.mapView.children[i]);
    }
 }
 
 MapMouse.prototype.wheelOnChild = function (event, delta) {
-   
+
+   if(!this.mapView.zoomable)
+      return
+      
    event.preventDefault();
    
    if(this.hasJustWheeled() || delta == 0)
