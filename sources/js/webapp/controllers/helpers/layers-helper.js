@@ -1,7 +1,6 @@
 //----------------------------//
 
-function LayersHelper (mapView, mapCreationController) {
-   this.maperial = mapView;
+function LayersHelper (mapCreationController) {
    this.mapCreationController = mapCreationController;
    this.layerBeingDraggedIndex = null;
 }
@@ -18,13 +17,15 @@ LayersHelper.TOGGLE = "toggleLayerSet";
  */
 LayersHelper.prototype.refreshLayersPanel = function() {
 
+   this.mapView = App.maperial.views[0];
+
    var me = this;
    $("#layers").empty(); 
    var panelHeight = 80;
 
    //------------------//
 
-   for(var i = this.maperial.config.layers.length - 1; i >= 0 ; i--) {
+   for(var i = this.mapView.config.layers.length - 1; i >= 0 ; i--) {
       this.buildLayerEntry(i);
       panelHeight += 57;
    }
@@ -44,7 +45,7 @@ LayersHelper.prototype.refreshLayersPanel = function() {
       }
    });
 
-   $("#panelLayers"+this.maperial.name).css("height", panelHeight+"px");
+   $("#panelLayers"+this.mapView.name).css("height", panelHeight+"px");
 }
 
 //--------------------------------------//
@@ -54,8 +55,8 @@ LayersHelper.prototype.buildLayerEntry = function(layerIndex) {
    var tooltip = ""
    var icon = "icon-eye-open"
    
-   for (var i in this.maperial.config.map.osmSets) {
-      var set = this.maperial.config.map.osmSets[i]
+   for (var i in this.mapView.config.map.osmSets) {
+      var set = this.mapView.config.map.osmSets[i]
 
       if(layerIndex == set.layerPosition){
          if(tooltip != "") tooltip += ", "
@@ -68,7 +69,7 @@ LayersHelper.prototype.buildLayerEntry = function(layerIndex) {
       tooltip  = "Empty !"
    }
    
-   var layer = this.maperial.config.layers[layerIndex];
+   var layer = this.mapView.config.layers[layerIndex];
    var html = "";
 
    html += "<div class=\"row-fluid movable marginbottom\" id=\"layer_"+layerIndex+"\">";
@@ -128,7 +129,7 @@ LayersHelper.prototype.exchangeLayers = function(){
       exchangedIds[k] = layerIndex;
    }
    
-   this.maperial.layersManager.exchangeLayers(exchangedIds);
+   this.mapView.layersManager.exchangeLayers(exchangedIds);
    this.refreshLayersPanel()
 }
 
@@ -139,14 +140,14 @@ LayersHelper.prototype.exchangeLayers = function(){
  */
 LayersHelper.prototype.buildOSMSets = function(layerCustomizedIndex){
 
-   var layersManager = this.maperial.layersManager;
+   var layersManager = this.mapView.layersManager;
    var container = $("#osmSetsDiv");
 
    container.empty();
    var panelHeight = 0;
 
-   for (var i in this.maperial.config.map.osmSets) {
-      var set = this.maperial.config.map.osmSets[i];
+   for (var i in this.mapView.config.map.osmSets) {
+      var set = this.mapView.config.map.osmSets[i];
 
       // ----- appending div
       var div = "<div class=\"row-fluid marginbottom\">" +
@@ -208,13 +209,13 @@ LayersHelper.prototype.refreshHUDViewerSettings = function() {
       var element = HUD.VIEWER_OPTIONS[i].element;
       var label = HUD.VIEWER_OPTIONS[i].label;
 
-      if(element == HUD.COMPOSITIONS && this.maperial.config.layers.length < 2)
+      if(element == HUD.COMPOSITIONS && this.mapView.config.layers.length < 2)
          continue;
 
-      if(element == HUD.SWITCH_IMAGES && !this.maperial.layersManager.atLeastOneImageLayer())
+      if(element == HUD.SWITCH_IMAGES && !this.mapView.layersManager.atLeastOneImageLayer())
          continue;
 
-      var nameInTag = element + this.maperial.name; 
+      var nameInTag = element + this.mapView.name; 
       
       // ----- appending div
       var div = "<div class=\"row-fluid marginbottom\">" +
@@ -233,23 +234,23 @@ LayersHelper.prototype.refreshHUDViewerSettings = function() {
          return function(){
             if($(this).hasClass('on')){
                $(this).removeClass('on');
-               me.maperial.config.hud.elements[element].show = false;
-               me.maperial.hud.element(me.maperial.config.hud.elements[element].type+element).addClass("hide");
+               me.mapView.config.hud.elements[element].show = false;
+               me.mapView.hud.element(me.mapView.config.hud.elements[element].type+element).addClass("hide");
 
-               if(me.maperial.config.hud.elements[element].type == HUD.TRIGGER)
-                  me.maperial.hud.hideTrigger(element);
+               if(me.mapView.config.hud.elements[element].type == HUD.TRIGGER)
+                  me.mapView.hud.hideTrigger(element);
             }
             else{
                $(this).addClass('on');
-               me.maperial.config.hud.elements[element].show = true;
-               me.maperial.hud.element(me.maperial.config.hud.elements[element].type+element).removeClass("hide");
-               me.maperial.hud.showTrigger(element);
+               me.mapView.config.hud.elements[element].show = true;
+               me.mapView.hud.element(me.mapView.config.hud.elements[element].type+element).removeClass("hide");
+               me.mapView.hud.showTrigger(element);
             }
             
          };
       })(element));
 
-      if(me.maperial.config.hud.elements[element].show){
+      if(me.mapView.config.hud.elements[element].show){
          $("#toggleMapSettings_"+element).addClass("on");
       }
    }

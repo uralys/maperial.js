@@ -74,8 +74,8 @@ Maperial.prototype.build = function(viewConfigs){
    for(var i = 0; i < viewConfigs.length; i++){
       var view = viewConfigs[i]
       var mapView = new MapView(view.options)
-      mapView.apply(view.config)
-      
       this.views.push (mapView)
+      
+      mapView.apply(view.config)
    }
 }

@@ -13,9 +13,9 @@
    // Rendering
    
    MapCreationController.init = function() {
-      MapCreationController.mapView = App.maperial.views[0]
-      App.layersHelper = new LayersHelper(MapCreationController.mapView, App.MapCreationController);
 
+      App.layersHelper = new LayersHelper(App.MapCreationController);
+      
       $(window).on(  MaperialEvents.READY, MapCreationController.maperialReady);
 
       console.log("mapCreation", App.user.selectedMap)
@@ -30,23 +30,28 @@
    MapCreationController.terminate = function () {
       App.user.set("isCreatingANewMap"    , false);  
       App.user.set("selectedMap"          , null);  
+
+      $(window).off(MaperialEvents.READY, MapCreationController.maperialReady);
+      $(window).off(MaperialEvents.STYLE_CHANGED, MapCreationController.refreshLayersPanel);
    }
    
    //==================================================================//
    // Calls by Listeners
    
    MapCreationController.maperialReady = function (){
+      
+      MapCreationController.mapView = App.maperial.views[0]
 
       // not set before MaperialEvents.READY, because MaperialJS removes every Listeners on MaperialEvents during reset
       $(window).on(MaperialEvents.STYLE_CHANGED, MapCreationController.refreshLayersPanel);
-      
+
       if(App.Globals.isViewLayerCreation){
          App.layersHelper.refreshLayersPanel();
       }
       else{
          App.layersHelper.refreshHUDViewerSettings();
       }
-      
+
       MapCreationController.setSelectedStyle();
    }
 
@@ -160,6 +165,7 @@
          }])
       }
 
+      MapCreationController.mapView = App.maperial.views[0]
    }
 
    //=============================================================================//
