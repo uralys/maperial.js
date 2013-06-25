@@ -1,10 +1,9 @@
 
 #listDemos{
-	position:absolute;
-	width:20%
+	position	: absolute;
+	width		: 20%;
+	margin-top 	: 90px;
+	overflow	: auto;
+	direction: rtl;
 }
 
-#maperialDemos{
-	position:absolute;
-	left:20%;
-}

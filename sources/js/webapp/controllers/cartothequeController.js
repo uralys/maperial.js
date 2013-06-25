@@ -8,18 +8,8 @@
 
 	CartothequeController.renderUI = function()
 	{
-	   var options = {
-         name:"maperialDemos",
-         width : "80%",
-         height : "100%"
-	   }
-	   
-	   var config = CartothequeController.config2()
-	   
-	   App.maperial.build([{
-	      options : options, 
-	      config : config
-	   }])
+	   $("#listDemos").css("max-height", $(window).height() - 105)
+	   CartothequeController.openDemo(1)
 	}
 
 	CartothequeController.cleanUI = function()
@@ -29,6 +19,41 @@
 
 	//==================================================================//
 	
+	CartothequeController.openDemo = function(num){
+
+//      App.user.set("waiting", true);
+      
+      var views, options = {
+         width    : "80%",
+         height   : "100%",
+         left     : "20%"
+      }
+
+      var mainViewOptions = {name : "maperialDemos"}
+      
+	   switch(num){
+	      case 1:
+	         views = [{
+	            options  :  mainViewOptions,
+	            config   :   CartothequeController.config1()
+	         }]
+	         break;
+
+	      case 2:
+	         views = [{
+	            options  :  mainViewOptions,
+	            config   :   CartothequeController.config2()
+	         }]
+	         break;
+	         
+	   }
+
+      App.maperial.build(views, options)
+
+	}
+	
+	
+	//==================================================================//
 	
 	CartothequeController.config1 = function()
 	{
@@ -133,7 +158,9 @@
 		connectOutlets: function(router){
 			App.Router.openPage(router, "cartotheque");
 		},
-		
+
+      openDemo1 : function(){ App.CartothequeController.openDemo(1) },
+      openDemo2 : function(){ App.CartothequeController.openDemo(2) },
 	});
 
 	//==================================================================//

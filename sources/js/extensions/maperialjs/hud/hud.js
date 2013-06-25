@@ -195,7 +195,8 @@ HUD.prototype.placeElements = function () {
       this.placeElement(element, position, this.mapView.config.hud.elements[element].type)
    }
    
-   this.refreshAttribution()
+   if(!this.mapView.parent)
+      this.refreshAttribution()
 }
 
 //----------------------------------------------------------------------//

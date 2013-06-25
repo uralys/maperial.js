@@ -6,6 +6,7 @@ function Maperial(){
    this.views = []
 
    window.maperialSourcesManager = new SourcesManager();
+   this.templateBuilder    = new TemplateBuilder();
 };
 
 //==================================================================//
@@ -57,25 +58,74 @@ Maperial.DEMO_MAP = {
 //==================================================================//
 
 Maperial.prototype.reset = function(){
-   console.log("Maperial reset ");
+   console.log("------------------------> Maperial reset ");
    
    window.maperialSourcesManager.releaseAllReceivers()
    
-   for(var i = 0; i < this.views.length; i++)
+   for(var i = 0; i < this.views.length; i++){
+      
+      // TMP with children -> children first
+      for(var j = 0; j < this.views[i].children.length; j++){
+         console.log("---------------- > removing ", this.views[i].children[j].name)
+         $("#panel"+this.views[i].children[j].name).remove()
+      }
+
       this.views[i].reset()
+      $("#"+this.views[i].name).remove()
+      
+   }
+
+   $('#TheMaperial').css('position', 'absolute');
+   $('#TheMaperial').css('top', '0');
+   $('#TheMaperial').css('left', '0');
+   $('#TheMaperial').css('width', $(window).width());
+   $('#TheMaperial').css('height', $(window).height());
       
    this.views = []
+   this.templateBuilder.prepareView();
 }
 
-Maperial.prototype.build = function(viewConfigs){
-   console.log("Maperial build ", viewConfigs);
+//==================================================================//
+
+Maperial.prototype.build = function(viewConfigs, options){
+   
+   console.log("Maperial build ", options, viewConfigs);
+   
+   //-------------------------------------------------------------------//
+
    this.reset()
+
+   //-------------------------------------------------------------------//
+   
+   $('#TheMaperial').css('position', 'absolute');
+
+   if(options && options.left){
+      $('#TheMaperial').css('left', options.left);
+   }
+
+   if(options && options.top){
+      $('#TheMaperial').css('top', options.top);
+   }
+
+   if(options && options.width)
+      $('#TheMaperial').css('width', options.width);
+   else
+      $('#TheMaperial').css('width', $(window).width());
+  
+   
+   if(options && options.height)
+      $('#TheMaperial').css('height', options.height);
+   else
+      $('#TheMaperial').css('height', $(window).height());
+   
+   //-------------------------------------------------------------------//
    
    for(var i = 0; i < viewConfigs.length; i++){
       var view = viewConfigs[i]
-      var mapView = new MapView(view.options)
+      var mapView = new MapView(this, view.options)
       this.views.push (mapView)
-      
+   
+      this.templateBuilder.prepareMapView(mapView);
       mapView.apply(view.config)
    }
 }

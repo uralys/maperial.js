@@ -141,14 +141,14 @@
 
    MapCreationController.openLayersCreation = function()
    {
-      var config = MapCreationController.getLayersCreationConfig();
-      var options = { name:"maperial" }
+      var views = [{
+         options : { name:"maperial" }, 
+         config : MapCreationController.getLayersCreationConfig()
+      }]
       
       if(App.user.isCreatingANewMap){
-         App.maperial.build([{
-            options : options, 
-            config : config
-         }])
+
+         App.maperial.build(views)
 
          if(App.Globals.isTryscreen)
             MapCreationController.openDemoSelection();
@@ -159,10 +159,7 @@
          config.layers = App.user.selectedMap.config.layers;
          config.map = App.user.selectedMap.config.map;
 
-         App.maperial.build([{
-            options : options, 
-            config : config
-         }])
+         App.maperial.build(views)
       }
 
       MapCreationController.mapView = App.maperial.views[0]

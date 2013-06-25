@@ -15,7 +15,7 @@ ChildrenManager.prototype.resetAllChildren = function(){
 
 //-------------------------------------------//
 
-ChildrenManager.prototype.add = function(options){
+ChildrenManager.prototype.add = function(maperial, options){
 
    //------------------------//
 
@@ -30,7 +30,8 @@ ChildrenManager.prototype.add = function(options){
 
    //------------------------//
 
-   var child = new MapView(options)
+   var child = new MapView(maperial, options)
+   maperial.templateBuilder.prepareMapView(child, true);
    child.apply(options.config)
 
    //------------------------//
@@ -50,9 +51,6 @@ ChildrenManager.prototype.add = function(options){
             me.moveChildInterval = null
          }
       });
-   }
-   else{
-      panel.draggable("disable") 
    }
    
    //------------------------//

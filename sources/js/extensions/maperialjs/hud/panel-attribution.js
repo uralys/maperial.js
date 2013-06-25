@@ -24,7 +24,7 @@ HUD.prototype.refreshAttribution = function(){
 //==================================================================//
 
 HUD.prototype.buildAttributions = function(isSmall){
-   
+
    this.element("attribution").empty();
 
    if(isSmall){

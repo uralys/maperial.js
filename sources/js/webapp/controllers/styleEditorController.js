@@ -10,7 +10,11 @@
 
    StyleEditorController.renderUI = function() {
       $(window).on(MaperialEvents.READY, StyleEditorController.maperialReady);
-      App.maperial.apply(StyleEditorController.getConfig());
+      
+      App.maperial.build([{
+         options  : {name : "styleEditor"},
+         config   : StyleEditorController.getConfig()
+      }])
    }
 
    StyleEditorController.cleanUI = function() {
@@ -27,7 +31,7 @@
    StyleEditorController.defaultStyleSelection = function (){
       console.log("StyleEditorController.defaultStyleSelection");
       var name = App.stylesData.selectedStyle.name; // ---> name vient de la db heroku !! on le garde ici pour linstant 
-      App.stylesData.set("selectedStyle", App.maperial.stylesManager.getSelectedStyle());
+      App.stylesData.set("selectedStyle", App.maperial.views[0].stylesManager.getSelectedStyle());
       App.stylesData.set("selectedStyle.name", name);
       
       //-----------------------------
@@ -49,7 +53,7 @@
 
    StyleEditorController.getConfig = function(){
 
-      var config = App.maperial.emptyConfig();
+      var config = ConfigManager.emptyConfig();
 
       // custom
       config.hud.elements["StyleEditorMenu"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true, disableDrag : true  };
@@ -63,25 +67,25 @@
 
       config.layers.push(LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
 
-      var magnifierConfig = App.maperial.emptyConfig();
-      magnifierConfig.layers.push(LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
-      
-      var magnifier = {
-         type        : Maperial.MAGNIFIER,
-         name        : "Magnifier",
-         config      : magnifierConfig,
-         width       : 250,
-         height      : 250,
-         position    : { 
-            left     : "20", 
-            bottom   : "20" 
-         },
-         draggable   : true,
-         padding     : 3,
-         borderRadius : 130,
-      }
-      
-      config.children.push(magnifier)
+//      var magnifierConfig = ConfigManager.emptyConfig();
+//      magnifierConfig.layers.push(LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
+//      
+//      var magnifier = {
+//         type        : Maperial.MAGNIFIER,
+//         name        : "Magnifier",
+//         config      : magnifierConfig,
+//         width       : 250,
+//         height      : 250,
+//         position    : { 
+//            left     : "20", 
+//            bottom   : "20" 
+//         },
+//         draggable   : true,
+//         padding     : 3,
+//         borderRadius : 130,
+//      }
+//      
+//      config.children.push(magnifier)
       
       config.map.edition = true;
       

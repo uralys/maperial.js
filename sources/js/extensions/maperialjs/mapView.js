@@ -1,9 +1,10 @@
 //==================================================================//
 
-function MapView(options){
+function MapView(maperial, options){
 
    console.log(" NEW MapView ", options)
-
+   this.maperial = maperial
+   
    //--------------------------------------------------------------//
    
    this.type        = (options && options.type)   ? options.type    : Maperial.COMPLETE
@@ -12,12 +13,14 @@ function MapView(options){
    this.deltaZoom   = (options && options.deltaZoom != null) ? options.deltaZoom : 1
    
    this.name        = ((options && options.name)  ? options.name : Utils.generateGuid()) + (this.parent ? "_" + this.parent.name : "")
-   
+
    //--------------------------------------------------------------//
          
+   console.log( $("#TheMaperial").width(), $("#TheMaperial").height())
+   
    $('body').css('overflow', 'hidden');
    if(options && options.width && typeof options.width == "string"){
-      var parentWidth   = this.parent ? this.parent.width : $(window).width()
+      var parentWidth   = this.parent ? this.parent.width : $("#TheMaperial").width()
       var widthParams   = options.width.split("%")
       if(widthParams.length > 1)
          this.width = widthParams[0] * parentWidth/100
@@ -25,10 +28,10 @@ function MapView(options){
          this.width =  options.width
    }
    else
-      this.width =  $(window).width()
+      this.width =  $("#TheMaperial").width()
 
    if(options && options.height && typeof options.height == "string"){
-      var parentHeight   = this.parent ? this.parent.height : $(window).height()
+      var parentHeight   = this.parent ? this.parent.height : $("#TheMaperial").height()
       var heightParams   = options.height.split("%")
       if(heightParams.length > 1)
          this.height = heightParams[0] * parentHeight/100
@@ -36,7 +39,8 @@ function MapView(options){
          this.height =  options.height
    }
    else
-      this.height =  $(window).height()
+      this.height = $("#TheMaperial").height()
+      
    $('body').css('overflow', 'auto');
 
    //--------------------------------------------------------------//
@@ -58,8 +62,6 @@ function MapView(options){
    this.geoloc             = null;
    this.styleMenu          = null;
    this.colorbarRenderer   = null;
-
-   this.templateBuilder    = new TemplateBuilder();
 
    this.shaders            = [Maperial.AlphaClip, Maperial.AlphaBlend, Maperial.MulBlend];
 };
@@ -155,7 +157,7 @@ MapView.prototype.load = function() {
 
    //--------------------------//
 
-   this.templateBuilder.build(this);
+   this.maperial.templateBuilder.build(this);
    this.createContext();
 
    //--------------------------//
@@ -561,6 +563,7 @@ MapView.prototype.setCanvasSize = function() {
 
 MapView.prototype.refreshScreen = function() {
    console.log(" refreshing screen...")
+   this.context.mapCanvas.css("position", "relative");
    
    try{
       this.mapRenderer.fitToSize();
@@ -681,7 +684,7 @@ MapView.prototype.activateBoundingBoxDrawing = function(){
 
 MapView.prototype.buildChildren = function(){
    for(var i = 0; i < this.config.children.length; i++){
-      this.childrenManager.add(this.config.children[i])
+      this.childrenManager.add(this.maperial, this.config.children[i])
    }
 }
 
