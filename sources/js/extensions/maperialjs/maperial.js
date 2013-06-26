@@ -90,7 +90,8 @@ Maperial.prototype.reset = function(){
 Maperial.prototype.build = function(viewConfigs, options){
    
    console.log("Maperial build ", options, viewConfigs);
-   
+   $(window).trigger(MaperialEvents.LOADING);
+
    //-------------------------------------------------------------------//
 
    this.reset()
@@ -128,4 +129,6 @@ Maperial.prototype.build = function(viewConfigs, options){
       this.templateBuilder.prepareMapView(mapView);
       mapView.apply(view.config)
    }
+
+   $(window).trigger(MaperialEvents.READY);
 }

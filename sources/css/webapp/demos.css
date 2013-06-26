@@ -1,9 +1,17 @@
-
-#listDemos{
-	position	: absolute;
-	width		: 20%;
-	margin-top 	: 90px;
-	overflow	: auto;
+#listDemos {
+	position: absolute;
+	width: 20%;
+	margin-top: 90px;
+	overflow-x: hidden;
+	overflow-y: auto;
 	direction: rtl;
 }
 
+.polaroid {
+	position: relative;
+	float: left;
+	padding: 10px 10px 25px 10px;
+	background: #eee;
+	border: 1px solid #fff;
+	-moz-box-shadow: 0px 2px 15px #333;
+}

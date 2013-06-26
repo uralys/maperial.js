@@ -82,7 +82,6 @@ MapView.prototype.apply = function(config){
  */
 MapView.prototype.restart = function(){
    console.log("MapView loads ", this.name, this.type, this.config);
-   $(window).trigger(MaperialEvents.LOADING);
    this.reset();
    this.load();
 }
@@ -312,6 +311,8 @@ MapView.prototype.startLatitude = function() {
       return this.config.map.currentLat
    else if(this.config.map.latMin)
       return (this.config.map.latMin + this.config.map.latMax)/2;
+   else if(this.config.map.latitude)
+      return this.config.map.latitude;
    else
       return Maperial.DEFAULT_LATITUDE;
 }
@@ -321,6 +322,8 @@ MapView.prototype.startLongitude = function() {
       return this.config.map.currentLon
    else if(this.config.map.lonMin)
       return (this.config.map.lonMin + this.config.map.lonMax)/2;
+   else if(this.config.map.longitude)
+      return this.config.map.longitude;
    else
       return Maperial.DEFAULT_LONGITUDE;
 }
@@ -482,7 +485,6 @@ MapView.prototype.finishStartup = function() {
 
    this.refreshScreen();
    $(window).resize(Utils.apply ( this , "refreshScreen" ) );
-   $(window).trigger(MaperialEvents.READY);
    
    console.log("MapView is ready")
 }

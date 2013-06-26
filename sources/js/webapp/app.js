@@ -55,6 +55,19 @@
       //App.homeScroller.resizeWindow();
    }
 
+   //-------------------------------------//
+
+   $(window).on(MaperialEvents.LOADING, function(){
+      App.user.set("waiting", true);
+   });
+
+   $(window).on(MaperialEvents.READY, function(){
+      App.placeFooter(true);
+      App.user.set("waiting", false);
+   });
+
+   //-------------------------------------//
+
    App.finishLoadings = function(nextPage){
 
       console.log("finish Loading")
@@ -106,17 +119,6 @@
          App.Globals.shaders.push(Maperial.AlphaClip);
          App.Globals.shaders.push(Maperial.AlphaBlend);
          App.Globals.shaders.push(Maperial.MulBlend);
-
-         //-------------------------------------//
-
-         $(window).on(MaperialEvents.LOADING, function(){
-            App.user.set("waiting", true);
-         });
-
-         $(window).on(MaperialEvents.READY, function(){
-            App.placeFooter(true);
-            App.user.set("waiting", false);
-         });
 
          //-------------------------------------//
 

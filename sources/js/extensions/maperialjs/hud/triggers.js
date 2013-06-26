@@ -24,8 +24,8 @@ HUD.prototype.buildTriggers = function(){
    //-----------------
    // snapping
 
-   this.allPanels().draggable({ snap: ".snapper", containment: "#Map_"+this.mapView.name, scroll: false });
-   this.allTriggers().draggable({ snap: ".snapper", containment: "#Map_"+this.mapView.name, scroll: false });
+   this.allPanels().draggable({ snap: ".snapper", containment: "#TheMaperial", scroll: false });
+   this.allTriggers().draggable({ snap: ".snapper", containment: "#TheMaperial", scroll: false });
 
    //------------------
    // disable dragging

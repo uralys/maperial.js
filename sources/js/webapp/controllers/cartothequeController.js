@@ -9,7 +9,17 @@
 	CartothequeController.renderUI = function()
 	{
 	   $("#listDemos").css("max-height", $(window).height() - 105)
-	   CartothequeController.openDemo(1)
+	   CartothequeController.configs = []
+	   CartothequeController.configs.push(CartothequeController.config0)
+	   CartothequeController.configs.push(CartothequeController.config1)
+	   
+	   for(var i = 0; i < CartothequeController.configs.length; i++){
+	      var rotation = Utils.random0(30) - 15
+	      $("#imageDemo"+i).css("-webkit-transform", "rotate("+rotation+"deg)")
+	      $("#imageDemo"+i).css("-moz-transform", "rotate("+rotation+"deg)")
+	   }
+	   
+	   CartothequeController.openDemo(0)
 	}
 
 	CartothequeController.cleanUI = function()
@@ -21,8 +31,6 @@
 	
 	CartothequeController.openDemo = function(num){
 
-//      App.user.set("waiting", true);
-      
       var views, options = {
          width    : "80%",
          height   : "100%",
@@ -31,78 +39,71 @@
 
       var mainViewOptions = {name : "maperialDemos"}
       
-	   switch(num){
-	      case 1:
-	         views = [{
-	            options  :  mainViewOptions,
-	            config   :   CartothequeController.config1()
-	         }]
-	         break;
-
-	      case 2:
-	         views = [{
-	            options  :  mainViewOptions,
-	            config   :   CartothequeController.config2()
-	         }]
-	         break;
-	         
-	   }
+      views = [{
+         options  :  mainViewOptions,
+         config   :  CartothequeController.configs[num]()
+      }]
 
       App.maperial.build(views, options)
-
 	}
 	
 	
 	//==================================================================//
 	
-	CartothequeController.config1 = function()
+	CartothequeController.config0 = function()
 	{
 	   var config = ConfigManager.emptyConfig();
 
-	   var lensConfig = ConfigManager.emptyConfig();
-	   lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
-
-	   var lens = {
-	      type       : Maperial.LENS,
-	      name       : "Lens",
-	      config     : lensConfig,
-	      draggable  : true,
-	      position   : { 
-	         left    : "12%", 
-	         bottom  : "45%" 
-	      },
-	   }
+//	   var lensConfig = ConfigManager.emptyConfig();
+//	   lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
+//
+//	   var lens = {
+//	      type       : Maperial.LENS,
+//	      name       : "Lens",
+//	      config     : lensConfig,
+//	      draggable  : true,
+//	      position   : { 
+//	         left    : "12%", 
+//	         bottom  : "45%" 
+//	      },
+//	   }
 
 	   var minifierConfig = ConfigManager.emptyConfig();
-	   minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+	   minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
 
 	   var minifier = {
 	      type       : Maperial.MINIFIER,
 	      name       : "Minifier",
 	      config     : minifierConfig,
-	      width      : 250,
-	      height     : 250,
+	      width      : "250",
+	      height     : "250",
 	      position   : { 
-	         right : "25", 
-	         top   : "25" 
+	         left    : "15%", 
+	         bottom  : "25%" 
 	      },
 	      borderRadius : 130,
+	      padding    : 4,
+	      deltaZoom  : -4,
+	      zoomable   : false,
+	      draggable  : true
 	   }
 
-	   config.children.push(lens)
+//	   config.children.push(lens)
 	   config.children.push(minifier)
-	   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER))
-
+	   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+	   config.map.latitude = 47.600607
+      config.map.longitude = -122.315125
+      config.map.defaultZoom = 11
+	   
 	   return config
 	}
 	
 	//==================================================================//
 	
 	
-	CartothequeController.config2 = function()
+	CartothequeController.config1 = function()
 	{
 	   var config = ConfigManager.emptyConfig();
-	   config.map.defaultZoom = 13
 	   
 	   var anchor1Config = ConfigManager.emptyConfig();
 	   anchor1Config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
@@ -141,6 +142,7 @@
 	   config.children.push(anchor1)
 	   config.children.push(anchor2)
 	   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER_BG))
+	   config.map.defaultZoom = 13
 	   
 	   return config
 	}
@@ -159,9 +161,9 @@
 			App.Router.openPage(router, "cartotheque");
 		},
 
+      openDemo0 : function(){ App.CartothequeController.openDemo(0) },
       openDemo1 : function(){ App.CartothequeController.openDemo(1) },
-      openDemo2 : function(){ App.CartothequeController.openDemo(2) },
-	});
+	})
 
 	//==================================================================//
 

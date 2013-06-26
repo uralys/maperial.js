@@ -41,7 +41,9 @@ ChildrenManager.prototype.add = function(maperial, options){
    if(options.draggable){
       var me = this
       panel.draggable({ 
-         snap: false,   
+         snap           : false, 
+         containment    : "#TheMaperial",
+         scroll         : false,   
          start: function(event) {
             if(child.type == Maperial.LENS)
                me.moveChildInterval = setInterval( function(){ me.moveChild(child.name) } , 0.01 );

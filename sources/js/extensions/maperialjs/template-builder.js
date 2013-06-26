@@ -6,7 +6,7 @@ function TemplateBuilder(){}
 //==================================================================//
 
 TemplateBuilder.prototype.prepareView = function() {
-   $("body").append("<div id='TheMaperial'></div>")
+   $("body").append("<div id='TheMaperial' class='snapper'></div>")
 }
 
 //==================================================================//
