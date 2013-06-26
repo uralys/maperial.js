@@ -53,7 +53,7 @@
 
    StyleEditorController.getConfig = function(){
 
-      var config = ConfigManager.emptyConfig();
+      var config = ConfigManager.newConfig();
 
       // custom
       config.hud.elements["StyleEditorMenu"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true, disableDrag : true  };
@@ -67,7 +67,7 @@
 
       config.layers.push(LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
 
-//      var magnifierConfig = ConfigManager.emptyConfig();
+//      var magnifierConfig = ConfigManager.newConfig();
 //      magnifierConfig.layers.push(LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
 //      
 //      var magnifier = {

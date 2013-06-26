@@ -118,7 +118,7 @@ OffscreenRenderer.RenderTile = function(x,y,z,confToLoad) {
    
    
    //maperial.config                        = {}
-   maperial.config  = maperial.emptyConfig()
+   maperial.config  = maperial.newConfig()
    maperial.config["layers"]              = conf.layers;
    maperial.config["map"]                 = {};
    maperial.config.map                    = conf.map;

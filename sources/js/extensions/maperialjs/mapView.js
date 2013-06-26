@@ -1,18 +1,58 @@
 //==================================================================//
 
-function MapView(maperial, options){
+function MapView(maperial, map, options){
 
-   console.log(" NEW MapView ", options)
-   this.maperial = maperial
-   
+   console.log(" NEW MapView ", map, options)
    //--------------------------------------------------------------//
    
-   this.type        = (options && options.type)   ? options.type    : Maperial.COMPLETE
-   this.parent      = (options && options.parent) ? options.parent  : null
-   this.zoomable    = (options && options.zoomable != null) ? options.zoomable : true
-   this.deltaZoom   = (options && options.deltaZoom != null) ? options.deltaZoom : 1
+   options                 = options || {}
+   options.type            = options.type ?           (options.type == Maperial.MAIN || options.type == Maperial.ANCHOR || options.type == Maperial.LENS || options.type == Maperial.MINIFIER || options.type == Maperial.MAGNIFIER ? options.type : Maperial.ANCHOR) : Maperial.ANCHOR
+   options.width           = options.width            || 150
+   options.height          = options.height           || 150
+   options.position        = options.position         || { left : 0, top : 0 }
+   options.opacity         = options.opacity          || 1
+   options.padding         = options.padding          || 0
+   options.borderRadius    = options.borderRadius     || 0
+
+   if(options.type == Maperial.ANCHOR){
+      options.zoomable = true
+      options.deltaZoom = 0
+   }
    
-   this.name        = ((options && options.name)  ? options.name : Utils.generateGuid()) + (this.parent ? "_" + this.parent.name : "")
+   //--------------------------------------------------------------//
+
+   this.maperial           = maperial
+   this.map                = map
+
+   this.config             = null;
+   this.context            = null;
+   this.options            = options;
+
+   this.type               = options.type
+   this.name               = ((options && options.name)  ? options.name : Utils.generateGuid()) + "_" + this.map
+   
+   this.zoomable           = (options && options.zoomable != null) ? options.zoomable : true
+   this.deltaZoom          = (options && options.deltaZoom != null) ? options.deltaZoom : 1
+
+   //--------------------------------------------------------------//
+
+   this.hud                = new HUD( this );
+
+   this.mapRenderer        = null;
+   this.mapMover           = null;
+   this.mapMouse           = null;
+
+   this.stylesManager      = null;
+   this.colorbarsManager   = null;
+   this.layersManager      = null;
+
+   this.geoloc             = null;
+   this.styleMenu          = null;
+   this.colorbarRenderer   = null;
+
+   //--------------------------------------------------------------//
+   
+   this.shaders            = [Maperial.AlphaClip, Maperial.AlphaBlend, Maperial.MulBlend];
 
    //--------------------------------------------------------------//
          
@@ -43,27 +83,6 @@ function MapView(maperial, options){
       
    $('body').css('overflow', 'auto');
 
-   //--------------------------------------------------------------//
-
-   this.config             = null;
-   this.context            = null;
-   this.children           = null;
-
-   this.mapRenderer        = null;
-   this.mapMover           = null;
-   this.mapMouse           = null;
-   this.hud                = null;
-
-   this.stylesManager      = null;
-   this.colorbarsManager   = null;
-   this.layersManager      = null;
-   this.childrenManager    = null;
-
-   this.geoloc             = null;
-   this.styleMenu          = null;
-   this.colorbarRenderer   = null;
-
-   this.shaders            = [Maperial.AlphaClip, Maperial.AlphaBlend, Maperial.MulBlend];
 };
 
 //==================================================================//
@@ -101,14 +120,6 @@ MapView.prototype.reset = function(){
    }
 
    try{
-      this.children = []
-      if(this.childrenManager){
-         this.childrenManager.resetAllChildren();
-      }
-   }catch(e){
-   }
-   
-   try{
       if(this.mapMover)
          this.mapMover.removeListeners();
       
@@ -134,7 +145,6 @@ MapView.prototype.reset = function(){
    this.colorbarsManager = new ColorbarsManager(this);
    this.stylesManager = new StylesManager(this);
    this.layersManager = new LayersManager(this);
-   this.childrenManager = new ChildrenManager(this);
    
    window.maperialSourcesManager.addReceiver(this)
 
@@ -199,16 +209,13 @@ MapView.prototype.checkConfig = function() {
    if(!this.config.layers)
       this.config.layers = [];
 
-   if(!this.config.children)
-      this.config.children = [];
-
    //--------------------------//
-   // checking children config
-   
-   for(var i = 0; i < this.config.children.length; i++){
-      if(!this.config.children[i].name)
-         this.config.children[i].name = Utils.generateGuid() + (this.parent ? "_" + this.parent.name : "")
-   }
+//   // checking children config
+//   
+//   for(var i = 0; i < this.config.children.length; i++){
+//      if(!this.config.children[i].name)
+//         this.config.children[i].name = Utils.generateGuid() + (this.parent ? "_" + this.parent.name : "")
+//   }
 
    //--------------------------//
    // checking layer config
@@ -472,7 +479,7 @@ MapView.prototype.build = function() {
 
    //--------------------------//
 
-   this.buildChildren();
+//   this.buildChildren();
    
    //--------------------------//
 
@@ -543,7 +550,7 @@ MapView.prototype.buildColorbar = function() {
 //==================================================================//
 
 MapView.prototype.buildHUD = function() {
-   this.hud = new HUD( this );
+   this.hud.build();
 }
 
 //==================================================================//
@@ -582,6 +589,11 @@ MapView.prototype.refreshScreen = function() {
    catch(e){
       console.log("------------> placing pb")
       console.log(e)
+   }
+
+   if(this.type != Maperial.MAIN){
+      this.hud.placeMapView()
+      this.refreshCamera()
    }
 }
 
@@ -683,12 +695,12 @@ MapView.prototype.activateBoundingBoxDrawing = function(){
 }
 
 //==================================================================//
-
-MapView.prototype.buildChildren = function(){
-   for(var i = 0; i < this.config.children.length; i++){
-      this.childrenManager.add(this.maperial, this.config.children[i])
-   }
-}
+//
+//MapView.prototype.buildChildren = function(){
+//   for(var i = 0; i < this.config.children.length; i++){
+//      this.childrenManager.add(this.maperial, this.config.children[i])
+//   }
+//}
 
 //==================================================================//
 
@@ -721,3 +733,94 @@ MapView.prototype.centerWMS = function (src, type) {
    }   
 }
 
+//==================================================================//
+
+MapView.prototype.refreshZoom = function (typeTriggering, zoom) {
+
+   switch(this.type){
+      case Maperial.MAIN : 
+      case Maperial.ANCHOR :
+
+         switch(typeTriggering){
+            case Maperial.MAIN : 
+            case Maperial.ANCHOR :
+               this.context.zoom = zoom;
+               break;
+               
+            case Maperial.MINIFIER : 
+            case Maperial.MAGNIFIER : 
+            case Maperial.LENS :
+               break;
+         }
+         
+         break;
+
+      case Maperial.MINIFIER : 
+         break;
+
+      case Maperial.MAGNIFIER : 
+         break;
+
+      case Maperial.LENS :
+         break;
+
+   }
+}
+
+//==================================================================//
+
+MapView.prototype.refreshCamera = function (viewTriggering, typeTriggering, zoom) {
+
+   console.log("===============> refreshCamera ", this.name, viewTriggering, typeTriggering, zoom)
+   
+   if(!viewTriggering)
+      viewTriggering = this.maperial.getMainView(this.map).name
+
+   if(!typeTriggering)
+      typeTriggering = Maperial.MAIN
+
+   if(!zoom)
+      zoom = this.maperial.getZoom(this.map)
+
+   console.log("===============> --> refreshCamera ", this.name, viewTriggering, typeTriggering, zoom)
+      
+   this.refreshZoom(typeTriggering, zoom);
+   
+   switch(this.type){
+      case Maperial.MINIFIER : 
+         child.context.centerM = this.mapView.context.centerM
+         break;
+
+      case Maperial.MAGNIFIER : 
+         child.context.centerM = this.mapView.context.mouseM
+         break;
+
+      case Maperial.LENS :
+      case Maperial.MAIN : 
+      case Maperial.ANCHOR :
+         var panel = $("#panel"+this.name)
+         var panelTriggering = $("#panel"+viewTriggering)
+
+         var panelTriggeringPosition = panelTriggering.position();
+         var viewPosition = panel.position();
+         
+         var viewCenterX = viewPosition.left + panel.width()/2
+         var viewCenterY = viewPosition.top + panel.height()/2
+         console.log("===============> viewCenter ",viewCenterX,viewCenterY)
+
+         var panelTriggeringCenterX = panelTriggeringPosition.left + panelTriggering.width()/2
+         var panelTriggeringCenterY = panelTriggeringPosition.top + panelTriggering.height()/2
+         console.log("===============> viewCenter ",viewCenterX,viewCenterY)
+         
+         var viewTriggeringCenterP = this.maperial.getCenterP(viewTriggering)
+         var lensCenterP = new Point( viewTriggeringCenterP.x - panelTriggeringCenterX + viewCenterX , viewTriggeringCenterP.y + panelTriggeringCenterY - viewCenterY);
+         console.log("===============> lensCenterP ", lensCenterP)
+
+         this.context.centerM = this.context.coordS.PixelsToMeters ( lensCenterP.x, lensCenterP.y, this.context.zoom );
+         console.log("===============> this.context.zoom ", this.context.zoom)
+         console.log("===============> this.context.centerM ", this.context.centerM)
+         this.mapRenderer.DrawScene()
+         break;
+   }
+   
+}

@@ -7,7 +7,7 @@ HUD.prototype.refreshAttribution = function(){
    
    //------------------------------------------------------------//
    
-   var mapWidth = this.context.mapCanvas[0].offsetWidth
+   var mapWidth = this.mapView.context.mapCanvas[0].offsetWidth
    
    if(this.element("attribution").width() > mapWidth){
       this.buildAttributions(true)

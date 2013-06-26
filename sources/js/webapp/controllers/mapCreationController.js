@@ -82,7 +82,7 @@
    
    MapCreationController.getLayersCreationConfig = function(){
 
-      var config = ConfigManager.emptyConfig();
+      var config = ConfigManager.newConfig();
 
       config.map.layersCreation = true;
       
@@ -108,7 +108,7 @@
    
    MapCreationController.getSettingsConfig = function(){
 
-      var config = ConfigManager.emptyConfig()
+      var config = ConfigManager.newConfig()
       
       // map viewer hud config
       config.hud = App.user.selectedMap.config.hud

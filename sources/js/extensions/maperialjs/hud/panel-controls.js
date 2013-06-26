@@ -8,7 +8,7 @@ HUD.prototype.buildControls = function(){
       range: "min",
       min: 1,
       max: 18,
-      value: this.context.zoom,
+      value: this.mapView.context.zoom,
       slide: function( event, ui ) {
          me.controlZoomCursor().html(ui.value);
       },

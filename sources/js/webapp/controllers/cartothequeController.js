@@ -9,15 +9,15 @@
 	CartothequeController.renderUI = function()
 	{
 	   $("#listDemos").css("max-height", $(window).height() - 105)
-	   CartothequeController.configs = []
-	   CartothequeController.configs.push(CartothequeController.config0)
-	   CartothequeController.configs.push(CartothequeController.config1)
+	   CartothequeController.maps = []
+	   CartothequeController.maps.push(CartothequeController.maps0)
+	   CartothequeController.maps.push(CartothequeController.maps1)
 	   
-	   for(var i = 0; i < CartothequeController.configs.length; i++){
+	   for(var i = 0; i < CartothequeController.maps.length; i++){
 	      Utils.randomRotate("imageDemo"+i)
 	   }
 	   
-	   CartothequeController.openDemo(0)
+	   CartothequeController.openDemo(1)
 	}
 
 	CartothequeController.cleanUI = function()
@@ -29,30 +29,23 @@
 	
 	CartothequeController.openDemo = function(num){
 
-      var views, options = {
+      var options = {
          width    : "80%",
          height   : "100%",
          left     : "20%"
       }
 
-      var mainViewOptions = {name : "maperialDemos"}
-      
-      views = [{
-         options  :  mainViewOptions,
-         config   :  CartothequeController.configs[num]()
-      }]
-
-      App.maperial.build(views, options)
+      App.maperial.build(CartothequeController.maps[num](), options)
 	}
 	
 	
 	//==================================================================//
 	
-	CartothequeController.config0 = function()
+	CartothequeController.maps0 = function()
 	{
-	   var config = ConfigManager.emptyConfig();
+	   var config = ConfigManager.newConfig();
 
-//	   var lensConfig = ConfigManager.emptyConfig();
+//	   var lensConfig = ConfigManager.newConfig();
 //	   lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
 //
 //	   var lens = {
@@ -66,7 +59,7 @@
 //	      },
 //	   }
 
-	   var minifierConfig = ConfigManager.emptyConfig();
+	   var minifierConfig = ConfigManager.newConfig();
 	   minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
 
 	   var minifier = {
@@ -99,32 +92,37 @@
 	//==================================================================//
 	
 	
-	CartothequeController.config1 = function()
+	CartothequeController.maps1 = function()
 	{
-	   var config = ConfigManager.emptyConfig();
+	   var mainConfig   = ConfigManager.newConfig();
+	   var anchor1Config   = ConfigManager.newConfig();
+	   var anchor2Config   = ConfigManager.newConfig();
 	   
-	   var anchor1Config = ConfigManager.emptyConfig();
-	   anchor1Config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+	   mainConfig.map.defaultZoom    = 13
+	   mainConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER_BG))
+	   anchor1Config.layers.push    (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+	   anchor2Config.layers.push    (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
 	   
-	   var anchor1 = {
-	      type       : Maperial.LENS,
+	   var mainOptions = {
+	      type       : Maperial.MAIN,
+	      name       : "maperialDemo1",
+	      config     : mainConfig
+	   }
+	   
+	   var anchor1Options = {
+	      type       : Maperial.ANCHOR,
 	      name       : "Anchor1",
 	      config     : anchor1Config,
-         width      : "350",
-         height     : "350",
+	      width      : "350",
+	      height     : "350",
 	      position   : { 
 	         left    : "20%", 
 	         top     : "35%" 
-	      },
-	      zoomable   : false,
-	      deltaZoom  : 0
+	      }
 	   }
 
-	   var anchor2Config = ConfigManager.emptyConfig();
-	   anchor2Config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-	   
-	   var anchor2 = {
-	      type       : Maperial.LENS,
+	   var anchor2Options = {
+	      type       : Maperial.ANCHOR,
 	      name       : "Anchor2",
 	      config     : anchor2Config,
 	      width      : "370",
@@ -132,17 +130,23 @@
 	      position   : { 
 	         right   : "25%", 
 	         bottom  : "35%" 
-	      },
-	      zoomable   : false,
-	      deltaZoom  : 0
+	      }
 	   }
 	   
-	   config.children.push(anchor1)
-	   config.children.push(anchor2)
-	   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER_BG))
-	   config.map.defaultZoom = 13
-	   
-	   return config
+	   var map = {
+	      views : [{
+	         config  : mainConfig,
+	         options : mainOptions,
+	      },{
+	         config  : anchor1Config,
+	         options : anchor1Options,
+	      },{
+	         config  : anchor2Config,
+	         options : anchor2Options,
+	      }]
+	   }
+	      
+	   return [map]
 	}
 	
 	//==================================================================//

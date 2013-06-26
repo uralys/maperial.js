@@ -22,7 +22,8 @@ MapMouse.prototype.initListeners = function () {
    
    switch(this.mapView.type){
 
-      case Maperial.COMPLETE:
+      case Maperial.MAIN:
+      case Maperial.ANCHOR:
          this.context.mapCanvas
          .mousedown  ( Utils.apply ( this , "down" ))
          .mouseup    ( Utils.apply ( this , "up" ))
@@ -34,6 +35,7 @@ MapMouse.prototype.initListeners = function () {
 
       case Maperial.LENS:
       case Maperial.MINIFIER:
+      case Maperial.MAGNIFIER:
          this.context.mapCanvas
          .dblclick   ( Utils.apply ( this , "doubleClick" ))
          .bind('mousewheel', Utils.apply ( this , "wheelOnChild"))   
@@ -89,12 +91,7 @@ MapMouse.prototype.move = function (event) {
    }
    else{
       this.context.mapCanvas.addClass( 'movable' )
-      $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.mapView.name]);
-   }
-
-   for(var i = 0; i < this.mapView.children.length; i++){
-      if(this.mapView.children[i].type == Maperial.MAGNIFIER)
-         this.mapView.childrenManager.refreshChild(this.mapView.children[i]);
+      $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.mapView.map]);
    }
 }
 
@@ -111,12 +108,8 @@ MapMouse.prototype.doubleClick = function (event) {
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
    this.mapView.refreshCurrentLatLon();
-   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
+   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
 
-   for(var i = 0; i < this.mapView.children.length; i++){
-      this.mapView.childrenManager.setZoom(this.mapView.children[i], this.context.zoom);
-      this.mapView.childrenManager.refreshChild(this.mapView.children[i]);
-   }
 }
 
 //----------------------------------------------------------------------//
@@ -154,12 +147,7 @@ MapMouse.prototype.wheel = function (event, delta) {
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
    this.mapView.refreshCurrentLatLon();
-   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
-
-   for(var i = 0; i < this.mapView.children.length; i++){
-      this.mapView.childrenManager.setZoom(this.mapView.children[i], this.context.zoom);
-      this.mapView.childrenManager.refreshChild(this.mapView.children[i]);
-   }
+   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
 }
 
 MapMouse.prototype.wheelOnChild = function (event, delta) {

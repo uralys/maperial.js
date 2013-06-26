@@ -21,7 +21,7 @@
 
 	TryscreenController.maperialConfig = function(){
 
-      var config = App.maperial.emptyConfig();
+      var config = App.maperial.newConfig();
       
       //----
       config.map.edition = true;

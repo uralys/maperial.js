@@ -4,10 +4,10 @@
 function HUD(mapView){
 
    console.log("  building HUD...");
-
    this.mapView = mapView;
-   this.context = this.mapView.context;
+}
 
+HUD.prototype.build = function () {
    if(this.mapView.config){
       this.buildTriggers();
       this.buildControls();
@@ -123,7 +123,7 @@ HUD.prototype.initListeners = function () {
 
    var hud = this;
 
-   this.context.mapCanvas.on(MaperialEvents.UPDATE_LATLON, function(event, x, y){
+   this.mapView.context.mapCanvas.on(MaperialEvents.UPDATE_LATLON, function(event, x, y){
       hud.updateLatLon();
    });
 
@@ -148,7 +148,7 @@ HUD.prototype.initListeners = function () {
 
 HUD.prototype.removeListeners = function () {
 
-   this.context.mapCanvas.off(MaperialEvents.UPDATE_LATLON);
+   this.mapView.context.mapCanvas.off(MaperialEvents.UPDATE_LATLON);
    $(window).off(MaperialEvents.MAP_MOVING);
    $(window).off(MaperialEvents.ZOOM_CHANGED);
    $(window).off(MaperialEvents.ZOOM_TO_REFRESH);
@@ -229,15 +229,15 @@ HUD.prototype.placeElement = function(element, position, type){
             case "top":
             case "bottom":
                switch(type){
-                  case HUD.TRIGGER  : value = (percentage/100 * this.context.mapCanvas[0].height) - triggerHeight/2; break;
-                  case HUD.PANEL : default : value = (percentage/100 * this.context.mapCanvas[0].height) - panelHeight/2; break;
+                  case HUD.TRIGGER  : value = (percentage/100 * this.mapView.maperial.height()) - triggerHeight/2; break;
+                  case HUD.PANEL : default : value = (percentage/100 * this.mapView.maperial.height()) - panelHeight/2; break;
                }
                break;
             case "left":
             case "right":
                switch(type){
-                  case HUD.TRIGGER  : value = (percentage/100 * this.context.mapCanvas[0].width) - triggerWidth/2; break;
-                  case HUD.PANEL : default : value = (percentage/100 * this.context.mapCanvas[0].width) - panelWidth/2; break;
+                  case HUD.TRIGGER  : value = (percentage/100 * this.mapView.maperial.width()) - triggerWidth/2; break;
+                  case HUD.PANEL : default : value = (percentage/100 * this.mapView.maperial.width()) - panelWidth/2; break;
                }
                break;
          }
@@ -249,27 +249,28 @@ HUD.prototype.placeElement = function(element, position, type){
 
 //==================================================================//
 
-HUD.prototype.placeChild = function(options){
-   var childPanel    = $("#panel"   + this.mapView.getFullName(options.name))
-   var childCanvas   = $("#Map_"     + this.mapView.getFullName(options.name))
+HUD.prototype.placeMapView = function(){
+   var childPanel    = $("#panel"   + this.mapView.name)
+   var childCanvas   = $("#Map_"     + this.mapView.name)
    
-   childPanel.css ("width",                  options.width              )
-   childPanel.css ("height",                 options.height             )
-   childPanel.css ("opacity",                options.opacity            )
-   childPanel.css ("padding",                options.padding            )
-   childPanel.css ("border-radius",          options.borderRadius       )
-   childPanel.css ("-moz-border-radius",     options.borderRadius       )
-   childPanel.css ("-moz-border-radius",     options.borderRadius       )
-   childPanel.css ("-khtml-border-radius",   options.borderRadius       )
+   childPanel.css ("position",               "absolute"                              )
+   childPanel.css ("width",                  this.mapView.options.width              )
+   childPanel.css ("height",                 this.mapView.options.height             )
+   childPanel.css ("opacity",                this.mapView.options.opacity            )
+   childPanel.css ("padding",                this.mapView.options.padding            )
+   childPanel.css ("border-radius",          this.mapView.options.borderRadius       )
+   childPanel.css ("-moz-border-radius",     this.mapView.options.borderRadius       )
+   childPanel.css ("-moz-border-radius",     this.mapView.options.borderRadius       )
+   childPanel.css ("-khtml-border-radius",   this.mapView.options.borderRadius       )
 
-   childCanvas.css("border-radius",          options.borderRadius       )
-   childCanvas.css("-moz-border-radius",     options.borderRadius       )
-   childCanvas.css("-moz-border-radius",     options.borderRadius       )
-   childCanvas.css("-khtml-border-radius",   options.borderRadius       )
+   childCanvas.css("border-radius",          this.mapView.options.borderRadius       )
+   childCanvas.css("-moz-border-radius",     this.mapView.options.borderRadius       )
+   childCanvas.css("-moz-border-radius",     this.mapView.options.borderRadius       )
+   childCanvas.css("-khtml-border-radius",   this.mapView.options.borderRadius       )
    childCanvas.css("overflow",               "hidden"                   )
    childCanvas.css("-webkit-mask-image",     "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC)")
    
-   this.placeElement(childPanel, options.position, HUD.PANEL)
+   this.placeElement(childPanel, this.mapView.options.position, HUD.PANEL)
 }
 
 //==================================================================//
@@ -282,31 +283,26 @@ HUD.prototype.placeElementAt = function(element, value, property){
       element = this.element(this.mapView.config.hud.elements[elementName].type+elementName)
    }
 
-   var margin = this.getMargin(property);
-
-   var mapTop = this.context.mapCanvas[0].offsetTop;
-   var mapLeft = this.context.mapCanvas[0].offsetLeft;
-   var mapWidth = this.context.mapCanvas[0].offsetWidth;
-   var mapHeight = this.context.mapCanvas[0].offsetHeight;
+   var margin     = this.getMargin(property);
+   var mapWidth   = this.mapView.maperial.width();
+   var mapHeight  = this.mapView.maperial.height();
 
    switch(property){
       case "top":
-         value += mapTop;
          value += margin;
          break;
       case "bottom":
-         value = mapTop + mapHeight - value;
+         value = mapHeight - value;
          value -= element.height();
          value -= margin;
          value -= 8;
          property = "top";
          break;
       case "left":
-         value += mapLeft;
          value += margin;
          break;
       case "right":
-         value = mapLeft + mapWidth - value;
+         value = mapWidth - value;
          value -= element.width();
          value -= margin;
          value -= 10;
@@ -346,9 +342,9 @@ HUD.prototype.refreshDisplay = function(dontHideColorpickers){
 HUD.prototype.refreshZoom = function(shuntSlider){
 
    if(!shuntSlider)
-      this.element("control-zoom").slider({value: this.context.zoom});
+      this.element("control-zoom").slider({value: this.mapView.context.zoom});
 
-   this.controlZoomCursor().html(this.context.zoom);
+   this.controlZoomCursor().html(this.mapView.context.zoom);
    $(window).trigger(MaperialEvents.ZOOM_CHANGED);
 
 }
@@ -417,8 +413,8 @@ HUD.prototype.openData = function(params, callBack){
 
 HUD.prototype.closePanel = function(params, callBack, panel){
 
-   var mapWidth = this.context.mapCanvas[0].offsetWidth;
-   var mapLeft = this.context.mapCanvas[0].offsetLeft;
+   var mapWidth = this.mapView.context.mapCanvas[0].offsetWidth;
+   var mapLeft = this.mapView.context.mapCanvas[0].offsetLeft;
    var margin = this.getMargin("right");
 
    var value = mapLeft + mapWidth + 550;
@@ -437,8 +433,8 @@ HUD.prototype.closePanel = function(params, callBack, panel){
 
 HUD.prototype.openPanel = function(params, callBack, panel){
 
-   var mapWidth = this.context.mapCanvas[0].offsetWidth;
-   var mapLeft = this.context.mapCanvas[0].offsetLeft;
+   var mapWidth = this.mapView.context.mapCanvas[0].offsetWidth;
+   var mapLeft = this.mapView.context.mapCanvas[0].offsetLeft;
    var margin = this.getMargin("right");
 
    var value = mapLeft + mapWidth - 220;

@@ -21,7 +21,7 @@
 //   }
 //   
 //   this.lens = new Maperial(options)
-//   var config = this.lens.emptyConfig();
+//   var config = this.lens.newConfig();
 //   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER))
 //   
 //   this.lens.apply(config)
@@ -52,7 +52,7 @@
 //      this.lensStartCenterP = new Point(offset.left , offset.top);
 //   }
 //
-//   var centerP = this.context.coordS.MetersToPixels(this.context.centerM.x, this.context.centerM.y, this.context.zoom);
+//   var centerP = this.mapView.context.coordS.MetersToPixels(this.mapView.context.centerM.x, this.mapView.context.centerM.y, this.mapView.context.zoom);
 //   var lensCenterP = new Point( centerP.x + offset.left - this.lensStartCenterP.x , centerP.y - offset.top + this.lensStartCenterP.y);
 //
 //   this.lens.context.centerM = this.lens.context.coordS.PixelsToMeters ( lensCenterP.x, lensCenterP.y, this.lens.context.zoom );

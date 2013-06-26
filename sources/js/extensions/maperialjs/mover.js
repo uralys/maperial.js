@@ -34,8 +34,8 @@ MapMover.prototype.initListeners = function (event) {
       mover.receivedMouseUp();
    });
 
-   $(window).on(MaperialEvents.DRAGGING_MAP, function(event, maperialId){
-      if(mover.mapView.name == maperialId){
+   $(window).on(MaperialEvents.DRAGGING_MAP, function(event, map){
+      if(mover.mapView.map == map){
          mover.drag();
       }
    });
@@ -114,11 +114,7 @@ MapMover.prototype.moveMap = function (dx, dy) {
 
    this.mapView.refreshCurrentLatLon();
 
-   for(var i = 0; i < this.mapView.children.length; i++){
-      this.mapView.childrenManager.refreshChild(this.mapView.children[i]);
-   }
-   
-   $(window).trigger(MaperialEvents.MAP_MOVING);
+   $(window).trigger(MaperialEvents.MAP_MOVING, [this.mapView.map, this.mapView.name, this.mapView.type]);
 }
 
 //==================================================================//
