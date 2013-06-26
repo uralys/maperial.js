@@ -57,8 +57,8 @@ Maperial.DEMO_MAP = {
 
 //==================================================================//
 
-Maperial.prototype.reset = function(){
-   console.log("------------------------> Maperial reset ");
+Maperial.prototype.destroy = function(){
+   console.log("------------------------> Maperial destroy ");
    
    window.maperialSourcesManager.releaseAllReceivers()
    
@@ -74,15 +74,9 @@ Maperial.prototype.reset = function(){
       $("#"+this.views[i].name).remove()
       
    }
-
-   $('#TheMaperial').css('position', 'absolute');
-   $('#TheMaperial').css('top', '0');
-   $('#TheMaperial').css('left', '0');
-   $('#TheMaperial').css('width', $(window).width());
-   $('#TheMaperial').css('height', $(window).height());
       
    this.views = []
-   this.templateBuilder.prepareView();
+   this.templateBuilder.destroyView();
 }
 
 //==================================================================//
@@ -94,7 +88,8 @@ Maperial.prototype.build = function(viewConfigs, options){
 
    //-------------------------------------------------------------------//
 
-   this.reset()
+   this.destroy()
+   this.templateBuilder.prepareView();
 
    //-------------------------------------------------------------------//
    

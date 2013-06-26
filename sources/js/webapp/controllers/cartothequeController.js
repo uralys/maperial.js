@@ -24,7 +24,7 @@
 
 	CartothequeController.cleanUI = function()
 	{
-
+	   App.maperial.destroy()
 	}
 
 	//==================================================================//

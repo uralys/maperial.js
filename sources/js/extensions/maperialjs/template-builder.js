@@ -5,8 +5,18 @@ function TemplateBuilder(){}
 
 //==================================================================//
 
+TemplateBuilder.prototype.destroyView = function() {
+   $('#TheMaperial').remove();
+}
+
 TemplateBuilder.prototype.prepareView = function() {
    $("body").append("<div id='TheMaperial' class='snapper'></div>")
+
+   $('#TheMaperial').css('position', 'absolute');
+   $('#TheMaperial').css('top', '0');
+   $('#TheMaperial').css('left', '0');
+   $('#TheMaperial').css('width', $(window).width());
+   $('#TheMaperial').css('height', $(window).height());
 }
 
 //==================================================================//
