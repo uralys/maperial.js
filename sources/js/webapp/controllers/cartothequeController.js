@@ -14,9 +14,7 @@
 	   CartothequeController.configs.push(CartothequeController.config1)
 	   
 	   for(var i = 0; i < CartothequeController.configs.length; i++){
-	      var rotation = Utils.random0(30) - 15
-	      $("#imageDemo"+i).css("-webkit-transform", "rotate("+rotation+"deg)")
-	      $("#imageDemo"+i).css("-moz-transform", "rotate("+rotation+"deg)")
+	      Utils.randomRotate("imageDemo"+i)
 	   }
 	   
 	   CartothequeController.openDemo(0)

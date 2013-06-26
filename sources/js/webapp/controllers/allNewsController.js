@@ -8,7 +8,9 @@
 
 	AllNewsController.renderUI = function()
 	{
-	   
+      for(var i = 0; i < 100; i++){
+         Utils.randomRotate("imageNews"+i)
+      }
 	}
 
 	AllNewsController.cleanUI = function()

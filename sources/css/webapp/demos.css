@@ -9,8 +9,16 @@
 
 .polaroid {
 	padding: 10px 10px 25px 10px;
-	background: #eee;
-	border: 1px solid #fff;
 	-moz-box-shadow: 0px 2px 15px #333;
 	-webkit-box-shadow: 0px 2px 15px #333;
+    background-color: #ddd;
+    /* For WebKit (Safari, Chrome, etc) */
+    background: #ddd -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#fff)) no-repeat;
+    /* Mozilla,Firefox/Gecko */
+    background: #fff -moz-linear-gradient(top, #4A2602, #E3B98F) no-repeat;
+    /* IE 5.5 - 7 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ddd, endColorstr=#fff) no-repeat;
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#000, endColorstr=#000)" no-repeat;
+	
 }

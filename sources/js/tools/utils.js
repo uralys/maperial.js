@@ -285,6 +285,18 @@ Utils.getPoint = function (event) {
    return new Point(x,y);
 }
 
+Utils.randomRotate = function (element) {
+
+   var rotation = Utils.random0(15) - 8
+   if(Math.abs(rotation) < 2)
+      Utils.randomRotate(element)
+   else{
+      $("#"+element).css("-webkit-transform", "rotate("+rotation+"deg)")
+      $("#"+element).css("-moz-transform", "rotate("+rotation+"deg)")
+   }
+      
+}
+
 //----------------------------------------------------------------------------------------//
 
 Utils.cloneJsonObject = function (jsonObject) {
