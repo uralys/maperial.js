@@ -13,7 +13,7 @@ HUD.prototype.buildControls = function(){
          me.controlZoomCursor().html(ui.value);
       },
       change: function( event, ui ) {
-         me.context.zoom = parseInt(ui.value);
+         me.mapView.context.zoom = parseInt(ui.value);
          me.refreshZoom(true);
       }
     });

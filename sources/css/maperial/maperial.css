@@ -180,6 +180,75 @@ a.triggerHUDSettings {
 }
 
 /*-------------------------*/
+
+.panelLayersCreation {
+	width: 200px;
+	color: #eee;
+}
+
+#addLayerButton {
+	margin-top: 5px;
+	margin-left: 26px;
+}
+
+#mapNameInput {
+	width: 85px;
+	margin-left: 10px;
+}
+
+#osmSetsDiv {
+	padding-left: 100px;
+}
+
+/*---*/
+
+.panelMapSettings {
+	width: 200px;
+	color: #eee;
+}
+
+.latlonInput {
+	width: 150px;
+	margin-left: 15px;
+}
+
+.latlonInput.error {
+	border: 3px solid #d33;
+}
+
+/*---*/
+
+.mapthumb {
+	padding-left: 15px;
+}
+
+.mapthumb.top {
+	opacity: 0.6;
+}
+
+.minithumb {
+	width:70px;
+	height:70px;
+}
+
+/*---*/
+
+#buttonDrawMode {
+	right: 40px;
+}
+
+#buttonMapMode {
+	right: 40px;
+}
+
+#buttonCenter {
+	right: 80px;
+}
+
+
+
+
+/*-------------------------*/
 .panelBasemaps {
 	width: 500px;
 	color: #eee;

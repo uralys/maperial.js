@@ -417,8 +417,8 @@ LayersManager.getImagesLayerConfig = function(sourceType, src) {
 
       },
       composition: {
-         shader : Maperial.AlphaBlend,
-         params : LayersManager.defaultAlphaBlendParams
+         shader : Maperial.MulBlend,
+         params : LayersManager.defaultMulBlendParams
       }
    }
 }
@@ -434,8 +434,8 @@ LayersManager.getShadeLayerConfig = function() {
          params   : {  }
       },
       params: {
-         uLight   : [ 0, 0, 50 ], 
-         scale    : 50
+         uLight   : [ 10, 10, 20 ], 
+         scale    : 10
       },
       composition: {
          shader : Maperial.MulBlend,

@@ -64,7 +64,7 @@ SourcesManager.prototype.addSource = function(receiverName, layer){
          break;
    }
 
-   console.log("     adding source " + layer.source.id + " in sources");
+   console.log("        --> source " + layer.source.id + " in sources");
    this.sources.push(new Source(layer.source.id, type, params, receiverName));
 }
 
@@ -73,7 +73,6 @@ SourcesManager.prototype.addSource = function(receiverName, layer){
  */
 SourcesManager.prototype.getSource = function(id){
 
-   console.log("getSource " + id, "nb sources : " + this.sources.length)
    for(var i = 0; i < this.sources.length; i++){
       if(this.sources[i].id == id)
          return this.sources[i]
@@ -97,14 +96,13 @@ SourcesManager.prototype.detachSource = function(sourceId, receiverName, removeA
    
    
    if(source.receivers.get(receiverName) == 0){
-      console.log("SourceManager.detachSource", sourceId, receiverName)
 
       for(var i = 0; i < this.sources.length; i++){
          if(this.sources[i].id == sourceId)
             break;
       }
       
-      console.log("---> done")
+      console.log("SourceManager.detachSource", sourceId, receiverName)
       this.sources.splice(i, 1);
    }
 }
@@ -117,7 +115,6 @@ SourcesManager.prototype.releaseReceiver = function (receiverName) {
    
    var sourcesToDetach = []
    for(var i = 0; i < this.sources.length; i++){
-      console.log("checking ", this.sources[i].id)
          
       if(this.sources[i].isForMe(receiverName)){
          sourcesToDetach.push(this.sources[i].id)
@@ -126,7 +123,6 @@ SourcesManager.prototype.releaseReceiver = function (receiverName) {
    }
 
    for(var i = 0; i < sourcesToDetach.length; i++){
-      console.log("detach " + sourcesToDetach[i])
       this.detachSource(sourcesToDetach[i], receiverName, true)
    }
    

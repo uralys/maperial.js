@@ -107,7 +107,6 @@ MapMover.prototype.drag = function () {
 //==================================================================//
 
 MapMover.prototype.moveMap = function (dx, dy) {
-   console.log("=================> movemap", this.mapView.name )
    var r = this.context.coordS.Resolution ( this.context.zoom );
    this.context.centerM.x -= dx * r;
    this.context.centerM.y += dy * r;

@@ -99,12 +99,6 @@ MapRenderer.prototype.initListeners = function () {
 
    var renderer = this;
    
-   if(this.config.hud.elements[HUD.MAGNIFIER] && this.config.hud.elements[HUD.MAGNIFIER].show){
-      this.context.mapCanvas.on(MaperialEvents.MOUSE_MOVE, function(){
-         renderer.DrawMagnifier();
-      });
-   }
-   
    $(window).on(MaperialEvents.MOUSE_UP_WIHTOUT_AUTOMOVE, function(){
       if(renderer.config.map.edition){
          renderer.FindLayerId();
@@ -198,7 +192,6 @@ MapRenderer.prototype.sourceReady = function ( source, data, x, y, z ) {
 
 MapRenderer.prototype.removeListeners = function () {
 
-   this.context.mapCanvas.off(MaperialEvents.MOUSE_MOVE);
    $(window).off(MaperialEvents.MOUSE_UP_WIHTOUT_AUTOMOVE);
    $(window).off(MaperialEvents.STYLE_CHANGED);
    $(window).off(MaperialEvents.COLORBAR_CHANGED);
@@ -549,39 +542,39 @@ MapRenderer.prototype.FindLayerId = function () {
 
 //----------------------------------------------------------------------//
 
-MapRenderer.prototype.DrawMagnifier = function () {
-
-   var scale = 3;
-   var w = this.context.magnifierCanvas.width();
-   var h = this.context.magnifierCanvas.height();
-   var left = (w/2)/scale;
-   var top = (h/2)/scale;
-   var r = this.context.coordS.Resolution ( this.context.zoom );
-   
-   var originM = new Point( this.context.mouseM.x - left * r , this.context.mouseM.y + top * r );
-   var tileC   = this.context.coordS.MetersToTile ( originM.x, originM.y , this.context.zoom );
-
-   var originP = this.context.coordS.MetersToPixels ( originM.x, originM.y, this.context.zoom );
-   var shift   = new Point ( Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) );
-
-   var ctxMagnifier = this.context.magnifierCanvas[0].getContext("2d");
-   ctxMagnifier.save();
-   ctxMagnifier.globalCompositeOperation="source-over";
-   ctxMagnifier.scale(scale, scale);
-
-   // wx/wy (pixels) in canvas mark ( coord ) !!
-   for ( var wx = shift.x, tx = tileC.x ; wx < w ; wx = wx + Maperial.tileSize , tx = tx + 1) {
-      for ( var wy = shift.y, ty = tileC.y ; wy < h ; wy = wy+Maperial.tileSize , ty = ty - 1) {
-         var key  = tx + "," + ty + "," + this.context.zoom;
-         var tile = this.tileCache[key] 
-         TileRenderer.DrawImages(tile, ctxMagnifier, wx, wy);
-      }
-   }    
-
-   ctxMagnifier.restore();
-
-   this.DrawMagnifierSight(ctxMagnifier);
-}
+//MapRenderer.prototype.DrawMagnifier = function () {
+//
+//   var scale = 3;
+//   var w = this.context.magnifierCanvas.width();
+//   var h = this.context.magnifierCanvas.height();
+//   var left = (w/2)/scale;
+//   var top = (h/2)/scale;
+//   var r = this.context.coordS.Resolution ( this.context.zoom );
+//   
+//   var originM = new Point( this.context.mouseM.x - left * r , this.context.mouseM.y + top * r );
+//   var tileC   = this.context.coordS.MetersToTile ( originM.x, originM.y , this.context.zoom );
+//
+//   var originP = this.context.coordS.MetersToPixels ( originM.x, originM.y, this.context.zoom );
+//   var shift   = new Point ( Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) );
+//
+//   var ctxMagnifier = this.context.magnifierCanvas[0].getContext("2d");
+//   ctxMagnifier.save();
+//   ctxMagnifier.globalCompositeOperation="source-over";
+//   ctxMagnifier.scale(scale, scale);
+//
+//   // wx/wy (pixels) in canvas mark ( coord ) !!
+//   for ( var wx = shift.x, tx = tileC.x ; wx < w ; wx = wx + Maperial.tileSize , tx = tx + 1) {
+//      for ( var wy = shift.y, ty = tileC.y ; wy < h ; wy = wy+Maperial.tileSize , ty = ty - 1) {
+//         var key  = tx + "," + ty + "," + this.context.zoom;
+//         var tile = this.tileCache[key] 
+//         TileRenderer.DrawImages(tile, ctxMagnifier, wx, wy);
+//      }
+//   }    
+//
+//   ctxMagnifier.restore();
+//
+//   this.DrawMagnifierSight(ctxMagnifier);
+//}
 
 //----------------------------------------------------------------------//
 

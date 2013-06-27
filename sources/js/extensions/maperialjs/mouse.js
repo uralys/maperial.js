@@ -38,7 +38,7 @@ MapMouse.prototype.initListeners = function () {
       case Maperial.MAGNIFIER:
          this.context.mapCanvas
          .dblclick   ( Utils.apply ( this , "doubleClick" ))
-         .bind('mousewheel', Utils.apply ( this , "wheelOnChild"))   
+         .bind('mousewheel', Utils.apply ( this , "wheelOnZoomer"))   
          break;
    }
 
@@ -84,10 +84,10 @@ MapMouse.prototype.move = function (event) {
    this.context.mouseP = Utils.getPoint(event);
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
-   this.context.mapCanvas.trigger(MaperialEvents.MOUSE_MOVE);
-
    if (!this.mouseDown){
       this.context.mapCanvas.trigger(MaperialEvents.UPDATE_LATLON);
+
+      $(window).trigger(MaperialEvents.MOUSE_MOVE, [this.mapView.map, this.mapView.name, this.mapView.type]);
    }
    else{
       this.context.mapCanvas.addClass( 'movable' )
@@ -150,7 +150,9 @@ MapMouse.prototype.wheel = function (event, delta) {
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
 }
 
-MapMouse.prototype.wheelOnChild = function (event, delta) {
+//----------------------------------------------------------------------//
+
+MapMouse.prototype.wheelOnZoomer = function (event, delta) {
 
    if(!this.mapView.zoomable)
       return
@@ -161,13 +163,24 @@ MapMouse.prototype.wheelOnChild = function (event, delta) {
       return;
    
    this.context.zoom = Math.min(18, this.context.zoom + 1 * delta/Math.abs(delta));
+   var mainZoom = this.mapView.maperial.getZoom(this.mapView.map)
    
-   // refresh mouse
-   this.context.mouseP = Utils.getPoint(event);
-   this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
+   switch(this.mapView.type){
+      case Maperial.LENS :
+      case Maperial.MAGNIFIER : 
+         if(this.context.zoom < mainZoom)
+            this.context.zoom = mainZoom
+         break;
+
+      case Maperial.MINIFIER : 
+         if(this.context.zoom > mainZoom)
+            this.context.zoom = mainZoom
+         break;
+   }
    
-   this.mapView.refreshCurrentLatLon();
-   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
+   this.mapView.deltaZoom = this.context.zoom - mainZoom
+
+   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
 }
 
 //----------------------------------------------------------------------//

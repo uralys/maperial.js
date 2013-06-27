@@ -292,8 +292,6 @@
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/managers/layers-manager.js" />
 			<arg value="--js" />
-			<arg value="sources/js/extensions/maperialjs/managers/children-manager.js" />
-			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/managers/config-manager.js" />
 
 			<arg value="--js" />

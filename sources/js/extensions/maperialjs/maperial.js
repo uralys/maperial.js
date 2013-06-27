@@ -3,20 +3,23 @@
 function Maperial(){
    console.log(" NEW Maperial ")
    
+   window.maperial = this
+   
    this.views = []
 
    this.sourcesManager     = new SourcesManager();
    this.templateBuilder    = new TemplateBuilder();
+   this.layersCreation     = new LayersCreation(this);
 };
 
 //==================================================================//
-//TYPE = css class
+// TYPE = css class
 
-Maperial.MAIN       = "maperial-main"
-Maperial.ANCHOR     = "maperial-anchor"
-Maperial.LENS       = "maperial-lens"       // camera centered on what is under it
-Maperial.MINIFIER   = "maperial-minifier"   // camera centered on the parent's center
-Maperial.MAGNIFIER  = "maperial-magnifier"  // camera centered on what is under the mouse
+Maperial.MAIN                    = "maperial-main"
+Maperial.ANCHOR                  = "maperial-anchor"
+Maperial.LENS                    = "maperial-lens"       // camera centered on what is under it
+Maperial.MINIFIER                = "maperial-minifier"   // camera centered on the parent's center
+Maperial.MAGNIFIER               = "maperial-magnifier"  // camera centered on what is under the mouse
 
 //==================================================================//
 
@@ -58,35 +61,10 @@ Maperial.DEMO_MAP = {
 
 //==================================================================//
 
-Maperial.prototype.width = function(){
-   return $('#TheMaperial').width();
-}
-
-Maperial.prototype.height = function(){
-   return $('#TheMaperial').height();
-}
-
-//==================================================================//
-
-Maperial.prototype.destroy = function(){
-   
-   this.sourcesManager.releaseNetwork()
-   this.sourcesManager.releaseAllReceivers()
-   
-   for(var i = 0; i < this.views.length; i++){
-      this.views[i].reset()
-      $("#panel"+this.views[i].name).remove()
-   }
-      
-   this.views = []
-   this.templateBuilder.destroyView();
-}
-
-//==================================================================//
-
 Maperial.prototype.build = function(maps, options){
-   
-   console.log("Maperial build ", options, maps);
+
+   console.log("=================================")         
+   console.log("Maperial starts a new build");
    $(window).trigger(MaperialEvents.LOADING);
 
    //-------------------------------------------------------------------//
@@ -119,6 +97,11 @@ Maperial.prototype.build = function(maps, options){
    
    //-------------------------------------------------------------------//
    
+   this.initListeners()
+   
+   //----------------------------------------------------------------------//
+   // Prepare
+   
    for(var i = 0; i < maps.length; i++){
       var map = maps[i]
       console.log("preparing map ", map)
@@ -126,36 +109,86 @@ Maperial.prototype.build = function(maps, options){
       for(var j = 0; j < map.views.length; j++){
          console.log("preparing view ", map.views[j])
          
-         var mapView = new MapView(this, "map"+i, map.views[j].options)
+         var mapView = new MapView(this, "map"+i, map.views[j].options, map.views[j].config)
          
          this.views.push (mapView)
          this.templateBuilder.prepareMapView(mapView);
-         mapView.apply(map.views[j].config)
       }
-
    }
 
    //----------------------------------------------------------------------//
-   
-   this.initListeners()
+   // Build
 
-   //----------------------------------------------------------------------//
+   this.nbViewsReady = 0
+   console.log("Maperial starts building " + this.views.length + " views")
    
-   $(window).trigger(MaperialEvents.READY);
+   for(var i = 0; i < this.views.length; i++){
+      this.views[i].build()
+   }
 }
 
 //==================================================================//
+
+Maperial.prototype.width = function(){
+   return $('#TheMaperial').width();
+}
+
+Maperial.prototype.height = function(){
+   return $('#TheMaperial').height();
+}
+
+//==================================================================//
+
+Maperial.prototype.destroy = function(){
+
+   this.removeAllListeners()
+   this.sourcesManager.releaseNetwork()
+   this.sourcesManager.releaseAllReceivers()
+
+   for(var i = 0; i < this.views.length; i++){
+      this.views[i].reset()
+      $("#panel"+this.views[i].name).remove()
+   }
+
+   this.views = []
+   this.templateBuilder.destroyView();
+}
+
+//==================================================================//
+
+Maperial.prototype.removeAllListeners = function(){
+   $(window).off(MaperialEvents.MOUSE_MOVE)
+   $(window).off(MaperialEvents.MAP_MOVING)
+   $(window).off(MaperialEvents.ZOOM_TO_REFRESH)
+   $(window).off(MaperialEvents.VIEW_READY)
+   
+}
 
 Maperial.prototype.initListeners = function(){
    
    var maperial = this
    
+   $(window).on(MaperialEvents.MOUSE_MOVE, function(event, map, viewTriggering, typeTriggering){
+      maperial.refreshAllViews(map, viewTriggering, typeTriggering)
+   });
+
    $(window).on(MaperialEvents.MAP_MOVING, function(event, map, viewTriggering, typeTriggering){
       maperial.refreshAllViews(map, viewTriggering, typeTriggering)
    });
 
    $(window).on(MaperialEvents.ZOOM_TO_REFRESH, function(event, map, viewTriggering, typeTriggering, zoom){
       maperial.refreshAllViews(map, viewTriggering, typeTriggering, zoom)
+   });
+   
+   
+   $(window).on(MaperialEvents.VIEW_READY, function(event, view){
+      maperial.nbViewsReady ++
+      console.log("view " + view + " is ready | " + maperial.nbViewsReady + " views ready")
+      if(maperial.nbViewsReady == maperial.views.length){
+         console.log("Maperial is ready")         
+         console.log("=================================")         
+         $(window).trigger(MaperialEvents.READY)
+      }
    });
 }
 
@@ -199,3 +232,4 @@ Maperial.prototype.getCenterP = function(viewName){
    var view = this.getView(viewName);
    return view.context.coordS.MetersToPixels(view.context.centerM.x, view.context.centerM.y, view.context.zoom);
 }
+

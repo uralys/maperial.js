@@ -1,13 +1,6 @@
 //----------------------------//
 
-function LayersHelper (mapCreationController) {
-   this.mapCreationController = mapCreationController;
-   this.layerBeingDraggedIndex = null;
-}
-
-//----------------------------//
-
-LayersHelper.TOGGLE = "toggleLayerSet";
+HUD.TOGGLE = "toggleLayerSet";
 
 //=============================================================================//
 //Layers Panel Drawing
@@ -15,12 +8,13 @@ LayersHelper.TOGGLE = "toggleLayerSet";
 /**
  * Draw the Layers panel
  */
-LayersHelper.prototype.refreshLayersPanel = function() {
+HUD.prototype.refreshLayersPanel = function() {
 
-   this.mapView = App.maperial.views[0];
+   console.log("-------> this.mapView ", this.mapView.name)
 
    var me = this;
-   $("#layers").empty(); 
+
+   this.element(HUD.LAYERS_CREATION).empty(); 
    var panelHeight = 80;
 
    //------------------//
@@ -32,7 +26,7 @@ LayersHelper.prototype.refreshLayersPanel = function() {
 
    //------------------//
    
-   $("#layers").sortable({
+   this.element(HUD.LAYERS_CREATION).sortable({
       revert: true,
       delay: 200,
       start: function(event, ui){
@@ -45,12 +39,12 @@ LayersHelper.prototype.refreshLayersPanel = function() {
       }
    });
 
-   $("#panelLayers"+this.mapView.name).css("height", panelHeight+"px");
+  this.panel(HUD.LAYERS_CREATION).css("height", panelHeight+"px");
 }
 
 //--------------------------------------//
 
-LayersHelper.prototype.buildLayerEntry = function(layerIndex) {
+HUD.prototype.buildLayerEntry = function(layerIndex) {
 
    var tooltip = ""
    var icon = "icon-eye-open"
@@ -98,19 +92,23 @@ LayersHelper.prototype.buildLayerEntry = function(layerIndex) {
 
    html += "</div>";
 
-   $("#layers").append(html); 
-   $( "#eye_"+layerIndex ).tooltip()
-   $( "#edit_"+layerIndex ).tooltip()
+   this.element(HUD.LAYERS_CREATION).append(html); 
+   $( "#eye_"+layerIndex ).tooltipster({
+      theme: '.tooltip-theme'
+   })
+   $( "#edit_"+layerIndex ).tooltipster({
+      theme: '.tooltip-theme'
+   })
 }
 
 //=======================================================================//
 
-LayersHelper.prototype.exchangeLayers = function(){
+HUD.prototype.exchangeLayers = function(){
 
    // layers are ordered from bottom to top
-   for(var i = ($("#layers")[0].children.length - 1); i >= 0 ; i--){
-      var layerIndex = $("#layers")[0].children[i].id.split("_")[1];
-      var k = ($("#layers")[0].children.length-1) - i;
+   for(var i = (this.element(HUD.LAYERS_CREATION)[0].children.length - 1); i >= 0 ; i--){
+      var layerIndex = this.element(HUD.LAYERS_CREATION)[0].children[i].id.split("_")[1];
+      var k = (this.element(HUD.LAYERS_CREATION)[0].children.length-1) - i;
 
       // just found our layer in the new div list
       if(layerIndex == this.layerBeingDraggedIndex){
@@ -121,10 +119,10 @@ LayersHelper.prototype.exchangeLayers = function(){
    }
 
    var exchangedIds = {};
-   for(var i = ($("#layers")[0].children.length - 1); i >= 0 ; i--){
+   for(var i = (this.element(HUD.LAYERS_CREATION)[0].children.length - 1); i >= 0 ; i--){
 
-      var layerIndex = $("#layers")[0].children[i].id.split("_")[1];
-      var k = ($("#layers")[0].children.length-1) - i;
+      var layerIndex = this.element(HUD.LAYERS_CREATION)[0].children[i].id.split("_")[1];
+      var k = (this.element(HUD.LAYERS_CREATION)[0].children.length-1) - i;
 
       exchangedIds[k] = layerIndex;
    }
@@ -138,7 +136,7 @@ LayersHelper.prototype.exchangeLayers = function(){
 /**
  * On/off buttons to show hide osmSets
  */
-LayersHelper.prototype.buildOSMSets = function(layerCustomizedIndex){
+HUD.prototype.buildOSMSets = function(layerCustomizedIndex){
 
    var layersManager = this.mapView.layersManager;
    var container = $("#osmSetsDiv");
@@ -187,7 +185,7 @@ LayersHelper.prototype.buildOSMSets = function(layerCustomizedIndex){
 /**
  * TODO (not 1.0)
  */
-LayersHelper.prototype.buildDetailledSets = function(){
+HUD.prototype.buildDetailledSets = function(){
    $("#osmSetsDiv").empty();
 }
 
@@ -198,7 +196,7 @@ LayersHelper.prototype.buildDetailledSets = function(){
 /**
  * Draw the HUD Viewer Settings
  */
-LayersHelper.prototype.refreshHUDViewerSettings = function() {
+HUD.prototype.refreshHUDViewerSettings = function() {
 
    var me = this;
    $("#hudViewerSettings").empty(); 
@@ -257,17 +255,3 @@ LayersHelper.prototype.refreshHUDViewerSettings = function() {
 
    $("#panelSettings").css("height", panelHeight+"px");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

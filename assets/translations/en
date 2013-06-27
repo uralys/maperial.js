@@ -230,6 +230,7 @@
     "Prices"			: "Prices", 
     "PricesText"		: "The tool and its features are entirely built on your need. We choose with you the best solution and the price is calculated from this step. Contact us !",
    
+    "DemoTitle"			: ["Minifier","Anchors","Lens","Magnifier"], 
     
     "":""
 }

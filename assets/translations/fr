@@ -228,6 +228,8 @@
 
     "Prices"			: "Tarifs",
     "PricesText"		: "La liste des fonctionnalités de l'outil est entièrement adaptable à votre besoin. Nous déterminons avec vous la solution la plus efficace et vous proposons un tarif sur mesure. Contactez nous !",
-    
+ 
+    "DemoTitle"			: ["Travelling","Ancres","Lentille","Zoom"], 
+       
     "":""
 }

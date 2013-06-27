@@ -115,3 +115,70 @@ HUD.prototype.buildBasemapsPanel = function(params, callBack) {
    
    $(".basemap").tooltip()
 }
+
+
+//====================================================================================//
+
+HUD.prototype.openBasemaps = function(){
+   this.buildBasemapsPanel(HUD.ALL_BASEMAPS, this.mapView.maperial.layersCreation.addBasemap);
+   this.openPanel(HUD.BASEMAPS)
+}
+
+//-------------------------------------------------//
+
+HUD.prototype.closeBasemaps = function(params, callBack){
+   this.closePanel(params, callBack, HUD.BASEMAPS)
+}
+
+//====================================================================================//
+
+HUD.prototype.closeData = function(params, callBack){
+   this.closePanel(params, callBack, HUD.DATA)
+}
+
+//-------------------------------------------------//
+
+HUD.prototype.openData = function(params){
+   this.buildDataPanel(params, this.mapView.layersCreation.addData);
+   this.openPanel(callBack, HUD.DATA)
+}
+
+//====================================================================================//
+
+HUD.prototype.closePanel = function(panel){
+
+   var mapWidth = this.mapView.context.mapCanvas[0].offsetWidth;
+   var mapLeft = this.mapView.context.mapCanvas[0].offsetLeft;
+   var margin = this.getMargin("right");
+
+   var value = mapLeft + mapWidth + 550;
+   value -= this.panel(panel).width();
+   value -= margin;
+   value -= 10;
+
+   this.panel(panel).animate({
+      left: value,
+      duration: 200,
+   });
+
+}
+
+//-------------------------------------------------//
+
+HUD.prototype.openPanel = function(panel){
+
+   var mapWidth = this.mapView.context.mapCanvas[0].offsetWidth;
+   var mapLeft = this.mapView.context.mapCanvas[0].offsetLeft;
+   var margin = this.getMargin("right");
+
+   var value = mapLeft + mapWidth - 220;
+   value -= this.panel(panel).width();
+   value -= margin;
+   value -= 10;
+
+   this.panel(panel).animate({
+      left: value, 
+      duration: 200,
+   });
+
+}

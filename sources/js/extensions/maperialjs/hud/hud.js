@@ -2,12 +2,11 @@
 //==================================================================//
 
 function HUD(mapView){
-
-   console.log("  building HUD...");
    this.mapView = mapView;
 }
 
 HUD.prototype.build = function () {
+   console.log("  building HUD...");
    if(this.mapView.config){
       this.buildTriggers();
       this.buildControls();
@@ -39,7 +38,9 @@ HUD.GEOLOC                 = "Geoloc";
 HUD.LATLON                 = "LatLon";
 HUD.MAPKEY                 = "MapKey";
 HUD.COMPOSITIONS           = "Compositions";
+HUD.LAYERS_CREATION        = "LayersCreation";
 HUD.LAYER_SETTINGS         = "LayerSettings";
+HUD.MAP_SETTINGS           = "MapSettings";
 HUD.BASEMAPS               = "Basemaps";
 HUD.DATA                   = "Data";
 HUD.SWITCH_IMAGES          = "SwitchImages";
@@ -64,6 +65,8 @@ HUD.VIEWER_OPTIONS = {
       "5" : {element : HUD.SWITCH_IMAGES,   label : "Switch Basemap",  defaultDisableDrag : true },
       "6" : {element : HUD.BASEMAPS,        label : "Basemaps",        defaultDisableDrag : true },
       "7" : {element : HUD.DATA,            label : "Data",            defaultDisableDrag : true },
+      "8" : {element : HUD.LAYERS_CREATION,  label : "Creation",        defaultDisableDrag : true },
+      "9" : {element : HUD.MAP_SETTINGS,    label : "Settings",        defaultDisableDrag : true },
 //    "6" : {element : HUD.COMPOSITIONS,    label : "Compositions",    defaultDisableDrag : false },
 //    "7" : {element : HUD.LAYER_SETTINGS,  label : "Layer Settings",  defaultDisableDrag : false },
 }
@@ -87,6 +90,8 @@ HUD.positions[HUD.QUICK_EDIT]    = { right : "5",    top    : "38", };
 HUD.positions[HUD.ZOOMS]         = { left  : "50%",  bottom : "0"   };
 HUD.positions[HUD.BASEMAPS]      = { right : "-550", top    : "0"   };
 HUD.positions[HUD.DATA]          = { right : "-550", top    : "0"   };
+HUD.positions[HUD.LAYERS_CREATION]= { right : "0"   , top    : "0"   };
+HUD.positions[HUD.MAP_SETTINGS]  = { right : "0"   , top    : "0"   };
 
 //----------------------------------------------------------------------//
 
@@ -251,7 +256,6 @@ HUD.prototype.placeElement = function(element, position, type){
 
 HUD.prototype.placeMapView = function(){
    
-   console.log("-------------->  placing", this.mapView.name, this.mapView.options)
    var childPanel    = $("#panel"   + this.mapView.name)
    var childCanvas   = $("#Map_"     + this.mapView.name)
    
@@ -263,8 +267,6 @@ HUD.prototype.placeMapView = function(){
 }
 
 HUD.prototype.styleView = function(){
-   
-   console.log("-------------->  styling", this.mapView.name, this.mapView.options)
    
    var childPanel    = $("#panel"   + this.mapView.name)
    var childCanvas   = $("#Map_"     + this.mapView.name)
@@ -343,6 +345,12 @@ HUD.prototype.refreshDisplay = function(dontHideColorpickers){
 
    if(this.mapView.config.hud.elements[HUD.SWITCH_IMAGES])
       this.refreshSwitchImagesPanel();
+
+   if(this.mapView.config.hud.elements[HUD.LAYERS_CREATION])
+      this.refreshLayersPanel();
+   
+   if(this.mapView.config.hud.elements[HUD.MAP_SETTINGS])
+      this.refreshMapSettings();
 }
 
 //==================================================================//
@@ -392,74 +400,6 @@ HUD.prototype.putOnTop = function(element){
    this.panel(element).css({ zIndex : 200 });  
 }
 
-//====================================================================================//
-//SELECTION PANELS : TODO : extraire une "classe"
-//====================================================================================//
-
-HUD.prototype.closeBasemaps = function(params, callBack){
-   this.closePanel(params, callBack, HUD.BASEMAPS)
-}
-
-//-------------------------------------------------//
-
-HUD.prototype.openBasemaps = function(params, callBack){
-   this.buildBasemapsPanel(params, callBack);
-   this.openPanel(params, callBack, HUD.BASEMAPS)
-}
-
-//====================================================================================//
-
-HUD.prototype.closeData = function(params, callBack){
-   this.closePanel(params, callBack, HUD.DATA)
-}
-
-//-------------------------------------------------//
-
-HUD.prototype.openData = function(params, callBack){
-   this.buildDataPanel(params, callBack);
-   this.openPanel(params, callBack, HUD.DATA)
-}
-
-//====================================================================================//
-
-HUD.prototype.closePanel = function(params, callBack, panel){
-
-   var mapWidth = this.mapView.context.mapCanvas[0].offsetWidth;
-   var mapLeft = this.mapView.context.mapCanvas[0].offsetLeft;
-   var margin = this.getMargin("right");
-
-   var value = mapLeft + mapWidth + 550;
-   value -= this.panel(panel).width();
-   value -= margin;
-   value -= 10;
-
-   this.panel(panel).animate({
-      left: value,
-      duration: 200,
-   });
-
-}
-
-//-------------------------------------------------//
-
-HUD.prototype.openPanel = function(params, callBack, panel){
-
-   var mapWidth = this.mapView.context.mapCanvas[0].offsetWidth;
-   var mapLeft = this.mapView.context.mapCanvas[0].offsetLeft;
-   var margin = this.getMargin("right");
-
-   var value = mapLeft + mapWidth - 220;
-   value -= this.panel(panel).width();
-   value -= margin;
-   value -= 10;
-
-   this.panel(panel).animate({
-      left: value, 
-      duration: 200,
-   });
-
-}
-
 //----------------------------------------------------------------------//
 
 HUD.prototype.element = function(name){
@@ -479,10 +419,7 @@ HUD.prototype.icon = function(name){
 }
 
 HUD.prototype.allPanels = function(){
-   var panels = $("#"+this.mapView.name).find("."+HUD.PANEL);
-   var panelsWebapp = $(".panel-webapp");
-
-   return $.merge(panels, panelsWebapp);
+   return $("#"+this.mapView.name).find("."+HUD.PANEL);
 }
 
 HUD.prototype.allTriggers = function(){

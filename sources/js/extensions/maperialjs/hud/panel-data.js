@@ -51,5 +51,7 @@ HUD.prototype.buildDataPanel = function(params, callBack) {
    //-----------------------------------------------------//
    
    this.element(HUD.DATA).append(html)
-   $(".wms").tooltip()
+   $(".wms").tooltipster({
+      theme: '.tooltip-theme'
+   })
 }

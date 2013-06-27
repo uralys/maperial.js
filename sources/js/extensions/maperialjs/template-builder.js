@@ -74,11 +74,12 @@ TemplateBuilder.prototype.buildHUD = function(){
       case Maperial.LENS : 
          break;
 
-      case Maperial.COMPLETE : 
+      case Maperial.MAIN : 
          this.buildHUDSettings();
          this.buildSwitchImages();
          this.buildCompositions();
          this.buildLayerSettings();
+         this.buildLayerCreation();
          this.buildLatLon();
          this.buildScale();
          this.buildMapKey();
@@ -147,6 +148,38 @@ TemplateBuilder.prototype.buildCompositions = function(){
 
 TemplateBuilder.prototype.buildLayerSettings = function(){
    this.buildPanel(HUD.LAYER_SETTINGS);
+}
+
+TemplateBuilder.prototype.buildLayerCreation = function(){
+
+   console.log("buildLayerCreation")
+   
+   var html = "";
+   html += "<div class=\"panel panel"+HUD.LAYERS_CREATION+" snapper hide\" id=\"panel"+this.mapView.getFullName(HUD.LAYERS_CREATION)+"\" >";
+   
+   html += "<div class='row-fluid marginbottom'>"
+   html += "<div class='span6 offset1 btn-small btn-primary' onclick='window.maperial.layersCreation.openBasemaps(\""+this.mapView.name+"\")'>"
+   html += "      <i class='icon-plus icon-white'></i>"
+   html += "     Basemap"
+   html += "   </div>"
+   html += "   <div class='span4 btn-small btn-primary' {{action openData}}>"
+   html += "     <i class='icon-plus icon-white'></i>"
+   html += "     Data"
+   html += "   </div>"
+   html += "</div>"
+   html += "<div id=\""+this.mapView.getFullName(HUD.LAYERS_CREATION)+"\"></div>";
+   
+   html += "<div class='row-fluid'>"
+   html += "   <div class='span6 offset5 btn-small btn-primary' {{action openSettings}}>"
+   html += "      Settings"
+   html += "     <i class='icon-arrow-right icon-white'></i>"
+   html += "  </div>"
+   html += " </div>"
+   
+   
+   html += "</div>";
+
+   this.container.append(html);
 }
 
 //==================================================================//

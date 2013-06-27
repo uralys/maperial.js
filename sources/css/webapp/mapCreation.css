@@ -17,43 +17,6 @@
 	color: #888;
 }
 
-/*---------------------------------------------------------------*/
-
-.panelLayers {
-	width: 200px;
-	color: #eee;
-}
-
-#addLayerButton {
-	margin-top: 5px;
-	margin-left: 26px;
-}
-
-#mapNameInput {
-	width: 85px;
-	margin-left: 10px;
-}
-
-#osmSetsDiv {
-	padding-left: 100px;
-}
-
-/*---------------------------------------------------------------*/
-
-.panelSettings {
-	width: 200px;
-	color: #eee;
-}
-
-.latlonInput {
-	width: 150px;
-	margin-left: 15px;
-}
-
-.latlonInput.error {
-	border: 3px solid #d33;
-}
-
 /*----------------------------------------------------------*/
 
 .bigbutton {
@@ -78,33 +41,6 @@
 	margin-left: -335px;
 	padding-left: 15px;
 	padding-right: 15px;
-}
-/*----------------------------------------------------------*/
-.mapthumb {
-	padding-left: 15px;
-}
-
-.mapthumb.top {
-	opacity: 0.6;
-}
-
-.minithumb {
-	width:70px;
-	height:70px;
-}
-
-/*----------------------------------------------------------*/
-
-#buttonDrawMode {
-	right: 40px;
-}
-
-#buttonMapMode {
-	right: 40px;
-}
-
-#buttonCenter {
-	right: 80px;
 }
 
 
