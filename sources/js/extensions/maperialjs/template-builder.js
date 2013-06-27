@@ -21,11 +21,10 @@ TemplateBuilder.prototype.prepareView = function() {
 
 //==================================================================//
 
-// addPanel tmp while using children
-TemplateBuilder.prototype.prepareMapView = function(view, addPanel){
+TemplateBuilder.prototype.prepareMapView = function(view){
 
    var html = "";
-   html += "<div class=\""+(addPanel ? "panel " : "")+"panel"+view.name+" snapper\" id=\"panel"+view.name+"\" >";
+   html += "<div class=\"panel"+view.name+" panel snapper\" id=\"panel"+view.name+"\" >";
    html += "    <div id=\""+view.name+"\"></div>";
    html += "</div>";
 
@@ -289,9 +288,3 @@ TemplateBuilder.prototype.buildDataPanel = function() {
 }
 
 //==================================================================//
-
-
-//for(var i = 0; i < this.config.children.length; i++){
-//var child = this.config.children[i]
-//this.buildPanel(child.name, true);
-//}

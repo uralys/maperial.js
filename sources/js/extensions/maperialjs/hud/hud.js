@@ -250,27 +250,38 @@ HUD.prototype.placeElement = function(element, position, type){
 //==================================================================//
 
 HUD.prototype.placeMapView = function(){
+   
+   console.log("-------------->  placing", this.mapView.name, this.mapView.options)
    var childPanel    = $("#panel"   + this.mapView.name)
    var childCanvas   = $("#Map_"     + this.mapView.name)
    
    childPanel.css ("position",               "absolute"                              )
    childPanel.css ("width",                  this.mapView.options.width              )
    childPanel.css ("height",                 this.mapView.options.height             )
+   
+   this.placeElement(childPanel, this.mapView.options.position, HUD.PANEL)
+}
+
+HUD.prototype.styleView = function(){
+   
+   console.log("-------------->  styling", this.mapView.name, this.mapView.options)
+   
+   var childPanel    = $("#panel"   + this.mapView.name)
+   var childCanvas   = $("#Map_"     + this.mapView.name)
+   
    childPanel.css ("opacity",                this.mapView.options.opacity            )
    childPanel.css ("padding",                this.mapView.options.padding            )
    childPanel.css ("border-radius",          this.mapView.options.borderRadius       )
    childPanel.css ("-moz-border-radius",     this.mapView.options.borderRadius       )
    childPanel.css ("-moz-border-radius",     this.mapView.options.borderRadius       )
    childPanel.css ("-khtml-border-radius",   this.mapView.options.borderRadius       )
-
+   
    childCanvas.css("border-radius",          this.mapView.options.borderRadius       )
    childCanvas.css("-moz-border-radius",     this.mapView.options.borderRadius       )
    childCanvas.css("-moz-border-radius",     this.mapView.options.borderRadius       )
    childCanvas.css("-khtml-border-radius",   this.mapView.options.borderRadius       )
    childCanvas.css("overflow",               "hidden"                   )
    childCanvas.css("-webkit-mask-image",     "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC)")
-   
-   this.placeElement(childPanel, this.mapView.options.position, HUD.PANEL)
 }
 
 //==================================================================//

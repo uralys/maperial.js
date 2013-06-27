@@ -29,7 +29,7 @@ Tile.prototype.Init = function () {
    this.prepareBuffering();
    
    this.buildLayers();
-   window.maperialSourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name);
+   this.mapView.maperial.sourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -87,7 +87,7 @@ Tile.prototype.prepareBuffering = function () {
 
 Tile.prototype.addLayer = function (layerConfig) {
    this.createLayerFromConfig(layerConfig, this.config.layers.length - 1)
-   window.maperialSourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name)
+   this.mapView.maperial.sourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name)
    this.Refresh()
 }
 
@@ -125,7 +125,7 @@ Tile.prototype.exchangeLayers = function(exchangedIds) {
 
 Tile.prototype.Release = function() {
    
-   window.maperialSourcesManager.release(this.x, this.y, this.z, this.mapView.name);
+   this.mapView.maperial.sourcesManager.release(this.x, this.y, this.z, this.mapView.name);
    
    for(var i = 0; i < this.config.layers.length; i++){
       try{
@@ -235,7 +235,7 @@ Tile.prototype.FindSubLayerId = function ( tileClickCoord, zoom, styleContent ) 
       if(this.config.layers[i].source.type != Source.MaperialOSM)
          continue;
 
-      var data = window.maperialSourcesManager.getData(this.config.layers[i].source, this.x, this.y, this.z);
+      var data = this.mapView.maperial.sourcesManager.getData(this.config.layers[i].source, this.x, this.y, this.z);
       var subLayerId = TileRenderer.FindSubLayerId(tileClickCoord , ctx , data , zoom, styleContent, i, this.mapView.context.osmVisibilities );
 
       if(subLayerId)
@@ -417,7 +417,7 @@ Tile.prototype.Compose = function (  ) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.IsLoaded = function () {
-   return window.maperialSourcesManager.isTileLoaded(this.x, this.y, this.z, this.mapView.name);
+   return this.mapView.maperial.sourcesManager.isTileLoaded(this.x, this.y, this.z, this.mapView.name);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//

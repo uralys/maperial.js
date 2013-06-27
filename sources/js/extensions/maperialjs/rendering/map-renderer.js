@@ -177,6 +177,7 @@ MapRenderer.prototype.initListeners = function () {
       }
    });
 
+   // trop brutal : stop TOUS les calls de la page...
 //   $(window).on(MaperialEvents.ZOOM_CHANGED, function(event, x, y){
 //      renderer.mapView.sourcesManager.stopEverything()
 //   });

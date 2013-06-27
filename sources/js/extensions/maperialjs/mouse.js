@@ -91,7 +91,7 @@ MapMouse.prototype.move = function (event) {
    }
    else{
       this.context.mapCanvas.addClass( 'movable' )
-      $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.mapView.map]);
+      $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.mapView.name]);
    }
 }
 

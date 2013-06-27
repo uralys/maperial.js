@@ -17,7 +17,7 @@
 	      Utils.randomRotate("imageDemo"+i)
 	   }
 	   
-	   CartothequeController.openDemo(1)
+	   CartothequeController.openDemo(0)
 	}
 
 	CartothequeController.cleanUI = function()
@@ -43,8 +43,6 @@
 	
 	CartothequeController.maps0 = function()
 	{
-	   var config = ConfigManager.newConfig();
-
 //	   var lensConfig = ConfigManager.newConfig();
 //	   lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
 //
@@ -59,34 +57,49 @@
 //	      },
 //	   }
 
-	   var minifierConfig = ConfigManager.newConfig();
-	   minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-
-	   var minifier = {
-	      type       : Maperial.MINIFIER,
-	      name       : "Minifier",
-	      config     : minifierConfig,
-	      width      : "250",
-	      height     : "250",
-	      position   : { 
-	         left    : "15%", 
-	         bottom  : "25%" 
-	      },
-	      borderRadius : 130,
-	      padding    : 4,
-	      deltaZoom  : -4,
-	      zoomable   : false,
-	      draggable  : true
-	   }
-
-//	   config.children.push(lens)
-	   config.children.push(minifier)
-	   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-	   config.map.latitude = 47.600607
-      config.map.longitude = -122.315125
-      config.map.defaultZoom = 11
-	   
-	   return config
+	   var mainConfig   = ConfigManager.newConfig();
+      var minifierConfig   = ConfigManager.newConfig();
+      
+      mainConfig.map.defaultZoom    = 11
+      mainConfig.map.latitude       = 47.600607
+      mainConfig.map.longitude      = -122.315125
+      mainConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+      minifierConfig.layers.push    (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
+      
+      var mainOptions = {
+         type       : Maperial.MAIN,
+         name       : "maperialDemo1",
+         config     : mainConfig
+      }
+      
+      var minifierOptions = {
+         type       : Maperial.MINIFIER,
+         name       : "Minifier",
+         config     : minifierConfig,
+         width      : "250",
+         height     : "250",
+         position   : { 
+            left    : "15%", 
+            bottom  : "15%" 
+         },
+         borderRadius : 130,
+         padding    : 4,
+         deltaZoom  : -3,
+         zoomable   : false,
+         draggable  : true
+      }
+      
+      var map = {
+         views : [{
+            config  : mainConfig,
+            options : mainOptions,
+         },{
+            config  : minifierConfig,
+            options : minifierOptions,
+         }]
+      }
+         
+      return [map]
 	}
 	
 	//==================================================================//

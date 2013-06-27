@@ -22,3 +22,14 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#000, endColorstr=#000)" no-repeat;
 	
 }
+
+
+#blogFrameContainer {
+}
+
+#blogFrame {
+	position: absolute;
+	border: 0px;
+	margin-top: 67px;
+	width: 100%;
+}

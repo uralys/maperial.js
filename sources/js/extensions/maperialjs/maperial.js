@@ -5,7 +5,7 @@ function Maperial(){
    
    this.views = []
 
-   window.maperialSourcesManager = new SourcesManager();
+   this.sourcesManager     = new SourcesManager();
    this.templateBuilder    = new TemplateBuilder();
 };
 
@@ -70,7 +70,8 @@ Maperial.prototype.height = function(){
 
 Maperial.prototype.destroy = function(){
    
-   window.maperialSourcesManager.releaseAllReceivers()
+   this.sourcesManager.releaseNetwork()
+   this.sourcesManager.releaseAllReceivers()
    
    for(var i = 0; i < this.views.length; i++){
       this.views[i].reset()
@@ -189,7 +190,6 @@ Maperial.prototype.getView = function(name){
 //==================================================================//
 
 Maperial.prototype.getZoom = function(map){
-   console.log("===============> this.getMainView(map).context.zoom ", this.getMainView(map).context.zoom)
    return this.getMainView(map).context.zoom;
 }
 

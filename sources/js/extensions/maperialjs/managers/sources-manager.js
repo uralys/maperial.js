@@ -130,17 +130,7 @@ SourcesManager.prototype.releaseReceiver = function (receiverName) {
       this.detachSource(sourcesToDetach[i], receiverName, true)
    }
    
-   for(var i = 0; i < this.receivers.length; i++){
-      if(this.receivers[i].name == receiverName){
-         for(var j = 0; j < this.receivers[i].children.length; j++){
-            this.releaseReceiver(this.receivers[i].children[j].name)
-         }
-         break;
-      }
-   }
-   
    this.receivers.splice(i, 1);
-   
 }
 
 //---------------------------------------------------------------------------//
@@ -153,29 +143,24 @@ SourcesManager.prototype.releaseAllReceivers = function(){
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
-//
-//SourcesManager.prototype.releaseEverything = function () {
-//   
-//   for(requestId in this.requests){
-//      try{
-//         this.requests[requestId].abort();
-//      }
-//      catch(e){
-//         console.log("------------> releaseEverything")
-//         console.log(e)
-//      }
-//   }
-//   
-//   this.stopEverything()
-//   
-//}
 
-SourcesManager.prototype.stopEverything = function () {
-   //   cancel image downloads
-   if(window.stop !== undefined)
-      window.stop();
-   else if(document.execCommand !== undefined)
-      document.execCommand("Stop", false);
+SourcesManager.prototype.releaseNetwork = function () {
+   
+   for(var requestId in this.requests){
+
+      if(!this.complete[requestId]){
+         try{
+            this.requests[requestId].abort();
+         }
+         catch(e){}
+      }
+
+      delete this.data[requestId];
+      delete this.errors[requestId];
+      delete this.complete[requestId];
+      delete this.requests[requestId];
+   }
+   
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -205,10 +190,7 @@ SourcesManager.prototype.release = function (x, y, z, receiverName) {
             try{
                this.requests[requestId].abort();
             }
-            catch(e){
-               console.log("------------> release ", e)
-            }
-      
+            catch(e){}
          }
 
          delete this.data[requestId];

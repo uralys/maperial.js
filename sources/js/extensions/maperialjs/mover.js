@@ -34,8 +34,8 @@ MapMover.prototype.initListeners = function (event) {
       mover.receivedMouseUp();
    });
 
-   $(window).on(MaperialEvents.DRAGGING_MAP, function(event, map){
-      if(mover.mapView.map == map){
+   $(window).on(MaperialEvents.DRAGGING_MAP, function(event, name){
+      if(mover.mapView.name == name){
          mover.drag();
       }
    });
@@ -107,7 +107,7 @@ MapMover.prototype.drag = function () {
 //==================================================================//
 
 MapMover.prototype.moveMap = function (dx, dy) {
-   
+   console.log("=================> movemap", this.mapView.name )
    var r = this.context.coordS.Resolution ( this.context.zoom );
    this.context.centerM.x -= dx * r;
    this.context.centerM.y += dy * r;

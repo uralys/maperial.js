@@ -32,7 +32,7 @@
 	filter: alpha(opacity =         85);
 	opacity: .85;
 	z-index: 101;
-	cursor: move;
+	/* cursor: move; */
 }
 
 a.trigger {
