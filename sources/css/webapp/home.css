@@ -191,12 +191,8 @@
 
 /*--------------------------------*/
 #titleNews {
-	left: 20px;
-	position: relative;
-	bottom: -10px;
-	z-index: 3;
 	font-size: 40px;
-	width: 0px;
+	margin-bottom : 30px;
 }
 
 .subtitleNews {
