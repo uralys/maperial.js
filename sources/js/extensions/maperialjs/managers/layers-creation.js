@@ -167,7 +167,6 @@ LayersCreation.prototype.addOSMLayer = function(view, src){
 //--------------------------------------//
 
 LayersCreation.prototype.addImagesLayer = function(view, src){
-   console.log("-----> addImagesLayer ", view.name, src)
    view.layersManager.addLayer(Source.Images, [src]);
 }
 
@@ -217,7 +216,7 @@ LayersCreation.prototype.customizeLayer = function(viewName, layerIndex){
    var view  = this.maperial.getView(viewName)
    var layer = view.config.layers[layerIndex];
    this.currentLayerIndex = layerIndex;
-   this.openCustomizeLayerWindow(layer);
+   this.openCustomizeLayerWindow(view, layer);
 }
 
 //--------------------------------------//
@@ -270,7 +269,7 @@ LayersCreation.prototype.changeStyle = function(){
 //=============================================================================//
 // Customize 
 
-LayersCreation.prototype.openCustomizeLayerWindow = function(layer){
+LayersCreation.prototype.openCustomizeLayerWindow = function(view, layer){
 
    console.log("customize layer " + this.currentLayerIndex);
 
@@ -278,7 +277,7 @@ LayersCreation.prototype.openCustomizeLayerWindow = function(layer){
 
       case Source.MaperialOSM :
          $("#customizeLayerOSMWindow").modal();
-        // App.layersHelper.buildOSMSets(this.currentLayerIndex);
+         view.hud.buildOSMSets(this.currentLayerIndex);
          break;
          
       case Source.Raster :

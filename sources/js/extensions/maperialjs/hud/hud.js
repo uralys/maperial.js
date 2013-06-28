@@ -23,6 +23,7 @@ HUD.prototype.build = function () {
 HUD.TRIGGER                = "trigger";
 HUD.PANEL                  = "panel";
 HUD.ICON                   = "icon";
+HUD.TOGGLE                 = "toggleLayerSet";
 
 //hud options user only
 HUD.SETTINGS               = "HUDSettings";

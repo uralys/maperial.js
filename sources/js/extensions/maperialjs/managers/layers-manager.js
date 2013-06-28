@@ -90,10 +90,12 @@ LayersManager.prototype.refreshMaperialForLayerAdded = function(layerConfig) {
       this.mapView.restart()      
    }
    else{
+      console.log("------------ refreshMaperialForLayerAdded ", this.mapView.config.map.osmSets)
       this.mapView.maperial.sourcesManager.addSource(this.mapView.name, layerConfig)
       this.mapView.mapRenderer.addLayer(layerConfig)
       this.mapView.hud.refresh()
    }
+
 }
 
 //-------------------------------------------//
@@ -107,6 +109,9 @@ LayersManager.prototype.deleteLayer = function(layerRemovedPosition) {
          this.mapView.config.map.osmSets[i].layerPosition--;
    }
 
+
+   console.log("------------ deleteLayer ", this.mapView.config.map.osmSets)
+   
    //-----------------------//
    
    if(this.mapView.config.layers.length == 0){
@@ -122,6 +127,7 @@ LayersManager.prototype.deleteLayer = function(layerRemovedPosition) {
 
 //=======================================================================================//
 
+// TODO
 LayersManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 
    if(this.mapView.config.layers[layerIndex].type == Source.Raster
@@ -169,21 +175,24 @@ LayersManager.prototype.switchImagesTo = function(imagesSrc) {
  * exchangedIds contains a mapping between old layerIndexes and the new one, after a layer reposition
  * example, with 3 layers, after moving layer0 (ui bottom) to the top (becomes layer 2) : 
  * exchangedIds = {
-     {0: 1},
-     {1: 2},
-     {2: 0}
+     {0: 2},
+     {2: 1},
+     {1: 0}
    } 
  */
 LayersManager.prototype.exchangeLayers = function(exchangedIds) {
 
    var newLayers = [];
+   
    for(id in exchangedIds){
-      newLayers.push(this.mapView.config.layers[exchangedIds[id]]);
+      newLayers[exchangedIds[id]] = this.mapView.config.layers[id];
    }
 
-   for(i in this.mapView.config.map.osmSets)
-      this.mapView.config.map.osmSets[i].layerPosition = exchangedIds[this.mapView.config.map.osmSets[i].layerPosition];
-
+   for(i in this.mapView.config.map.osmSets){
+      if(this.mapView.config.map.osmSets[i].layerPosition >= 0)
+         this.mapView.config.map.osmSets[i].layerPosition = exchangedIds[this.mapView.config.map.osmSets[i].layerPosition];
+   }
+   
    this.mapView.config.layers = newLayers;
 
    this.mapView.mapRenderer.exchangeLayers(exchangedIds)
@@ -193,15 +202,18 @@ LayersManager.prototype.exchangeLayers = function(exchangedIds) {
 
 //=======================================================================================//
 
-
-LayersManager.prototype.detachSet = function(setIndex) {
+LayersManager.prototype.detachSet = function(setIndex, layerPosition) {
    this.mapView.config.map.osmSets[setIndex].layerPosition = -1;
-   this.mapView.restart();
+   this.mapView.refreshOSMVisibilities();
+   this.mapView.mapRenderer.resetLayer(layerPosition);
+   this.mapView.hud.refresh()
 }
 
 LayersManager.prototype.attachSet = function(setIndex, layerPosition) {
    this.mapView.config.map.osmSets[setIndex].layerPosition = layerPosition;
-   this.mapView.restart();
+   this.mapView.refreshOSMVisibilities();
+   this.mapView.mapRenderer.resetLayer(layerPosition);
+   this.mapView.hud.refresh()
 }
 
 
@@ -262,6 +274,7 @@ LayersManager.prototype.defaultOSMSets = function(style) {
    for(i in this.mapView.config.map.osmSets){
       this.mapView.config.map.osmSets[i].layerPosition = this.firstOSMPosition;
    }
+
 }
 
 //=======================================================================================//
@@ -281,7 +294,7 @@ LayersManager.prototype.atLeastOneImageLayer = function() {
 LayersManager.buildOSMVisibilities = function(osmSets) {
 
    console.log("building OSM visibilities...");
-
+   
    var osmVisibilities = {};
 
    for(s in osmSets){

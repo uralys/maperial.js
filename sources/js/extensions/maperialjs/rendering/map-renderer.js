@@ -111,6 +111,12 @@ MapRenderer.prototype.resetLayer = function (layerIndex) {
    }
 }
 
+MapRenderer.prototype.releaseLayer = function (layerIndex) {
+   for (var key in this.tileCache) {
+      this.tileCache[key].ReleaseLayer (layerIndex);
+   }
+}
+
 //----------------------------------------------------------------------//
    
 MapRenderer.prototype.initListeners = function () {

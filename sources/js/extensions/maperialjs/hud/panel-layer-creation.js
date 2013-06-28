@@ -1,7 +1,3 @@
-//----------------------------//
-
-HUD.TOGGLE = "toggleLayerSet";
-
 //=============================================================================//
 //Layers Panel Drawing
 
@@ -122,9 +118,9 @@ HUD.prototype.exchangeLayers = function(){
    for(var i = (this.element(HUD.LAYERS_CREATION)[0].children.length - 1); i >= 0 ; i--){
 
       var layerIndex = this.element(HUD.LAYERS_CREATION)[0].children[i].id.split("_")[1];
-      var k = (this.element(HUD.LAYERS_CREATION)[0].children.length-1) - i;
+      var becomesIndex = (this.element(HUD.LAYERS_CREATION)[0].children.length-1) - i;
 
-      exchangedIds[k] = layerIndex;
+      exchangedIds[layerIndex] = becomesIndex
    }
    
    this.mapView.layersManager.exchangeLayers(exchangedIds);
@@ -150,7 +146,7 @@ HUD.prototype.buildOSMSets = function(layerCustomizedIndex){
       var div = "<div class=\"row-fluid marginbottom\">" +
       "<div class=\"span5 offset1\">" + set.label + "</div>" +
       "<div class=\"slider-frame offset6\">" +
-      "   <span class=\"slider-button\" id=\""+LayersHelper.TOGGLE+i+"\"></span>" +
+      "   <span class=\"slider-button\" id=\""+HUD.TOGGLE+i+"\"></span>" +
       "</div>" +
       "</div>";
 
@@ -159,21 +155,21 @@ HUD.prototype.buildOSMSets = function(layerCustomizedIndex){
 
       // ----- toggle listeners
 
-      $('#'+LayersHelper.TOGGLE+i).click(function(){
+      $('#'+HUD.TOGGLE+i).click(function(){
          if($(this).hasClass('on')){
             $(this).removeClass('on');
-            var setIndex = $(this).context.id.replace(LayersHelper.TOGGLE,"");
-            layersManager.detachSet(setIndex);
+            var setIndex = $(this).context.id.replace(HUD.TOGGLE,"");
+            layersManager.detachSet(setIndex, layerCustomizedIndex);
          }
          else{
             $(this).addClass('on');
-            var setIndex = $(this).context.id.replace(LayersHelper.TOGGLE,"");
+            var setIndex = $(this).context.id.replace(HUD.TOGGLE,"");
             layersManager.attachSet(setIndex, layerCustomizedIndex);
          }
       });
 
       if(layerCustomizedIndex == set.layerPosition)
-         $("#"+LayersHelper.TOGGLE+i).addClass("on");
+         $("#"+HUD.TOGGLE+i).addClass("on");
    }
 
    container.css("height", panelHeight+"px");

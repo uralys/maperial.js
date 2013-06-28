@@ -163,6 +163,16 @@ Tile.prototype.IsUpToDate = function ( ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
+Tile.prototype.ReleaseLayer = function (id) {
+   
+   if(this.layers[id]){
+      this.layers[id].Release();
+      this.layers[id].Reset();
+   }
+   
+   this.Refresh();
+}
+
 Tile.prototype.ResetLayer = function (id) {
 
    if(this.layers[id])
