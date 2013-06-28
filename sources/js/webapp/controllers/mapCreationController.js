@@ -144,27 +144,23 @@
 
    MapCreationController.openLayersCreation = function()
    {
-      var options = {
-         width    : "100%",
-         height   : "100%"
-      }
-      
       var map = MapCreationController.getLayersCreationConfig()
       
       if(App.user.isCreatingANewMap){
 
-         App.maperial.build([map], options)
+         App.maperial.build([map])
 
          if(App.Globals.isTryscreen)
             MapCreationController.openDemoSelection();
          else
-            MapCreationController.openBasemaps();
+            App.maperial.layersCreation.openBasemaps();
       }
       else{
          config.layers = App.user.selectedMap.config.layers;
          config.map = App.user.selectedMap.config.map;
+         config.map.layersCreation = true;
 
-         App.maperial.build([map], options)
+         App.maperial.build([map])
       }
 
       MapCreationController.mapView = App.maperial.views[0]
@@ -179,7 +175,7 @@
       $('#demoSelectionWindow').on('hidden', function(){
          setTimeout(function(){
             if(MapCreationController.mapView.config.layers.length == 0)
-               MapCreationController.openBasemaps()
+               App.maperial.layersCreation.openBasemaps();
          }, 350);
       });
    }
@@ -278,31 +274,21 @@
 
       //---------------------//
       // layers actions
-      
-//      openBasemaps: function(router, event){
-//         MapCreationController.openBasemaps()
+//      
+//      addLayer: function(router, event){
+//         console.log("---------> addLayer : ", event.contexts)
+//         var source = event.contexts[0];
+//         var src    = event.contexts[1];
+//         MapCreationController.addLayer(source, src);
 //      },
 //
-//      openData: function(router, event){
-//         MapCreationController.openData()
+//      openSettings: function(router, event){
+//         MapCreationController.openSettings();
 //      },
-      
-      //-----------//
-      
-      addLayer: function(router, event){
-         console.log("---------> addLayer : ", event.contexts)
-         var source = event.contexts[0];
-         var src    = event.contexts[1];
-         MapCreationController.addLayer(source, src);
-      },
-
-      openSettings: function(router, event){
-         MapCreationController.openSettings();
-      },
-      
-      backToLayers: function(router, event){
-         MapCreationController.backToLayers();
-      },
+//      
+//      backToLayers: function(router, event){
+//         MapCreationController.backToLayers();
+//      },
       
       //--------------------------------------//
       // raster actions
@@ -348,11 +334,8 @@
          $("#demoSelectionWindow").modal("hide");
          App.user.set("isCreatingANewMap", true);  
 
-         var config = MapCreationController.getLayersCreationConfig();
-         App.maperial.build([{
-            options  :  { name : "maperial"},
-            config   :  config
-         }]);
+         var map = MapCreationController.getLayersCreationConfig()
+         App.maperial.build([map])
       },
 
       loadDemo1    : function(){ MapCreationController.loadDemo(0) },

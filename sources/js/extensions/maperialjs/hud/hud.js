@@ -104,9 +104,12 @@ HUD.prototype.reset = function () {
 
 HUD.prototype.refresh = function () {
    console.log("refresh HUD");
+
+   $('body').css('overflow', 'hidden');
    this.hideAllHUD();
    this.refreshDisplay();
    this.placeElements();
+   $('body').css('overflow', 'auto');
 }
 
 //----------------------------------------------------------------------//

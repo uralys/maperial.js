@@ -83,7 +83,7 @@ SourcesManager.prototype.getSource = function(id){
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.detachSource = function(sourceId, receiverName, removeAll){
+SourcesManager.prototype.detachSource = function(receiverName, sourceId, removeAll){
 
    var source = this.getSource(sourceId)
    
@@ -123,7 +123,7 @@ SourcesManager.prototype.releaseReceiver = function (receiverName) {
    }
 
    for(var i = 0; i < sourcesToDetach.length; i++){
-      this.detachSource(sourcesToDetach[i], receiverName, true)
+      this.detachSource(receiverName, sourcesToDetach[i], true)
    }
    
    this.receivers.splice(i, 1);

@@ -52,7 +52,8 @@ LayersCreation.prototype.closeData = function(view){
 // Edit Images
 
 LayersCreation.prototype.editImages = function(view){
-   view.hud.openBasemaps(HUD.IMAGE_BASEMAPS, this.changeImage)
+   var me = this
+   view.hud.openBasemaps(HUD.IMAGE_BASEMAPS, function (viewName, dataType, src) { me.changeImage (viewName, dataType, src) })
 }
 
 LayersCreation.prototype.changeImage = function(viewName, sourceType, src){
@@ -68,7 +69,8 @@ LayersCreation.prototype.changeImage = function(viewName, sourceType, src){
 // Edit WMS
 
 LayersCreation.prototype.editWMS = function(view){
-   view.hud.openData(HUD.WMS_DATA, this.changeWMS)
+   var me = this
+   view.hud.openData(HUD.WMS_DATA, function (viewName, dataType, src) { me.changeWMS (viewName, dataType, src) })
 }
 
 LayersCreation.prototype.changeWMS = function(viewName, dataType, src){
@@ -236,8 +238,10 @@ LayersCreation.prototype.deleteLayer = function(viewName, layerIndex){
    var view  = this.maperial.getView(viewName)
    view.layersManager.deleteLayer(layerIndex);
 
-   if(view.config.layers.length == 0)
-      this.openBasemaps(view, this.addBasemap)
+   if(view.config.layers.length == 0){
+      var me = this
+      this.openBasemaps(view, function (viewName, dataType, src) { me.addBasemap (viewName, dataType, src) })
+   }
 }
 
 //=============================================================================//

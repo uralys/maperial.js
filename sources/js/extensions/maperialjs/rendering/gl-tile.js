@@ -91,6 +91,13 @@ Tile.prototype.addLayer = function (layerConfig) {
    this.Refresh()
 }
 
+Tile.prototype.changeLayer = function (layerConfig, index) {
+   this.removeLayer(index)
+   this.createLayerFromConfig(layerConfig, index)
+   this.mapView.maperial.sourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name)
+   this.Refresh()
+}
+
 Tile.prototype.removeLayer = function (position) {
    if(this.layers.length > 0){
       this.layers[position].Release()
@@ -262,6 +269,7 @@ Tile.prototype.Update = function ( maxTime ) {
          if ( timeRemaining <= 0 )
             break;
             */
+
          this.layers[i].Update( this.config.layers[i].params, i );
          diffT   = date.getTime() - startT;
          if ( maxTime - diffT <= 0 )

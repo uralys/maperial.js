@@ -81,6 +81,12 @@ MapRenderer.prototype.addLayer = function (layer) {
    }
 }
 
+MapRenderer.prototype.changeLayer = function (newLayer, index) {
+   for (var key in this.tileCache) {
+      this.tileCache[key].changeLayer(newLayer, index);
+   }
+}
+
 MapRenderer.prototype.removeLayer = function (position) {
    for (var key in this.tileCache) {
       this.tileCache[key].removeLayer(position);

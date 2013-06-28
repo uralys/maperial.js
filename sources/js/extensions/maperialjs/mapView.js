@@ -191,6 +191,7 @@ MapView.prototype.load = function() {
 MapView.prototype.checkConfig = function() {
 
    console.log("checking config...");
+   odump(this.config)
 
    //--------------------------//
    // checking default objects
@@ -227,6 +228,9 @@ MapView.prototype.checkConfig = function() {
    // checking if Default style must be used
 
    this.changeStyle(Maperial.DEFAULT_STYLE_UID, 0, false);
+   
+   console.log("-------> config ok ")
+   odump(this.config)
 }
 
 /**

@@ -3,8 +3,10 @@
 function Maperial(){
    console.log(" NEW Maperial ")
    
-   
-   this.views = []
+   this.maps      = null
+   this.options   = null
+
+   this.views     = []
 
    this.sourcesManager     = new SourcesManager();
    this.templateBuilder    = new TemplateBuilder();
@@ -65,6 +67,13 @@ Maperial.DEMO_MAP = {
 
 Maperial.prototype.build = function(maps, options){
 
+   if(!maps || maps.length == 0){
+      console.log("pas encore revu pour un set par defaut")
+      return
+   }
+   
+   //-------------------------------------------------------------------//
+
    console.log("=================================")         
    console.log("Maperial starts a new build");
    $(window).trigger(MaperialEvents.LOADING);
@@ -73,7 +82,10 @@ Maperial.prototype.build = function(maps, options){
 
    this.destroy()
    this.templateBuilder.prepareView();
-
+   
+   this.maps = maps
+   this.options = options || {}
+   
    //-------------------------------------------------------------------//
    
    $('#TheMaperial').css('position', 'absolute');
@@ -104,8 +116,8 @@ Maperial.prototype.build = function(maps, options){
    //----------------------------------------------------------------------//
    // Prepare
    
-   for(var i = 0; i < maps.length; i++){
-      var map = maps[i]
+   for(var i = 0; i < this.maps.length; i++){
+      var map = this.maps[i]
       console.log("preparing map ", map)
 
       for(var j = 0; j < map.views.length; j++){
@@ -117,7 +129,7 @@ Maperial.prototype.build = function(maps, options){
          this.templateBuilder.prepareMapView(mapView);
       }
    }
-
+   
    //----------------------------------------------------------------------//
    // Build
 
@@ -131,6 +143,12 @@ Maperial.prototype.build = function(maps, options){
 
 //==================================================================//
 
+Maperial.prototype.restart = function(){
+   this.build(this.maps, this.options)
+}
+
+//==================================================================//
+
 Maperial.prototype.width = function(){
    return $('#TheMaperial').width();
 }
@@ -138,9 +156,9 @@ Maperial.prototype.width = function(){
 Maperial.prototype.height = function(){
    return $('#TheMaperial').height();
 }
-
+   
 //==================================================================//
-
+   
 Maperial.prototype.destroy = function(){
 
    this.removeAllListeners()
@@ -188,6 +206,11 @@ Maperial.prototype.initListeners = function(){
       console.log("view " + view + " is ready | " + maperial.nbViewsReady + " views ready")
       if(maperial.nbViewsReady == maperial.views.length){
          console.log("Maperial is ready")         
+
+         try{
+            odump(maperial.maps)
+         }catch(e){}
+         
          console.log("=================================")         
          $(window).trigger(MaperialEvents.READY)
       }
@@ -220,12 +243,20 @@ Maperial.prototype.getView = function(name){
          return this.views[i]
       }
    }
+   
+   return this.views[0]
 }
 
 //==================================================================//
 
 Maperial.prototype.getZoom = function(map){
    return this.getMainView(map).context.zoom;
+}
+
+//==================================================================//
+
+Maperial.prototype.centerWMS = function (viewName, src, type){
+   return this.getView(viewName).centerWMS(src, type);
 }
 
 //==================================================================//

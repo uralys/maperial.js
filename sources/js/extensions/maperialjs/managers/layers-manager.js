@@ -19,7 +19,6 @@ LayersManager.SRTM   = "SRTM";
 
 LayersManager.prototype.addLayer = function(sourceType, params) {
 
-   console.log("-----> LayersManager.addLayer ", sourceType, params)
    var layerConfig;
    switch(sourceType){
 
@@ -51,7 +50,6 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
       case Source.Images :
       case Source.WMS:
          var src = params[0];
-         console.log("-----> LayersManager.addLayer IMAGES ", src)
          layerConfig = LayersManager.getImagesLayerConfig(sourceType, src);
          break;
 
@@ -73,26 +71,21 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
    
    //-----------------------//
 
-   // la config est modifiee ici plutot que dans le refresh
-   // ainsi a la fin de cet appel, la config est prete dans tous les cas, meme Source.MaperialOSM
-   // et donc mapCreationController va pouvoir faire son refresh de panel a partir de la config sans pb.
-   this.mapView.config.layers.push(layerConfig);
-   
-   //-----------------------//
-   
    var me = this
-   var refresh = function() { return me.refreshMaperialForLayerAdded(layerConfig) }
+   var refresh = function() { 
+      me.mapView.config.layers.push(layerConfig)
+      me.refreshMaperialForLayerAdded(layerConfig) 
+   }
 
-   console.log("-----> layerConfig", layerConfig)
-   
    if(sourceType == Source.MaperialOSM)
       this.mapView.stylesManager.fetchStyles([layerConfig.params.styles[layerConfig.params.selectedStyle]], refresh)
    else
-      this.refreshMaperialForLayerAdded(layerConfig)
+      refresh()
    
 }
 
 LayersManager.prototype.refreshMaperialForLayerAdded = function(layerConfig) {
+   
    if(this.mapView.config.layers.length == 1){
       this.mapView.restart()      
    }
@@ -106,6 +99,7 @@ LayersManager.prototype.refreshMaperialForLayerAdded = function(layerConfig) {
 //-------------------------------------------//
 
 LayersManager.prototype.deleteLayer = function(layerRemovedPosition) {
+   
    var layerRemoved = this.mapView.config.layers.splice(layerRemovedPosition, 1)[0];
 
    for(i in this.mapView.config.map.osmSets){
@@ -116,13 +110,13 @@ LayersManager.prototype.deleteLayer = function(layerRemovedPosition) {
    //-----------------------//
    
    if(this.mapView.config.layers.length == 0){
-      this.mapView.mapRenderer.Stop()
-      this.mapView.mapRenderer.reset()
+      this.mapView.maperial.restart()
    }
-   
-   this.mapView.maperial.sourcesManager.detachSource(layerRemoved.source.id, this.mapView.name)
-   this.mapView.mapRenderer.removeLayer(layerRemovedPosition)
-   this.mapView.hud.refresh()
+   else{
+      this.mapView.maperial.sourcesManager.detachSource(this.mapView.name, layerRemoved.source.id)
+      this.mapView.mapRenderer.removeLayer(layerRemovedPosition)
+      this.mapView.hud.refresh()
+   }
    
 }
 
@@ -144,12 +138,19 @@ LayersManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 LayersManager.prototype.changeImages = function(layerIndex, imagesSrc) {
 
    if(this.mapView.config.layers[layerIndex].type == Source.Images
-         && this.mapView.config.layers[layerIndex].source.params.src != imagesSrc){
+   && this.mapView.config.layers[layerIndex].source.params.src != imagesSrc){
+
+      this.mapView.maperial.sourcesManager.detachSource(this.mapView.name, this.mapView.config.layers[layerIndex].source.id)
 
       this.mapView.config.layers[layerIndex].source.params.src = imagesSrc;
       this.mapView.config.layers[layerIndex].source.id         = imagesSrc;
-      this.mapView.restart();
+
+      this.mapView.maperial.sourcesManager.addSource(this.mapView.name, this.mapView.config.layers[layerIndex])
+      this.mapView.mapRenderer.changeLayer(this.mapView.config.layers[layerIndex], layerIndex)
+      this.mapView.hud.refresh()
    }
+   
+   console.log(this.mapView.maperial.sourcesManager.sources)
 }
 
 LayersManager.prototype.switchImagesTo = function(imagesSrc) {

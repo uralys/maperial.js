@@ -10,8 +10,6 @@ HUD.TOGGLE = "toggleLayerSet";
  */
 HUD.prototype.refreshLayersPanel = function() {
 
-   console.log("-------> this.mapView ", this.mapView.name)
-
    var me = this;
 
    this.element(HUD.LAYERS_CREATION).empty(); 
@@ -29,8 +27,8 @@ HUD.prototype.refreshLayersPanel = function() {
    //------------------//
    
    this.element(HUD.LAYERS_CREATION).sortable({
-      revert: true,
-      delay: 200,
+      revert: 50,
+      delay: 100,
       start: function(event, ui){
          me.mapView.maperial.layersCreation.preventNextEdit = true;
          me.layerBeingDraggedIndex = parseInt((ui.item[0].id).split("_")[1]);
@@ -71,7 +69,6 @@ HUD.prototype.buildLayerEntry = function(layerIndex) {
    html += "<div class=\"row-fluid movable marginbottom\" id=\"layer_"+layerIndex+"\">";
    html += "   <div class=\"span3 offset1\"><img class=\"selectable sourceThumb\" onclick='window.maperial.layersCreation.editLayer(\""+this.mapView.name+"\", "+layerIndex+")' "+Utils.getSourceThumb(layer)+"></img></div>";
 
-   console.log("-----> building entry ", layer.type)
    switch(layer.type){
       case LayersManager.Images:
          if(layer.source.type == Source.WMS){

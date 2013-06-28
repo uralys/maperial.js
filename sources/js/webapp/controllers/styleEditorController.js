@@ -11,14 +11,8 @@
    StyleEditorController.renderUI = function() {
       $(window).on(MaperialEvents.READY, StyleEditorController.maperialReady);
 
-      var options = {
-         width    : "100%",
-         height   : "100%"
-      }
-      
       var map = StyleEditorController.getMap()
-      
-      App.maperial.build([map], options)
+      App.maperial.build([map])
    }
 
    StyleEditorController.cleanUI = function() {
