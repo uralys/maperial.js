@@ -15,8 +15,7 @@
 	   CartothequeController.maps.push(CartothequeController.maps1)
 	   CartothequeController.maps.push(CartothequeController.maps2)
 	   CartothequeController.maps.push(CartothequeController.maps3)
-	   
-	   console.log(App.translations.messages)
+//	   CartothequeController.maps.push(CartothequeController.maps4)
 	   
 	   for(var i = 0; i < CartothequeController.maps.length; i++){
 	      
@@ -259,6 +258,72 @@
       return [map]
    }
 
+   //==================================================================//
+   
+//   CartothequeController.maps4 = function()
+//   {
+//      var mainConfig   = ConfigManager.newConfig();
+//      var lensConfig   = ConfigManager.newConfig();
+//      
+//      mainConfig.map.defaultZoom    = 6
+//      mainConfig.map.latitude       = 39.504041
+//      mainConfig.map.longitude      = 134.139633
+//      
+//      var customShade = { 
+//         type: LayersManager.Shade, 
+//         source: {
+//            type     : Source.SRTM,
+//            id       : Source.SRTM,
+//            params   : {  }
+//         },
+//         params: {
+//            uLight   : [ 1, 1, 2 ], 
+//            scale    : 1
+//         },
+//         composition: {
+//            shader : Maperial.MulBlend,
+//            params : { uParams : [ 0.38, -0.27, 3 ] }
+//         }
+//      }
+//      
+//      mainConfig.layers.push        (customShade)
+//      mainConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST_SATELLITE))
+//      lensConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST_SATELLITE))
+//      
+//      var mainOptions = {
+//         type       : Maperial.MAIN,
+//         name       : "maperialDemo"
+//      }
+//      
+//      var lensOptions = {
+//         type       : Maperial.LENS,
+//         name       : "Lens",
+//         config     : lensConfig,
+//         width      : "300",
+//         height     : "300",
+//         position   : { 
+//            left    : "20%", 
+//            top     : "20%" 
+//         },
+//         padding    : 2,
+//         deltaZoom  : 1,
+//         borderRadius: 150,
+//         draggable  : true
+//      }
+//      
+//      var map = {
+//         views : [{
+//            config  : mainConfig,
+//            options : mainOptions,
+//         },{
+//            config  : lensConfig,
+//            options : lensOptions,
+//         }]
+//      }
+//         
+//      return [map]
+//   }
+   
 	//==================================================================//
 
 	App.CartothequeController = CartothequeController;
