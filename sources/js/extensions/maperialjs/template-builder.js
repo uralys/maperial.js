@@ -26,7 +26,14 @@ TemplateBuilder.prototype.prepareMapView = function(view){
    var html = "";
    html += "<div class=\"panel"+view.name+" panel snapper\" id=\"panel"+view.name+"\" >";
    html += "    <div id=\""+view.name+"\"></div>";
+
+   if(view.type == Maperial.MAGNIFIER){
+      html += "<div id='magnifierTargetBorder"+view.name+"' </div>";
+      html += "<div id='magnifierTargetCenter"+view.name+"' </div>";
+   }
+   
    html += "</div>";
+   
 
    $("#TheMaperial").append(html)
 }
@@ -158,23 +165,22 @@ TemplateBuilder.prototype.buildLayerCreation = function(){
    html += "<div class=\"panel panel"+HUD.LAYERS_CREATION+" snapper hide\" id=\"panel"+this.mapView.getFullName(HUD.LAYERS_CREATION)+"\" >";
    
    html += "<div class='row-fluid marginbottom'>"
-   html += "<div class='span6 offset1 btn-small btn-primary' onclick='window.maperial.layersCreation.openBasemaps(\""+this.mapView.name+"\")'>"
-   html += "      <i class='icon-plus icon-white'></i>"
-   html += "     Basemap"
+   html += "   <div class='span6 offset1 btn-small btn-primary' onclick='window.maperial.layersCreation.openBasemaps(\""+this.mapView.name+"\")'>"
+   html += "       <i class='icon-plus icon-white'></i>"
+   html += "      Basemap"
    html += "   </div>"
-   html += "   <div class='span4 btn-small btn-primary' {{action openData}}>"
-   html += "     <i class='icon-plus icon-white'></i>"
-   html += "     Data"
+   html += "   <div class='span4 btn-small btn-primary' onclick='window.maperial.layersCreation.openData(\""+this.mapView.name+"\")'>"
+   html += "      <i class='icon-plus icon-white'></i>"
+   html += "       Data"
    html += "   </div>"
    html += "</div>"
    html += "<div id=\""+this.mapView.getFullName(HUD.LAYERS_CREATION)+"\"></div>";
-   
-   html += "<div class='row-fluid'>"
-   html += "   <div class='span6 offset5 btn-small btn-primary' {{action openSettings}}>"
-   html += "      Settings"
-   html += "     <i class='icon-arrow-right icon-white'></i>"
-   html += "  </div>"
-   html += " </div>"
+//   html += "<div class='row-fluid'>"
+//   html += "   <div class='span6 offset5 btn-small btn-primary' onclick='window.maperial.layersCreation.openSettings(\""+this.mapView.name+"\")'>"
+//   html += "      Settings"
+//   html += "     <i class='icon-arrow-right icon-white'></i>"
+//   html += "  </div>"
+//   html += "</div>"
    
    
    html += "</div>";

@@ -65,7 +65,7 @@ HUD.VIEWER_OPTIONS = {
       "5" : {element : HUD.SWITCH_IMAGES,   label : "Switch Basemap",  defaultDisableDrag : true },
       "6" : {element : HUD.BASEMAPS,        label : "Basemaps",        defaultDisableDrag : true },
       "7" : {element : HUD.DATA,            label : "Data",            defaultDisableDrag : true },
-      "8" : {element : HUD.LAYERS_CREATION,  label : "Creation",        defaultDisableDrag : true },
+      "8" : {element : HUD.LAYERS_CREATION, label : "Creation",        defaultDisableDrag : true },
       "9" : {element : HUD.MAP_SETTINGS,    label : "Settings",        defaultDisableDrag : true },
 //    "6" : {element : HUD.COMPOSITIONS,    label : "Compositions",    defaultDisableDrag : false },
 //    "7" : {element : HUD.LAYER_SETTINGS,  label : "Layer Settings",  defaultDisableDrag : false },
@@ -90,7 +90,7 @@ HUD.positions[HUD.QUICK_EDIT]    = { right : "5",    top    : "38", };
 HUD.positions[HUD.ZOOMS]         = { left  : "50%",  bottom : "0"   };
 HUD.positions[HUD.BASEMAPS]      = { right : "-550", top    : "0"   };
 HUD.positions[HUD.DATA]          = { right : "-550", top    : "0"   };
-HUD.positions[HUD.LAYERS_CREATION]= { right : "0"   , top    : "0"   };
+HUD.positions[HUD.LAYERS_CREATION]={ right : "-2",   top    : "0"   };
 HUD.positions[HUD.MAP_SETTINGS]  = { right : "0"   , top    : "0"   };
 
 //----------------------------------------------------------------------//
@@ -284,6 +284,33 @@ HUD.prototype.styleView = function(){
    childCanvas.css("-khtml-border-radius",   this.mapView.options.borderRadius       )
    childCanvas.css("overflow",               "hidden"                   )
    childCanvas.css("-webkit-mask-image",     "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC)")
+   
+
+   if(this.mapView.type == Maperial.MAGNIFIER){
+      var targetBorder   = $("#magnifierTargetBorder" + this.mapView.name)
+      targetBorder.css("position", "fixed")
+      targetBorder.css("width", "50px")
+      targetBorder.css("height", "50px")
+      targetBorder.css("margin-top", -this.mapView.options.height/2 - 25)
+      targetBorder.css("margin-left", this.mapView.options.width/2   - 25)
+      targetBorder.css ("border-radius",          "50px" )
+      targetBorder.css ("-moz-border-radius",     "50px" )
+      targetBorder.css ("-moz-border-radius",     "50px" )
+      targetBorder.css ("-khtml-border-radius",   "50px" )
+      targetBorder.css("border", "1px solid #000")
+
+      var targetCenter   = $("#magnifierTargetCenter" + this.mapView.name)
+      targetCenter.css("position", "fixed")
+      targetCenter.css("width", "1px")
+      targetCenter.css("height", "1px")
+      targetCenter.css("margin-top", "24px")
+      targetCenter.css("margin-left", "24px")
+      targetCenter.css ("border-radius",          "2px" )
+      targetCenter.css ("-moz-border-radius",     "2px" )
+      targetCenter.css ("-moz-border-radius",     "2px" )
+      targetCenter.css ("-khtml-border-radius",   "2px" )
+      targetCenter.css("border", "1px solid #000")
+   }
 }
 
 //==================================================================//

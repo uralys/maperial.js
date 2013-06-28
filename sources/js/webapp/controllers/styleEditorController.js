@@ -10,11 +10,15 @@
 
    StyleEditorController.renderUI = function() {
       $(window).on(MaperialEvents.READY, StyleEditorController.maperialReady);
+
+      var options = {
+         width    : "100%",
+         height   : "100%"
+      }
       
-      App.maperial.build([{
-         options  : {name : "styleEditor"},
-         config   : StyleEditorController.getConfig()
-      }])
+      var map = StyleEditorController.getMap()
+      
+      App.maperial.build([map], options)
    }
 
    StyleEditorController.cleanUI = function() {
@@ -51,12 +55,14 @@
    
    //==================================================================//
 
-   StyleEditorController.getConfig = function(){
+   StyleEditorController.getMap = function(){
 
       var config = ConfigManager.newConfig();
+      var magnifierConfig = ConfigManager.newConfig();
 
       // custom
       config.hud.elements["StyleEditorMenu"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true, disableDrag : true  };
+      config.map.edition = true;
 
       // maperial hud
       config.hud.elements[HUD.SETTINGS]      = {show : true,  type : HUD.TRIGGER,  disableHide : true, disableDrag : true };
@@ -65,33 +71,43 @@
       config.hud.elements[HUD.DETAILS_MENU]  = {show : false, type : HUD.PANEL,  label : "Style Details" };
       config.hud.elements[HUD.ZOOMS]         = {show : false, type : HUD.PANEL,  label : "Zooms" };
 
-      config.layers.push(LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
-
-//      var magnifierConfig = ConfigManager.newConfig();
-//      magnifierConfig.layers.push(LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
-//      
-//      var magnifier = {
-//         type        : Maperial.MAGNIFIER,
-//         name        : "Magnifier",
-//         config      : magnifierConfig,
-//         width       : 250,
-//         height      : 250,
-//         position    : { 
-//            left     : "20", 
-//            bottom   : "20" 
-//         },
-//         draggable   : true,
-//         padding     : 3,
-//         borderRadius : 130,
-//      }
-//      
-//      config.children.push(magnifier)
-      
-      config.map.edition = true;
+      config.layers.push            (LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
+      magnifierConfig.layers.push   (LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
       
       App.addMargins(config);
 
-      return config;
+      var mapOptions = {
+         type       : Maperial.MAIN,
+         name       : "maperial"
+      }
+
+      var magnifierOptions = {
+         type       : Maperial.MAGNIFIER,
+         name       : "Magnifier",
+         config     : magnifierConfig,
+         width      : "200",
+         height     : "200",
+         position   : { 
+            left     : "10", 
+            bottom   : "10" 
+         },
+         padding    : 4,
+         deltaZoom  : 1,
+         borderRadius: 10,
+         draggable  : true
+      }
+      
+      var map = {
+         views : [{
+            config  : config,
+            options : mapOptions,
+         },{
+            config  : magnifierConfig,
+            options : magnifierOptions,
+         }]
+      }
+      
+      return map
    }  
 
    //==================================================================//

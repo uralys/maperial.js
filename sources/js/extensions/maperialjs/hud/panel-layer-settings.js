@@ -50,7 +50,6 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
 
    //-----------------------------------------------------//
 
-   console.log("%%----> " + "#panelLayers_"+this.mapView.name)
    $("#panelLayers_"+this.mapView.name).css("height", panelHeight+"px");
    $("#panelLayers_"+this.mapView.name).removeClass("hide"); // maperial reset hideAllHUD + no layers => no HUD => orce show here
    

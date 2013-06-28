@@ -15,7 +15,9 @@ HUD.prototype.refreshLayersPanel = function() {
    var me = this;
 
    this.element(HUD.LAYERS_CREATION).empty(); 
-   var panelHeight = 80;
+
+   //   var panelHeight = 80; tmp : no more settings
+   var panelHeight = 35;
 
    //------------------//
 
@@ -30,11 +32,11 @@ HUD.prototype.refreshLayersPanel = function() {
       revert: true,
       delay: 200,
       start: function(event, ui){
-         me.mapCreationController.preventNextEdit = true;
+         me.mapView.maperial.layersCreation.preventNextEdit = true;
          me.layerBeingDraggedIndex = parseInt((ui.item[0].id).split("_")[1]);
       },
       stop: function(){
-         me.mapCreationController.preventNextEdit = false;
+         me.mapView.maperial.layersCreation.preventNextEdit = false;
          me.exchangeLayers();
       }
    });
@@ -67,26 +69,27 @@ HUD.prototype.buildLayerEntry = function(layerIndex) {
    var html = "";
 
    html += "<div class=\"row-fluid movable marginbottom\" id=\"layer_"+layerIndex+"\">";
-   html += "   <div class=\"span3 offset1\"><img class=\"selectable sourceThumb\" onclick=\"App.MapCreationController.editLayer("+layerIndex+")\" "+Utils.getSourceThumb(layer)+"></img></div>";
+   html += "   <div class=\"span3 offset1\"><img class=\"selectable sourceThumb\" onclick='window.maperial.layersCreation.editLayer(\""+this.mapView.name+"\", "+layerIndex+")' "+Utils.getSourceThumb(layer)+"></img></div>";
 
+   console.log("-----> building entry ", layer.type)
    switch(layer.type){
       case LayersManager.Images:
          if(layer.source.type == Source.WMS){
             icon = "icon-screenshot"
             tooltip  = "Center"
-            html += "   <div class=\"span1 touchable\" onclick=\"App.maperial.centerWMS('"+layer.source.params.src+"', 'place')\"><i id=\"eye_"+layerIndex+"\" class=\"icon-white "+icon+"\" title=\""+tooltip+"\"></i></div>";
-            html += "   <div class=\"span1 offset3\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
+            html += "   <div class=\"span1 touchable\" onclick='window.maperial.centerWMS(\""+this.mapView.name+"\", \""+layer.source.params.src+"\", \"place\")'><i id=\"eye_"+layerIndex+"\" class=\"icon-white "+icon+"\" title=\""+tooltip+"\"></i></div>";
+            html += "   <div class=\"span1 offset3\"><button class=\"btn-small btn-danger\" onclick='window.maperial.layersCreation.deleteLayer(\""+this.mapView.name+"\", "+layerIndex+")'><i class=\"icon-trash icon-white\"></i></button></div>";
             break;
          }
          // else :
       case LayersManager.Raster:
       case LayersManager.Shade:
-         html += "   <div class=\"span1 offset4\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
+         html += "   <div class=\"span1 offset4\"><button class=\"btn-small btn-danger\" onclick='window.maperial.layersCreation.deleteLayer(\""+this.mapView.name+"\", "+layerIndex+")'><i class=\"icon-trash icon-white\"></i></button></div>";
          break;
       case LayersManager.Vector:
-         html += "   <div class=\"span1 touchable\" onclick=\"App.MapCreationController.customizeLayer("+layerIndex+")\"><i id=\"eye_"+layerIndex+"\" class=\"icon-white "+icon+"\" title=\""+tooltip+"\"></i></div>";
-         html += "   <div class=\"span1 offset1 touchable\" onclick=\"App.MapCreationController.editStyle("+layerIndex+")\"><i id=\"edit_"+layerIndex+"\" class=\"icon-white icon-pencil\" title=\"Edit\"></i></div>";
-         html += "   <div class=\"span1 offset1\"><button class=\"btn-small btn-danger\" onclick=\"App.MapCreationController.deleteLayer("+layerIndex+")\"><i class=\"icon-trash icon-white\"></i></button></div>";
+         html += "   <div class=\"span1 touchable\" onclick='window.maperial.layersCreation.customizeLayer(\""+this.mapView.name+"\", "+layerIndex+")'><i id=\"eye_"+layerIndex+"\" class=\"icon-white "+icon+"\" title=\""+tooltip+"\"></i></div>";
+         html += "   <div class=\"span1 offset1 touchable\" onclick='window.maperial.layersCreation.editStyle(\""+this.mapView.name+"\", "+layerIndex+")'><i id=\"edit_"+layerIndex+"\" class=\"icon-white icon-pencil\" title=\"Edit\"></i></div>";
+         html += "   <div class=\"span1 offset1\"><button class=\"btn-small btn-danger\" onclick='window.maperial.layersCreation.deleteLayer(\""+this.mapView.name+"\", "+layerIndex+")'><i class=\"icon-trash icon-white\"></i></button></div>";
          break;
    }
 
@@ -128,7 +131,6 @@ HUD.prototype.exchangeLayers = function(){
    }
    
    this.mapView.layersManager.exchangeLayers(exchangedIds);
-   this.refreshLayersPanel()
 }
 
 //=================================================================================================================//

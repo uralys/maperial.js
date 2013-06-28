@@ -7,86 +7,90 @@ function LayersCreation(maperial){
 
 //--------------------------------------//
 
-LayersCreation.prototype.openBasemaps = function(view){
-   this.maperial.getView(view).hud.openBasemaps(
-      HUD.ALL_BASEMAPS,
-      this.addBasemap
-   )
+LayersCreation.prototype.openBasemaps = function(viewName, callback){
+   if(!callback){
+      var me = this
+      callback = function (viewName, dataType, src) { me.addBasemap (viewName, dataType, src) }
+   }
+      
+   this.maperial.getView(viewName).hud.openBasemaps(HUD.ALL_BASEMAPS, callback)
 }
 
-LayersCreation.prototype.addBasemap = function(view, sourceType, src){
+LayersCreation.prototype.addBasemap = function(viewName, sourceType, src){
+   var view = this.maperial.getView(viewName)
    this.addLayer(view, sourceType, src)
-   this.closeBasemaps(mapView)
+   this.closeBasemaps(view)
 }
 
-LayersCreation.prototype.closeBasemaps = function(mapView){
-   mapView.hud.closeBasemaps()
+LayersCreation.prototype.closeBasemaps = function(view){
+   view.hud.closeBasemaps()
+}
+
+//--------------------------------------//
+//Data
+
+LayersCreation.prototype.openData = function(viewName, callback){
+   if(!callback){
+      var me = this
+      callback = function (viewName, dataType, src) { me.addData (viewName, dataType, src) }
+   }
+
+   this.maperial.getView(viewName).hud.openData(HUD.WMS_DATA, callback)
+}
+
+LayersCreation.prototype.addData = function(viewName, dataType, src){
+   var view = this.maperial.getView(viewName)
+   this.addLayer(view, dataType, src)
+   this.closeData(view)
+}
+
+LayersCreation.prototype.closeData = function(view){
+   view.hud.closeData()
 }
 
 //--------------------------------------//
 // Edit Images
 
-LayersCreation.prototype.editImages = function(){
-   this.mapView.hud.openBasemaps(
-      HUD.IMAGE_BASEMAPS,
-      this.changeImage
-   )
+LayersCreation.prototype.editImages = function(view){
+   view.hud.openBasemaps(HUD.IMAGE_BASEMAPS, this.changeImage)
 }
 
-LayersCreation.prototype.changeImage = function(sourceType, src){
-   if(src != null)
-      this.mapView.layersManager.changeImages(this.currentLayerIndex, src);
+LayersCreation.prototype.changeImage = function(viewName, sourceType, src){
+   var view = this.maperial.getView(viewName)
    
-   this.closeBasemaps()
-}
-
-//--------------------------------------//
-// Data
-
-LayersCreation.prototype.openData = function(){
-   this.mapView.hud.openData(
-      HUD.WMS_DATA,
-      this.addData
-   )
-}
-
-LayersCreation.prototype.addData = function(dataType, src){
-   this.addLayer(dataType, src)
-   this.closeData()
-}
-
-LayersCreation.prototype.closeData = function(){
-   this.mapView.hud.closeData()
+   if(src != null)
+      view.layersManager.changeImages(this.currentLayerIndex, src)
+   
+   this.closeBasemaps(view)
 }
 
 //--------------------------------------//
 // Edit WMS
 
-LayersCreation.prototype.editWMS = function(){
-   this.mapView.hud.openData(
-         HUD.WMS_DATA,
-         this.changeWMS
-   )
+LayersCreation.prototype.editWMS = function(view){
+   view.hud.openData(HUD.WMS_DATA, this.changeWMS)
 }
 
-LayersCreation.prototype.changeWMS = function(dataType, src){
+LayersCreation.prototype.changeWMS = function(viewName, dataType, src){
+   var view = this.maperial.getView(viewName)
+
    if(src != null)
-      this.mapView.layersManager.changeImages(this.currentLayerIndex, src);
+      view.layersManager.changeImages(this.currentLayerIndex, src)
    
-   this.closeData()
+   this.closeData(view)
 }
 
 //==============================================================//
 
-LayersCreation.prototype.addLayer = function(sourceType, src){
-   console.log("-----> addLayer " + sourceType, src)
+LayersCreation.prototype.addLayer = function(view, sourceType, src){
+   console.log("-----> addLayer ", view.name, sourceType, src)
    switch(sourceType){
 
       // ------------------------------------------//
       // Sources for LayersManager.Vector
       
       case Source.MaperialOSM:
-         this.addOSMLayer(src);
+         this.addOSMLayer(view, src);
          break;
 
       case Source.Vector:
@@ -105,11 +109,11 @@ LayersCreation.prototype.addLayer = function(sourceType, src){
       // Sources for LayersManager.Images
          
       case Source.Images:
-         this.addImagesLayer(src);
+         this.addImagesLayer(view, src);
          break;
          
       case Source.WMS:
-         this.addWMSLayer(src);
+         this.addWMSLayer(view, src);
          break;
          
       // ------------------------------------------//
@@ -117,24 +121,17 @@ LayersCreation.prototype.addLayer = function(sourceType, src){
          
       case LayersManager.SRTM:
       case LayersManager.Shade:
-         this.mapView.layersManager.addLayer(sourceType);
-         this.refreshLayersPanel()
+         view.layersManager.addLayer(sourceType);
          break;
    }
 }
 
 //--------------------------------------//
 
-LayersCreation.prototype.addOSMLayer = function(src){
-//      if(this.mapView.config.layers.length > 0 
-//      && this.mapView.config.layers[this.mapView.config.layers.length-1].source.type == Source.MaperialOSM){
-//         // TODO :  ameliorer le UI avec bootstrap.alert
-//         alert("Le layer du dessus est deja OSM");
-//      }
-//      else{
+LayersCreation.prototype.addOSMLayer = function(view, src){
    
    var params;
-   console.log("addOSMLayer : " + src)
+   console.log("addOSMLayer : ", view.name, src)
    switch(src){
       case Source.MAPERIAL_BROWNIE:
          params = Source.MAPERIAL_BROWNIE_ID;
@@ -163,34 +160,32 @@ LayersCreation.prototype.addOSMLayer = function(src){
    }
    
    console.log("params : " + params)
-   this.mapView.layersManager.addLayer(Source.MaperialOSM, params);
-   this.mapView.hud.refreshLayersPanel()
+   view.layersManager.addLayer(Source.MaperialOSM, params);
+}
+//--------------------------------------//
+
+LayersCreation.prototype.addImagesLayer = function(view, src){
+   console.log("-----> addImagesLayer ", view.name, src)
+   view.layersManager.addLayer(Source.Images, [src]);
 }
 
 //--------------------------------------//
 
-LayersCreation.prototype.addImagesLayer = function(src){
-   this.mapView.layersManager.addLayer(Source.Images, [src]);
-   this.refreshLayersPanel()
+LayersCreation.prototype.addWMSLayer = function(view, src){
+   view.layersManager.addLayer(Source.WMS, [src]);
 }
 
 //--------------------------------------//
 
-LayersCreation.prototype.addWMSLayer = function(src){
-   this.mapView.layersManager.addLayer(Source.WMS, [src]);
-   this.refreshLayersPanel()
-}
-
-//--------------------------------------//
-
-LayersCreation.prototype.editLayer = function(layerIndex){
+LayersCreation.prototype.editLayer = function(viewName, layerIndex){
    
    if(this.preventNextEdit){
       // mouseUp when dragging layer arrives here : not a click : prevent this call.
       return;
    }
-      
-   var layer = this.mapView.config.layers[layerIndex];
+
+   var view    = this.maperial.getView(viewName)
+   var layer   = view.config.layers[layerIndex];
    this.currentLayerIndex = layerIndex;
    
    switch(layer.source.type){
@@ -203,11 +198,11 @@ LayersCreation.prototype.editLayer = function(layerIndex){
          break;
          
       case Source.Images:
-         this.editImages();
+         this.editImages(view);
          break;
 
       case Source.WMS:
-         this.editWMS();
+         this.editWMS(view);
          break;
          
    }
@@ -215,16 +210,21 @@ LayersCreation.prototype.editLayer = function(layerIndex){
 
 //--------------------------------------//
 
-LayersCreation.prototype.customizeLayer = function(layerIndex){
-   var layer = this.mapView.config.layers[layerIndex];
+/** Attention ! dependant de WEBAPP **/
+LayersCreation.prototype.customizeLayer = function(viewName, layerIndex){
+   var view  = this.maperial.getView(viewName)
+   var layer = view.config.layers[layerIndex];
    this.currentLayerIndex = layerIndex;
    this.openCustomizeLayerWindow(layer);
 }
 
 //--------------------------------------//
 
-LayersCreation.prototype.editStyle = function(layerIndex){
-   var layer = this.mapView.config.layers[layerIndex];
+/** Attention ! dependant de WEBAPP **/
+LayersCreation.prototype.editStyle = function(viewName, layerIndex){
+   var view  = this.maperial.getView(viewName)
+   var layer = view.config.layers[layerIndex];
+   
    App.mapManager.backUpMap()
    App.stylesData.set("selectedStyle.uid", layer.params.styles[layer.params.selectedStyle])
    App.StylesController.editStyle(App.stylesData.selectedStyle)
@@ -232,17 +232,18 @@ LayersCreation.prototype.editStyle = function(layerIndex){
 
 //--------------------------------------//
 
-LayersCreation.prototype.deleteLayer = function(layerIndex){
-   this.mapView.layersManager.deleteLayer(layerIndex);
-   this.refreshLayersPanel()
+LayersCreation.prototype.deleteLayer = function(viewName, layerIndex){
+   var view  = this.maperial.getView(viewName)
+   view.layersManager.deleteLayer(layerIndex);
 
-   if(this.mapView.config.layers.length == 0)
-      this.openBasemaps()
+   if(view.config.layers.length == 0)
+      this.openBasemaps(view, this.addBasemap)
 }
 
 //=============================================================================//
 // OSM Styles
 
+/** Attention ! dependant de WEBAPP **/
 LayersCreation.prototype.openSelectStyleWindow = function(){
    App.get('router').transitionTo('mapCreation.publicStyles');
    $("#selectStyleWindow").modal();
@@ -287,10 +288,12 @@ LayersCreation.prototype.openCustomizeLayerWindow = function(layer){
 //=============================================================================//
 // Rasters
 
+/** Attention ! dependant de WEBAPP **/
 LayersCreation.prototype.openSelectRasterWindow = function(){
    $("#selectRasterWindow").modal();
 }
 
+/** Attention ! dependant de WEBAPP **/
 LayersCreation.prototype.selectRaster = function(raster){
    $("#selectRasterWindow").modal("hide");
    
@@ -301,14 +304,13 @@ LayersCreation.prototype.selectRaster = function(raster){
    else{
       console.log("adding a new raster");
       this.mapView.layersManager.addLayer(Source.Raster, [raster.uid]);
-      this.refreshLayersPanel()
    }
 }
 
 //=============================================================================//
 // --- settings view
 
-LayersCreation.prototype.openSettings = function(){
+LayersCreation.prototype.openSettings = function(viewName){
    this.wizardSetView(this.SETTINGS);
    this.mapView.apply(this.getSettingsConfig());
    this.buildZoomSlider();

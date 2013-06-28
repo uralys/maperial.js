@@ -600,12 +600,12 @@ MapView.prototype.refreshScreen = function() {
       console.log(e)
    }
 
-   this.hud.styleView()
-
    if(this.type != Maperial.MAIN){
       this.hud.placeMapView()
       this.refreshCamera()
    }
+
+   this.hud.styleView()
 
    $('body').css('overflow', 'auto');
 }

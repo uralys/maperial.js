@@ -19,6 +19,7 @@ LayersManager.SRTM   = "SRTM";
 
 LayersManager.prototype.addLayer = function(sourceType, params) {
 
+   console.log("-----> LayersManager.addLayer ", sourceType, params)
    var layerConfig;
    switch(sourceType){
 
@@ -50,6 +51,7 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
       case Source.Images :
       case Source.WMS:
          var src = params[0];
+         console.log("-----> LayersManager.addLayer IMAGES ", src)
          layerConfig = LayersManager.getImagesLayerConfig(sourceType, src);
          break;
 
@@ -80,6 +82,8 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
    
    var me = this
    var refresh = function() { return me.refreshMaperialForLayerAdded(layerConfig) }
+
+   console.log("-----> layerConfig", layerConfig)
    
    if(sourceType == Source.MaperialOSM)
       this.mapView.stylesManager.fetchStyles([layerConfig.params.styles[layerConfig.params.selectedStyle]], refresh)
@@ -93,7 +97,7 @@ LayersManager.prototype.refreshMaperialForLayerAdded = function(layerConfig) {
       this.mapView.restart()      
    }
    else{
-      this.mapView.sourcesManager.addSource(layerConfig)
+      this.mapView.maperial.sourcesManager.addSource(this.mapView.name, layerConfig)
       this.mapView.mapRenderer.addLayer(layerConfig)
       this.mapView.hud.refresh()
    }
@@ -116,7 +120,7 @@ LayersManager.prototype.deleteLayer = function(layerRemovedPosition) {
       this.mapView.mapRenderer.reset()
    }
    
-   window.mapViewSourcesManager.detachSource(layerRemoved.source.id, this.mapView.name)
+   this.mapView.maperial.sourcesManager.detachSource(layerRemoved.source.id, this.mapView.name)
    this.mapView.mapRenderer.removeLayer(layerRemovedPosition)
    this.mapView.hud.refresh()
    

@@ -32,34 +32,20 @@
       App.user.set("selectedMap"          , null);  
 
       $(window).off(MaperialEvents.READY, MapCreationController.maperialReady);
-      $(window).off(MaperialEvents.STYLE_CHANGED, MapCreationController.refreshLayersPanel);
+      $(window).off(MaperialEvents.STYLE_CHANGED, App.maperial.layersCreation.refreshLayersPanel);
    }
    
    //==================================================================//
    // Calls by Listeners
    
    MapCreationController.maperialReady = function (){
-      
-      console.log("-------> maperialReady")
+      console.log("-------> mapcreation controller : maperialReady")
       MapCreationController.mapView = App.maperial.views[0]
 
       // not set before MaperialEvents.READY, because MaperialJS removes every Listeners on MaperialEvents during reset
-      $(window).on(MaperialEvents.STYLE_CHANGED, MapCreationController.refreshLayersPanel);
-//
-//      if(App.Globals.isViewLayerCreation){
-////         console.log("-------> refreshLayersPanel")
-//         //App.layersHelper.refreshLayersPanel();
-//      }
-//      else{
-//         //App.layersHelper.refreshHUDViewerSettings();
-//      }
+      $(window).on(MaperialEvents.STYLE_CHANGED, App.maperial.layersCreation.refreshLayersPanel);
 
       MapCreationController.setSelectedStyle();
-   }
-
-   MapCreationController.refreshLayersPanel = function (){
-      console.log("removeme")
-     // App.layersHelper.refreshLayersPanel();
    }
    
    //==================================================================//

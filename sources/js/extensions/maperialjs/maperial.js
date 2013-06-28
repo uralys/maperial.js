@@ -3,14 +3,16 @@
 function Maperial(){
    console.log(" NEW Maperial ")
    
-   window.maperial = this
    
    this.views = []
 
    this.sourcesManager     = new SourcesManager();
    this.templateBuilder    = new TemplateBuilder();
    this.layersCreation     = new LayersCreation(this);
+
+   window.maperial = this
 };
+
 
 //==================================================================//
 // TYPE = css class
