@@ -77,6 +77,7 @@
 			<fileset file="sources/css/libs/slideronoff.css" />
 			<fileset file="sources/css/libs/jquery.selectbox.css" />
 			<fileset file="sources/css/libs/maki-sprite.css" />
+			<fileset file="sources/css/libs/tooltipster.css" />
 
 			<fileset file="sources/css/mapediting/colorpicker.css" />
 			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
@@ -125,6 +126,7 @@
 			<fileset file="sources/css/libs/slideronoff.css" />
 			<fileset file="sources/css/libs/maki-sprite.css" />
 			<fileset file="sources/css/libs/jquery.selectbox.css" />
+			<fileset file="sources/css/libs/tooltipster.css" />
 
 			<fileset file="sources/css/mapediting/colorpicker.css" />
 			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
@@ -205,6 +207,8 @@
 			<arg value="--js" />
 			<arg value="sources/js/libs/jquery.selectbox-0.2.min.js" />
 			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.tooltipster.min.js" />
+			<arg value="--js" />
 			<arg value="sources/js/tools/utils.js" />
 			<arg value="--js" />
 			<arg value="sources/js/tools/offscreen.js" />
@@ -271,6 +275,8 @@
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/panel-layer-settings.js" />
 			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/hud/panel-layer-creation.js" />
+			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/panel-controls.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/panel-latlon.js" />
@@ -293,6 +299,8 @@
 			<arg value="sources/js/extensions/maperialjs/managers/layers-manager.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/managers/config-manager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/managers/layers-creation.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/edition/boundingbox-drawer.js" />
@@ -414,6 +422,8 @@
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/jobsController.js" />
 			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/blogController.js" />
+			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/featuresController.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/presentationController.js" />
@@ -462,6 +472,8 @@
 			<arg value="sources/js/webapp/controllers/config/creditsView.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/jobsView.js" />
+			<arg value="--js" />
+			<arg value="sources/js/webapp/controllers/config/blogView.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/config/featuresView.js" />
 			<arg value="--js" />
