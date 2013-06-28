@@ -402,9 +402,6 @@
 			<arg value="sources/js/webapp/models/translations.js" />
 
 			<arg value="--js" />
-			<arg value="sources/js/webapp/controllers/helpers/layers-helper.js" />
-
-			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/applicationController.js" />
 			<arg value="--js" />
 			<arg value="sources/js/webapp/controllers/homeController.js" />
