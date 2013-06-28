@@ -228,9 +228,6 @@ MapView.prototype.checkConfig = function() {
    // checking if Default style must be used
 
    this.changeStyle(Maperial.DEFAULT_STYLE_UID, 0, false);
-   
-   console.log("-------> config ok ")
-   odump(this.config)
 }
 
 /**

@@ -100,9 +100,6 @@ HUD.prototype.refreshCompositionsPanel = function() {
             max: 1,
             step: 0.01,
             value: composition.params.uParams[0],
-//            slide: function(constrastId){
-//               //-----
-//            }(constrastId),
             slide: function(constrastId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[0] = ui.value;
@@ -118,9 +115,6 @@ HUD.prototype.refreshCompositionsPanel = function() {
             max: 1,
             step: 0.01,
             value: composition.params.uParams[1],
-//            slide: function(brightnessId){
-//               //-----
-//            }(brightnessId),
             slide: function(brightnessId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[1] = ui.value;
@@ -136,9 +130,6 @@ HUD.prototype.refreshCompositionsPanel = function() {
             max: 4,
             step: 1,
             value: composition.params.uParams[2],
-//            slide: function(bwId){
-//               //-----
-//            }(bwId),
             slide: function(bwId, composition, l){
                return function( event, ui ) {
                   composition.params.uParams[2] = ui.value;

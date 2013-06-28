@@ -312,28 +312,15 @@ LayersManager.prototype.changeComposition = function(l, shader) {
 
    composition.shader = shader;
 
-   if(composition.storedparams && composition.storedparams[shader])
+   if(composition.storedparams && composition.storedparams[shader]){
       composition.params = composition.storedparams[shader]
+   }
    else{
-      switch(shader){
-
-         case Maperial.AlphaClip : 
-            composition.params = LayersManager.defaultAlphaClipParams
-            break;
-
-         case Maperial.AlphaBlend : 
-            composition.params = LayersManager.defaultAlphaBlendParams
-            break;
-
-         case Maperial.MulBlend : 
-            composition.params = LayersManager.defaultMulBlendParams
-            break;
-      }
+      composition.params = LayersManager.getDefaultParams(shader)
    }
 
-   console.log("setting uParams : " + composition.params.uParams)
-
-   this.mapView.restart();   
+   this.mapView.mapRenderer.resetLayer(l)  
+   this.mapView.hud.refresh()
 }
 
 //=======================================================================================//

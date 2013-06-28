@@ -99,6 +99,18 @@ MapRenderer.prototype.exchangeLayers = function (exchangedIds) {
    }
 }
 
+MapRenderer.prototype.refresh = function () {
+   for (var key in this.tileCache) {
+      this.tileCache[key].Refresh();
+   }
+}
+
+MapRenderer.prototype.resetLayer = function (layerIndex) {
+   for (var key in this.tileCache) {
+      this.tileCache[key].ResetLayer (layerIndex);
+   }
+}
+
 //----------------------------------------------------------------------//
    
 MapRenderer.prototype.initListeners = function () {
@@ -112,58 +124,40 @@ MapRenderer.prototype.initListeners = function () {
    });
 
    $(window).on(MaperialEvents.STYLE_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
-      }
+      renderer.resetLayer(layerIndex);
    });
    
    $(window).on(MaperialEvents.COLORBAR_CHANGED, function(event, layerIndex){
       renderer.renderAllColorBars(); //optim : refresh que de la colorbar modifiée non ?
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
-      }
+      renderer.resetLayer(layerIndex);
    });
    
    $(window).on(MaperialEvents.CONTRAST_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Refresh();
-      }
+      renderer.refresh();
    });
    
    $(window).on(MaperialEvents.BRIGHTNESS_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Refresh();
-      }
+      renderer.refresh();
    });
    
    $(window).on(MaperialEvents.BW_METHOD_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Refresh();
-      }
+      renderer.refresh();
    });
    
    $(window).on(MaperialEvents.ALPHA_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Refresh();
-      }
+      renderer.refresh();
    });
 
    $(window).on(MaperialEvents.XY_LIGHT_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
-      }
+      renderer.resetLayer(layerIndex);
    });
 
    $(window).on(MaperialEvents.Z_LIGHT_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
-      }
+      renderer.resetLayer(layerIndex);
    });
 
    $(window).on(MaperialEvents.SCALE_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
-      }
+      renderer.resetLayer(layerIndex);
    });
 
    $(window).on(MaperialEvents.DATA_SOURCE_CHANGED, function(){
