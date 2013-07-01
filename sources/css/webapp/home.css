@@ -162,6 +162,8 @@
 	background-repeat: repeat-x;
 	background-position-x: 0px;
 	height: 300px;
+	-moz-box-shadow: 0px 2px 15px #333;
+	-webkit-box-shadow: 0px 2px 15px #333;
 }
 
 #videoWindow {
