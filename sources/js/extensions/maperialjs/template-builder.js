@@ -121,9 +121,9 @@ TemplateBuilder.prototype.buildPanel = function(name, show){
 TemplateBuilder.prototype.buildHUDSettings = function(){
 
    var html = "";
-   html += "<a class=\"trigger snapper trigger"+this.mapView.getFullName(HUD.SETTINGS)+" hide\" id=\"trigger"+this.mapView.getFullName(HUD.SETTINGS)+"\" href=\"#\"><i id=\"icon"+this.mapView.getFullName(HUD.SETTINGS)+"\" class=\"icon-cog icon-white\"></i></a>";
-   html += "<div class=\"panel snapper panel"+this.mapView.getFullName(HUD.SETTINGS)+" hide\" id=\"panel"+this.mapView.getFullName(HUD.SETTINGS)+"\" >";
-   html += "    <div id=\"HUDSettings"+this.name+"\"></div>";
+   html += "<a class=\"trigger snapper trigger"+HUD.SETTINGS+" hide\" id=\"trigger"+this.mapView.getFullName(HUD.SETTINGS)+"\" href=\"#\"><i id=\"icon"+this.mapView.getFullName(HUD.SETTINGS)+"\" class=\"icon-cog icon-white\"></i></a>";
+   html += "<div class=\"panel snapper panel"+HUD.SETTINGS+" hide\" id=\"panel"+this.mapView.getFullName(HUD.SETTINGS)+"\" >";
+   html += "    <div id=\""+this.mapView.getFullName(HUD.SETTINGS)+"\"></div>";
    html += "</div>";
 
    this.container.append(html);

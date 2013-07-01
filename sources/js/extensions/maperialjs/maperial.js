@@ -206,11 +206,6 @@ Maperial.prototype.initListeners = function(){
       console.log("view " + view + " is ready | " + maperial.nbViewsReady + " views ready")
       if(maperial.nbViewsReady == maperial.views.length){
          console.log("Maperial is ready")         
-
-         try{
-            odump(maperial.maps)
-         }catch(e){}
-         
          console.log("=================================")         
          $(window).trigger(MaperialEvents.READY)
       }

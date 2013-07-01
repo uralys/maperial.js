@@ -4,12 +4,16 @@
  */
 HUD.prototype.refreshSettingsPanel = function() {
 
+   console.log("------->  refreshSettingsPanel")
+   
+   
    this.element(HUD.SETTINGS).empty(); 
    var panelHeight = 0;
    var configHUD = this.mapView.config.hud;
    var hud = this;
 
    for (name in configHUD.elements) {
+      console.log("-------> ",name, this.element(HUD.SETTINGS))
 
       // ----- checking config options
       if(configHUD.elements[name].disableHide){ 

@@ -9,7 +9,7 @@ HUD.prototype.buildTriggers = function(){
    // Init Triggers
 
    this.allPanels().click(function(){
-      var element = $(this).context.id.replace("panel","").replace(hud.mapView.name,"");
+      var element = $(this).context.id.replace("panel","").replace("_"+hud.mapView.name,"");
       hud.putOnTop(element);
    });
 
@@ -43,7 +43,7 @@ HUD.prototype.buildTriggers = function(){
    this.allPanels().bind('dragstart',function( event ){
 
       var id = $(this).context.id;
-      var element = id.replace("panel","").replace(hud.mapView.name,"");
+      var element = id.replace("panel","").replace("_"+hud.mapView.name,"");
 
       hud.putOnTop(element);
 
@@ -70,7 +70,7 @@ HUD.prototype.buildTriggers = function(){
 
    this.allPanels().bind('dragstop',function( event ){
       var id = $(this).context.id;
-      var element = id.replace("panel","").replace(hud.mapView.name,"");
+      var element = id.replace("panel","").replace("_"+hud.mapView.name,"");
       var newTop = $("#"+id).css("top");
       var newLeft = $("#"+id).css("left");
 
@@ -90,13 +90,13 @@ HUD.prototype.buildTriggers = function(){
       $(this).css('right', 'auto');
       $(this).css('bottom', 'auto');
 
-      var element = $(this).context.id.replace("trigger","").replace(hud.mapView.name,"");
+      var element = $(this).context.id.replace("trigger","").replace("_"+hud.mapView.name,"");
       hud.putOnTop(element);
    });
 
    this.allTriggers().bind('dragstop',function( event ){
       var id = $(this).context.id;
-      var element = id.replace("trigger","").replace(hud.mapView.name,"");
+      var element = id.replace("trigger","").replace("_"+hud.mapView.name,"");
 
       var newTop = $("#"+id).css("top");
       var newLeft = $("#"+id).css("left");
@@ -127,7 +127,13 @@ HUD.prototype.hideTrigger = function(element){
 //------------------------------------------------//
 
 HUD.prototype.clickOnTrigger = function(trigger){
-   var element = trigger[0].id.replace("trigger","").replace(this.mapView.name,"");
+   
+   console.log("click on ", trigger);
+   
+   var element = trigger[0].id.replace("trigger","").replace("_"+this.mapView.name,"");
+   
+   console.log("element ", element);
+   
    this.putOnTop(element);
 
    if (trigger.hasClass('beingdrag')) {

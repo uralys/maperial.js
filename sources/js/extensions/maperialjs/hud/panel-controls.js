@@ -23,7 +23,7 @@ HUD.prototype.buildControls = function(){
    this.element("control-left")  .click( function(){ me.mapView.context.mapCanvas.trigger(MaperialEvents.CONTROL_LEFT);   } );
    this.element("control-right") .click( function(){ me.mapView.context.mapCanvas.trigger(MaperialEvents.CONTROL_RIGHT);  } );
    
-   Utils.buildSliderStyle("control-zoom"+this.mapView.name);
+   Utils.buildSliderStyle(this.mapView.getFullName("control-zoom"));
 
    this.refreshZoom();
 }
