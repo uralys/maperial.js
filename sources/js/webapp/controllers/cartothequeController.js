@@ -262,6 +262,7 @@
    {
       var mainConfig   = ConfigManager.newConfig();
       var lensConfig   = ConfigManager.newConfig();
+      var minifierConfig   = ConfigManager.newConfig();
       
       mainConfig.hud.elements[HUD.COMPOSITIONS]  = {
          show : true,  
@@ -296,7 +297,9 @@
       
       mainConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
       mainConfig.layers.push        (customTransport)
-      lensConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST_SATELLITE))
+      
+      lensConfig.layers       = mainConfig.layers
+      minifierConfig.layers   = mainConfig.layers
       
       var mainOptions = {
          type       : Maperial.MAIN,
@@ -305,16 +308,28 @@
       
       var lensOptions = {
          type       : Maperial.LENS,
-         config     : lensConfig,
          width      : "200",
          height     : "200",
          position   : { 
-            left    : "70%", 
-            bottom  : "30%" 
+            left    : "50%", 
+            bottom  : "27%" 
          },
          padding    : 2,
          deltaZoom  : 1,
          borderRadius: 150,
+         draggable  : true
+      }
+      
+      var minifierOptions = {
+         type       : Maperial.MINIFIER,
+         width      : "200",
+         height     : "200",
+         position   : { 
+            right   : "10%", 
+            bottom  : "18%" 
+         },
+         padding    : 2,
+         deltaZoom  : -2,
          draggable  : true
       }
       
@@ -325,6 +340,9 @@
          },{
             config  : lensConfig,
             options : lensOptions,
+         },{
+            config  : minifierConfig,
+            options : minifierOptions,
          }]
       }
          
