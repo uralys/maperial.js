@@ -113,6 +113,7 @@
 .homeText {
 	margin-bottom: 0px;
 	font-size: 15px!important;
+	text-align : justify;
 }
 
 .home-separator {

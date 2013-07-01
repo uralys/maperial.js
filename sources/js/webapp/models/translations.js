@@ -7,10 +7,10 @@
 
    //------------------------------------------------------//
 
+   $(window).on(Translator.LANG_CHANGED, App.changedTranslations);
+
    App.translations = Translations.create();
    App.translator = new Translator();
-
-   $(window).on(Translator.LANG_CHANGED, App.changedTranslations);
    
    //------------------------------------------------------//
 })( App);

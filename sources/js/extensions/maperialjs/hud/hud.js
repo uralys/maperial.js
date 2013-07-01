@@ -410,6 +410,9 @@ HUD.prototype.hideAllHUD = function(){
 
 HUD.prototype.showAllHUD = function(dontHideColorpickers){
 
+   $(".panel-external").removeClass("hide");
+   $(".trigger-external").removeClass("hide");
+
    for (element in this.mapView.config.hud.elements) {
       if(this.mapView.config.hud.elements[element].show == true){
          this.element(this.mapView.config.hud.elements[element].type + element).removeClass("hide");
@@ -450,14 +453,17 @@ HUD.prototype.icon = function(name){
 }
 
 HUD.prototype.allPanels = function(){
-   return $("#"+this.mapView.name).find("."+HUD.PANEL);
+   var panels = $("#"+this.mapView.name).find("."+HUD.PANEL);
+   var externalPanels = $(".panel-external");
+   
+   return $.merge(panels, externalPanels);
 }
 
 HUD.prototype.allTriggers = function(){
    var triggers = $("#"+this.mapView.name).find("."+HUD.TRIGGER);
-   var triggersWebapp = $(".trigger-webapp");
+   var externalTriggers = $(".trigger-external");
 
-   return $.merge(triggers, triggersWebapp);
+   return $.merge(triggers, externalTriggers);
 }
 
 HUD.prototype.controlZoomCursor = function(){

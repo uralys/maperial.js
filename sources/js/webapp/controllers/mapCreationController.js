@@ -16,8 +16,6 @@
 
       $(window).on(  MaperialEvents.READY, MapCreationController.maperialReady);
 
-      console.log("mapCreation", App.user.selectedMap)
-      
       App.user.set("isCreatingANewMap", (App.user.selectedMap.uid == null));
       MapCreationController.wizardSetView(MapCreationController.LAYERS_CREATION);
       MapCreationController.openLayersCreation();
@@ -113,28 +111,30 @@
 
       var config = ConfigManager.newConfig()
       
-      // map viewer hud config
-      config.hud = App.user.selectedMap.config.hud
+      // DEPRECATED : todo maintenant : recup la map.views[i].config
       
-      // custom
-      config.hud.elements["Settings"] = {
-            show : true, 
-            type : HUD.PANEL, 
-            position : { 
-               right: "0", 
-               top: "0"
-            }, 
-            disableHide : true, 
-            disableDrag : true
-      }
-
-      App.addMargins(config)
-
-      // layers + map options previously chosen
-      config.layers = MapCreationController.mapView.config.layers
-
-      config.map = MapCreationController.mapView.config.map
-      config.map.requireBoundingBoxDrawer = true
+//      // map viewer hud config
+//      config.hud = App.user.selectedMap.config.hud
+//      
+//      // custom
+//      config.hud.elements["Settings"] = {
+//            show : true, 
+//            type : HUD.PANEL, 
+//            position : { 
+//               right: "0", 
+//               top: "0"
+//            }, 
+//            disableHide : true, 
+//            disableDrag : true
+//      }
+//
+//      App.addMargins(config)
+//
+//      // layers + map options previously chosen
+//      config.layers = MapCreationController.mapView.config.layers
+//
+//      config.map = MapCreationController.mapView.config.map
+//      config.map.requireBoundingBoxDrawer = true
       
       return config
    }  
@@ -156,9 +156,10 @@
             App.maperial.layersCreation.openBasemaps();
       }
       else{
-         config.layers = App.user.selectedMap.config.layers;
-         config.map = App.user.selectedMap.config.map;
-         config.map.layersCreation = true;
+         console.log("-----> openLayersCreation ", map, App.user.selectedMap)
+         map.views[0].config.layers = App.user.selectedMap.views[0].config.layers;
+         map.views[0].config.map    = App.user.selectedMap.views[0].config.map;
+         map.views[0].config.map.layersCreation = true;
 
          App.maperial.build([map])
       }
@@ -195,7 +196,7 @@
       App.removeMargins(MapCreationController.mapView.config);
       
       // update the selectedMap
-      App.user.set('selectedMap.config', MapCreationController.mapView.config);
+      App.user.set('selectedMap.views', App.maperial.views);
       App.user.set('selectedMap.name', $("#mapNameInput").val());
 
       // Save the map server side !
@@ -211,7 +212,18 @@
    {
       var mapUID = Maperial.DEMO_MAP[num]
 
+      // une map = liste de views
       App.mapManager.getMap(mapUID, function(map){
+         
+         if(!map.views){
+            console.log("OLD MAP ! Updated to match new maperialJS : map = [views] ")
+            var newMap = {}
+            newMap.views = []
+            newMap.views.push(map)
+            map = newMap
+         }
+         console.log("selectedMap", map)
+         
          App.user.set("selectedMap", map);
          App.user.set("isCreatingANewMap", false);
          MapCreationController.openLayersCreation();
@@ -274,14 +286,6 @@
 
       //---------------------//
       // layers actions
-//      
-//      addLayer: function(router, event){
-//         console.log("---------> addLayer : ", event.contexts)
-//         var source = event.contexts[0];
-//         var src    = event.contexts[1];
-//         MapCreationController.addLayer(source, src);
-//      },
-//
 //      openSettings: function(router, event){
 //         MapCreationController.openSettings();
 //      },

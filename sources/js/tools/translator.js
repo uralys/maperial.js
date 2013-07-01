@@ -96,6 +96,7 @@ Translator.prototype.load = function() {
       url: staticURL + '/translations/'+this.lang,
       cache:false,
       dataType:'json',
+      async : false,
       success: function(data){
          if(me.storeMessagesHere){
             Translator.messages = data;

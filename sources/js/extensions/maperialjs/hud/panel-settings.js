@@ -3,9 +3,6 @@
  * Draw the HUD settings panel
  */
 HUD.prototype.refreshSettingsPanel = function() {
-
-   console.log("------->  refreshSettingsPanel")
-   
    
    this.element(HUD.SETTINGS).empty(); 
    var panelHeight = 0;
@@ -13,7 +10,6 @@ HUD.prototype.refreshSettingsPanel = function() {
    var hud = this;
 
    for (name in configHUD.elements) {
-      console.log("-------> ",name, this.element(HUD.SETTINGS))
 
       // ----- checking config options
       if(configHUD.elements[name].disableHide){ 

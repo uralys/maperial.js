@@ -11,14 +11,18 @@
 	   $("#listDemos").empty()
 	   $("#listDemos").css("max-height", $(window).height() - 105)
 	   CartothequeController.maps = []
+	   console.log("adding maps")
 	   CartothequeController.maps.push(CartothequeController.maps0)
 	   CartothequeController.maps.push(CartothequeController.maps1)
 	   CartothequeController.maps.push(CartothequeController.maps2)
 	   CartothequeController.maps.push(CartothequeController.maps3)
 	   CartothequeController.maps.push(CartothequeController.maps4)
 	   
+	   console.log("adding maps done")
+	   
 	   for(var i = 0; i < CartothequeController.maps.length; i++){
 	      
+	      console.log("tagging map",i)
 	      var thumb = ""
 
 	      thumb += "<div class='row-fluid'>"
@@ -34,6 +38,7 @@
 	      })
 	   }
 	   
+	   console.log("OPEN")
 	   CartothequeController.openDemo(0)
 	}
 
@@ -45,6 +50,7 @@
 	//==================================================================//
 	
 	CartothequeController.openDemo = function(num){
+	   console.log(num)
 
       var options = {
          width    : "80%",

@@ -105,7 +105,7 @@
          }
          
 		   if(webappPage  
-	      && !App.maperial){
+	      && !App.Globals.APP_READY){
 		      console.log("Not loaded properly ! Redirected to the home page");
 		      window.location.href="/"
 		   }

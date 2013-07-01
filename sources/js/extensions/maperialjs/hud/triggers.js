@@ -29,7 +29,7 @@ HUD.prototype.buildTriggers = function(){
 
    //------------------
    // disable dragging
-
+   
    for (element in this.mapView.config.hud.elements) {
       if(this.mapView.config.hud.elements[element].disableDrag){
          this.panel(element).draggable( 'disable' );
@@ -128,12 +128,7 @@ HUD.prototype.hideTrigger = function(element){
 
 HUD.prototype.clickOnTrigger = function(trigger){
    
-   console.log("click on ", trigger);
-   
    var element = trigger[0].id.replace("trigger","").replace("_"+this.mapView.name,"");
-   
-   console.log("element ", element);
-   
    this.putOnTop(element);
 
    if (trigger.hasClass('beingdrag')) {

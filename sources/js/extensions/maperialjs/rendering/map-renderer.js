@@ -33,6 +33,7 @@ MapRenderer.prototype.reset = function () {
    this.dataCache = {};
    
    this.DrawScene(true, true);
+   this.gl = null;
 }
 
 //----------------------------------------------------------------------//

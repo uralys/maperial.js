@@ -358,6 +358,17 @@ body{
 	padding-left: 20px;
 }
 
+.container {
+	text-align:justify;
+}
+
+.iconmaperial {
+	max-width: 40px;
+	margin-top: 17px !important;
+	margin-right: 23px !important;
+	margin-bottom: 10px !important;
+}
+
 /*--------------------------------*/
 .marginbottom {
 	margin-bottom: 20px!important;

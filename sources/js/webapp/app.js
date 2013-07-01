@@ -25,7 +25,6 @@
 
    App.initWindowSize = function() {
 
-//    App.homeScroller = new HomeScroller();
       App.homeMover = new HomeMover();
       App.resize();
 
@@ -88,8 +87,6 @@
          dataType: "json",
          success: function (publicData, textStatus, jqXHR)
          {
-            console.log(publicData);
-
             App.publicData.set("maps", publicData.maps);
             App.publicData.set("styles", publicData.styles);
             App.publicData.set("datasets", publicData.datasets);
@@ -102,12 +99,8 @@
       //-------------------------------------------//
 
       var scripts = [];
-
       var maperialJSScripts = "";
       
-//      if(!App.Globals.isDev)
-//         scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.localhost.js"); 
-
       scripts.push("http://fabricjs.com/lib/fabric.js");
 
       //-------------------------------------------//
@@ -154,12 +147,10 @@
 
    App.addMargins = function(config) {
       config.hud.options["margin-top"] = App.Globals.HEADER_HEIGHT;
-//      config.hud.options["margin-bottom"] = App.Globals.FOOTER_HEIGHT;
    }
 
    App.removeMargins = function(config) {
       delete config.hud.options["margin-top"];
-//      delete config.hud.options["margin-bottom"];
    }
 
    //------------------------------------------------------//
@@ -167,6 +158,5 @@
    App.changedTranslations = function(event, messages) {
       App.translations.set("messages", messages);
    }
-
 
 })( this );
