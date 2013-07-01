@@ -15,7 +15,7 @@
 	   CartothequeController.maps.push(CartothequeController.maps1)
 	   CartothequeController.maps.push(CartothequeController.maps2)
 	   CartothequeController.maps.push(CartothequeController.maps3)
-//	   CartothequeController.maps.push(CartothequeController.maps4)
+	   CartothequeController.maps.push(CartothequeController.maps4)
 	   
 	   for(var i = 0; i < CartothequeController.maps.length; i++){
 	      
@@ -184,7 +184,6 @@
       
       var magnifierOptions = {
          type       : Maperial.MAGNIFIER,
-         name       : "Magnifier",
          config     : magnifierConfig,
          width      : "200",
          height     : "200",
@@ -231,7 +230,6 @@
       
       var lensOptions = {
          type       : Maperial.LENS,
-         name       : "Lens",
          config     : lensConfig,
          width      : "200",
          height     : "200",
@@ -260,69 +258,78 @@
 
    //==================================================================//
    
-//   CartothequeController.maps4 = function()
-//   {
-//      var mainConfig   = ConfigManager.newConfig();
-//      var lensConfig   = ConfigManager.newConfig();
-//      
-//      mainConfig.map.defaultZoom    = 6
-//      mainConfig.map.latitude       = 39.504041
-//      mainConfig.map.longitude      = 134.139633
-//      
-//      var customShade = { 
-//         type: LayersManager.Shade, 
-//         source: {
-//            type     : Source.SRTM,
-//            id       : Source.SRTM,
-//            params   : {  }
-//         },
-//         params: {
-//            uLight   : [ 1, 1, 2 ], 
-//            scale    : 1
-//         },
-//         composition: {
-//            shader : Maperial.MulBlend,
-//            params : { uParams : [ 0.38, -0.27, 3 ] }
-//         }
-//      }
-//      
-//      mainConfig.layers.push        (customShade)
-//      mainConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST_SATELLITE))
-//      lensConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST_SATELLITE))
-//      
-//      var mainOptions = {
-//         type       : Maperial.MAIN,
-//         name       : "maperialDemo"
-//      }
-//      
-//      var lensOptions = {
-//         type       : Maperial.LENS,
-//         name       : "Lens",
-//         config     : lensConfig,
-//         width      : "300",
-//         height     : "300",
-//         position   : { 
-//            left    : "20%", 
-//            top     : "20%" 
-//         },
-//         padding    : 2,
-//         deltaZoom  : 1,
-//         borderRadius: 150,
-//         draggable  : true
-//      }
-//      
-//      var map = {
-//         views : [{
-//            config  : mainConfig,
-//            options : mainOptions,
-//         },{
-//            config  : lensConfig,
-//            options : lensOptions,
-//         }]
-//      }
-//         
-//      return [map]
-//   }
+   CartothequeController.maps4 = function()
+   {
+      var mainConfig   = ConfigManager.newConfig();
+      var lensConfig   = ConfigManager.newConfig();
+      
+      mainConfig.hud.elements[HUD.COMPOSITIONS]  = {
+         show : true,  
+         type : HUD.PANEL,    
+         label : "Composition",      
+         disableDrag : true,
+         position   : { 
+            left    : "0", 
+            top     : "40%" 
+         },
+      };
+      
+      mainConfig.map.defaultZoom    = 6
+      mainConfig.map.latitude       = 39.504041
+      mainConfig.map.longitude      = 134.139633
+      
+      var customTransport = { 
+            type: LayersManager.Images, 
+            source: {
+               type     : Source.Images,
+               params   : { src: Source.IMAGES_STAMEN_WATERCOLOR },
+               id       : Source.IMAGES_STAMEN_WATERCOLOR
+            },
+            params: {
+               
+            },
+            composition: {
+               shader : Maperial.MulBlend,
+               params : { uParams : [ 0.38, -0.27, 3 ] }
+            }
+      }
+      
+      mainConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
+      mainConfig.layers.push        (customTransport)
+      lensConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST_SATELLITE))
+      
+      var mainOptions = {
+         type       : Maperial.MAIN,
+         name       : "maperialDemo"
+      }
+      
+      var lensOptions = {
+         type       : Maperial.LENS,
+         config     : lensConfig,
+         width      : "200",
+         height     : "200",
+         position   : { 
+            left    : "70%", 
+            bottom  : "30%" 
+         },
+         padding    : 2,
+         deltaZoom  : 1,
+         borderRadius: 150,
+         draggable  : true
+      }
+      
+      var map = {
+         views : [{
+            config  : mainConfig,
+            options : mainOptions,
+         },{
+            config  : lensConfig,
+            options : lensOptions,
+         }]
+      }
+         
+      return [map]
+   }
    
 	//==================================================================//
 
