@@ -56,32 +56,6 @@ function MapView(maperial, map, options, config){
    this.shaders            = [Maperial.AlphaClip, Maperial.AlphaBlend, Maperial.MulBlend];
 
    //--------------------------------------------------------------//
-         
-   $('body').css('overflow', 'hidden');
-   if(options && options.width && typeof options.width == "string"){
-      var parentWidth   = this.parent ? this.parent.width : $("#TheMaperial").width()
-      var widthParams   = options.width.split("%")
-      if(widthParams.length > 1)
-         this.width = widthParams[0] * parentWidth/100
-      else
-         this.width =  options.width
-   }
-   else
-      this.width =  $("#TheMaperial").width()
-
-   if(options && options.height && typeof options.height == "string"){
-      var parentHeight   = this.parent ? this.parent.height : $("#TheMaperial").height()
-      var heightParams   = options.height.split("%")
-      if(heightParams.length > 1)
-         this.height = heightParams[0] * parentHeight/100
-      else
-         this.height =  options.height
-   }
-   else
-      this.height = $("#TheMaperial").height()
-      
-   $('body').css('overflow', 'auto');
-
 };
 
 //==================================================================//
@@ -477,7 +451,6 @@ MapView.prototype.buildAll = function() {
 MapView.prototype.finishStartup = function() {
 
    this.refreshScreen();
-   $(window).resize(Utils.apply ( this , "refreshScreen" ) );
    
    console.log("MapView is ready")
    
@@ -582,6 +555,31 @@ MapView.prototype.setCanvasSize = function() {
 MapView.prototype.refreshScreen = function() {
    console.log(" refreshing screen...")
    
+   $('body').css('overflow', 'hidden');
+   if(typeof this.options.width == "string"){
+      var parentWidth   = this.parent ? this.parent.width : $("#TheMaperial").width()
+      var widthParams   = this.options.width.split("%")
+      if(widthParams.length > 1)
+         this.width = widthParams[0] * parentWidth/100
+      else
+         this.width =  this.options.width
+   }
+   else
+      this.width =  $("#TheMaperial").width()
+
+   if(typeof this.options.height == "string"){
+      var parentHeight   = this.parent ? this.parent.height : $("#TheMaperial").height()
+      var heightParams   = this.options.height.split("%")
+      if(heightParams.length > 1)
+         this.height = heightParams[0] * parentHeight/100
+      else
+         this.height =  this.options.height
+   }
+   else
+      this.height = $("#TheMaperial").height()
+      
+   this.setCanvasSize()
+      
    $('body').css('overflow', 'hidden');
    this.context.mapCanvas.css("position", "relative");
    

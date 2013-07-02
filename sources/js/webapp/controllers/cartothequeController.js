@@ -136,8 +136,8 @@
 	      width      : "350",
 	      height     : "350",
 	      position   : { 
-	         left    : "20%", 
-	         top     : "35%" 
+	         left    : "50", 
+	         top     : "150" 
 	      }
 	   }
 
@@ -148,8 +148,8 @@
 	      width      : "370",
 	      height     : "370",
 	      position   : { 
-	         right   : "25%", 
-	         bottom  : "35%" 
+	         right   : "25", 
+	         bottom  : "135" 
 	      }
 	   }
 	   

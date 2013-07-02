@@ -89,26 +89,7 @@ Maperial.prototype.build = function(maps, options){
    
    //-------------------------------------------------------------------//
    
-   $('#TheMaperial').css('position', 'absolute');
-
-   if(options && options.left){
-      $('#TheMaperial').css('left', options.left);
-   }
-
-   if(options && options.top){
-      $('#TheMaperial').css('top', options.top);
-   }
-
-   if(options && options.width)
-      $('#TheMaperial').css('width', options.width);
-   else
-      $('#TheMaperial').css('width', $(window).width());
-  
-   
-   if(options && options.height)
-      $('#TheMaperial').css('height', options.height);
-   else
-      $('#TheMaperial').css('height', $(window).height());
+   this.refreshTheMaperial()
    
    //-------------------------------------------------------------------//
    
@@ -177,7 +158,35 @@ Maperial.prototype.destroy = function(){
 
 //==================================================================//
 
+Maperial.prototype.refreshTheMaperial = function(){
+
+   $('#TheMaperial').css('position', 'absolute');
+
+   if(this.options && this.options.left){
+      $('#TheMaperial').css('left', this.options.left);
+   }
+
+   if(this.options && this.options.top){
+      $('#TheMaperial').css('top', this.options.top);
+   }
+
+   if(this.options && this.options.width)
+      $('#TheMaperial').css('width', this.options.width);
+   else
+      $('#TheMaperial').css('width', $(window).width());
+  
+   
+   if(this.options && this.options.height)
+      $('#TheMaperial').css('height', this.options.height);
+   else
+      $('#TheMaperial').css('height', $(window).height());
+   
+}
+
+//==================================================================//
+
 Maperial.prototype.removeAllListeners = function(){
+   $(window).off("resize");
    $(window).off(MaperialEvents.MOUSE_MOVE)
    $(window).off(MaperialEvents.MAP_MOVING)
    $(window).off(MaperialEvents.ZOOM_TO_REFRESH)
@@ -188,6 +197,14 @@ Maperial.prototype.removeAllListeners = function(){
 Maperial.prototype.initListeners = function(){
    
    var maperial = this
+
+   $(window).on("resize", function(){
+      maperial.refreshTheMaperial();
+
+      for(var i = 0; i< maperial.views.length; i++){
+         maperial.views[i].refreshScreen()
+      }
+   });
    
    $(window).on(MaperialEvents.MOUSE_MOVE, function(event, map, viewTriggering, typeTriggering){
       maperial.refreshAllViews(map, viewTriggering, typeTriggering)
