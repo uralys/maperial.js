@@ -31,6 +31,7 @@
 
       $(window).off(MaperialEvents.READY, MapCreationController.maperialReady);
       $(window).off(MaperialEvents.STYLE_CHANGED, App.maperial.layersCreation.refreshLayersPanel);
+      App.maperial.destroy()
    }
    
    //==================================================================//

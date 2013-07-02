@@ -17,6 +17,7 @@
 
    StyleEditorController.cleanUI = function() {
       $(window).off(MaperialEvents.READY, StyleEditorController.maperialReady);
+      App.maperial.destroy()
    }
 
    //==================================================================//
