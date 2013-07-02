@@ -36,6 +36,8 @@
                      "/js/extensions/maperialjs/libs/RGBColor.js",
                      "/js/extensions/maperialjs/libs/hashmap.js",
                      "/js/extensions/maperialjs/libs/canvasutilities.js",
+                     "/js/extensions/maperialjs/libs/canvg.js",
+                     "/js/extensions/maperialjs/libs/StackBlur.js",
 
                      // rendering
                      "/js/extensions/maperialjs/rendering/gl-tools.js",
@@ -66,7 +68,6 @@
                      "/js/extensions/maperialjs/hud/panel-scale.js",
                      "/js/extensions/maperialjs/hud/panel-settings.js",
                      "/js/extensions/maperialjs/hud/panel-attribution.js",
-                     "/js/extensions/maperialjs/hud/panel-lens.js",
                      "/js/extensions/maperialjs/hud/triggers.js",
 
                      // managers
@@ -75,7 +76,7 @@
                      "/js/extensions/maperialjs/managers/colorbars-manager.js",
                      "/js/extensions/maperialjs/managers/layers-manager.js",
                      "/js/extensions/maperialjs/managers/sources-manager.js",
-                     "/js/extensions/maperialjs/managers/children-manager.js",
+                     "/js/extensions/maperialjs/managers/layers-creation.js",
 
                      // edition
                      "/js/extensions/maperialjs/edition/boundingbox-drawer.js",
@@ -98,48 +99,49 @@
                      $("#waitingSpin").css("display", "none")
                   })
 
-                  var config = ConfigManager.emptyConfig();
-
-            	   var lensConfig = ConfigManager.emptyConfig();
-            	   lensConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
-
-            	   var lens = {
-            	      type       : Maperial.LENS,
-            	      name       : "Lens",
-            	      config     : lensConfig,
-            	      draggable  : true,
-            	      position   : { 
-            	         left    : "20%", 
-            	         top  : "20%" 
-            	      },
-            	   }
-
-            	   var minifierConfig = ConfigManager.emptyConfig();
-            	   minifierConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-
-            	   var minifier = {
-            	      type       : Maperial.MINIFIER,
-            	      name       : "Minifier",
-            	      config     : minifierConfig,
-            	      width      : 250,
-            	      height     : 250,
-            	      position   : { 
-            	         right : "25", 
-            	         top   : "25" 
-            	      },
-            	      borderRadius : 130,
-            	   }
-
-            	   config.children.push(lens)
-            	   config.children.push(minifier)
-            	   config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_TONER))
-            	   
+                  var mainConfig   = ConfigManager.newConfig();
+			      var magnifierConfig   = ConfigManager.newConfig();
+			      
+			      mainConfig.map.defaultZoom    = 11
+			      mainConfig.map.latitude       = 46.316584
+			      mainConfig.map.longitude      = 6.486998
+			      mainConfig.layers.push        (LayersManager.getShadeLayerConfig())
+			      mainConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
+			      magnifierConfig.layers.push   (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_MAPQUEST))
+			      
+			      var mainOptions = {
+			         type       : Maperial.MAIN,
+			         name       : "maperialDemo"
+			      }
+			      
+			      var magnifierOptions = {
+			         type       : Maperial.MAGNIFIER,
+			         config     : magnifierConfig,
+			         width      : "200",
+			         height     : "200",
+			         position   : { 
+			            right   : "20%", 
+			            top     : "30%" 
+			         },
+			         padding    : 2,
+			         deltaZoom  : 1,
+			         borderRadius: 10,
+			         draggable  : true
+			      }
+			      
+			      var map = {
+			         views : [{
+			            config  : mainConfig,
+			            options : mainOptions,
+			         },{
+			            config  : magnifierConfig,
+			            options : magnifierOptions,
+			         }]
+			      }
+			         
 
                   var maperial = new Maperial()
-            	  maperial.build([{
-            	     options : { name:"maperial" },
-            	     config : config
-            	  }])
+            	  maperial.build([map])
                });
 </script>
 
