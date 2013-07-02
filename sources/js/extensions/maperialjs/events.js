@@ -8,6 +8,10 @@ this.MaperialEvents = {}
 // GLobal Events
 MaperialEvents.LOADING              = "MaperialEvents.LOADING";
 MaperialEvents.READY                = "MaperialEvents.READY";
+
+MaperialEvents.VIEW_LOADING         = "MaperialEvents.VIEW_LOADING";
+MaperialEvents.VIEW_READY           = "MaperialEvents.VIEW_READY";
+
 MaperialEvents.REFRESH_SIZES        = "MaperialEvents.REFRESH_SIZES";
 
 // Mouse Events
@@ -33,6 +37,7 @@ MaperialEvents.OPEN_STYLE           = "MaperialEvents.OPEN_STYLE";
 MaperialEvents.NEW_BOUNDING_BOX     = "MaperialEvents.NEW_BOUNDING_BOX";
 
 // Rendering Events
+MaperialEvents.SOURCE_READY         = "MaperialEvents.SOURCE_READY";
 MaperialEvents.STYLE_CHANGED        = "MaperialEvents.STYLE_CHANGED";
 MaperialEvents.COLORBAR_CHANGED     = "MaperialEvents.COLORBAR_CHANGED";
 MaperialEvents.CONTRAST_CHANGED     = "MaperialEvents.CONTRAST_CHANGED";
@@ -52,6 +57,7 @@ MaperialEvents.removeAllListeners = function (){
    $(window).off(MaperialEvents.UPDATE_LATLON);
    $(window).off(MaperialEvents.OPEN_STYLE);
    
+   $(window).off(MaperialEvents.SOURCE_READY);
    $(window).off(MaperialEvents.STYLE_CHANGED);
    $(window).off(MaperialEvents.COLORBAR_CHANGED);
    $(window).off(MaperialEvents.CONTRAST_CHANGED);

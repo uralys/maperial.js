@@ -1,32 +1,30 @@
 //==================================================================//
 
-function Maperial(tagId, width, height){
+function Maperial(){
+   console.log(" NEW Maperial ")
+   
+   this.maps      = null
+   this.options   = null
 
-   this.tagId = tagId || "_maperial";
-   this.width = width;
-   this.height = height;
+   this.views      = []
+   this.viewsReady = {}
 
-   this.config = null;
-   this.context = null;
+   this.sourcesManager     = new SourcesManager();
+   this.templateBuilder    = new TemplateBuilder();
+   this.layersCreation     = new LayersCreation(this);
 
-   this.mapRenderer = null;
-   this.mapMover = null;
-   this.mapMouse = null;
-   this.hud = null;
-
-   this.stylesManager = null;
-   this.colorbarsManager = null;
-   this.layersManager = null;
-   this.sourcesManager = null;
-
-   this.geoloc = null;
-   this.styleMenu = null;
-   this.colorbarRenderer = null;
-
-   this.templateBuilder = new TemplateBuilder();
-
-   this.shaders = [Maperial.AlphaClip, Maperial.AlphaBlend, Maperial.MulBlend];
+   window.maperial = this
 };
+
+
+//==================================================================//
+// TYPE = css class
+
+Maperial.MAIN                    = "maperial-main"
+Maperial.ANCHOR                  = "maperial-anchor"
+Maperial.LENS                    = "maperial-lens"       // camera centered on what is under it
+Maperial.MINIFIER                = "maperial-minifier"   // camera centered on the parent's center
+Maperial.MAGNIFIER               = "maperial-magnifier"  // camera centered on what is under the mouse
 
 //==================================================================//
 
@@ -37,10 +35,11 @@ Maperial.apiURL                 = 'http://api.maperial.com';
 Maperial.tileURL                = 'http://api.maperial.com';
 
 Maperial.DEFAULT_ZOOM           = 10;
-Maperial.DEFAULT_LATITUDE       = 48.833;
-Maperial.DEFAULT_LONGITUDE      = 2.333;
+Maperial.DEFAULT_LATITUDE       = 48.813;
+Maperial.DEFAULT_LONGITUDE      = 2.313;
 //Maperial.DEFAULT_LATITUDE       = 45.779017;
 //Maperial.DEFAULT_LONGITUDE      = 3.10617;
+
 
 Maperial.refreshRate            = 15; // ms
 Maperial.tileDLTimeOut          = 60000; //ms
@@ -61,606 +60,246 @@ Maperial.MulBlend               = "MulBlend";
 //==================================================================//
 
 Maperial.DEMO_MAP = {
-   "0" : "1_map_13ee017c8dac3b49852",
-   "1" : "1_map_13f18ec522f1ec62e0b",
-   "2" : "1_map_13f196019c63431328a",
-   "3" : "1_map_13f1969e6d19a5e46a5",
-   "4" : "1_map_13f1976a6cea80a51d6",
-   "5" : "1_map_13f19833d3afac2f76a",
+      "0" : "1_map_13ee017c8dac3b49852",
+      "1" : "1_map_13f18ec522f1ec62e0b",
+      "2" : "1_map_13f196019c63431328a",
+      "3" : "1_map_13f1969e6d19a5e46a5",
+      "4" : "1_map_13f1976a6cea80a51d6",
+      "5" : "1_map_13f19833d3afac2f76a",
 }
 
 //==================================================================//
 
-/**
- * Must be called whenever the config is changed, in order to build Maperial again
- */
-Maperial.prototype.restart = function(){
-   console.log("MaperialJS loads ", this.config);
+Maperial.prototype.build = function(maps, options){
+
+   if(!maps || maps.length == 0){
+      console.log("pas encore revu pour un set par defaut")
+      return
+   }
+   
+   //-------------------------------------------------------------------//
+
+   console.log("=================================")         
+   console.log("Maperial starts a new build");
    $(window).trigger(MaperialEvents.LOADING);
-   this.reset();
-   this.load();
-}
 
-//==================================================================//
+   //-------------------------------------------------------------------//
 
-Maperial.prototype.apply = function(config){
-   console.log("MaperialJS applies ", config);
-   this.config = config;
-   this.checkConfig();
-   this.restart();
-}
-
-//==================================================================//
-
-Maperial.prototype.reset = function(){
-
-   console.log("Reset maperial...");
-
-   try{
-      if(this.mapRenderer){
-         this.mapRenderer.Stop();
-         this.mapRenderer.reset();
-      }
-   }catch(e){
-   }
+   this.destroy()
+   this.templateBuilder.prepareView();
    
-   try{
-      if(this.mapMover)
-         this.mapMover.removeListeners();
-      
-      if(this.mapMouse)
-         this.mapMouse.removeListeners();
-      
-      if(this.hud)
-         this.hud.reset();
-   }catch(e){
-   }
-
-   try{
-      if(this.styleMenu)
-         this.styleMenu.removeListeners();
-   }catch(e){}
-
-   try{
-      if(this.sourcesManager)
-         this.sourcesManager.releaseEverything();
-   }catch(e){
-   }
+   this.maps = maps
+   this.options = options || {}
    
-   this.colorbarsManager = new ColorbarsManager(this);
-   this.stylesManager = new StylesManager(this);
-   this.layersManager = new LayersManager(this);
-   this.sourcesManager = new SourcesManager(this);
+   //-------------------------------------------------------------------//
+   
+   this.refreshTheMaperial()
+   
+   //-------------------------------------------------------------------//
+   
+   this.initListeners()
+   
+   //----------------------------------------------------------------------//
+   // Prepare
+   
+   for(var i = 0; i < this.maps.length; i++){
+      var map = this.maps[i]
+      console.log("preparing map ", map)
 
-   console.log("stylesCache : ", window.maperialStyles);
-}
-
-//==================================================================//
-
-Maperial.prototype.load = function() {
-
-   console.log("Starting maperialJS build...");
-
-   //--------------------------//
-
-   this.templateBuilder.build(this);
-   this.createContext();
-
-   //--------------------------//
-   // After having checked the config, there still may be no layers.
-   // For instance in webapp.map.layersCreation the user may remove every layers.
-
-   if(this.config.layers.length > 0){
-      var maperial = this;
-      maperial.loadStyles(function(){
-         maperial.loadColorbars(function(){
-            maperial.checkOSMSets();
-            maperial.build();
-         });
-      });
-   }
-   else{
-      this.buildHUD();
-      this.finishStartup();
-   }
-}
-
-//==================================================================//
-
-Maperial.prototype.checkConfig = function() {
-
-   console.log("checking config...");
-
-   //--------------------------//
-   // checking default objects
-
-   if(!this.config)
-      this.config = this.defaultConfig();
-
-   if(!this.config.hud)
-      this.config.hud = {elements:{}, options:{}};
-
-   if(!this.config.map)
-      this.config.map = {};
-
-   if(!this.config.layers)
-      this.config.layers = [];
-
-   //--------------------------//
-   // checking layer config
-
-   if(this.config.layers.length == 0){
-      if(this.config.map.layersCreation){
-         console.log("  using no layer...");
-      }
-      else{
-         console.log("  using default layers...");
-         this.config.layers.push(LayersManager.getOSMLayerConfig());
-      }      
-   }
-   else{
-      console.log("  using custom layers...");
-      this.checkIds()
-   }
-
-   //--------------------------//
-   // checking if Default style must be used
-
-   this.changeStyle(Maperial.DEFAULT_STYLE_UID, 0, false);
-}
-
-/**
- * to get source.id for old layers
- * TMP : ids should be ok for maps from now on
- */
-Maperial.prototype.checkIds = function() {
-
-   for(var i = 0; i < this.config.layers.length; i++){
-      
-      //--> Map having no source.id
-      if(!this.config.layers[i].source.id){
-         console.log("  -------> OLD MAP -------> looking for id...");
+      for(var j = 0; j < map.views.length; j++){
+         console.log("preparing view ", map.views[j])
          
-         switch(this.config.layers[i].source.type){
-            case Source.MaperialOSM:
-               this.config.layers[i].source.id = this.config.layers[i].params.styles[this.config.layers[i].params.selectedStyle]
-               break;
+         var mapView = new MapView(this, "map"+i, map.views[j].options, map.views[j].config)
+         
+         this.views.push (mapView)
+         this.templateBuilder.prepareMapView(mapView);
+      }
+   }
+   
+   //----------------------------------------------------------------------//
+   // Build
 
-            case Source.SRTM:
-               this.config.layers[i].source.id = Source.SRTM
-               break;
+   console.log("Maperial starts building " + this.views.length + " views")
+   
+   for(var i = 0; i < this.views.length; i++){
+      this.viewsReady[this.views[i].name] = false
+      this.views[i].build()
+   }
+}
 
-            case Source.Raster:
-               this.config.layers[i].source.id = this.config.layers[i].source.params.uid
-               break;
+//==================================================================//
 
-            case Source.Images:
-            case Source.WMS:
-               this.config.layers[i].source.id = this.config.layers[i].source.params.src
-               break;
+Maperial.prototype.restart = function(){
+   this.build(this.maps, this.options)
+}
+
+//==================================================================//
+
+Maperial.prototype.width = function(){
+   return $('#TheMaperial').width();
+}
+
+Maperial.prototype.height = function(){
+   return $('#TheMaperial').height();
+}
+   
+//==================================================================//
+   
+Maperial.prototype.destroy = function(){
+
+   this.removeAllListeners()
+   this.sourcesManager.releaseNetwork()
+   this.sourcesManager.releaseAllReceivers()
+
+   for(var i = 0; i < this.views.length; i++){
+      this.views[i].reset()
+      $("#panel"+this.views[i].name).remove()
+   }
+
+   this.views = []
+   this.templateBuilder.destroyView();
+}
+
+//==================================================================//
+
+Maperial.prototype.refreshTheMaperial = function(){
+
+   $('#TheMaperial').css('position', 'absolute');
+
+   if(this.options && this.options.left){
+      $('#TheMaperial').css('left', this.options.left);
+   }
+
+   if(this.options && this.options.top){
+      $('#TheMaperial').css('top', this.options.top);
+   }
+
+   if(this.options && this.options.width)
+      $('#TheMaperial').css('width', this.options.width);
+   else
+      $('#TheMaperial').css('width', $(window).width());
+  
+   
+   if(this.options && this.options.height)
+      $('#TheMaperial').css('height', this.options.height);
+   else
+      $('#TheMaperial').css('height', $(window).height());
+   
+}
+
+//==================================================================//
+
+Maperial.prototype.removeAllListeners = function(){
+   $(window).off("resize");
+   $(window).off(MaperialEvents.MOUSE_MOVE)
+   $(window).off(MaperialEvents.MAP_MOVING)
+   $(window).off(MaperialEvents.ZOOM_TO_REFRESH)
+   $(window).off(MaperialEvents.VIEW_READY)
+   
+}
+
+Maperial.prototype.initListeners = function(){
+   
+   var maperial = this
+
+   $(window).on("resize", function(){
+      maperial.refreshTheMaperial();
+
+      for(var i = 0; i< maperial.views.length; i++){
+         maperial.views[i].refreshScreen()
+      }
+   });
+   
+   $(window).on(MaperialEvents.MOUSE_MOVE, function(event, map, viewTriggering, typeTriggering){
+      maperial.refreshAllViews(map, viewTriggering, typeTriggering)
+   });
+
+   $(window).on(MaperialEvents.MAP_MOVING, function(event, map, viewTriggering, typeTriggering){
+      maperial.refreshAllViews(map, viewTriggering, typeTriggering)
+   });
+
+   $(window).on(MaperialEvents.ZOOM_TO_REFRESH, function(event, map, viewTriggering, typeTriggering, zoom){
+      maperial.refreshAllViews(map, viewTriggering, typeTriggering, zoom)
+   });
+   
+   
+   $(window).on(MaperialEvents.VIEW_READY, function(event, view){
+      maperial.viewsReady[view] = true
+      console.log("view " + view + " is ready")
+      
+      var maperialIsReady = true
+      for(var i = 0; i< maperial.views.length; i++){
+         if(!maperial.viewsReady[maperial.views[i].name]){
+            console.log("view " + maperial.views[i].name + " still being built")
+            maperialIsReady = false
+            break;
          }
+         else{
+            console.log("view " + maperial.views[i].name + " ready")
+         }
+            
       }
-
-      //--> Map having shade --> now source.SRTM
-      else if(this.config.layers[i].source.id == "shade"){
-         console.log("  -------> OLD MAP with shade -------> switching to SRTM...");
-         this.config.layers[i].source.type = Source.SRTM
-         this.config.layers[i].source.id   = Source.SRTM
-      }
-   }
-}
-
-//==================================================================//
-
-Maperial.prototype.emptyConfig = function() {
-   return config = {hud:{elements:{}, options:{}}, map: {defaultZoom: Maperial.DEFAULT_ZOOM}, layers:[]};
-}
-
-Maperial.prototype.defaultConfig = function() {
-   console.log("using default config");
-   var config = this.emptyConfig();
-   HUD.applyDefaultHUD(config);
-   return config;
-}
-
-//==================================================================//
-
-Maperial.prototype.createContext = function() {
-
-   if(!this.context){
-      console.log("creating context...");
-
-      this.context         = {};
-      this.context.coordS  = new CoordinateSystem ( Maperial.tileSize );
-   }
-   else
-      console.log("reset context...");
-
-   //----------------------------------------------------------
-
-   this.context.centerM    = this.context.coordS.LatLonToMeters( this.startLatitude() , this.startLongitude() );
-   this.context.mouseM     = this.context.centerM;     // Mouse coordinates in meters
-   this.context.mouseP     = null;                     // Mouse coordinates inside the canvas
-   this.context.zoom       = this.startZoom();
-
-   //----------------------------------------------------------
-   // set new divs (ember erase and build new divs)
-
-   this.context.mapCanvas = $("#Map"+this.tagId);
-   this.setCanvasSize();
-
-   if(this.config.hud.elements[HUD.MAGNIFIER]){
-      this.context.magnifierCanvas = $("#Magnifier"+this.tagId);
-   }
-
-   //----------------------------------------------------------
-}
-
-Maperial.prototype.startLatitude = function() {
-   if(this.config.map.currentLat)
-      return this.config.map.currentLat
-   else if(this.config.map.latMin)
-      return (this.config.map.latMin + this.config.map.latMax)/2;
-   else
-      return Maperial.DEFAULT_LATITUDE;
-}
-
-Maperial.prototype.startLongitude = function() {
-   if(this.config.map.currentLon)
-      return this.config.map.currentLon
-   else if(this.config.map.lonMin)
-      return (this.config.map.lonMin + this.config.map.lonMax)/2;
-   else
-      return Maperial.DEFAULT_LONGITUDE;
-}
-
-Maperial.prototype.startZoom = function() {
-   if(this.config.map.currentZoom)
-      return this.config.map.currentZoom
-   else if(this.config.map.defaultZoom)
-      return this.config.map.defaultZoom;
-   else
-      return Maperial.DEFAULT_ZOOM;
-}
-
-//==================================================================//
-
-Maperial.prototype.loadStyles = function(next){
-
-   console.log("checking styles...");
-   var styleUIDs = [];
-
-   for(var i = 0; i < this.config.layers.length; i++){
-      var layerParams = this.config.layers[i].params;
-      if(layerParams.styles){
-         styleUIDs.push(layerParams.styles[layerParams.selectedStyle]);
-
-         if(this.layersManager.firstOSMPosition < 0)
-            this.layersManager.firstOSMPosition = i;
-      }
-   }
-
-   if(styleUIDs.length > 0){
-      this.stylesManager.fetchStyles(styleUIDs, next);
-   }
-   else 
-      next();
-}
-
-//==================================================================//
-
-Maperial.prototype.changeStyle = function(styleUID, position, refresh){
-
-   if(position === undefined) position = 0;
-   if(refresh === undefined) refresh = true;
-
-   for(var i = 0; i < this.config.layers.length; i++){
-
-      if(this.config.layers[i].source.type != Source.MaperialOSM)
-         continue;
-
-      var layerParams = this.config.layers[i].params;
-      if(!layerParams.styles || refresh){
-
-         if(refresh)
-            console.log("Changing style...");
-         else
-            console.log("  using default style...");
-
-         layerParams.styles = {};
-         layerParams.styles[position] = styleUID;
-         layerParams.selectedStyle = position;
-      }
-   }
-
-   if(refresh){
-      var me = this
-      this.stylesManager.loadStyle(styleUID, function(){
-         var mapLatLon = me.context.coordS.MetersToLatLon(me.context.centerM.x, me.context.centerM.y)
-         
-         me.config.map.currentLat    = mapLatLon.y
-         me.config.map.currentLon    = mapLatLon.x
-         me.config.map.currentZoom   = me.context.zoom
-         
-         $(window).trigger(MaperialEvents.STYLE_CHANGED);
-      })
-   }
-}
-
-//==================================================================//
-
-Maperial.prototype.loadColorbars = function(next){
-
-   console.log("checking colorbars...");
-   var colorbarUIDs = [];
-
-   for(var i = 0; i < this.config.layers.length; i++){
-      var layerParams = this.config.layers[i].params;
-      if(layerParams.colorbars){
-         colorbarUIDs.push(layerParams.colorbars[layerParams.selectedColorbar]);
-      }
-   }
-
-   if(colorbarUIDs.length > 0){
-      this.colorbarsManager.fetchColorbars(colorbarUIDs, next);
-   }
-   else 
-      next();
-}
-
-//==================================================================//
-
-Maperial.prototype.checkOSMSets = function(){
-
-   if(this.stylesManager.styleCacheEmpty())
-      return;
-
-   console.log("checking OSM sets...");
-
-   var selectedStyle = this.stylesManager.getSelectedStyle();
-
-   if(selectedStyle && !this.config.map.osmSets){
-      this.layersManager.defaultOSMSets(selectedStyle);
-   }
-
-   this.refreshOSMVisibilities();
-}
-
-Maperial.prototype.refreshOSMVisibilities = function(){
-   this.context.osmVisibilities = LayersManager.buildOSMVisibilities(this.config.map.osmSets);
-}
-
-//==================================================================//
-
-Maperial.prototype.build = function() {
-
-   console.log("starting build...");
-
-   //--------------------------//
-
-   this.buildMap();
-   this.buildHUD();
-
-   if(this.config.map.edition)
-      this.buildStyleMenu();
-
-   if(!this.colorbarsManager.colorbarCacheEmpty()){
-      this.buildColorbar();
-   }
-
-   //--------------------------//
-   
-   if(this.requireGeoloc())
-      this.initGeoloc();
-
-   //--------------------------//
-
-   this.finishStartup();
-}
-
-//==================================================================//
-
-Maperial.prototype.finishStartup = function() {
-
-   this.refreshScreen();
-   $(window).resize(Utils.apply ( this , "refreshScreen" ) );
-   $(window).trigger(MaperialEvents.READY);
-   
-   console.log("maperial is ready")
-}
-
-//==================================================================//
-
-Maperial.prototype.buildMap = function() {
-
-   console.log("  building map...");
-
-   this.mapRenderer = new MapRenderer( this );
-   this.mapMover = new MapMover( this );
-   this.mapMouse = new MapMouse( this );
-   this.mapRenderer.Start();
-
-   if(this.config.map.requireBoundingBoxDrawer){
       
-      this.boundingBoxDrawer = new BoundingBoxDrawer(this);
-      
-      if(this.config.map.boundingBoxStartLat){
-         this.boundingBoxDrawer.centerLat = this.config.map.boundingBoxStartLat;
-         this.boundingBoxDrawer.centerLon = this.config.map.boundingBoxStartLon;
-         this.SetCenter(this.boundingBoxDrawer.centerLat, this.boundingBoxDrawer.centerLon);
+      if(maperialIsReady){
+         console.log("Maperial is ready")         
+         console.log("=================================")         
+         $(window).trigger(MaperialEvents.READY)
+      }
+   });
+
+   $(window).on(MaperialEvents.VIEW_LOADING, function(event, view){
+      maperial.viewsReady[view] = false
+      console.log("view " + view + " is loading | " + maperial.viewsReady + " views ready")
+      $(window).trigger(MaperialEvents.LOADING);
+   });
+}
+
+//==================================================================//
+
+Maperial.prototype.refreshAllViews = function(map, viewTriggering, typeTriggering, zoom){
+   for(var i = 0; i < this.views.length; i++){
+      if(this.views[i].map == map && this.views[i].name != viewTriggering){
+         this.views[i].refreshCamera(viewTriggering, typeTriggering, zoom)
       }
    }
 }
 
 //==================================================================//
-
-Maperial.prototype.requireGeoloc = function() {
-   return this.config.hud.elements[HUD.GEOLOC] && (this.config.hud.elements[HUD.GEOLOC].show || this.config.hud.elements[HUD.SETTINGS]);
-}
-
-Maperial.prototype.initGeoloc = function() {
-   this.geoloc = new GeoLoc(this, "GeoLoc"+this.tagId, $("#GeoLocGo"+this.tagId), false);
-}
-
-//==================================================================//
-
-Maperial.prototype.buildStyleMenu = function() {
-   this.styleMenu = new StyleMenu($("#DetailsMenu"+this.tagId) , $("#QuickEdit"+this.tagId) , $("#Zooms"+this.tagId) , this);
-}
-
-//==================================================================//
-
-Maperial.prototype.buildColorbar = function() {
-   this.colorbar = new Colorbar(
-         $("#ColorBar"+this.tagId),
-         this.colorbarsManager.getColorbar(Maperial.DEFAULT_COLORBAR_UID),
-         50,355,50,40,true,25.4,375.89
-   );
    
-   this.mapRenderer.renderAllColorBars();
-}
-
-//==================================================================//
-
-Maperial.prototype.buildHUD = function() {
-   this.hud = new HUD( this );
-}
-
-//==================================================================//
-
-Maperial.prototype.setCanvasSize = function() {
-
-   var w = $(window).width(); 
-   var h = $(window).height();
-
-   if(this.width)
-      w = this.width;
-
-   if(this.height)
-      h = this.height;
-
-   if(this.context.mapCanvas[0]){
-      this.context.mapCanvas.css("width", w);
-      this.context.mapCanvas.css("height", h);
-      this.context.mapCanvas[0].width = w;
-      this.context.mapCanvas[0].height = h;
+Maperial.prototype.getMainView = function(map){
+   for(var i = 0; i < this.views.length; i++){
+      if(this.views[i].map == map && this.views[i].type == Maperial.MAIN){
+         return this.views[i]
+      }
    }
 }
 
-Maperial.prototype.refreshScreen = function() {
-   console.log(" refreshing screen...")
+Maperial.prototype.getView = function(name){
+   for(var i = 0; i < this.views.length; i++){
+      if(this.views[i].name == name){
+         return this.views[i]
+      }
+   }
    
-   try{
-      this.mapRenderer.fitToSize();
-   }
-   catch(e){
-      console.log("------------> fito size pb")
-      console.log(e)
-   }
-
-   try{
-      this.hud.placeElements();
-      this.mapMover.resizeDrawers();
-   }
-   catch(e){
-      console.log("------------> placing pb")
-      console.log(e)
-   }
+   return this.views[0]
 }
 
 //==================================================================//
 
-Maperial.prototype.refreshCurrentLatLon = function(){
-   var mapLatLon = this.context.coordS.MetersToLatLon(this.context.centerM.x, this.context.centerM.y)
-   this.config.map.currentLat   = mapLatLon.y
-   this.config.map.currentLon   = mapLatLon.x
-   this.config.map.currentZoom  = this.context.zoom
+Maperial.prototype.getZoom = function(map){
+   return this.getMainView(map).context.zoom;
 }
 
 //==================================================================//
 
-Maperial.prototype.centerMap = function(lat, lon, zoom, type){
-
-   switch(type){
-      case "prepare" : 
-         this.prepareCenter(lat, lon, zoom)
-         break;
-      case "place" : 
-         this.placeMap(lat, lon, zoom)
-         break;
-   }  
-}
-
-/**
- * Prepare the config being created to put the map at given x.y.z
- */
-Maperial.prototype.prepareCenter = function(lat, lon, zoom){
-
-   console.log("prepareCenter")
-   console.log(this)
-   
-   this.config.map.currentLat   = lat
-   this.config.map.currentLon   = lon
-   this.config.map.currentZoom  = zoom
-}
-
-/**
- * Immediately put the map at given x.y.z
- */
-Maperial.prototype.placeMap = function(lat, lon, zoom){
-
-   console.log("placeMap")
-   console.log(this)
-   
-   this.SetCenter (lat, lon)
-   this.SetZoom   (zoom)
+Maperial.prototype.centerWMS = function (viewName, src, type){
+   return this.getView(viewName).centerWMS(src, type);
 }
 
 //==================================================================//
 
-Maperial.prototype.SetCenter = function(lat,lon){
-   this.context.centerM = this.context.coordS.LatLonToMeters( lat , lon );
-   this.refreshCurrentLatLon();
-   this.mapRenderer.DrawScene();
+Maperial.prototype.getCenterP = function(viewName){
+   var view = this.getView(viewName);
+   return view.context.coordS.MetersToPixels(view.context.centerM.x, view.context.centerM.y, view.context.zoom);
 }
 
-Maperial.prototype.SetZoom = function(z){
-   if ( z > -1 && z < 19 ){
-      this.context.zoom = z;
-   }
-}
-
-Maperial.prototype.GetZoom = function(){
-   return this.context.zoom;
-}
-
-Maperial.prototype.ZoomIn = function(){
-   if ( this.context.zoom < 18 ){
-      this.SetZoom(this.context.zoom + 1 );
-   }
-}
-
-Maperial.prototype.ZoomOut = function(){
-   if ( this.context.zoom > 0 ){
-      this.SetZoom(this.context.zoom - 1 );
-   }
-}
-
-//==================================================================//
-
-Maperial.prototype.showBoundingBox = function(boundingBox){
-   this.boundingBoxDrawer.init(boundingBox);
-   $("#drawBoardContainer"+this.tagId).removeClass("hide");
-}
-
-Maperial.prototype.hideBoundingBox = function(){
-   $("#drawBoardContainer"+this.tagId).addClass("hide");
-}
-
-Maperial.prototype.deactivateBoundingBoxDrawing = function(){
-   this.boundingBoxDrawer.deactivateDrawing();
-}
-
-Maperial.prototype.activateBoundingBoxDrawing = function(){
-   this.boundingBoxDrawer.activateDrawing();
-}

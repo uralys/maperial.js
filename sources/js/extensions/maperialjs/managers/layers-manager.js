@@ -2,8 +2,8 @@
 //- LayersManager 
 //-------------------------------------------//
 
-function LayersManager(maperial){
-   this.maperial = maperial;
+function LayersManager(mapView){
+   this.mapView = mapView;
    this.firstOSMPosition = -1; // set in maperial.loadStyles
 }
 
@@ -71,67 +71,71 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
    
    //-----------------------//
 
-   // la config est modifiee ici plutot que dans le refresh
-   // ainsi a la fin de cet appel, la config est prete dans tous les cas, meme Source.MaperialOSM
-   // et donc mapCreationController va pouvoir faire son refresh de panel a partir de la config sans pb.
-   this.maperial.config.layers.push(layerConfig);
-   
-   //-----------------------//
-   
    var me = this
-   var refresh = function() { return me.refreshMaperialForLayerAdded(layerConfig) }
-   
+   var refresh = function() { 
+      me.mapView.config.layers.push(layerConfig)
+      me.refreshMaperialForLayerAdded(layerConfig) 
+   }
+
    if(sourceType == Source.MaperialOSM)
-      this.maperial.stylesManager.fetchStyles([layerConfig.params.styles[layerConfig.params.selectedStyle]], refresh)
+      this.mapView.stylesManager.fetchStyles([layerConfig.params.styles[layerConfig.params.selectedStyle]], refresh)
    else
-      this.refreshMaperialForLayerAdded(layerConfig)
+      refresh()
    
 }
 
 LayersManager.prototype.refreshMaperialForLayerAdded = function(layerConfig) {
-   if(this.maperial.config.layers.length == 1){
-      this.maperial.restart()      
+   
+   if(this.mapView.config.layers.length == 1){
+      this.mapView.restart()      
    }
    else{
-      this.maperial.sourcesManager.addSource(layerConfig)
-      this.maperial.mapRenderer.addLayer(layerConfig)
-      this.maperial.hud.refresh()
+      console.log("------------ refreshMaperialForLayerAdded ", this.mapView.config.map.osmSets)
+      this.mapView.maperial.sourcesManager.addSource(this.mapView.name, layerConfig)
+      this.mapView.mapRenderer.addLayer(layerConfig)
+      this.mapView.hud.refresh()
    }
+
 }
 
 //-------------------------------------------//
 
 LayersManager.prototype.deleteLayer = function(layerRemovedPosition) {
-   var layerRemoved = this.maperial.config.layers.splice(layerRemovedPosition, 1)[0];
+   
+   var layerRemoved = this.mapView.config.layers.splice(layerRemovedPosition, 1)[0];
 
-   for(i in this.maperial.config.map.osmSets){
-      if(this.maperial.config.map.osmSets[i].layerPosition > layerRemovedPosition)
-         this.maperial.config.map.osmSets[i].layerPosition--;
+   for(i in this.mapView.config.map.osmSets){
+      if(this.mapView.config.map.osmSets[i].layerPosition > layerRemovedPosition)
+         this.mapView.config.map.osmSets[i].layerPosition--;
    }
 
+
+   console.log("------------ deleteLayer ", this.mapView.config.map.osmSets)
+   
    //-----------------------//
    
-   if(this.maperial.config.layers.length == 0){
-      this.maperial.mapRenderer.Stop()
-      this.maperial.mapRenderer.reset()
+   if(this.mapView.config.layers.length == 0){
+      this.mapView.maperial.restart()
    }
-   
-   this.maperial.sourcesManager.removeSource(layerRemoved)
-   this.maperial.mapRenderer.removeLayer(layerRemovedPosition)
-   this.maperial.hud.refresh()
+   else{
+      this.mapView.maperial.sourcesManager.detachSource(this.mapView.name, layerRemoved.source.id)
+      this.mapView.mapRenderer.removeLayer(layerRemovedPosition)
+      this.mapView.hud.refresh()
+   }
    
 }
 
 //=======================================================================================//
 
+// TODO
 LayersManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 
-   if(this.maperial.config.layers[layerIndex].type == Source.Raster
-         && this.maperial.config.layers[layerIndex].source.params.uid != rasterUID){
+   if(this.mapView.config.layers[layerIndex].type == Source.Raster
+         && this.mapView.config.layers[layerIndex].source.params.uid != rasterUID){
 
-      this.maperial.config.layers[layerIndex].source.params.uid = rasterUID;
-      this.maperial.config.layers[layerIndex].source.id         = rasterUID;
-      this.maperial.restart();
+      this.mapView.config.layers[layerIndex].source.params.uid = rasterUID;
+      this.mapView.config.layers[layerIndex].source.id         = rasterUID;
+      this.mapView.restart();
    }
 }
 
@@ -139,19 +143,26 @@ LayersManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 
 LayersManager.prototype.changeImages = function(layerIndex, imagesSrc) {
 
-   if(this.maperial.config.layers[layerIndex].type == Source.Images
-         && this.maperial.config.layers[layerIndex].source.params.src != imagesSrc){
+   if(this.mapView.config.layers[layerIndex].type == Source.Images
+   && this.mapView.config.layers[layerIndex].source.params.src != imagesSrc){
 
-      this.maperial.config.layers[layerIndex].source.params.src = imagesSrc;
-      this.maperial.config.layers[layerIndex].source.id         = imagesSrc;
-      this.maperial.restart();
+      this.mapView.maperial.sourcesManager.detachSource(this.mapView.name, this.mapView.config.layers[layerIndex].source.id)
+
+      this.mapView.config.layers[layerIndex].source.params.src = imagesSrc;
+      this.mapView.config.layers[layerIndex].source.id         = imagesSrc;
+
+      this.mapView.maperial.sourcesManager.addSource(this.mapView.name, this.mapView.config.layers[layerIndex])
+      this.mapView.mapRenderer.changeLayer(this.mapView.config.layers[layerIndex], layerIndex)
+      this.mapView.hud.refresh()
    }
+   
+   console.log(this.mapView.maperial.sourcesManager.sources)
 }
 
 LayersManager.prototype.switchImagesTo = function(imagesSrc) {
 
-   for(var i = 0; i < this.maperial.config.layers.length; i++){
-      if(this.maperial.config.layers[i].source.type == Source.Images){
+   for(var i = 0; i < this.mapView.config.layers.length; i++){
+      if(this.mapView.config.layers[i].source.type == Source.Images){
          this.changeImages(i, imagesSrc);
          break;
       }
@@ -164,39 +175,45 @@ LayersManager.prototype.switchImagesTo = function(imagesSrc) {
  * exchangedIds contains a mapping between old layerIndexes and the new one, after a layer reposition
  * example, with 3 layers, after moving layer0 (ui bottom) to the top (becomes layer 2) : 
  * exchangedIds = {
-     {0: 1},
-     {1: 2},
-     {2: 0}
+     {0: 2},
+     {2: 1},
+     {1: 0}
    } 
  */
 LayersManager.prototype.exchangeLayers = function(exchangedIds) {
 
    var newLayers = [];
+   
    for(id in exchangedIds){
-      newLayers.push(this.maperial.config.layers[exchangedIds[id]]);
+      newLayers[exchangedIds[id]] = this.mapView.config.layers[id];
    }
 
-   for(i in this.maperial.config.map.osmSets)
-      this.maperial.config.map.osmSets[i].layerPosition = exchangedIds[this.maperial.config.map.osmSets[i].layerPosition];
+   for(i in this.mapView.config.map.osmSets){
+      if(this.mapView.config.map.osmSets[i].layerPosition >= 0)
+         this.mapView.config.map.osmSets[i].layerPosition = exchangedIds[this.mapView.config.map.osmSets[i].layerPosition];
+   }
+   
+   this.mapView.config.layers = newLayers;
 
-   this.maperial.config.layers = newLayers;
-
-   this.maperial.mapRenderer.exchangeLayers(exchangedIds)
-   this.maperial.hud.refresh()
+   this.mapView.mapRenderer.exchangeLayers(exchangedIds)
+   this.mapView.hud.refresh()
 }
 
 
 //=======================================================================================//
 
-
-LayersManager.prototype.detachSet = function(setIndex) {
-   this.maperial.config.map.osmSets[setIndex].layerPosition = -1;
-   this.maperial.restart();
+LayersManager.prototype.detachSet = function(setIndex, layerPosition) {
+   this.mapView.config.map.osmSets[setIndex].layerPosition = -1;
+   this.mapView.refreshOSMVisibilities();
+   this.mapView.mapRenderer.resetLayer(layerPosition);
+   this.mapView.hud.refresh()
 }
 
 LayersManager.prototype.attachSet = function(setIndex, layerPosition) {
-   this.maperial.config.map.osmSets[setIndex].layerPosition = layerPosition;
-   this.maperial.restart();
+   this.mapView.config.map.osmSets[setIndex].layerPosition = layerPosition;
+   this.mapView.refreshOSMVisibilities();
+   this.mapView.mapRenderer.resetLayer(layerPosition);
+   this.mapView.hud.refresh()
 }
 
 
@@ -207,7 +224,7 @@ LayersManager.prototype.defaultOSMSets = function(style) {
    console.log("  building default OSM Sets for style '" + style.name + "'...");
    console.log("  firstOSMPosition : " + this.firstOSMPosition); 
 
-   this.maperial.config.map.osmSets = {
+   this.mapView.config.map.osmSets = {
          "0" : {
             label: "Roads", 
             subLayerIds:["02f", "030", "031", "032", "033", "034", "035", "036", "037", "038", "039", "03a", "03b", "03c","03d", "03e"], 
@@ -236,35 +253,36 @@ LayersManager.prototype.defaultOSMSets = function(style) {
    for(subLayerId in style.content){
 
       var addInOthers = true;
-      for(i in this.maperial.config.map.osmSets){
+      for(i in this.mapView.config.map.osmSets){
          if(i == "3")
             continue;
 
-         if($.inArray(subLayerId, this.maperial.config.map.osmSets[i].subLayerIds) >= 0){
+         if($.inArray(subLayerId, this.mapView.config.map.osmSets[i].subLayerIds) >= 0){
             addInOthers = false;
             break;
          }
       }
 
       if(addInOthers){
-         this.maperial.config.map.osmSets["3"].subLayerIds.push(subLayerId); 
+         this.mapView.config.map.osmSets["3"].subLayerIds.push(subLayerId); 
       }
    }
 
    // ----------------------------------------------
    // init osmSets
 
-   for(i in this.maperial.config.map.osmSets){
-      this.maperial.config.map.osmSets[i].layerPosition = this.firstOSMPosition;
+   for(i in this.mapView.config.map.osmSets){
+      this.mapView.config.map.osmSets[i].layerPosition = this.firstOSMPosition;
    }
+
 }
 
 //=======================================================================================//
 
 LayersManager.prototype.atLeastOneImageLayer = function() {
 
-   for(var i = 0; i < this.maperial.config.layers.length; i++){
-      if(this.maperial.config.layers[i].source.type == Source.Images)
+   for(var i = 0; i < this.mapView.config.layers.length; i++){
+      if(this.mapView.config.layers[i].source.type == Source.Images)
          return true;
    }
 
@@ -276,7 +294,7 @@ LayersManager.prototype.atLeastOneImageLayer = function() {
 LayersManager.buildOSMVisibilities = function(osmSets) {
 
    console.log("building OSM visibilities...");
-
+   
    var osmVisibilities = {};
 
    for(s in osmSets){
@@ -293,7 +311,7 @@ LayersManager.buildOSMVisibilities = function(osmSets) {
 
 LayersManager.prototype.changeComposition = function(l, shader) {
 
-   var composition = this.maperial.config.layers[l].composition;
+   var composition = this.mapView.config.layers[l].composition;
 
    //-----------------------------------------------//
    // storing previous params
@@ -307,28 +325,15 @@ LayersManager.prototype.changeComposition = function(l, shader) {
 
    composition.shader = shader;
 
-   if(composition.storedparams && composition.storedparams[shader])
+   if(composition.storedparams && composition.storedparams[shader]){
       composition.params = composition.storedparams[shader]
+   }
    else{
-      switch(shader){
-
-         case Maperial.AlphaClip : 
-            composition.params = LayersManager.defaultAlphaClipParams
-            break;
-
-         case Maperial.AlphaBlend : 
-            composition.params = LayersManager.defaultAlphaBlendParams
-            break;
-
-         case Maperial.MulBlend : 
-            composition.params = LayersManager.defaultMulBlendParams
-            break;
-      }
+      composition.params = LayersManager.getDefaultParams(shader)
    }
 
-   console.log("setting uParams : " + composition.params.uParams)
-
-   this.maperial.restart();   
+   this.mapView.mapRenderer.resetLayer(l)  
+   this.mapView.hud.refresh()
 }
 
 //=======================================================================================//
@@ -417,8 +422,8 @@ LayersManager.getImagesLayerConfig = function(sourceType, src) {
 
       },
       composition: {
-         shader : Maperial.AlphaBlend,
-         params : LayersManager.defaultAlphaBlendParams
+         shader : Maperial.MulBlend,
+         params : LayersManager.defaultMulBlendParams
       }
    }
 }
@@ -434,8 +439,8 @@ LayersManager.getShadeLayerConfig = function() {
          params   : {  }
       },
       params: {
-         uLight   : [ 0, 0, 50 ], 
-         scale    : 50
+         uLight   : [ 10, 10, 20 ], 
+         scale    : 10
       },
       composition: {
          shader : Maperial.MulBlend,

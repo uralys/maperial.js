@@ -8,7 +8,9 @@
 
 	TeamController.renderUI = function()
 	{
-	   
+      Utils.randomRotate("photoDjoul")
+      Utils.randomRotate("photoVivien")
+      Utils.randomRotate("photoChris")
 	}
 
 	TeamController.cleanUI = function()

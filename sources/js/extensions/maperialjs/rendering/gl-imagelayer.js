@@ -14,8 +14,10 @@ ImageLayer.prototype.GetType = function ( ) {
 }
 
 ImageLayer.prototype.Init = function ( data ) {
+
    if (this.tex){
       console.log("tex ready")
+      //this.Reset()
       return;
    }
    if (data) {
@@ -34,12 +36,8 @@ ImageLayer.prototype.Reset = function (  ) {
 }
 
 ImageLayer.prototype.Release = function (  ) {
-   var gl = this.gl;
-   if (this.tex) {
-      gl.deleteTexture ( this.tex );
-      delete this.tex;
-      this.tex = null;
-   }
+   this.Reset()
+   
    if (this.data) {
       delete this.data;
       this.data = null;

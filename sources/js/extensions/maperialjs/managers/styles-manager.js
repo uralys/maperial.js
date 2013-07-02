@@ -2,9 +2,9 @@
 //- StylesManager - note: "StyleManager" exists as webapp.managers.styleManager...
 //-------------------------------------------//
 
-function StylesManager(maperial){
+function StylesManager(mapView){
 
-   this.maperial = maperial;
+   this.mapView = mapView;
 
    this.stylesToLoad = null;
    this.nextFunction = null;
@@ -27,10 +27,14 @@ StylesManager.prototype.styleCacheEmpty = function() {
  */
 StylesManager.prototype.getSelectedStyle = function() {
 
-   for(var i = 0; i < this.maperial.config.layers.length; i++){
-      var layerParams = this.maperial.config.layers[i].params;
+   console.log("-------> getSelectedStyle")
+   
+   for(var i = 0; i < this.mapView.config.layers.length; i++){
+      console.log("-------> layer",i,this.mapView.config.layers[i])
+      var layerParams = this.mapView.config.layers[i].params;
       if(layerParams.styles){
          var styleUID = layerParams.styles[layerParams.selectedStyle];
+         console.log("-------> styleUID",styleUID)
          return window.maperialStyles[styleUID];
       }
    }
@@ -83,11 +87,13 @@ StylesManager.prototype.loadStyle = function(styleUID, next) {
       success: function (style) {
          window.maperialStyles[styleUID] = {uid : styleUID, name: styleUID, content:style};
          me.LoadFont(styleUID,next);
-         //me.LoadSymb(styleUID,next);
          //next()
       }
    });
+
 }
+
+//-------------------//
 
 StylesManager.prototype.LoadFont = function (styleUID,next) {
    if( !( styleUID in window.maperialStyles ) || !window.maperialStyles[styleUID].content ){
@@ -139,7 +145,9 @@ StylesManager.prototype.LoadFont = function (styleUID,next) {
       });
    }
 }   
+
 //----------------------------//
+
 StylesManager.prototype.LoadSymb = function (styleUID,next) {
 
    if( !( styleUID in window.maperialStyles ) || !window.maperialStyles[styleUID].content ){
@@ -231,6 +239,7 @@ StylesManager.prototype.LoadSymb = function (styleUID,next) {
       }
    }
 }
+
 //----------------------------//
 
 StylesManager.prototype.loadNextStyle = function() {
@@ -250,4 +259,3 @@ StylesManager.prototype.getSymbURL = function(name) {
 StylesManager.prototype.getFontURL = function(name) {
    return Maperial.staticURL + "/font/" + name.replace(" ","_") + "_400.font.js";
 }
-

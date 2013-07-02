@@ -66,12 +66,19 @@ Source.WMS_CORINE_LAND_COVER        = "wms.corine_land_cover";
 
 //-----------------------------------------------------------------------------------//
 
-function Source (id, type, params) {
+function Source (id, type, params, receiverName) {
    this.id     = id;
    this.type   = type;
    this.params = params;
    
-   this.nbLayers = 1;
+   this.receivers = new HashMap();
+   this.receivers.put(receiverName, 1);
+}
+
+//-----------------------------------------------------------------------------------//
+
+Source.prototype.isForMe = function (receiverName){
+   return this.receivers.get(receiverName);
 }
 
 //-----------------------------------------------------------------------------------//

@@ -2,17 +2,17 @@
 //- SourcesManager
 //-------------------------------------------//
 
-function SourcesManager(maperial){
-   this.maperial = maperial;
+function SourcesManager(){
 
    this.data      = {};
    this.requests  = {};
-   this.load      = {};
+   this.complete  = {};
    this.errors    = {};
 
    this.sources   = [];
+   this.receivers = [];
 
-   this.buildSources(this.maperial.config.layers);
+   this.requestsCounter = new HashMap();
 }
 
 //---------------------------------------------------------------------------//
@@ -22,21 +22,25 @@ function SourcesManager(maperial){
  * if many layers require the same source, this source is put once in this.sources.
  * This way, only one source is loaded, and the data is copied in each layer.
  */
-//TODO : tout pourri ! on doit pouvoir avoir plusieurs rasters
-SourcesManager.prototype.buildSources = function(layers){
-   console.log("  fetching sources...");
+SourcesManager.prototype.addReceiver = function(receiver){
+   console.log("  fetching sources for receiver " + receiver.name + "...");
 
-   for(var i = 0; i < layers.length; i++){
-      this.addSource(layers[i])
+   for(var i = 0; i < receiver.config.layers.length; i++){
+      this.addSource(receiver.name, receiver.config.layers[i])
    }
+   
+   this.receivers.push(receiver)
 }
 
-SourcesManager.prototype.addSource = function(layer){
+SourcesManager.prototype.addSource = function(receiverName, layer){
    
-   var sourceRegistered = this.getSource(layer.source.id)
+   console.log("     adding source " + layer.source.id + " for receiver " + receiverName );
+
+   var source = this.getSource(layer.source.id)
    
-   if(sourceRegistered){
-      sourceRegistered.nbLayersUsingTheSource ++
+   if(source){
+      var nbLayers = source.receivers.get(receiverName) || 0
+      source.receivers.put(receiverName, nbLayers + 1)
       return
    }
       
@@ -56,19 +60,19 @@ SourcesManager.prototype.addSource = function(layer){
       case Source.Images:
       case Source.WMS:
          params = {src : layer.source.params.src }
-         this.centerWMS( layer.source.params.src, "prepare" )
+         //this.centerWMS( layer.source.params.src, "prepare", receiverName )
          break;
    }
 
-   console.log("     adding source " + layer.source.id);
-   this.sources.push(new Source(layer.source.id, type, params));
+   console.log("        --> source " + layer.source.id + " in sources");
+   this.sources.push(new Source(layer.source.id, type, params, receiverName));
 }
 
 /**
  * Return the source with this id is already in this.sources
  */
 SourcesManager.prototype.getSource = function(id){
-   
+
    for(var i = 0; i < this.sources.length; i++){
       if(this.sources[i].id == id)
          return this.sources[i]
@@ -79,70 +83,80 @@ SourcesManager.prototype.getSource = function(id){
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.removeSource = function(layer){
+SourcesManager.prototype.detachSource = function(receiverName, sourceId, removeAll){
 
-   var source = this.getSource(layer.source.id)
-   source.nbLayers --
+   var source = this.getSource(sourceId)
    
-   if(source.nbLayers == 0){
+   var nbLayers = source.receivers.get(receiverName) || 0
+   
+   if(removeAll)
+      source.receivers.put(receiverName, 0)
+   else
+      source.receivers.put(receiverName, nbLayers - 1)
+   
+   
+   if(source.receivers.get(receiverName) == 0){
+
       for(var i = 0; i < this.sources.length; i++){
-         if(this.sources[i].id == layer.source.id)
+         if(this.sources[i].id == sourceId)
             break;
       }
       
+      console.log("SourceManager.detachSource", sourceId, receiverName)
       this.sources.splice(i, 1);
    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-/**
- * type = "prepare" or "place"
- */
-SourcesManager.prototype.centerWMS = function (src, type) {
+SourcesManager.prototype.releaseReceiver = function (receiverName) {
    
-   switch(src){
-      // US - only
-      case Source.IMAGES_STAMEN_TERRAIN : 
-         this.maperial.centerMap(40.68, -74.12, 7, type)
-         break;
+   console.log("SourceManager.release", receiverName)
+   
+   var sourcesToDetach = []
+   for(var i = 0; i < this.sources.length; i++){
+         
+      if(this.sources[i].isForMe(receiverName)){
+         sourcesToDetach.push(this.sources[i].id)
+      }
+         
+   }
 
-         // Bretagne
-      case Source.WMS_BRETAGNECANTONS : 
-         this.maperial.centerMap(48.27, -2.87, 9, type)
-         break;
+   for(var i = 0; i < sourcesToDetach.length; i++){
+      this.detachSource(receiverName, sourcesToDetach[i], true)
+   }
+   
+   this.receivers.splice(i, 1);
+}
 
-         // Rennes
-      case Source.WMS_SOLS_ILEETVILAINE : 
-         this.maperial.centerMap(48.11, -1.78, 10, type)
-         break;
-   }   
+//---------------------------------------------------------------------------//
+
+SourcesManager.prototype.releaseAllReceivers = function(){
+
+   while(this.receivers.length > 0)
+      this.releaseReceiver(this.receivers[0].name)
+            
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.releaseEverything = function () {
-
-   for(requestId in this.requests){
-      try{
-         this.requests[requestId].abort();
-      }
-      catch(e){
-         console.log("------------> releaseEverything")
-         console.log(e)
-      }
-   }
-
-   this.stopEverything()
+SourcesManager.prototype.releaseNetwork = function () {
    
-}
+   for(var requestId in this.requests){
 
-SourcesManager.prototype.stopEverything = function () {
-   //   cancel image downloads
-   if(window.stop !== undefined)
-      window.stop();
-   else if(document.execCommand !== undefined)
-      document.execCommand("Stop", false);
+      if(!this.complete[requestId]){
+         try{
+            this.requests[requestId].abort();
+         }
+         catch(e){}
+      }
+
+      delete this.data[requestId];
+      delete this.errors[requestId];
+      delete this.complete[requestId];
+      delete this.requests[requestId];
+   }
+   
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -153,41 +167,68 @@ SourcesManager.prototype.requestId = function (source, x, y, z) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.release = function (x, y ,z) {
+SourcesManager.prototype.release = function (x, y, z, receiverName) {
 
    for(var i = 0; i< this.sources.length; i++){
-      var requestId = this.requestId(this.sources[i], x, y, z);
 
-      if(!this.load[requestId]){
-         try{
-            this.requests[requestId].abort();
-         }
-         catch(e){
-            console.log("------------> release ", e)
-         }
-      }
+      if(!this.sources[i].isForMe(receiverName))
+         continue
+         
+      var requestId = this.requestId(this.sources[i], x, y, z);
+      var nbRequests = this.requestsCounter.get(requestId) || 0
       
-      delete this.data[requestId];
-      delete this.errors[requestId];
-      delete this.load[requestId];
-      delete this.requests[requestId];
+      if(nbRequests > 1){
+         this.requestsCounter.put(requestId, nbRequests - 1)
+      }
+      else{
+         if(!this.complete[requestId]){
+            
+            try{
+               this.requests[requestId].abort();
+            }
+            catch(e){}
+         }
+
+         delete this.data[requestId];
+         delete this.errors[requestId];
+         delete this.complete[requestId];
+         delete this.requests[requestId];
+      }
    }
 
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.loadSources = function (x, y ,z) {
+SourcesManager.prototype.loadSources = function (x, y, z, receiverName) {
 
    for(var i = 0; i< this.sources.length; i++){
 
+      //------------------------------------------//
+
       var source = this.sources[i];
+      if(!source.isForMe(receiverName))
+         continue
+      
+      //------------------------------------------//
+         
       var requestId = this.requestId(source, x, y, z);
+      
+      //------------------------------------------//
+      
+      var nbRequests = this.requestsCounter.get(requestId) || 0
+      this.requestsCounter.put(requestId, nbRequests + 1)
+
+      //------------------------------------------//
 
       if (this.requests[requestId]){
-         this.maperial.mapRenderer.sourceReady(source, this.data[requestId], x, y, z);
+         if (this.complete[requestId])
+            $(window).trigger(MaperialEvents.SOURCE_READY, [source, this.data[requestId], x, y, z])
+         
          continue
       }
+
+      //------------------------------------------//
 
       switch(source.type){
          case Source.MaperialOSM:
@@ -201,7 +242,7 @@ SourcesManager.prototype.loadSources = function (x, y ,z) {
 
          case Source.Images:
          case Source.WMS:
-            this.LoadImage ( source, x, y, z );
+            this.LoadImage ( source, x, y, z, receiverName );
             break;
 
       }
@@ -223,29 +264,27 @@ SourcesManager.prototype.LoadVectorial = function ( source, x, y, z ) {
       success  : function(data) {
          if ( ! data ) {
             me.errors[requestId] = true;
-            //me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
          }
          else {
             me.data[requestId] = data;
-            me.maperial.mapRenderer.sourceReady(source, data, x, y, z);
+            $(window).trigger(MaperialEvents.SOURCE_READY, [source, data, x, y, z])
+//            me.maperial.mapRenderer.sourceReady(source, data, x, y, z);
          }
 
-         me.load[requestId] = true;
+         me.complete[requestId] = true;
       },
       error : function() {
          me.errors[requestId]  = true;
-         me.load[requestId]    = true;
-
-         //me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
+         me.complete[requestId]    = true;
       }
    });
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
+SourcesManager.prototype.LoadImage = function ( source, x, y, z, receiverName ) {
    var me         = this;   
-   var url        = this.getURL(source, x, y, z);
+   var url        = this.getURL(source, x, y, z, receiverName);
    var requestId  = this.requestId(source, x, y, z);
 
    this.requests[requestId] = new Image();
@@ -256,16 +295,16 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
    this.requests[requestId].onload = function (oEvent) {      
       var img = me.requests[requestId]
       me.errors[requestId] = false;
-      me.load[requestId]  = true;
+      me.complete[requestId]  = true;
       me.data[requestId]  = img;
 
-      me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
+      $(window).trigger(MaperialEvents.SOURCE_READY, [source, me.data[requestId], x, y, z])
+//      me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
    };
 
    this.requests[requestId].onerror = function (oEvent) {
       me.errors[requestId] = true;
-      me.load[requestId]  = true;
-     // me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
+      me.complete[requestId]  = true;
    }
 
    this.requests[requestId].abort = function () {
@@ -280,7 +319,7 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z ) {
 //   }
 //
 //   setTimeout(function () { 
-//      if ( ! me.load[requestId] ) {
+//      if ( ! me.complete[requestId] ) {
 //         me.requests[requestId].onabort();
 //      }
 //   }, Maperial.tileDLTimeOut);
@@ -294,7 +333,7 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
 
    if ( ! this.getURL(source, x, y, z) ) {
       this.errors[requestId] = true;
-      this.load[requestId] = true;
+      this.complete[requestId] = true;
       return ;
    }
 
@@ -312,19 +351,20 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
       }
 
       me.errors[requestId] = arrayBuffer != null;
-      me.load[requestId]  = true;
+      me.complete[requestId]  = true;
       me.data[requestId]  = arrayBuffer;
-      me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
+
+      $(window).trigger(MaperialEvents.SOURCE_READY, [source, me.data[requestId], x, y, z])
+     // me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
    };
 
    this.requests[requestId].onerror = function (oEvent) {
       me.errors[requestId] = true;
-      me.load[requestId]  = true;
-      //me.maperial.mapRenderer.sourceReady(source, null, x, y, z);
+      me.complete[requestId]  = true;
    }
    
    function ajaxTimeout() { 
-      if ( ! me.load[requestId] ) {
+      if ( ! me.complete[requestId] ) {
          try{ 
             me.requests[requestId].abort(); 
          }catch(e){
@@ -340,13 +380,16 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourcesManager.prototype.isTileLoaded = function ( x, y, z) {
+SourcesManager.prototype.isTileLoaded = function ( x, y, z, receiverName) {
    
    for(var i = 0; i< this.sources.length; i++){
       var source = this.sources[i];
+      if(!source.isForMe(receiverName))
+         continue
+         
       var requestId = this.requestId(source, x, y, z);
 
-      if (!this.load[requestId])
+      if (!this.complete[requestId])
          return false;
    }
 
@@ -362,7 +405,7 @@ SourcesManager.prototype.getData = function ( source, x, y, z) {
 
 //-------------------------------------------//
 
-SourcesManager.prototype.getURL = function (source, tx, ty, z) {
+SourcesManager.prototype.getURL = function (source, tx, ty, z, receiverName) {
 
    switch(source.type){
 
@@ -379,7 +422,7 @@ SourcesManager.prototype.getURL = function (source, tx, ty, z) {
          return this.getImageURL(source, tx, ty, z)
 
       case Source.WMS:
-         return this.getWMSURL(source, tx, ty, z)
+         return this.getWMSURL(source, tx, ty, z, receiverName)
    }
 }
 
@@ -428,11 +471,11 @@ SourcesManager.prototype.getImageURL = function (source, tx, ty, z) {
        
        case Source.IMAGES_STAMEN_TONER :
           var s = Utils.random0(3);
-          return "http://"+server[s]+".tile.stamen.com/toner/"+z+"/"+tx+"/"+gty+".jpg"
+          return "http://"+server[s]+".tile.stamen.com/toner/"+z+"/"+tx+"/"+gty+".png"
   
        case Source.IMAGES_STAMEN_TONER_BG :
           var s = Utils.random0(3);
-          return "http://"+server[s]+".tile.stamen.com/toner-background/"+z+"/"+tx+"/"+gty+".jpg"
+          return "http://"+server[s]+".tile.stamen.com/toner-background/"+z+"/"+tx+"/"+gty+".png"
    
          
       case Source.IMAGES_OSM:  // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
@@ -473,13 +516,20 @@ SourcesManager.prototype.getImageURL = function (source, tx, ty, z) {
  * Source.WMS_CORINE_LAND_COVER 
  *    geo3 : "http://sd1878-2.sivit.org/geoserver/gwc/service/wms?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
  */ 
-SourcesManager.prototype.getWMSURL = function (source, tx, ty, z) {
-
+SourcesManager.prototype.getWMSURL = function (source, tx, ty, z, receiverName) {
+   
+   for(var i = 0; i < this.receivers.length; i++){
+      if(this.receivers[i].name == receiverName){
+         var receiver = this.receivers[i]
+         break;
+      }
+   }
+   
    var topLeftP     = new Point(tx * Maperial.tileSize, ty*Maperial.tileSize)
-   var topLeftM     = this.maperial.context.coordS.PixelsToMeters(topLeftP.x, topLeftP.y, this.maperial.context.zoom)
+   var topLeftM     = receiver.context.coordS.PixelsToMeters(topLeftP.x, topLeftP.y, receiver.context.zoom)
    
    var bottomRightP = new Point(topLeftP.x + Maperial.tileSize, topLeftP.y + Maperial.tileSize)
-   var bottomRightM = this.maperial.context.coordS.PixelsToMeters(bottomRightP.x, bottomRightP.y, this.maperial.context.zoom)
+   var bottomRightM = receiver.context.coordS.PixelsToMeters(bottomRightP.x, bottomRightP.y, receiver.context.zoom)
 
    switch(source.params.src){
       

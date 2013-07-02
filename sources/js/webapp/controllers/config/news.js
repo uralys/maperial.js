@@ -12,6 +12,11 @@
 		         autoHeight : false,
 		         autoSlide : true
 		      });
+		      
+		      Utils.randomRotate("imageNews6")
+		      Utils.randomRotate("imageNews7")
+		      Utils.randomRotate("imageNews8")
+		      Utils.randomRotate("imageNews9")
 		   }, 200);
       }
 	});

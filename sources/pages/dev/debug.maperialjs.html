@@ -69,6 +69,7 @@
                      "/js/extensions/maperialjs/hud/panel-scale.js",
                      "/js/extensions/maperialjs/hud/panel-settings.js",
                      "/js/extensions/maperialjs/hud/panel-attribution.js",
+                     "/js/extensions/maperialjs/hud/panel-lens.js",
                      "/js/extensions/maperialjs/hud/triggers.js",
 
                      // managers
@@ -100,16 +101,23 @@
                   var maperial = new Maperial()
                   var config = maperial.emptyConfig();
 
-                  config.hud.elements[HUD.COMPOSITIONS]  = {show : true,  type : HUD.PANEL,    label : "Composition", disableDrag : true };
-                  config.hud.elements[HUD.LAYER_SETTINGS]= {show : true, type : HUD.PANEL, label : "Layer Settings", disableDrag : true };
+                  config.hud.elements[HUD.COMPOSITIONS]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
+                  config.hud.elements[HUD.LAYER_SETTINGS]	= {show : true, 	type : HUD.PANEL, 	label : "Layer Settings", disableDrag : true };
+                  config.hud.elements[HUD.LENS]				= {show : true, 	type : HUD.PANEL, 	label : "Lens" };
                   
                   //config.layers.push(LayersManager.getShadeLayerConfig())
                   //config.layers.push(LayersManager.getSrtmLayerConfig())
                   
                   //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
+                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
                   
+
                   //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
                   config.layers.push(LayersManager.getOSMLayerConfig(["1_style_13ed75438c8b2ed8914"]))
+
+
                   
                   maperial.apply(config)
                });

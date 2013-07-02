@@ -13,18 +13,18 @@ MapManager.CHECK_EXPORT_MILLIS = 500;
 //=================================================================//
 
 MapManager.prototype.createNewMap = function(uid){
-   var map = {uid: uid, name: "New Map", config: App.maperial.defaultConfig()};
+   var map = {uid: uid, name: "New Map", config: ConfigManager.defaultConfig()};
    App.user.set("selectedMap", map);
 }
 
 /** Used when switching from mapCreation to styleEditor as App.Globals.isTryscreen */
 MapManager.prototype.backUpMap = function(){
-   this.demoConfigBackUp = App.maperial.config
+   this.demoConfigBackUp = App.maperial.views
 }
 
 /** Used when switching back from styleEditor to mapCreation as App.Globals.isTryscreen */
 MapManager.prototype.retrieveMap = function(){
-   var map = {uid: "currentDemo", name: "New Map", config: this.demoConfigBackUp};
+   var map = {uid: "currentDemo", name: "New Map", views: this.demoConfigBackUp};
    App.user.set("selectedMap", map);
 }
 

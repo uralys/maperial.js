@@ -46,7 +46,7 @@
 
    ColorbarEditorController.getConfig = function(){
 
-      var config = App.maperial.emptyConfig();
+      var config = App.maperial.newConfig();
 
       // custom
       config.hud.elements["ColorbarEditorMenu"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true };

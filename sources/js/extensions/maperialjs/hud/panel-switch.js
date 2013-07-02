@@ -5,7 +5,7 @@ HUD.prototype.refreshSwitchImagesPanel = function() {
 
    console.log("     building switch...");
    
-   var layersManager = this.maperial.layersManager;
+   var layersManager = this.mapView.layersManager;
    
    this.element("imagesMapquest").click(function(){
       layersManager.switchImagesTo(Source.IMAGES_MAPQUEST)

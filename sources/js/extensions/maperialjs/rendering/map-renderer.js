@@ -1,15 +1,15 @@
 
 //=====================================================================================//
 
-function MapRenderer(maperial) {
+function MapRenderer(mapView) {
 
    console.log("  building map renderer...");
    
    this.drawSceneInterval = null;
    
-   this.maperial = maperial;
-   this.config = maperial.config;
-   this.context = maperial.context;
+   this.mapView   = mapView;
+   this.config    = mapView.config;
+   this.context   = mapView.context;
    
    this.tileCache = {};
    this.dataCache = {};
@@ -33,6 +33,7 @@ MapRenderer.prototype.reset = function () {
    this.dataCache = {};
    
    this.DrawScene(true, true);
+   this.gl = null;
 }
 
 //----------------------------------------------------------------------//
@@ -58,7 +59,10 @@ MapRenderer.prototype.Start = function () {
    
    if (!this.gl) {
       console.log("Could not initialise WebGL")
-      window.location.href = "http://www.maperial.com/#/usechrome";
+      
+      if(window.location.hostname.indexOf("localhost") == -1)
+         window.location.href = "http://www.mapView.com/#/usechrome";
+      
       return false;
    }
 
@@ -78,6 +82,12 @@ MapRenderer.prototype.addLayer = function (layer) {
    }
 }
 
+MapRenderer.prototype.changeLayer = function (newLayer, index) {
+   for (var key in this.tileCache) {
+      this.tileCache[key].changeLayer(newLayer, index);
+   }
+}
+
 MapRenderer.prototype.removeLayer = function (position) {
    for (var key in this.tileCache) {
       this.tileCache[key].removeLayer(position);
@@ -90,17 +100,29 @@ MapRenderer.prototype.exchangeLayers = function (exchangedIds) {
    }
 }
 
+MapRenderer.prototype.refresh = function () {
+   for (var key in this.tileCache) {
+      this.tileCache[key].Refresh();
+   }
+}
+
+MapRenderer.prototype.resetLayer = function (layerIndex) {
+   for (var key in this.tileCache) {
+      this.tileCache[key].ResetLayer (layerIndex);
+   }
+}
+
+MapRenderer.prototype.releaseLayer = function (layerIndex) {
+   for (var key in this.tileCache) {
+      this.tileCache[key].ReleaseLayer (layerIndex);
+   }
+}
+
 //----------------------------------------------------------------------//
    
 MapRenderer.prototype.initListeners = function () {
 
    var renderer = this;
-   
-   if(this.config.hud.elements[HUD.MAGNIFIER] && this.config.hud.elements[HUD.MAGNIFIER].show){
-      this.context.mapCanvas.on(MaperialEvents.MOUSE_MOVE, function(){
-         renderer.DrawMagnifier();
-      });
-   }
    
    $(window).on(MaperialEvents.MOUSE_UP_WIHTOUT_AUTOMOVE, function(){
       if(renderer.config.map.edition){
@@ -108,59 +130,43 @@ MapRenderer.prototype.initListeners = function () {
       }
    });
 
-   $(window).on(MaperialEvents.STYLE_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
+   $(window).on(MaperialEvents.STYLE_CHANGED, function(event, viewName, layerIndex){
+      if(renderer.mapView.name == viewName){
+         renderer.resetLayer(layerIndex);         
       }
    });
    
    $(window).on(MaperialEvents.COLORBAR_CHANGED, function(event, layerIndex){
       renderer.renderAllColorBars(); //optim : refresh que de la colorbar modifiée non ?
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
-      }
+      renderer.resetLayer(layerIndex);
    });
    
    $(window).on(MaperialEvents.CONTRAST_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Refresh();
-      }
+      renderer.refresh();
    });
    
    $(window).on(MaperialEvents.BRIGHTNESS_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Refresh();
-      }
+      renderer.refresh();
    });
    
    $(window).on(MaperialEvents.BW_METHOD_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Refresh();
-      }
+      renderer.refresh();
    });
    
    $(window).on(MaperialEvents.ALPHA_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].Refresh();
-      }
+      renderer.refresh();
    });
 
    $(window).on(MaperialEvents.XY_LIGHT_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
-      }
+      renderer.resetLayer(layerIndex);
    });
 
    $(window).on(MaperialEvents.Z_LIGHT_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
-      }
+      renderer.resetLayer(layerIndex);
    });
 
    $(window).on(MaperialEvents.SCALE_CHANGED, function(event, layerIndex){
-      for (var key in renderer.tileCache) {
-         var tile = renderer.tileCache[key].ResetLayer (layerIndex);
-      }
+      renderer.resetLayer(layerIndex);
    });
 
    $(window).on(MaperialEvents.DATA_SOURCE_CHANGED, function(){
@@ -168,14 +174,22 @@ MapRenderer.prototype.initListeners = function () {
       //renderer.DrawScene (true) 
    });
 
+   $(window).on(MaperialEvents.SOURCE_READY, function(event, source, data, x, y, z){
+      if(source.isForMe(renderer.mapView.name)){
+         renderer.sourceReady(source, data, x, y, z);
+      }
+   });
+
+   // trop brutal : stop TOUS les calls de la page...
 //   $(window).on(MaperialEvents.ZOOM_CHANGED, function(event, x, y){
-//      renderer.maperial.sourcesManager.stopEverything()
+//      renderer.mapView.sourcesManager.stopEverything()
 //   });
 }
 
 //-------------------------------------------//
 
 MapRenderer.prototype.sourceReady = function ( source, data, x, y, z ) {
+
    var key = x + "," + y + "," + z;
    
    if ( this.tileCache[key] != null ) {
@@ -187,7 +201,6 @@ MapRenderer.prototype.sourceReady = function ( source, data, x, y, z ) {
 
 MapRenderer.prototype.removeListeners = function () {
 
-   this.context.mapCanvas.off(MaperialEvents.MOUSE_MOVE);
    $(window).off(MaperialEvents.MOUSE_UP_WIHTOUT_AUTOMOVE);
    $(window).off(MaperialEvents.STYLE_CHANGED);
    $(window).off(MaperialEvents.COLORBAR_CHANGED);
@@ -202,12 +215,10 @@ MapRenderer.prototype.removeListeners = function () {
 //----------------------------------------------------------------------//
 
 MapRenderer.prototype.fitToSize = function () {
-   console.log("fitToSize")
 
    if(this.gl){
       this.gl.viewportWidth  = this.context.mapCanvas.width();
       this.gl.viewportHeight = this.context.mapCanvas.height();
-      console.log(this.gl.viewportWidth, this.gl.viewportHeight)
    }
    else{
       console.log("---------> NUBMP")      
@@ -327,7 +338,7 @@ MapRenderer.prototype.InitGL = function () {
 
 MapRenderer.prototype.renderAllColorBars = function () {
 
-   var colorbarUIDs = this.maperial.colorbarsManager.allColorbars();
+   var colorbarUIDs = this.mapView.colorbarsManager.allColorbars();
    
    this.gl.flush ()
    this.gl.finish()
@@ -399,7 +410,7 @@ MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, f
 //            keyList.push(key)
 //
 //            if ( this.tileCache[key] == null ) {
-//               this.tileCache[key]  = new Tile ( this.maperial, tx, ty, zoom);
+//               this.tileCache[key]  = new Tile ( this.mapView, tx, ty, zoom);
 //            }
 //
 //            ty = ty+gap-1;
@@ -421,7 +432,8 @@ MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, f
          keyList.push(key)
          
          if ( this.tileCache[key] == null ) {
-            this.tileCache[key]  = new Tile ( this.maperial, tx, ty, zoom);
+            this.tileCache[key] = new Tile ( this.mapView, tx, ty, zoom);
+            this.tileCache[key].Init();
          }
       }
    }
@@ -527,7 +539,7 @@ MapRenderer.prototype.FindLayerId = function () {
    var clickP = this.context.coordS.MetersToPixels ( this.context.mouseM.x, this.context.mouseM.y, this.context.zoom );
    var tileClickCoord = new Point(Math.floor (clickP.x - tileCoord.x*Maperial.tileSize), Math.floor ( (tileCoord.y+1) * Maperial.tileSize - clickP.y ) );
    
-   var style = this.maperial.stylesManager.getSelectedStyle();
+   var style = this.mapView.stylesManager.getSelectedStyle();
    var result = tile.FindSubLayerId( tileClickCoord , this.context.zoom, style.content ) ;
 
    var layerIndex = result[0];
@@ -539,39 +551,39 @@ MapRenderer.prototype.FindLayerId = function () {
 
 //----------------------------------------------------------------------//
 
-MapRenderer.prototype.DrawMagnifier = function () {
-
-   var scale = 3;
-   var w = this.context.magnifierCanvas.width();
-   var h = this.context.magnifierCanvas.height();
-   var left = (w/2)/scale;
-   var top = (h/2)/scale;
-   var r = this.context.coordS.Resolution ( this.context.zoom );
-   
-   var originM = new Point( this.context.mouseM.x - left * r , this.context.mouseM.y + top * r );
-   var tileC   = this.context.coordS.MetersToTile ( originM.x, originM.y , this.context.zoom );
-
-   var originP = this.context.coordS.MetersToPixels ( originM.x, originM.y, this.context.zoom );
-   var shift   = new Point ( Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) );
-
-   var ctxMagnifier = this.context.magnifierCanvas[0].getContext("2d");
-   ctxMagnifier.save();
-   ctxMagnifier.globalCompositeOperation="source-over";
-   ctxMagnifier.scale(scale, scale);
-
-   // wx/wy (pixels) in canvas mark ( coord ) !!
-   for ( var wx = shift.x, tx = tileC.x ; wx < w ; wx = wx + Maperial.tileSize , tx = tx + 1) {
-      for ( var wy = shift.y, ty = tileC.y ; wy < h ; wy = wy+Maperial.tileSize , ty = ty - 1) {
-         var key  = tx + "," + ty + "," + this.context.zoom;
-         var tile = this.tileCache[key] 
-         TileRenderer.DrawImages(tile, ctxMagnifier, wx, wy);
-      }
-   }    
-
-   ctxMagnifier.restore();
-
-   this.DrawMagnifierSight(ctxMagnifier);
-}
+//MapRenderer.prototype.DrawMagnifier = function () {
+//
+//   var scale = 3;
+//   var w = this.context.magnifierCanvas.width();
+//   var h = this.context.magnifierCanvas.height();
+//   var left = (w/2)/scale;
+//   var top = (h/2)/scale;
+//   var r = this.context.coordS.Resolution ( this.context.zoom );
+//   
+//   var originM = new Point( this.context.mouseM.x - left * r , this.context.mouseM.y + top * r );
+//   var tileC   = this.context.coordS.MetersToTile ( originM.x, originM.y , this.context.zoom );
+//
+//   var originP = this.context.coordS.MetersToPixels ( originM.x, originM.y, this.context.zoom );
+//   var shift   = new Point ( Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) );
+//
+//   var ctxMagnifier = this.context.magnifierCanvas[0].getContext("2d");
+//   ctxMagnifier.save();
+//   ctxMagnifier.globalCompositeOperation="source-over";
+//   ctxMagnifier.scale(scale, scale);
+//
+//   // wx/wy (pixels) in canvas mark ( coord ) !!
+//   for ( var wx = shift.x, tx = tileC.x ; wx < w ; wx = wx + Maperial.tileSize , tx = tx + 1) {
+//      for ( var wy = shift.y, ty = tileC.y ; wy < h ; wy = wy+Maperial.tileSize , ty = ty - 1) {
+//         var key  = tx + "," + ty + "," + this.context.zoom;
+//         var tile = this.tileCache[key] 
+//         TileRenderer.DrawImages(tile, ctxMagnifier, wx, wy);
+//      }
+//   }    
+//
+//   ctxMagnifier.restore();
+//
+//   this.DrawMagnifierSight(ctxMagnifier);
+//}
 
 //----------------------------------------------------------------------//
 

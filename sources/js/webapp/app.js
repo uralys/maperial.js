@@ -25,7 +25,6 @@
 
    App.initWindowSize = function() {
 
-//    App.homeScroller = new HomeScroller();
       App.homeMover = new HomeMover();
       App.resize();
 
@@ -39,12 +38,10 @@
    App.placeFooter = function(forceFix){
       setTimeout(function(){
          if(($("#webappDiv").height() + App.Globals.FOOTER_HEIGHT) < $(window).height() || forceFix){
-            console.log("fix footer", ($("#webappDiv").height() + App.Globals.FOOTER_HEIGHT), $(window).height(), forceFix);
             $("#footerClassic").css({ position : "fixed" });
             $("#footerHome").css({ position : "fixed" });
          }
          else{
-            console.log("release footer");
             $("#footerClassic").css({ position : "relative" });
             $("#footerHome").css({ position : "relative" });
          }
@@ -57,8 +54,23 @@
       //App.homeScroller.resizeWindow();
    }
 
+   //-------------------------------------//
+
+   $(window).on(MaperialEvents.LOADING, function(){
+      App.user.set("waiting", true);
+   });
+
+   $(window).on(MaperialEvents.READY, function(){
+      App.placeFooter(true);
+      App.user.set("waiting", false);
+   });
+
+   //-------------------------------------//
+
    App.finishLoadings = function(nextPage){
 
+      console.log("finish Loading")
+      
       if(App.Globals.APP_READY){
          App.appReadyToOpenPage(nextPage);
          return;
@@ -75,8 +87,6 @@
          dataType: "json",
          success: function (publicData, textStatus, jqXHR)
          {
-            console.log(publicData);
-
             App.publicData.set("maps", publicData.maps);
             App.publicData.set("styles", publicData.styles);
             App.publicData.set("datasets", publicData.datasets);
@@ -89,12 +99,8 @@
       //-------------------------------------------//
 
       var scripts = [];
-
       var maperialJSScripts = "";
       
-      if(!App.Globals.isDev)
-         scripts.push(App.Globals.ASSETS_URL + "/js/maperial-js.min.localhost.js"); 
-
       scripts.push("http://fabricjs.com/lib/fabric.js");
 
       //-------------------------------------------//
@@ -109,18 +115,6 @@
 
          //-------------------------------------//
 
-         $(window).on(MaperialEvents.LOADING, function(){
-            App.user.set("waiting", true);
-         });
-
-         $(window).on(MaperialEvents.READY, function(){
-            App.placeFooter(true);
-            App.user.set("waiting", false);
-         });
-
-         //-------------------------------------//
-
-         App.maperial = new Maperial();
          App.appReadyToOpenPage(nextPage);
 
          //-------------------------------------//
@@ -153,12 +147,10 @@
 
    App.addMargins = function(config) {
       config.hud.options["margin-top"] = App.Globals.HEADER_HEIGHT;
-//      config.hud.options["margin-bottom"] = App.Globals.FOOTER_HEIGHT;
    }
 
    App.removeMargins = function(config) {
       delete config.hud.options["margin-top"];
-//      delete config.hud.options["margin-bottom"];
    }
 
    //------------------------------------------------------//
@@ -166,6 +158,5 @@
    App.changedTranslations = function(event, messages) {
       App.translations.set("messages", messages);
    }
-
 
 })( this );

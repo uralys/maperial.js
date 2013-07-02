@@ -7,7 +7,7 @@
 }
 .homepage_top .widget_sp_image {
 	padding: 0px 0px 0px 30px;
-	background: url(http://static.maperial.localhost/images/home/column_bkg.gif) no-repeat left -2px;
+	background: url(http://static.maperial.localhost/images/home/column_bkg.png) no-repeat left -2px;
 }	
 .homepage_top  .widget_sp_image.first-child {
 	background: none;
@@ -18,7 +18,7 @@
 }
 
 .homepage_top .widget_sp_image h4 {
-	color: #27a200;
+	color: #217E03;
 	text-align: center;
 	font-size: 1.8em;
 	font-weight: normal;
@@ -101,12 +101,19 @@
 
 .home-description {
 	text-align: left;
-	margin-bottom: 10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.row-fluid.dark {
+	background: rgba(0, 0, 0);
+	background: rgba(0, 0, 0, 0.04);
 }
 
 .homeText {
 	margin-bottom: 0px;
 	font-size: 15px!important;
+	text-align : justify;
 }
 
 .home-separator {
@@ -130,7 +137,7 @@
 }
 
 .home-description h2{
-	color: #27a200;
+	color: #217E03;
 	margin-bottom:20px;
 }
 
@@ -155,6 +162,8 @@
 	background-repeat: repeat-x;
 	background-position-x: 0px;
 	height: 300px;
+	-moz-box-shadow: 0px 2px 15px #333;
+	-webkit-box-shadow: 0px 2px 15px #333;
 }
 
 #videoWindow {
@@ -185,12 +194,8 @@
 
 /*--------------------------------*/
 #titleNews {
-	left: 20px;
-	position: relative;
-	bottom: -10px;
-	z-index: 3;
 	font-size: 40px;
-	width: 0px;
+	margin-bottom : 30px;
 }
 
 .subtitleNews {
@@ -198,7 +203,7 @@
 }
 
 .titleNew {
-	color: #27a200;
+	color: #217E03;
 	font-size: 25px;
 	margin-bottom:20px;
 	margin-top: 40px;
@@ -206,7 +211,7 @@
 
 
 .moreNew {
-	color: #27a200;
+	color: #217E03;
 	text-align: right;
 	cursor:pointer;
 	cursor:hand;
@@ -214,7 +219,7 @@
 
 .dateNew {
 	font-size: 20px;
-	color: #27a200;
+	color: #217E03;
 	margin-top: 40px;
 }
 
@@ -263,8 +268,9 @@
 
 /*--------------------------------*/
 .homeIcon {
-	margin-top: 16px!important;
+	margin-top: 35px!important;
 	margin-bottom: -3px!important;
+	width: 60px;
 }
 
 .homeTitle {
@@ -283,9 +289,8 @@
 }
 
 .homeAction {
-	color: #27a200;
-	font-size: 23px;
-	margin-top: 38px;
+	font-size: 20px;
+	margin-top: 45px;
 }
 
 .homeActionSeparator {

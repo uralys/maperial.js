@@ -1,25 +1,23 @@
 
-function Tile (maperial, x, y, z) {
+function Tile (mapView, x, y, z) {
 
    //--------------------------------//
 
-   this.maperial = maperial;
-   this.config = maperial.config;
+   this.mapView = mapView;
+   this.config = mapView.config;
 
    this.x         = x;
    this.y         = y;
    this.z         = z;
 
    //--------------------------------//
-
-   this.Init();
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.Init = function () {
 
-   this.assets       = this.maperial.context.assets;
+   this.assets       = this.mapView.context.assets;
    this.gl           = this.assets.ctx;
 
    // preparing double buffering to render as texture !
@@ -31,7 +29,7 @@ Tile.prototype.Init = function () {
    this.prepareBuffering();
    
    this.buildLayers();
-   this.maperial.sourcesManager.loadSources(this.x, this.y, this.z);
+   this.mapView.maperial.sourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -51,23 +49,23 @@ Tile.prototype.createLayerFromConfig = function (layer, index) {
    
    switch(layer.type){
       case LayersManager.Vector:
-         this.layers.splice(index, 0, new VectorialLayer ( this.maperial , this.z));
+         this.layers.splice(index, 0, new VectorialLayer ( this.mapView , this.z));
          break;
          
       case LayersManager.Raster:
-         this.layers.splice(index, 0, new RasterLayer8    ( this.maperial , this.z));
+         this.layers.splice(index, 0, new RasterLayer8    ( this.mapView , this.z));
          break;
          
       case LayersManager.SRTM:
-         this.layers.splice(index, 0, new RasterLayer16    ( this.maperial , this.z));
+         this.layers.splice(index, 0, new RasterLayer16    ( this.mapView , this.z));
          break;
          
       case LayersManager.Images:
-         this.layers.splice(index, 0, new ImageLayer     ( this.maperial.context.assets.ctx , this.z));
+         this.layers.splice(index, 0, new ImageLayer     ( this.mapView.context.assets.ctx , this.z));
          break;
          
       case LayersManager.Shade:
-         this.layers.splice(index, 0, new ShadeLayer    ( this.maperial , this.z));
+         this.layers.splice(index, 0, new ShadeLayer    ( this.mapView , this.z));
          break;
    }
 }
@@ -89,15 +87,22 @@ Tile.prototype.prepareBuffering = function () {
 
 Tile.prototype.addLayer = function (layerConfig) {
    this.createLayerFromConfig(layerConfig, this.config.layers.length - 1)
-   this.maperial.sourcesManager.loadSources(this.x, this.y, this.z);
-   this.Refresh();
+   this.mapView.maperial.sourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name)
+   this.Refresh()
+}
+
+Tile.prototype.changeLayer = function (layerConfig, index) {
+   this.removeLayer(index)
+   this.createLayerFromConfig(layerConfig, index)
+   this.mapView.maperial.sourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name)
+   this.Refresh()
 }
 
 Tile.prototype.removeLayer = function (position) {
    if(this.layers.length > 0){
-      this.layers[position].Release();
+      this.layers[position].Release()
       this.layers.splice(position, 1)
-      this.Refresh();
+      this.Refresh()
    }
    //  else : all layers are released because no layer remains
 }
@@ -127,7 +132,7 @@ Tile.prototype.exchangeLayers = function(exchangedIds) {
 
 Tile.prototype.Release = function() {
    
-   this.maperial.sourcesManager.release(this.x, this.y, this.z);
+   this.mapView.maperial.sourcesManager.release(this.x, this.y, this.z, this.mapView.name);
    
    for(var i = 0; i < this.config.layers.length; i++){
       try{
@@ -158,6 +163,16 @@ Tile.prototype.IsUpToDate = function ( ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
+Tile.prototype.ReleaseLayer = function (id) {
+   
+   if(this.layers[id]){
+      this.layers[id].Release();
+      this.layers[id].Reset();
+   }
+   
+   this.Refresh();
+}
+
 Tile.prototype.ResetLayer = function (id) {
 
    if(this.layers[id])
@@ -182,7 +197,7 @@ Tile.prototype.Reset = function (onlyFuse) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.sourceReady = function ( source, data ) {
-   
+  
    if(!data){
       console.log("-------> tile.sourceReady : DATA NULL !")
       //this.nbErrors ++;
@@ -237,8 +252,8 @@ Tile.prototype.FindSubLayerId = function ( tileClickCoord, zoom, styleContent ) 
       if(this.config.layers[i].source.type != Source.MaperialOSM)
          continue;
 
-      var data = this.maperial.sourcesManager.getData(this.config.layers[i].source, this.x, this.y, this.z);
-      var subLayerId = TileRenderer.FindSubLayerId(tileClickCoord , ctx , data , zoom, styleContent, i, this.maperial.context.osmVisibilities );
+      var data = this.mapView.maperial.sourcesManager.getData(this.config.layers[i].source, this.x, this.y, this.z);
+      var subLayerId = TileRenderer.FindSubLayerId(tileClickCoord , ctx , data , zoom, styleContent, i, this.mapView.context.osmVisibilities );
 
       if(subLayerId)
          return [i, subLayerId];
@@ -264,6 +279,7 @@ Tile.prototype.Update = function ( maxTime ) {
          if ( timeRemaining <= 0 )
             break;
             */
+
          this.layers[i].Update( this.config.layers[i].params, i );
          diffT   = date.getTime() - startT;
          if ( maxTime - diffT <= 0 )
@@ -419,7 +435,7 @@ Tile.prototype.Compose = function (  ) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.IsLoaded = function () {
-   return this.maperial.sourcesManager.isTileLoaded(this.x, this.y, this.z);
+   return this.mapView.maperial.sourcesManager.isTileLoaded(this.x, this.y, this.z, this.mapView.name);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//

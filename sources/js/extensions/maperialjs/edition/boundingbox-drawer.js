@@ -5,12 +5,12 @@
  *  - this.pointsToMove : the MapMover updates these points within the current move before to call drawer.draw()
  *
  ******************************************************************************************************************/ 
-function BoundingBoxDrawer(maperial){
+function BoundingBoxDrawer(mapView){
 
    console.log("  building BoundingBoxDrawer...");
    
-   this.maperial = maperial;
-   this.context = maperial.context;
+   this.mapView = mapView;
+   this.context = mapView.context;
 
    // -> Drawer
    this.drawBoard = null;
@@ -90,7 +90,7 @@ BoundingBoxDrawer.prototype.init = function(boundingBox){
 
    //------- init Fabric
 
-   this.drawBoard = new fabric.Canvas("drawBoard"+this.maperial.tagId);
+   this.drawBoard = new fabric.Canvas("drawBoard"+this.mapView.name);
    this.drawBoard.setHeight(this.context.mapCanvas.height());
    this.drawBoard.setWidth(this.context.mapCanvas.width());
 
@@ -106,7 +106,7 @@ BoundingBoxDrawer.prototype.init = function(boundingBox){
    //------- placing mouse listeners on this = drawer
 
    var drawer = this;
-   this.maperial.mapMover.addDrawer(drawer);
+   this.mapView.mapMover.addDrawer(drawer);
 
    this.drawBoard.on('mouse:down', function(options) {
 
@@ -149,7 +149,7 @@ BoundingBoxDrawer.prototype.init = function(boundingBox){
       drawer.draw();
    });
 
-   $("#drawBoardContainer"+this.maperial.tagId).bind('mousewheel', function(event, delta) {
+   $("#drawBoardContainer"+this.mapView.name).bind('mousewheel', function(event, delta) {
       drawer.maperial.mapMouse.wheel(event, delta);
       drawer.setBoundingsForZoom(drawer.context.zoom, false);
    });
@@ -444,7 +444,7 @@ BoundingBoxDrawer.prototype.refreshLatLon = function(){
 
 BoundingBoxDrawer.prototype.center = function () {
 
-   this.maperial.SetCenter(this.centerLat, this.centerLon);
+   this.mapView.SetCenter(this.centerLat, this.centerLon);
 
    if(this.zoomToFit)
       this.setBoundingsForZoom(this.zoomToFit, false);
@@ -455,7 +455,7 @@ BoundingBoxDrawer.prototype.center = function () {
 BoundingBoxDrawer.prototype.setBoundingsForZoom = function (zoom, fitToScreen) {
    // pour fitToScreen, on teste un nouveau zoom : necessaire de recentrer la carte pour le test
    if(fitToScreen)
-      this.maperial.SetCenter(this.centerLat, this.centerLon);
+      this.mapView.SetCenter(this.centerLat, this.centerLon);
    
    var centerP = this.context.coordS.MetersToPixels(this.context.centerM.x, this.context.centerM.y, zoom);
    var topLeftMeters = this.context.coordS.LatLonToMeters(this.latMax, this.lonMin); 
@@ -484,7 +484,7 @@ BoundingBoxDrawer.prototype.setBoundingsForZoom = function (zoom, fitToScreen) {
       if(fitToScreen)
          this.zoomToFit = zoom;
       
-      this.maperial.SetZoom(zoom);
+      this.mapView.SetZoom(zoom);
       this.boundingsHaveChanged();
       this.draw();
    }

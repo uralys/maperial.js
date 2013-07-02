@@ -1,12 +1,12 @@
 //==================================================================//
 
-function MapMouse(maperial){
+function MapMouse(mapView){
 
    console.log("  listening mouse...");
    
-   this.maperial           = maperial;
-   this.config             = maperial.config;
-   this.context            = maperial.context;
+   this.mapView            = mapView;
+   this.config             = mapView.config;
+   this.context            = mapView.context;
    
    this.mouseDown          = false;
    this.lastWheelMillis    = new Date().getTime();
@@ -20,13 +20,27 @@ MapMouse.prototype.initListeners = function () {
 
    var mouse = this;
    
-   this.context.mapCanvas
-   .mousedown  ( Utils.apply ( this , "down" ))
-   .mouseup    ( Utils.apply ( this , "up" ))
-   .mousemove  ( Utils.apply ( this , "move" ))
-   .mouseleave ( Utils.apply ( this , "leave" ))
-   .dblclick   ( Utils.apply ( this , "doubleClick" ))
-   .bind('mousewheel', Utils.apply ( this , "wheel"));   
+   switch(this.mapView.type){
+
+      case Maperial.MAIN:
+      case Maperial.ANCHOR:
+         this.context.mapCanvas
+         .mousedown  ( Utils.apply ( this , "down" ))
+         .mouseup    ( Utils.apply ( this , "up" ))
+         .mouseleave ( Utils.apply ( this , "leave" ))
+         .mousemove  ( Utils.apply ( this , "move" ))
+         .dblclick   ( Utils.apply ( this , "doubleClick" ))
+         .bind('mousewheel', Utils.apply ( this , "wheel"))   
+         break;
+
+      case Maperial.LENS:
+      case Maperial.MINIFIER:
+      case Maperial.MAGNIFIER:
+         this.context.mapCanvas
+         .dblclick   ( Utils.apply ( this , "doubleClick" ))
+         .bind('mousewheel', Utils.apply ( this , "wheelOnZoomer"))   
+         break;
+   }
 
 }
 
@@ -70,20 +84,22 @@ MapMouse.prototype.move = function (event) {
    this.context.mouseP = Utils.getPoint(event);
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
-   this.context.mapCanvas.trigger(MaperialEvents.MOUSE_MOVE);
-
    if (!this.mouseDown){
       this.context.mapCanvas.trigger(MaperialEvents.UPDATE_LATLON);
+
+      $(window).trigger(MaperialEvents.MOUSE_MOVE, [this.mapView.map, this.mapView.name, this.mapView.type]);
    }
    else{
       this.context.mapCanvas.addClass( 'movable' )
-      this.context.mapCanvas.trigger(MaperialEvents.DRAGGING_MAP);
+      $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.mapView.name]);
    }
-
 }
 
 MapMouse.prototype.doubleClick = function (event) {
    
+   if(!this.mapView.zoomable)
+      return
+      
    this.context.zoom = Math.min(18, this.context.zoom + 1);
    this.context.centerM = this.convertCanvasPointToMeters(this.context.mouseP);
    
@@ -91,16 +107,24 @@ MapMouse.prototype.doubleClick = function (event) {
    this.context.mouseP = Utils.getPoint(event);
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
-   this.maperial.refreshCurrentLatLon();
-   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
+   this.mapView.refreshCurrentLatLon();
+   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
+
 }
+
+//----------------------------------------------------------------------//
 
 MapMouse.prototype.wheel = function (event, delta) {
 
+   if(!this.mapView.zoomable)
+      return
+      
    event.preventDefault();
    
    if(this.hasJustWheeled())
       return;
+   
+   var previousZoom = this.context.zoom
    
    if (delta > 0) {
       this.context.zoom = Math.min(18, this.context.zoom + 1);
@@ -122,8 +146,41 @@ MapMouse.prototype.wheel = function (event, delta) {
    this.context.mouseP = Utils.getPoint(event);
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
-   this.maperial.refreshCurrentLatLon();
-   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH);
+   this.mapView.refreshCurrentLatLon();
+   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
+}
+
+//----------------------------------------------------------------------//
+
+MapMouse.prototype.wheelOnZoomer = function (event, delta) {
+
+   if(!this.mapView.zoomable)
+      return
+      
+   event.preventDefault();
+   
+   if(this.hasJustWheeled() || delta == 0)
+      return;
+   
+   this.context.zoom = Math.min(18, this.context.zoom + 1 * delta/Math.abs(delta));
+   var mainZoom = this.mapView.maperial.getZoom(this.mapView.map)
+   
+   switch(this.mapView.type){
+      case Maperial.LENS :
+      case Maperial.MAGNIFIER : 
+         if(this.context.zoom < mainZoom)
+            this.context.zoom = mainZoom
+         break;
+
+      case Maperial.MINIFIER : 
+         if(this.context.zoom > mainZoom)
+            this.context.zoom = mainZoom
+         break;
+   }
+   
+   this.mapView.deltaZoom = this.context.zoom - mainZoom
+
+   $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
 }
 
 //----------------------------------------------------------------------//

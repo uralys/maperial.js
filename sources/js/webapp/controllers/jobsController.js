@@ -8,7 +8,7 @@
 
 	JobsController.renderUI = function()
 	{
-	   
+
 	}
 
 	JobsController.cleanUI = function()

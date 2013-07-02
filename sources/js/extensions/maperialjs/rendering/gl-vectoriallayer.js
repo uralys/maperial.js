@@ -5,10 +5,10 @@ VectorialLayer.FRONT  = "front";
 
 //=============================================================//
 
-function VectorialLayer ( maperial, inZoom ) {
-   this.maperial = maperial;
+function VectorialLayer ( mapView, inZoom ) {
+   this.mapView = mapView;
    
-   this.gl     = maperial.context.assets.ctx;
+   this.gl     = mapView.context.assets.ctx;
 
    this.cnv    = null;
    this.tex    = null;
@@ -103,9 +103,9 @@ VectorialLayer.prototype.Update = function ( params, layerPosition ) {
       }
    }
 
-   var osmVisibilities = this.maperial.context.osmVisibilities;
+   var osmVisibilities = this.mapView.context.osmVisibilities;
    var styleUID   = params.styles[params.selectedStyle];
-   var style      = this.maperial.stylesManager.getStyle(styleUID).content;
+   var style      = this.mapView.stylesManager.getStyle(styleUID).content;
 
    if ( ! style ) {
       console.log ( "Invalid style");

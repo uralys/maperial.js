@@ -12,6 +12,7 @@
 			openTeam       : Ember.Route.transitionTo('team'),
 			openCredits    : Ember.Route.transitionTo('credits'),
 			openJobs       : Ember.Route.transitionTo('jobs'),
+			openBlog       : Ember.Route.transitionTo('blog'),
 			openFeatures   : Ember.Route.transitionTo('features'),
 			openPresentation: Ember.Route.transitionTo('presentation'),
 			openPrices     : Ember.Route.transitionTo('prices'),
@@ -37,6 +38,7 @@
 			team           : App.TeamRouting,
 			credits        : App.CreditsRouting,
 			jobs           : App.JobsRouting,
+			blog           : App.BlogRouting,
 			features       : App.FeaturesRouting,
 			presentation   : App.PresentationRouting,
 			prices         : App.PricesRouting,
@@ -103,7 +105,7 @@
          }
          
 		   if(webappPage  
-	      && !App.maperial){
+	      && !App.Globals.APP_READY){
 		      console.log("Not loaded properly ! Redirected to the home page");
 		      window.location.href="/"
 		   }
@@ -164,6 +166,7 @@
             page != "team" && 
             page != "credits" && 
             page != "jobs" && 
+            page != "blog" && 
             page != "features" && 
             page != "presentation" && 
             page != "prices" && 

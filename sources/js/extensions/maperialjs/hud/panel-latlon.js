@@ -2,7 +2,7 @@
 //==================================================================//
 
 HUD.prototype.updateLatLon = function(){
-   var mouseLatLon = this.context.coordS.MetersToLatLon(this.context.mouseM.x, this.context.mouseM.y); 
+   var mouseLatLon = this.mapView.context.coordS.MetersToLatLon(this.mapView.context.mouseM.x, this.mapView.context.mouseM.y); 
    try {
       this.element("longitude").empty();
       this.element("latitude").empty();

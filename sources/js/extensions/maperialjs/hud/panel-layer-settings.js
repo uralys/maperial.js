@@ -22,9 +22,9 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
    //-----------------------------------------------------//
 
    var nbSettings = 0
-   for(var i = this.maperial.config.layers.length - 1; i >= 0 ; i--) {
+   for(var i = this.mapView.config.layers.length - 1; i >= 0 ; i--) {
 
-      var layer = this.maperial.config.layers[i];
+      var layer = this.mapView.config.layers[i];
       switch(layer.type){
          case LayersManager.Images:
          case LayersManager.Raster:
@@ -50,8 +50,8 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
 
    //-----------------------------------------------------//
 
-   $("#panelLayers"+this.maperial.tagId).css("height", panelHeight+"px");
-   $("#panelLayers"+this.maperial.tagId).removeClass("hide"); // maperial reset hideAllHUD + no layers => no HUD => orce show here
+   $("#panelLayers_"+this.mapView.name).css("height", panelHeight+"px");
+   $("#panelLayers_"+this.mapView.name).removeClass("hide"); // maperial reset hideAllHUD + no layers => no HUD => orce show here
    
    //-----------------------------------------------------//
 
@@ -62,7 +62,7 @@ HUD.prototype.refreshLayerSettingsPanel = function() {
 
 HUD.prototype.buildShadeSettings = function(layerIndex) {
 
-   var layer = this.maperial.config.layers[layerIndex];
+   var layer = this.mapView.config.layers[layerIndex];
 
    var zSelector = "zSelector"+layerIndex;
    var scaleSelector = "scaleSelector"+layerIndex;

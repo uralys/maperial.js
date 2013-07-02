@@ -56,6 +56,8 @@
 
    App.Globals = Globals.create();
 
+   App.maperial = new Maperial();
+   
    App.mapManager = new MapManager();
    App.styleManager = new StyleManager();
    App.youtubeManager = new YoutubeManager();

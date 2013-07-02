@@ -23,9 +23,9 @@ HUD.ZOOM_METERS = {
 
 HUD.prototype.updateScale = function(){
 
-   var pointM = new Point(this.context.centerM.x + parseInt(HUD.ZOOM_METERS[this.context.zoom]) , this.context.centerM.y ); 
-   var centerP = this.context.coordS.MetersToPixelsAccurate(this.context.centerM.x, this.context.centerM.y, this.context.zoom); 
-   var pointP = this.context.coordS.MetersToPixelsAccurate(pointM.x, pointM.y, this.context.zoom); 
+   var pointM = new Point(this.mapView.context.centerM.x + parseInt(HUD.ZOOM_METERS[this.mapView.context.zoom]) , this.mapView.context.centerM.y ); 
+   var centerP = this.mapView.context.coordS.MetersToPixelsAccurate(this.mapView.context.centerM.x, this.mapView.context.centerM.y, this.mapView.context.zoom); 
+   var pointP = this.mapView.context.coordS.MetersToPixelsAccurate(pointM.x, pointM.y, this.mapView.context.zoom); 
 
    var nbPixelsForMeters = pointP.x - centerP.x;
    var nbPixelsForMiles = nbPixelsForMeters * 0.62137;
@@ -34,8 +34,8 @@ HUD.prototype.updateScale = function(){
    // mi = km * 0.62137
    // For miles, divide km by 1.609344
    
-   var meters = HUD.ZOOM_METERS[this.context.zoom];
-   var miles = HUD.ZOOM_METERS[this.context.zoom] * 0.00062137;
+   var meters = HUD.ZOOM_METERS[this.mapView.context.zoom];
+   var miles = HUD.ZOOM_METERS[this.mapView.context.zoom] * 0.00062137;
    
    try {
       this.element("metersContainer").empty();

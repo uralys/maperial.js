@@ -1,7 +1,7 @@
 
-function RasterLayer ( maperial , inZoom) {
-   this.maperial = maperial;
-   this.assets = maperial.context.assets;
+function RasterLayer ( mapView , inZoom) {
+   this.mapView = mapView;
+   this.assets = mapView.context.assets;
    this.gl     = this.assets.ctx;
    
    this.tex    = null;
@@ -50,7 +50,7 @@ RasterLayer.prototype.Update = function ( params ) {
       
    var gl = this.gl;
    var colorbarUID = params.colorbars[params.selectedColorbar];
-   var colorbar = this.maperial.colorbarsManager.getColorbar(colorbarUID).tex;
+   var colorbar = this.mapView.colorbarsManager.getColorbar(colorbarUID).tex;
    
    if ( !colorbar ) { 
       console.log("Invalid color bar : setting default") ;

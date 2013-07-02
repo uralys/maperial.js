@@ -34,14 +34,14 @@ StyleMenu.BIGGEST = 3;
 
 //==================================================================//
 
-function StyleMenu(container, container2, container3, maperial){
+function StyleMenu(container, container2, container3, mapView){
 
    console.log("  building style menu...");
 
    //-------------------------------------------------//
    
-   this.maperial = maperial;
-   this.style = this.maperial.stylesManager.getSelectedStyle();
+   this.mapView = mapView;
+   this.style = this.mapView.stylesManager.getSelectedStyle();
    
    //-------------------------------------------------//
 
@@ -106,20 +106,20 @@ StyleMenu.prototype.initListeners = function (event) {
       styleMenu.ChangeSelectedSubLayer(layerIndex, layerId)
    });
 
-   this.maperial.context.mapCanvas.on(MaperialEvents.MOUSE_DOWN, function(){
+   this.mapView.context.mapCanvas.on(MaperialEvents.MOUSE_DOWN, function(){
       $(".colorpicker").hide();
    });
 }
 
 StyleMenu.prototype.removeListeners = function (event) {
    $(window).off(MaperialEvents.OPEN_STYLE);
-   this.maperial.context.mapCanvas.off(MaperialEvents.MOUSE_DOWN)
+   this.mapView.context.mapCanvas.off(MaperialEvents.MOUSE_DOWN)
 }
 
 //==================================================================//
 
 StyleMenu.prototype.Refresh = function(){
-   $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.currentLayerIndex]);
+   $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.mapView.name, this.currentLayerIndex]);
 }
 
 StyleMenu.prototype.DefFromRule = function(luid,rule){
@@ -383,13 +383,13 @@ StyleMenu.prototype.BuildElements = function(){
 
    this.styleMenuParentEl.hide(); // hide me during loading
 
-   this.mainDiv = $('<div id="styleMenu_menu_maindiv'+this.maperial.tagId+'" class="styleMenu_menu_maindiv"></div>');
+   this.mainDiv = $('<div id="styleMenu_menu_maindiv'+this.mapView.name+'" class="styleMenu_menu_maindiv"></div>');
    this.mainDiv.appendTo(this.styleMenuParentEl);
 
-   this.widgetDiv = $('<div id="styleMenu_menu_widgetDiv'+this.maperial.tagId+'" class="styleMenu_menu_widgetDiv"></div>');
+   this.widgetDiv = $('<div id="styleMenu_menu_widgetDiv'+this.mapView.name+'" class="styleMenu_menu_widgetDiv"></div>');
    this.widgetDiv.appendTo(this.styleMenuParentEl2);
 
-   this.zoomDiv = $('<div id="styleMenu_menu_zoomDiv'+this.maperial.tagId+'" class="styleMenu_menu_zoomDiv" ></div>');
+   this.zoomDiv = $('<div id="styleMenu_menu_zoomDiv'+this.mapView.name+'" class="styleMenu_menu_zoomDiv" ></div>');
    this.zoomDiv.appendTo(this.styleMenuParentEl3);
 
    //this.__FillZoomDef();
@@ -402,7 +402,7 @@ StyleMenu.prototype.BuildElements = function(){
 StyleMenu.prototype.UpdateActivZoom = function(){
    this.activZooms = [];
    for ( var z = 1 ; z < 19 ; ++z){
-      if ( z == this.maperial.GetZoom() ){
+      if ( z == this.mapView.GetZoom() ){
          if(this.debug)console.log("map zoom is " + z);
          $("#styleMenu_menu_zcheck"+z).button( "option", "label", "Z" + z + "*");
       }
@@ -422,13 +422,13 @@ StyleMenu.prototype.UpdateActivZoom = function(){
 
 
 StyleMenu.prototype.ZoomOut = function(){
-   this.maperial.ZoomOut();
+   this.mapView.ZoomOut();
    this.UpdateActivZoom();
    this.refresh();
 }
 
 StyleMenu.prototype.ZoomIn = function(){
-   this.maperial.ZoomIn();
+   this.mapView.ZoomIn();
    this.UpdateActivZoom();
    this.refresh();
 }
@@ -729,10 +729,10 @@ StyleMenu.prototype.FillWidget = function(uid){
       return;
    }
 
-   if(this.debug)console.log("Current zoom is " , this.maperial.GetZoom() , uid, def , rule); 
+   if(this.debug)console.log("Current zoom is " , this.mapView.GetZoom() , uid, def , rule); 
 
    //var def = 0; // first def is always the good one :-)
-   var rd = this.DefRuleIdFromZoom(uid,this.maperial.GetZoom());
+   var rd = this.DefRuleIdFromZoom(uid,this.mapView.GetZoom());
    var def = rd.def;
    var ruleId = rd.ruleId;
    var rule = rd.rule;
@@ -740,17 +740,17 @@ StyleMenu.prototype.FillWidget = function(uid){
    if(this.debug)console.log("Fill widget for",def,ruleId,rule);
 
    if ( ruleId < 0 ){
-      if(this.debug)console.log("Cannot find ruleId for zoom " + this.maperial.GetZoom());
+      if(this.debug)console.log("Cannot find ruleId for zoom " + this.mapView.GetZoom());
       return;
    }
 
    if ( rule < 0 ){
-      if(this.debug)console.log("Cannot find rule for zoom " + this.maperial.GetZoom());
+      if(this.debug)console.log("Cannot find rule for zoom " + this.mapView.GetZoom());
       return;
    }
 
    if ( def < 0 ){
-      if(this.debug)console.log("Cannot find def for zoom " + this.maperial.GetZoom());
+      if(this.debug)console.log("Cannot find def for zoom " + this.mapView.GetZoom());
       return;
    }
 
@@ -1059,7 +1059,7 @@ StyleMenu.prototype.BuildSimpleWidget = function(group, name, uid){
 
 StyleMenu.prototype.FillSimpleWidget = function(uid){
 
-   var rd = this.DefRuleIdFromZoom(uid,this.maperial.GetZoom());
+   var rd = this.DefRuleIdFromZoom(uid,this.mapView.GetZoom());
    var def = rd.def;
    var ruleId = rd.ruleId;
    var rule = rd.rule;
@@ -1067,17 +1067,17 @@ StyleMenu.prototype.FillSimpleWidget = function(uid){
    if(this.debug)console.log("Fill widget for",def,ruleId,rule);
 
    if ( ruleId < 0 ){
-      if(this.debug)console.log("Cannot find ruleId for zoom " + this.maperial.GetZoom());
+      if(this.debug)console.log("Cannot find ruleId for zoom " + this.mapView.GetZoom());
       return;
    }
 
    if ( rule < 0 ){
-      if(this.debug)console.log("Cannot find rule for zoom " + this.maperial.GetZoom());
+      if(this.debug)console.log("Cannot find rule for zoom " + this.mapView.GetZoom());
       return;
    }
 
    if ( def < 0 ){
-      if(this.debug)console.log("Cannot find def for zoom " + this.maperial.GetZoom());
+      if(this.debug)console.log("Cannot find def for zoom " + this.mapView.GetZoom());
       return;
    }
    
@@ -1113,7 +1113,7 @@ StyleMenu.prototype.refreshWidget = function(group,name,uid){
          break;
    }
    
-   this.maperial.hud.placeElements();
+   this.mapView.hud.placeElements();
 }
 
 //--------------------------------------------------------------------------//

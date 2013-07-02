@@ -7,7 +7,7 @@ HUD.prototype.refreshAttribution = function(){
    
    //------------------------------------------------------------//
    
-   var mapWidth = this.context.mapCanvas[0].offsetWidth
+   var mapWidth = this.mapView.context.mapCanvas[0].offsetWidth
    
    if(this.element("attribution").width() > mapWidth){
       this.buildAttributions(true)
@@ -24,7 +24,7 @@ HUD.prototype.refreshAttribution = function(){
 //==================================================================//
 
 HUD.prototype.buildAttributions = function(isSmall){
-   
+
    this.element("attribution").empty();
 
    if(isSmall){
@@ -38,20 +38,20 @@ HUD.prototype.buildAttributions = function(isSmall){
 
    var tilesAttribution             = "";
    var dataAttribution              = "";
-   var maperialAttribution          = "by <a class=\"link\" target=\"_blank\" href=\"http://www.maperial.com\">__Maperial</a>."+attributionEnding;
+   var maperialAttribution          = "by <a class=\"link\" target=\"_blank\" href=\"http://www.mapView.com\">__Maperial</a>."+attributionEnding;
    var requireMaperialAttribution   = false;
    var requireOSMAttribution        = false;
 
    // aggregation d'attribution pour le meme server 
    var geoSASAttribution            = false;
 
-   if(this.maperial.config.layers.length > 1){
+   if(this.mapView.config.layers.length > 1){
       maperialAttribution = "Fusion " + maperialAttribution;
       requireMaperialAttribution = true;
    }
 
-   for(var i = 0; i < this.maperial.config.layers.length; i++){
-      switch(this.maperial.config.layers[i].source.type){
+   for(var i = 0; i < this.mapView.config.layers.length; i++){
+      switch(this.mapView.config.layers[i].source.type){
 
          case Source.MaperialOSM : 
             
@@ -68,7 +68,7 @@ HUD.prototype.buildAttributions = function(isSmall){
             
          case Source.Images :
             
-            switch(this.maperial.config.layers[i].source.params.src){
+            switch(this.mapView.config.layers[i].source.params.src){
                case Source.IMAGES_MAPQUEST:
                case Source.IMAGES_MAPQUEST_SATELLITE:
                   tilesAttribution += " Basemap tiles by <a class=\"link\" target=\"_blank\" href=\"http://www.mapquest.com\">MapQuest</a>."+attributionEnding;
@@ -101,7 +101,7 @@ HUD.prototype.buildAttributions = function(isSmall){
             
          case Source.WMS :
 
-            switch(this.maperial.config.layers[i].source.params.src){
+            switch(this.mapView.config.layers[i].source.params.src){
                case Source.WMS_BRETAGNECANTONS:
                   dataAttribution += " WMS data by <a class=\"link\" target=\"_blank\" href=\"http://cms.geobretagne.fr/\">GeoBretagne</a>."+attributionEnding;
                   break;
