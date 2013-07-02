@@ -337,16 +337,22 @@ MapView.prototype.loadStyles = function(next){
 
 //==================================================================//
 
+/**
+ * a revoir completement pour une gestion multi styles.
+ * ici on recupere le dernier layerOSM pour le refresh = pas possible d'avoir plusieurs layers OSM avec ce fonctionnement
+ */
 MapView.prototype.changeStyle = function(styleUID, position, refresh){
 
    if(position === undefined) position = 0;
    if(refresh === undefined) refresh = true;
 
+   var layerToRefresh = 0
    for(var i = 0; i < this.config.layers.length; i++){
 
       if(this.config.layers[i].source.type != Source.MaperialOSM)
          continue;
-
+      
+      layerToRefresh = i
       var layerParams = this.config.layers[i].params;
       if(!layerParams.styles || refresh){
 
@@ -370,7 +376,8 @@ MapView.prototype.changeStyle = function(styleUID, position, refresh){
          me.config.map.currentLon    = mapLatLon.x
          me.config.map.currentZoom   = me.context.zoom
          
-         $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.name]);
+         me.refreshOSMVisibilities()
+         $(window).trigger(MaperialEvents.STYLE_CHANGED, [me.name, layerToRefresh]);
       })
    }
 }

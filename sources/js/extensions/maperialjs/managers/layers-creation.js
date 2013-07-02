@@ -254,18 +254,6 @@ LayersCreation.prototype.openSelectStyleWindow = function(){
    $('#selectStyleWindow').on('hidden', this.setSelectedStyle);
 }
 
-LayersCreation.prototype.selectStyle = function(style){
-   // TODO EVENT
-   App.stylesData.set("selectedStyle", style);
-}
-
-//** called from StylesController.changeStyle()... 
-LayersCreation.prototype.changeStyle = function(){
-   // TODO EVENT
-   this.mapView.changeStyle(App.stylesData.selectedStyle.uid);
-   $("#selectStyleWindow").modal("hide");
-}
-
 //=============================================================================//
 // Customize 
 

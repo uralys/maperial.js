@@ -130,8 +130,12 @@ MapRenderer.prototype.initListeners = function () {
       }
    });
 
-   $(window).on(MaperialEvents.STYLE_CHANGED, function(event, layerIndex){
-      renderer.resetLayer(layerIndex);
+   $(window).on(MaperialEvents.STYLE_CHANGED, function(event, viewName, layerIndex){
+      console.log("STYLE_CHANGED", viewName, layerIndex, renderer.mapView.name);
+      if(renderer.mapView.name == viewName){
+         console.log("renderer asked to refresh", layerIndex);
+         renderer.resetLayer(layerIndex);         
+      }
    });
    
    $(window).on(MaperialEvents.COLORBAR_CHANGED, function(event, layerIndex){

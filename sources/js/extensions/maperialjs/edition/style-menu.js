@@ -119,7 +119,7 @@ StyleMenu.prototype.removeListeners = function (event) {
 //==================================================================//
 
 StyleMenu.prototype.Refresh = function(){
-   $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.currentLayerIndex]);
+   $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.mapView.name, this.currentLayerIndex]);
 }
 
 StyleMenu.prototype.DefFromRule = function(luid,rule){

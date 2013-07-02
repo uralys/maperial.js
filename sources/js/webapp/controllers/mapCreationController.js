@@ -233,6 +233,18 @@
    
    //=============================================================================//
 
+   MapCreationController.selectStyle = function(style){
+      App.stylesData.set("selectedStyle", style);
+   }
+
+   //** called from StylesController.changeStyle()... 
+   MapCreationController.changeStyle = function(){
+      App.maperial.views[0].changeStyle(App.stylesData.selectedStyle.uid);
+      $("#selectStyleWindow").modal("hide");
+   }
+   
+   //=============================================================================//
+
    App.MapCreationController = MapCreationController;
 
    //==================================================================//
