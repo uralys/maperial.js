@@ -227,6 +227,10 @@
 			<arg value="sources/js/extensions/maperialjs/libs/hashmap.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/libs/canvasutilities.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/canvg.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/StackBlur.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/rendering/gl-tools.js" />
