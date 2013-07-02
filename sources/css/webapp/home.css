@@ -278,6 +278,7 @@
 	font-size: 19px;
 	margin-bottom: 14px;
 	margin-top: 32px!important;
+	text-shadow: black 0.1em 0.1em 0.2em
 }
 
 .homeSubtitle {
@@ -286,6 +287,7 @@
 	font-weight: 300;
 	line-height: 1.25;
 	color: #fff;
+	text-shadow: black 0.2em 0.2em 0.6em
 }
 
 .homeAction {
