@@ -304,6 +304,7 @@ LayersManager.buildOSMVisibilities = function(osmSets) {
       }
    }
 
+   console.log(osmVisibilities)
    return osmVisibilities;
 }
 

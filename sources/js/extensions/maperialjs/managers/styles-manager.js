@@ -96,6 +96,8 @@ StylesManager.prototype.loadStyle = function(styleUID, next) {
 //-------------------//
 
 StylesManager.prototype.LoadFont = function (styleUID,next) {
+   
+   console.log("-----------> LoadFont");
    if( !( styleUID in window.maperialStyles ) || !window.maperialStyles[styleUID].content ){
       return;
    }
