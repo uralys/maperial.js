@@ -27,6 +27,9 @@
                      "/js/libs/jquery.selectbox-0.2.min.js",
                      "/js/libs/jquery.validate.min.js",
                      "/js/libs/proj4js-compressed.js",
+                     
+                     "/js/extensions/maperialjs/libs/canvg.js",
+                     "/js/extensions/maperialjs/libs/StackBlur.js",
 
                      // libs
                      "/js/extensions/maperialjs/libs/gl-matrix-min.js",
@@ -108,9 +111,13 @@
                   //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
                   //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
                   //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
+                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
                   
-                  //config.layers.push(LayersManager.getOSMLayerConfig(["1_style_13ed75438c8b2ed8914"]))
+
+                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
+                  config.layers.push(LayersManager.getOSMLayerConfig(["1_style_13ed75438c8b2ed8914"]))
+
+
                   
                   maperial.apply(config)
                });

@@ -68,6 +68,29 @@ var globalFonts = function () {
    return __gf;
 }();
 
+function FromPoint ( p ) {
+   if (p.length != 2) {
+      console.log ("Invalid Point");
+      return;
+   }
+   this.p     = p;
+   this.acc   = 0;
+}
+
+FromPoint.prototype.Reset = function (  ) {
+   this.acc   = 0;
+}
+
+FromPoint.prototype.IsValid = function (  ) {
+   return ! (this.p === undefined);
+}
+
+FromPoint.prototype.Advance = function ( cs ) {
+   var oacc = this.acc
+   this.acc = this.acc + cs;        // next
+   return [ this.p[0] + oacc , this.p[1] , 0.0]
+}
+
 function FollowLine (l) {
    if (l.length < 4) {
       console.log ("Invalid line");
@@ -78,7 +101,12 @@ function FollowLine (l) {
    this.pi    = 0;
 }
 
-FollowLine.prototype.IsValid = function ( cs ) {
+FollowLine.prototype.Reset = function (  ) {
+   this.acc   = 0;
+   this.pi    = 0;
+}
+
+FollowLine.prototype.IsValid = function (  ) {
    return ! (this.l === undefined);
 }
 
@@ -301,7 +329,7 @@ var Font = function (data) {
          : text;
    };
 }
-
+/*
 function RenderTextCufon (text,font, size, ctx ,l ,fill) {
 	function generateFromVML(path, context) {
 		var atX = 0, atY = 0;
@@ -336,7 +364,9 @@ function RenderTextCufon (text,font, size, ctx ,l ,fill) {
 		}
 	}
    
-   var fl = new FollowLine (l)
+   if ( l.length == 2 ) { var fl = new FromPoint (l) }
+   else {var fl = new FollowLine (l)}
+   
    if ( ! fl.IsValid())
       return
       
@@ -375,43 +405,42 @@ function RenderTextCufon (text,font, size, ctx ,l ,fill) {
       // g.scale(pixelRatio, pixelRatio);
    // }
 
-   /*
+   
    // proper horizontal scaling is performed later
-   g.translate ( 0,shift);
+   //g.translate ( 0,shift);
    //g.scale(scale, scale * roundingFactor);
-   g.scale(scale, scale );
+   //g.scale(scale, scale );
    //g.translate(-expandLeft, -expandTop);
-   g.save();
+   //g.save();
 
-   function renderText() {
-      var glyphs = font.glyphs, glyph, i = -1, j = -1, chr;
-      //g.scale(roundingFactor, 1);
-      while (chr = chars[++i]) {
-         g.save()                                  // new
-         var tr = fl.Advance ( jumps[(j+1)] * scale )                // new
-         //g.translate ( tr[0] /scale, tr[1] /scale);            // new
-         //g.rotate(tr[2]);                          // new
+   //function renderText() {
+      //var glyphs = font.glyphs, glyph, i = -1, j = -1, chr;
+      ////g.scale(roundingFactor, 1);
+      //while (chr = chars[++i]) {
+         //g.save()                                  // new
+         //var tr = fl.Advance ( jumps[(j+1)] * scale )                // new
+         ////g.translate ( tr[0] /scale, tr[1] /scale);            // new
+         ////g.rotate(tr[2]);                          // new
       
-         var glyph = glyphs[chars[i]] || font.missingGlyph;
-         if (!glyph) {continue;g.resore();}
-         if (glyph.d) {
-            g.beginPath();
-            // the following moveTo is for Opera 9.2. if we don't
-            // do this, it won't forget the previous path which
-            // results in garbled text.
-            g.moveTo(0, 0);
-            if (glyph.code) interpret(glyph.code, g);
-            else glyph.code = generateFromVML('m' + glyph.d, g);
-            g.fill();
-         }
-         g.restore(); // new
-         g.translate(jumps[++j], 0);
-      }
-   }
-   g.fillStyle="rgba(0,0,0,1.0)";
-   renderText();
-   g.restore();
-   */
+         //var glyph = glyphs[chars[i]] || font.missingGlyph;
+         //if (!glyph) {continue;g.resore();}
+         //if (glyph.d) {
+            //g.beginPath();
+            //// the following moveTo is for Opera 9.2. if we don't
+            //// do this, it won't forget the previous path which
+            //// results in garbled text.
+            //g.moveTo(0, 0);
+            //if (glyph.code) interpret(glyph.code, g);
+            //else glyph.code = generateFromVML('m' + glyph.d, g);
+            //g.fill();
+         //}
+         //g.restore(); // new
+         //g.translate(jumps[++j], 0);
+      //}
+   //}
+   //g.fillStyle="rgba(0,0,0,1.0)";
+   //renderText();
+   //g.restore();
 
    // proper horizontal scaling is performed later
    
@@ -458,9 +487,340 @@ function RenderTextCufon (text,font, size, ctx ,l ,fill) {
    }
    renderText();
    g.restore();
+};*/
+
+/*
+function InitRenderTextPoint(text , font, size, l)  {
+   var shift      = parseInt(font.face["x-height"]) /100 * size.value 
+   var viewBox    = font.viewBox;
+
+   var chars = text.split('')
+   var jumps = font.spacing(chars, ~~size.convertFrom(0), ~~size.convertFrom(0) );
+   
+   if (!jumps.length) return null; // there's nothing to render
+   
+   var width          = jumps.total;
+   var height         = size.convert(viewBox.height);
+   var roundedHeight  = Math.ceil(height);
+   var roundingFactor = roundedHeight / height;
+   var stretchedWidth = width * roundingFactor;
+   var scale          = height / viewBox.height;
+
+   var txtCtx   = new Object  () ;
+   txtCtx.scale = scale;
+   txtCtx.chars = chars;
+   txtCtx.shift = shift;
+   txtCtx.jumps = jumps;
+   txtCtx.h     = height;
+   txtCtx.w     = size.convert(stretchedWidth);
+   
+   txtCtx.bbox   = new Object()
+   txtCtx.bbox.x = l[0] - 8
+   txtCtx.bbox.y = l[1] - txtCtx.h - 8
+   txtCtx.bbox.w = txtCtx.w + 16
+   txtCtx.bbox.h = txtCtx.h + 16
+   txtCtx.bbox.t = text
+   
+   txtCtx.fl = new FromPoint (l) 
+   
+   if ( ! txtCtx.fl.IsValid())
+      return null;
+      
+   return txtCtx
+}
+*/
+
+function InitRenderText2( text , font, size, l , cutSize, center , translate) {
+
+   var shift      = parseInt(font.face["x-height"]) /100 * size.value 
+   var viewBox    = font.viewBox;
+
+   var height         = size.convert(viewBox.height);
+   var roundedHeight  = Math.ceil(height);
+   var roundingFactor = roundedHeight / height;
+   var scale = height / viewBox.height;
+
+   var descent       = size.convert(font.descent);
+   var ascent        = size.convert(font.ascent);
+   var realH         = descent - ascent; // == size ....
+   
+   var px = 0
+   var py = 0
+   if (l.length > 2) {
+
+      var minx = 99999
+      var maxx = -99999
+      var miny = 99999
+      var maxy = -99999
+      for ( var i = 0 ; i < l.length-1 ; i = i + 2 ) {
+         minx = (l[i] < minx)? l[i] : minx;
+         maxx = (l[i] > maxx)? l[i] : maxx;
+         miny = (l[i+1] < miny)? l[i+1] : miny;
+         maxy = (l[i+1] > maxy)? l[i+1] : maxy;
+      }
+      var boxw = maxx-minx;
+      var boxh = maxy-miny;
+      px   = minx + boxw/2.0
+      py   = miny + boxh/2.0
+   }
+   else {
+      px   = l[0]
+      py   = l[1]
+   }
+   px   = px + translate[0]
+   py   = py + translate[1]
+      
+   var maxW       = cutSize; // px
+   var maxChar    = Math.floor ( (maxW / size.value) * 6 );   
+   var textArray  = []
+   var charsArray = []
+   var jumpsArray = []
+   var txtTmp     = text;
+   if ( maxW > 0 ) {
+      while ( txtTmp.length > maxChar ) {
+         var spIdx = txtTmp.indexOf (' ',maxChar)
+         if (spIdx < 0)
+            break;
+         var str = txtTmp.substring( 0 , spIdx);
+         txtTmp  = txtTmp.substring( spIdx + 1 )
+         var chars = str.split('')
+         var jumps = font.spacing(chars,
+            ~~size.convertFrom(0), // letter spacing
+            ~~size.convertFrom(0)  // word spacing
+         )
+         if (!jumps.length) continue; 
+         
+         charsArray.push ( chars )
+         jumpsArray.push ( jumps )
+         textArray.push  ( str )
+      }
+   }
+   if ( txtTmp.length > 0 ) {
+      var chars = txtTmp.split('')
+      var jumps = font.spacing(chars,
+         ~~size.convertFrom(0), // letter spacing
+         ~~size.convertFrom(0)  // word spacing
+      )
+      if ( jumps.length > 0) {
+         charsArray.push ( chars )
+         jumpsArray.push ( jumps )
+         textArray.push(txtTmp) 
+      }
+   }      
+   
+   var txtCtx     = new Object  () ;
+   txtCtx.scale   = scale;
+   txtCtx.chars   = charsArray;
+   txtCtx.shift   = shift;
+   txtCtx.jumps   = jumpsArray;
+   txtCtx.fl      = []
+   var bbox       = new Object()
+   bbox.x         = 1000000000
+   bbox.y         = 1000000000
+   bbox.x2        = -1000000000
+   bbox.y2        = -1000000000
+   
+   for ( var i = 0 ; i < jumpsArray.length ; i=i+1 ) {
+      var stretchedWidth = jumpsArray[i].total * roundingFactor;
+      var w              = size.convert(stretchedWidth);
+      var y              = py -  ( jumpsArray.length - 1 - i ) * ( height )
+      var x              = px
+      if (center) {
+         x = x - w / 2.0;
+      }
+      txtCtx.fl.push ( new FromPoint ([x,y]) );
+      
+      var bbx  = x - 3
+      var bby  = y + ascent - 3
+      var bbx2 = bbx + w + 6
+      var bby2 = bby + realH + 6
+      
+      bbox.x  = bbx < bbox.x ? bbx : bbox.x;
+      bbox.y  = bby < bbox.y ? bby : bbox.y;
+      bbox.x2 = bbx2 > bbox.x2 ? bbx2 : bbox.x2;
+      bbox.y2  = bby2 > bbox.y2 ? bby2 : bbox.y2;
+   }
+
+   txtCtx.bbox = new Object() 
+   txtCtx.bbox.x = bbox.x
+   txtCtx.bbox.y = bbox.y
+   txtCtx.bbox.w = bbox.x2 - bbox.x
+   txtCtx.bbox.h = bbox.y2 - bbox.y
+   txtCtx.bbox.t = text
+   
+   return txtCtx;
+}
+/*
+function InitRenderText( text , font, size, l ) {
+
+
+   var shift      = parseInt(font.face["x-height"]) /100 * size.value 
+   var viewBox    = font.viewBox;
+
+   var chars = text.split('')
+   var jumps = font.spacing(chars,
+      ~~size.convertFrom(0), // letter spacing
+      ~~size.convertFrom(0)  // word spacing
+   );
+   
+   if (!jumps.length) return null; // there's nothing to render
+
+   var width    = jumps.total;
+
+   var height = size.convert(viewBox.height);
+   var roundedHeight = Math.ceil(height);
+   var roundingFactor = roundedHeight / height;
+   var stretchedWidth = width * roundingFactor;
+
+   var scale = height / viewBox.height;
+
+   var txtCtx = new Object  () ;
+   txtCtx.scale = scale;
+   txtCtx.chars = chars;
+   txtCtx.shift = shift;
+   txtCtx.jumps = jumps;
+   
+   txtCtx.h     = height;
+   txtCtx.w     = size.convert(stretchedWidth);
+   
+   txtCtx.bbox = new Object()
+   if ( l.length == 2 ) {
+      txtCtx.bbox.x = l[0] - 8
+      txtCtx.bbox.y = l[1] - txtCtx.h - 8
+      txtCtx.bbox.w = txtCtx.w + 16
+      txtCtx.bbox.h = txtCtx.h + 16
+      txtCtx.bbox.t = text
+   }
+   else {
+      // todo
+   }
+
+   
+   if ( l.length == 2 )           { txtCtx.fl = new FromPoint (l)  }
+   else if (l[l.length-1] == "c") { 
+   
+      var minx = 99999
+      var maxx = -99999
+      var miny = 99999
+      var maxy = -99999
+      for ( var i = 0 ; i < l.length-1 ; i = i + 2 ) {
+         minx = (l[i] < minx)? l[i] : minx;
+         maxx = (l[i] > maxx)? l[i] : maxx;
+         miny = (l[i+1] < miny)? l[i+1] : miny;
+         maxy = (l[i+1] > maxy)? l[i+1] : maxy;
+      }
+      var boxw = maxx-minx;
+      var boxh = maxy-miny;
+      var cx = minx + boxw/2.0 - txtCtx.w / 2.0
+      var cy = miny + boxh/2.0
+      
+      txtCtx.fl = new FromPoint ([cx,cy])
+   }
+   else                           { txtCtx.fl = new FollowLine (l) }
+   
+   if ( ! txtCtx.fl.IsValid())
+      return null;
+      
+   return txtCtx
+}
+*/
+//function RenderTextCufon (text,font, size, ctx ,l ,fill) {
+function RenderTextCufon (txtCtx, font, ctx ,fill) {
+	function generateFromVML(path, context) {
+		var atX = 0, atY = 0;
+		var code = [], re = /([mrvxe])([^a-z]*)/g, match;
+		generate: for (var i = 0; match = re.exec(path); ++i) {
+			var c = match[2].split(',');
+			switch (match[1]) {
+				case 'v':
+					code[i] = { m: 'bezierCurveTo', a: [ atX + ~~c[0], atY + ~~c[1], atX + ~~c[2], atY + ~~c[3], atX += ~~c[4], atY += ~~c[5] ] };
+					break;
+				case 'r':
+					code[i] = { m: 'lineTo', a: [ atX += ~~c[0], atY += ~~c[1] ] };
+					break;
+				case 'm':
+					code[i] = { m: 'moveTo', a: [ atX = ~~c[0], atY = ~~c[1] ] };
+					break;
+				case 'x':
+					code[i] = { m: 'closePath' };
+					break;
+				case 'e':
+					break generate;
+			}
+			context[code[i].m].apply(context, code[i].a);
+		}
+		return code;
+	}
+
+	function interpret(code, context) {
+		for (var i = 0, l = code.length; i < l; ++i) {
+			var line = code[i];
+			context[line.m].apply(context, line.a);
+		}
+	}
+
+   
+   ctx.save();
+   if (!fill) {
+      ctx.lineWidth    = ctx.lineWidth / txtCtx.scale;
+   }
+   for ( var idx = 0 ; idx < txtCtx.jumps.length  ; ++idx) { 
+      var glyphs = font.glyphs, glyph, i = -1, j = -1, chr;
+      var accJ = 0;
+      while (chr = txtCtx.chars[idx][++i]) {
+         var tr = txtCtx.fl[idx].Advance ( txtCtx.jumps[idx][(j+1)] * txtCtx.scale )                // new
+         if ( !tr) return;
+         ctx.save()                                  // new
+         ctx.translate ( tr[0] , tr[1] );            // new
+         ctx.rotate(tr[2]);                          // new
+         ctx.translate ( 0,txtCtx.shift);
+         ctx.scale(txtCtx.scale, txtCtx.scale );
+         var glyph = glyphs[txtCtx.chars[idx][i]] || font.missingGlyph;
+         if (!glyph) {ctx.restore();continue;}
+         if (glyph.d) {
+            ctx.beginPath();
+            // the following moveTo is for Opera 9.2. if we don't
+            // do this, it won't forget the previous path which
+            // results in garbled text.
+            ctx.moveTo(0, 0);
+            if (glyph.code) interpret(glyph.code, ctx);
+            else glyph.code = generateFromVML('m' + glyph.d, ctx);
+            if ( fill ) {
+               ctx.fill();
+            }
+            else { 
+               ctx.stroke();
+            }
+         }
+         accJ += txtCtx.jumps[idx][++j];
+         ctx.restore(); // new
+      }
+   }
+   ctx.restore();
 };
 
+function BoxesIntersect(a, b) {
+
+   return ! ((b.x >= a.x + a.w)   // trop à droite
+            || (b.x + b.w <= a.x) // trop à gauche
+            || (b.y >= a.y + a.h) // trop en bas
+            || (b.y + b.h <= a.y))// trop en haut
+    
+   /*
+   return (Math.abs((a.x + a.w/2.0) - (b.x + b.w/2.0)) * 2 <= (a.w + b.w)) &&
+         (Math.abs((a.y + a.h/2.0) - (b.y + b.h/2.0)) * 2 <= (a.h + b.h));
+   */
+}
+
+var viewBBox = new Object ();
+viewBBox.x = -1;
+viewBBox.y = -1;
+viewBBox.w = 258;
+viewBBox.h = 258;
+
 function ExtendCanvasContext ( ctx ) {
+   ctx._textBBox  = [ ] ;
+   /*
    Object.getPrototypeOf(ctx).fillTextOnLine = function ( txt , l ) {
       ctx.save()
       ctx.textBaseline="middle";
@@ -473,8 +833,9 @@ function ExtendCanvasContext ( ctx ) {
       TextOnLine ( this, l, txt, false );
       ctx.restore()
    }
-   Object.getPrototypeOf(ctx).fillTextOnLine2 = function ( txt , l ) {
-      ctx.save()
+   */
+   Object.getPrototypeOf(ctx).fillText = function ( txt , l , cutSize, center, translate) {
+   
       var fname = this.fontParams["family"].replace ( /(^["' \t])|(["' \t]$)/g, "" ).toLowerCase();
       var _font = globalFonts.Get(fname,this.fontParams["style"],this.fontParams["weight"]);
       if (!_font) {
@@ -482,12 +843,23 @@ function ExtendCanvasContext ( ctx ) {
          return ;
       }
       var _size = new FontSize ( this.fontParams["size"] , _font.baseSize );
-      RenderTextCufon ( txt , _font, _size , this , l, true);
-      ctx.restore()
+      var txtCtx = InitRenderText2 (txt , _font, _size,  l , cutSize, center, translate);
+      skipIt = false
+      for ( b in this._textBBox ) {
+         if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
+            skipIt = true
+            break
+         }
+      }
+      if (!skipIt) {
+         this._textBBox.push(txtCtx.bbox)
+         ctx.save()
+         RenderTextCufon ( txtCtx , _font ,this , true);
+         ctx.restore()
+      }
+   }
+   Object.getPrototypeOf(ctx).strokeText = function ( txt , l , cutSize, center, translate) {
       
-   }
-   Object.getPrototypeOf(ctx).strokeTextOnLine2 = function ( txt , l ) {
-      ctx.save()
       var fname = this.fontParams["family"].replace ( /(^["' \t])|(["' \t]$)/g, "" ).toLowerCase();
       var _font = globalFonts.Get(fname,this.fontParams["style"],this.fontParams["weight"]);
       if (!_font) {
@@ -495,9 +867,84 @@ function ExtendCanvasContext ( ctx ) {
          return ;
       }
       var _size = new FontSize ( this.fontParams["size"] , _font.baseSize );
-      RenderTextCufon ( txt , _font, _size , this , l, false);
-      ctx.restore()
+      var txtCtx = InitRenderText2 (txt , _font, _size, l , cutSize, center, translate);
+      skipIt = false
+      for ( b in this._textBBox ) {
+         if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
+            skipIt = true
+            break
+         }
+      }
+      if (!skipIt) {
+         this._textBBox.push(txtCtx.bbox)
+         ctx.save()
+         RenderTextCufon ( txtCtx , _font , this  , false);
+         ctx.restore()
+      }
    }
+   
+   Object.getPrototypeOf(ctx).strokeAndFillText = function ( txt , l , cutSize, center, translate ) {
+      /*
+      if (txt.indexOf('Clermont-Ferrand Auvergne') != -1){
+         var ezrzer = "op"
+      }
+      if (txt.indexOf('Notre Dame') != -1){
+         var ezrzer = "op"
+      }
+      if (txt.indexOf('La Barri') != -1){
+         var ezrzer = "op"
+      }
+      if (txt.indexOf('Durtol') != -1){
+         var ezrzer = "op"
+      }
+      if (txt.indexOf('Les Hauts-de') != -1){
+         var ezrzer = "op"
+      }
+      if (txt.indexOf('Clermont-Ferrand') != -1){
+         var ezrzer = "op"
+      }
+      */
+      var fname = this.fontParams["family"].replace ( /(^["' \t])|(["' \t]$)/g, "" ).toLowerCase();
+      var _font = globalFonts.Get(fname,this.fontParams["style"],this.fontParams["weight"]);
+      if (!_font) {
+         console.error ("fillTextOnLine2 : font error 2");
+         return ;
+      }
+      var _size = new FontSize ( this.fontParams["size"] , _font.baseSize );
+      var txtCtx = InitRenderText2 (txt , _font, _size, l , cutSize, center, translate);
+      skipIt = false
+      for ( b in this._textBBox ) {
+         if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
+            skipIt = true
+            break
+         }
+      }
+      if (!skipIt) {
+         this._textBBox.push(txtCtx.bbox)
+         
+         if (  BoxesIntersect ( viewBBox , txtCtx.bbox ) ) {
+            this.save()
+            /*this.fillStyle="rgba(255,0,0,1)";
+            this.rect(txtCtx.bbox.x,txtCtx.bbox.y,txtCtx.bbox.w,txtCtx.bbox.h);
+            this.fill ()*/
+            RenderTextCufon ( txtCtx , _font , this  , false);
+            this.restore()
+            for ( var i = 0 ; i < txtCtx.fl.length ; i=i+1 )
+               txtCtx.fl[i].Reset()
+            this.save()
+            RenderTextCufon ( txtCtx , _font , this  , true);
+            
+            this.restore()
+         }
+      }
+      /*else {
+         this.save()
+         this.fillStyle="rgba(0,255,0,1)";
+         this.fillRect(txtCtx.bbox.x,txtCtx.bbox.y,txtCtx.bbox.w,txtCtx.bbox.h);
+         this.restore()
+      }*/
+   }
+   
    
    Object.getPrototypeOf(ctx).SetFont = function ( cssfont ) {
       this.font   = cssfont;
