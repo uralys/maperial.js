@@ -238,6 +238,11 @@
    }
 
    //** called from StylesController.changeStyle()... 
+   // le pb cest quil faut detacher la selection des styles de la webapp
+   // et la mettre dans maperialJS
+   // et surtout permettre la "layerCreation" sur plusieurs mapView
+   // OU
+   // mieux integrer ca dans la webapp entierement ET ne permettre que du switch de config dans le maperial pour les viewers
    MapCreationController.changeStyle = function(){
       App.maperial.views[0].changeStyle(App.stylesData.selectedStyle.uid);
       $("#selectStyleWindow").modal("hide");

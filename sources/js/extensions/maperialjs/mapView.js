@@ -202,7 +202,7 @@ MapView.prototype.checkConfig = function() {
    //--------------------------//
    // checking if Default style must be used
 
-   this.changeStyle(Maperial.DEFAULT_STYLE_UID, 0, false);
+   //this.changeStyle(Maperial.DEFAULT_STYLE_UID, 0, false);
 }
 
 /**
@@ -345,26 +345,22 @@ MapView.prototype.changeStyle = function(styleUID, position, refresh){
 
    if(position === undefined) position = 0;
    if(refresh === undefined) refresh = true;
+   
+   // ici c'est foireux : ca ne permet pas proprement un multi layerCreation sur plusieurs mapView.
+   // ca bugguera si on ouvre une edition, puis une 2e sur la 2e view avant de finir la premiere.
+   var layerToRefresh = this.maperial.layersCreation.currentLayerIndex
+   
+   var layerParams = this.config.layers[layerToRefresh].params;
+   if(!layerParams.styles || refresh){
 
-   var layerToRefresh = 0
-   for(var i = 0; i < this.config.layers.length; i++){
+      if(refresh)
+         console.log("Changing style...");
+      else
+         console.log("  using default style...");
 
-      if(this.config.layers[i].source.type != Source.MaperialOSM)
-         continue;
-      
-      layerToRefresh = i
-      var layerParams = this.config.layers[i].params;
-      if(!layerParams.styles || refresh){
-
-         if(refresh)
-            console.log("Changing style...");
-         else
-            console.log("  using default style...");
-
-         layerParams.styles = {};
-         layerParams.styles[position] = styleUID;
-         layerParams.selectedStyle = position;
-      }
+      layerParams.styles = {};
+      layerParams.styles[position] = styleUID;
+      layerParams.selectedStyle = position;
    }
 
    if(refresh){
