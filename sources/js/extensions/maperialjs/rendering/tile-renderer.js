@@ -265,54 +265,203 @@ TileRenderer.PolygonSymbolizer = function ( ctx , line , attr , params ) {
 
 TileRenderer.LinePatternSymbolizer = function ( ctx , line , attr , params ) {
    // ctx.save()
-   // console.log ("Not yet implemented : LinePatternSymbolizer")
+   console.log ("Not yet implemented : LinePatternSymbolizer")
    // ctx.restore()
 }
 
 TileRenderer.PolygonPatternSymbolizer = function ( ctx , line , attr , params ) {
+   if ( "file" in params ) {
+      var symb = window.maperialSymb[params.file];
+   
+      ctx.save()
+      RenderLine(ctx,line);
+      ctx.clip()
+      ctx.drawImage( symb.data, 0 , 0 );
+      ctx.restore()
+   }
    // ctx.save()
-   // console.log ("Not yet implemented : PolygonPatternSymbolizer")
+   //console.log ("Not yet implemented : PolygonPatternSymbolizer")
+   //console.log ( line )
+   //console.log ( params )
    // ctx.restore()
 }
 
 TileRenderer.PointSymbolizer = function ( ctx , line , attr , params ) {
-   // ctx.save()
-   // console.log ("Not yet implemented : PointSymbolizer")
-   // ctx.restore()
+   if ( params.file in window.maperialSymb ) {
+      var symb = window.maperialSymb[params.file];
+      if (symb.type == "svg") {
+         var w    = 0.0
+         var h    = 0.0
+         var node = symb.data.getElementsByTagName("svg")[0]
+         if (node) {
+            w = parseInt(node.getAttribute("width"));
+            h = parseInt(node.getAttribute("height"));
+         }
+         ctx.save()
+         if ( "opacity" in params ) {
+            ctx.globalAlpha=params["opacity"]
+         }
+         ctx.drawSvg( symb.data, line[0] - (w / 2.0), line[1] - (w / 2.0));
+         ctx.restore()
+      }
+      else { //"img"
+         ctx.save()
+         if ( "opacity" in params ) {
+            ctx.globalAlpha=params["opacity"]
+         }
+         ctx.drawImage( symb.data, line[0] - (symb.data.width / 2.0) , line[1] - (symb.data.height / 2.0) );
+         ctx.restore()
+      }
+   }
 }
 
 TileRenderer.TextSymbolizer = function ( ctx , line , attr , params ) {
-   // ctx.save()
-   // console.log ("Not yet implemented : TextSymbolizer")
-   // ctx.restore()
+   if (! attr)
+      return;
+   
+   var fontname = ("face-name" in params && params["face-name"]) ? params["face-name"] : "DejaVu Sans";
+   var size     = "size" in params ? params.size+"px" : "8px";   
+   var font     = size + " " + fontname;
+   
+   ctx.save();
+   ctx.SetFont(font);
+   if ( "opacity" in params ) {
+      ctx.globalAlpha=params["opacity"]
+   }
+   var fillit  = false
+   var stokeit = false
+   var cutSize = 0;
+   var center  = false;
+
+   var translate = [ 0 , 0 ];
+   if ("dx" in params) translate[0] = parseInt( params["dx"] )
+   if ("dy" in params) translate[1] = parseInt( params["dy"] )
+   if ("shield-dx" in params) translate[0] = translate[0] + parseInt( params["shield-dx"] )
+   if ("shield-dy" in params) translate[1] = translate[1] + parseInt( params["shield-dy"] )
+   
+   if ( "halo-fill" in params &&  "halo-radius" in params ) {
+      ctx.lineWidth  = parseInt ( params["halo-radius"] ) * 2 ;
+      ctx.strokeStyle= params["halo-fill"];
+      stokeit = true
+   }
+   if ( "wrap-width" in params ) {
+      cutSize = parseInt(params["wrap-width"]);
+   }
+   if (line.length > 2) {
+      center = true;
+   }
+   if ( "placement" in params && params["placement"] == "point" ) {
+      center = true;
+   }
+   if ( "fill" in params ) {
+      ctx.fillStyle= params["fill"];
+      fillit = true
+   }
+   var txt = attr
+   if ("text-transform" in params) {
+      if (params["text-transform"] == "uppercase") {
+         txt = txt.toUpperCase()
+      }
+      else if (params["text-transform"] == "lowercase") {
+         txt = txt.toLowerCase()()
+      }
+   }
+   if (stokeit && fillit) {
+      ctx.strokeAndFillText (txt,line,cutSize,center,translate)
+   }
+   else if (stokeit) {
+      ctx.strokeText (txt,line,cutSize,center,translate)
+   }
+   else if (fillit) {
+      ctx.fillText (txt,line,cutSize,center,translate)
+   }
+   ctx.restore();
 }
 
 TileRenderer.RasterSymbolizer = function( ctx , line , attr , params ) {
    // ctx.save()
-   // console.log ("Not yet implemented : RasterSymbolizer")
+   //console.log ("Not yet implemented : RasterSymbolizer")
    // ctx.restore()
 }
 
 TileRenderer.ShieldSymbolizer = function ( ctx , line , attr , params ) {
+
+   var tx,ty;
+   if ("shield-dx" in params) tx = parseInt( params["shield-dx"] )
+   if ("shield-dy" in params) ty = parseInt( params["shield-dy"] )
+   ctx.save()
+   ctx.translate (tx,ty)
+   this.PointSymbolizer(ctx , line , attr , params)
+   ctx.restore ( )
+   //var np = [ line[0] +8 , line[1] - 8 ]
+   //this.TextSymbolizer (ctx , np , attr , params)
+   this.TextSymbolizer (ctx , line , attr + '', params)
+   //console.log ("ShieldSymbolizer : " + attr )
+   //console.log ( params)
+   //if (attr.indexOf("lermon") != -1)
+   //   console.log ("ShieldSymbolizer")
    // ctx.save()
-   // console.log ("Not yet implemented : ShieldSymbolizer")
+   //console.log ("Not yet implemented : ShieldSymbolizer")
    // ctx.restore()
 }
 
 TileRenderer.BuildingSymbolizer = function ( ctx , line , attr , params ) {
    // ctx.save()
-   // console.log ("Not yet implemented : BuildingSymbolizer")
+   //console.log ("Not yet implemented : BuildingSymbolizer")
    // ctx.restore()
 }
 
 TileRenderer.MarkersSymbolizer = function ( ctx , line , attr , params ) {
-   // ctx.save()
-   // console.log ("Not yet implemented : MarkersSymbolizer")
-   // ctx.restore()
+   var placement = "point"
+   if ( "placement" in params ) placement = params["placement"]
+   
+   var geom;
+   if (placement == "point" ) { geom = "ellipse" }
+   else                       { geom = "arrow"   }
+   
+   if ( "marker-type" in params ) geom = params["marker-type"]
+   
+   var file = null
+   if ( "file" in params ) file = params["file"]
+   
+   if ( geom == "ellipse" && placement == "point" && !file) {
+      ctx.save()
+
+      var w = 10.0
+      var h = 10.0
+      if ( "width" in params )   {  w=parseFloat(params["width"])  }
+      if ( "height" in params )  {  h=parseFloat(params["height"]) }
+      
+      w=h // I don't know why our style is broken => draw allipse and not circle ...
+      ctx.scale(1,h/w)
+      ctx.beginPath();
+      ctx.arc( line[0], line[1], w ,0 , Math.PI*2 , false );
+      
+      if ( "stroke-opacity" in params ){  ctx.globalAlpha=params["stroke-opacity"]}
+      else                             {  ctx.globalAlpha=1 }
+      if ( "stroke-width" in params )  {  ctx.lineWidth = params["stroke-width"] ;}
+      
+      if ( "stroke" in params ) {
+         ctx.strokeStyle= params["stroke"]
+         ctx.stroke();
+      }
+      
+      if ( "opacity" in params ) {  ctx.globalAlpha=params["opacity"]   }
+      else                       {  ctx.globalAlpha=1                   }
+      if ( "fill" in params ) {
+         ctx.fillStyle= params["fill"]
+         ctx.fill();
+      }
+      
+      ctx.restore()
+   }
+   else {
+      console.log ("Not yet implemented : MarkersSymbolizer (not ellipse / placement point)")
+   }
 }
 
 TileRenderer.GlyphSymbolizer = function ( ctx , line , attr , params ) {
    // ctx.save()
-   // console.log ("Not yet implemented : GlyphSymbolizer")
+   console.log ("Not yet implemented : GlyphSymbolizer")
    // ctx.restore()
 }
