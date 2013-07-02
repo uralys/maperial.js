@@ -25,10 +25,14 @@ StylesManager.prototype.styleCacheEmpty = function() {
  */
 StylesManager.prototype.getSelectedStyle = function() {
 
+   console.log("-------> getSelectedStyle")
+   
    for(var i = 0; i < this.mapView.config.layers.length; i++){
+      console.log("-------> layer",i,this.mapView.config.layers[i])
       var layerParams = this.mapView.config.layers[i].params;
       if(layerParams.styles){
          var styleUID = layerParams.styles[layerParams.selectedStyle];
+         console.log("-------> styleUID",styleUID)
          return window.maperialStyles[styleUID];
       }
    }

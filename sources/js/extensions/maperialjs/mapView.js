@@ -99,6 +99,7 @@ MapView.prototype.build = function(){
  */
 MapView.prototype.restart = function(){
    console.log("MapView restarts ", this.name, this.type, this.config);
+   $(window).trigger(MaperialEvents.VIEW_LOADING, [this.name]);
    this.reset();
    this.load();
 }
@@ -395,7 +396,7 @@ MapView.prototype.changeStyle = function(styleUID, position, refresh){
          me.config.map.currentLon    = mapLatLon.x
          me.config.map.currentZoom   = me.context.zoom
          
-         $(window).trigger(MaperialEvents.STYLE_CHANGED);
+         $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.name]);
       })
    }
 }

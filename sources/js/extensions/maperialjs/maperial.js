@@ -6,7 +6,8 @@ function Maperial(){
    this.maps      = null
    this.options   = null
 
-   this.views     = []
+   this.views      = []
+   this.viewsReady = {}
 
    this.sourcesManager     = new SourcesManager();
    this.templateBuilder    = new TemplateBuilder();
@@ -133,10 +134,10 @@ Maperial.prototype.build = function(maps, options){
    //----------------------------------------------------------------------//
    // Build
 
-   this.nbViewsReady = 0
    console.log("Maperial starts building " + this.views.length + " views")
    
    for(var i = 0; i < this.views.length; i++){
+      this.viewsReady[this.views[i].name] = false
       this.views[i].build()
    }
 }
@@ -202,13 +203,33 @@ Maperial.prototype.initListeners = function(){
    
    
    $(window).on(MaperialEvents.VIEW_READY, function(event, view){
-      maperial.nbViewsReady ++
-      console.log("view " + view + " is ready | " + maperial.nbViewsReady + " views ready")
-      if(maperial.nbViewsReady == maperial.views.length){
+      maperial.viewsReady[view] = true
+      console.log("view " + view + " is ready")
+      
+      var maperialIsReady = true
+      for(var i = 0; i< maperial.views.length; i++){
+         if(!maperial.viewsReady[maperial.views[i].name]){
+            console.log("view " + maperial.views[i].name + " still being built")
+            maperialIsReady = false
+            break;
+         }
+         else{
+            console.log("view " + maperial.views[i].name + " ready")
+         }
+            
+      }
+      
+      if(maperialIsReady){
          console.log("Maperial is ready")         
          console.log("=================================")         
          $(window).trigger(MaperialEvents.READY)
       }
+   });
+
+   $(window).on(MaperialEvents.VIEW_LOADING, function(event, view){
+      maperial.viewsReady[view] = false
+      console.log("view " + view + " is loading | " + maperial.viewsReady + " views ready")
+      $(window).trigger(MaperialEvents.LOADING);
    });
 }
 
