@@ -18,7 +18,7 @@
    window.scriptLoader
          .getScripts(
                [
-	                "//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js",
+	                "http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js",
 	                "http://code.jquery.com/ui/1.10.3/jquery-ui.js",
 	
 	                // tools
@@ -117,9 +117,9 @@
                
 			      mainConfig.hud.elements[HUD.COMPOSITIONS]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
 			      mainConfig.hud.elements[HUD.LAYER_SETTINGS]	= {show : true, 	type : HUD.PANEL, 	label : "Layer Settings", disableDrag : true };
-			      mainConfig.hud.elements[HUD.LENS]				= {show : true, 	type : HUD.PANEL, 	label : "Lens" };
 			      
-			      mainConfig.layers.push(LayersManager.getOSMLayerConfig(["1_style_13ed75438c8b2ed8914"]))
+			      mainConfig.layers.push(LayersManager.getOSMLayerConfig([Maperial.DEFAULT_STYLE_UID]))
+                  //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
                   
                   //config.layers.push(LayersManager.getShadeLayerConfig())
                   //config.layers.push(LayersManager.getSrtmLayerConfig())

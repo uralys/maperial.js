@@ -912,8 +912,8 @@ function ExtendCanvasContext ( ctx ) {
       }
       var _size = new FontSize ( this.fontParams["size"] , _font.baseSize );
       var txtCtx = InitRenderText2 (txt , _font, _size, l , cutSize, center, translate);
-      skipIt = false
-      for ( b in this._textBBox ) {
+      var skipIt = false
+      for ( var b = 0; b < this._textBBox.length; b++ ) {
          if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
             skipIt = true
             break

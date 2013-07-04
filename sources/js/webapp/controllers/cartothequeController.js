@@ -112,7 +112,6 @@
 	
 	//==================================================================//
 	
-	
 	CartothequeController.maps1 = function()
 	{
 	   var mainConfig   = ConfigManager.newConfig();
