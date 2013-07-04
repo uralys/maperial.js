@@ -853,9 +853,9 @@ function ExtendCanvasContext ( ctx ) {
       }
       if (!skipIt) {
          this._textBBox.push(txtCtx.bbox)
-         ctx.save()
+         this.save()
          RenderTextCufon ( txtCtx , _font ,this , true);
-         ctx.restore()
+         this.restore()
       }
    }
    Object.getPrototypeOf(ctx).strokeText = function ( txt , l , cutSize, center, translate) {
@@ -877,9 +877,9 @@ function ExtendCanvasContext ( ctx ) {
       }
       if (!skipIt) {
          this._textBBox.push(txtCtx.bbox)
-         ctx.save()
+         this.save()
          RenderTextCufon ( txtCtx , _font , this  , false);
-         ctx.restore()
+         this.restore()
       }
    }
    
