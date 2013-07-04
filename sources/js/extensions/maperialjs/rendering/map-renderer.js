@@ -15,6 +15,19 @@ function MapRenderer(mapView) {
    this.dataCache = {};
    
    this.initListeners();
+   
+   this.forceGlobalRedraw  = false
+   this.forceTileRedraw    = false
+}
+
+//----------------------------------------------------------------------//
+
+MapRenderer.prototype.SetNextDraw = function (forceGlobalRedraw,forceTileRedraw) {
+   if(typeof(forceGlobalRedraw)==='undefined' ) { this.forceGlobalRedraw = true; }
+   else                                         { this.forceGlobalRedraw = forceGlobalRedraw; }
+   if(typeof(forceTileRedraw)==='undefined' )   { this.forceTileRedraw = false;  }
+   else                                         { this.forceTileRedraw = forceTileRedraw;  }
+      
 }
 
 //----------------------------------------------------------------------//
@@ -32,7 +45,8 @@ MapRenderer.prototype.reset = function () {
    this.tileCache = {};
    this.dataCache = {};
    
-   this.DrawScene(true, true);
+   //this.DrawScene(true, true);
+   this.SetNextDraw (true,true);
    this.gl = null;
 }
 
@@ -69,7 +83,7 @@ MapRenderer.prototype.Start = function () {
    this.gltools = new GLTools ()
    this.InitGL()
    
-   this.drawSceneInterval = setInterval( Utils.apply ( this, "DrawScene" ) , Maperial.refreshRate + 5 );
+   this.drawSceneInterval = setInterval( Utils.apply ( this, "DrawScene" ) , Maperial.refreshRate);
    return true;
 } 
 
@@ -457,7 +471,7 @@ MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, f
    }
 
    var tileModified  = false;
-   var timeRemaining = Maperial.refreshRate;
+   var timeRemaining = Maperial.refreshRate - 5;
    
    for (var ki = 0 ; ki < keyList.length ; ki++) {      
       var tile = this.tileCache[keyList[ki]];
@@ -474,12 +488,13 @@ MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, f
 
 //----------------------------------------------------------------------//
 
-MapRenderer.prototype.DrawScene = function (forceGlobalRedraw,forceTileRedraw) {
-
+MapRenderer.prototype.DrawScene = function (/*forceGlobalRedraw,forceTileRedraw*/) {
+   /*
    if(typeof(forceGlobalRedraw)==='undefined' )
       forceGlobalRedraw = true;
    if(typeof(forceTileRedraw)==='undefined' )
       forceTileRedraw = false;
+   */
    
    var w = this.context.mapCanvas.width();
    var h = this.context.mapCanvas.height();
@@ -497,7 +512,7 @@ MapRenderer.prototype.DrawScene = function (forceGlobalRedraw,forceTileRedraw) {
    var nbTileX = Math.floor ( w  / Maperial.tileSize + 1 );
    var nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
    
-   if ( this.UpdateTileCache ( this.context.zoom , tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , forceTileRedraw ) || forceGlobalRedraw) {
+   if ( this.UpdateTileCache ( this.context.zoom , tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {
       
       var mvMatrix      = mat4.create();
       var pMatrix       = mat4.create();
@@ -516,6 +531,8 @@ MapRenderer.prototype.DrawScene = function (forceGlobalRedraw,forceTileRedraw) {
          }
       }
    }
+   this.forceGlobalRedraw = true;
+   this.forceTileRedraw = false;
 }
 
 //----------------------------------------------------------------------//

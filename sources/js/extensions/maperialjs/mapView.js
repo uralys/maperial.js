@@ -658,7 +658,7 @@ MapView.prototype.placeMap = function(lat, lon, zoom){
 MapView.prototype.SetCenter = function(lat,lon){
    this.context.centerM = this.context.coordS.LatLonToMeters( lat , lon );
    this.refreshCurrentLatLon();
-   this.mapRenderer.DrawScene();
+   //this.mapRenderer.DrawScene();
 }
 
 MapView.prototype.SetZoom = function(z){
@@ -822,7 +822,7 @@ MapView.prototype.refreshCamera = function (viewTriggering, typeTriggering, zoom
          var lensCenterP = new Point( viewTriggeringCenterP.x - panelTriggeringCenterX + viewCenterX , viewTriggeringCenterP.y + panelTriggeringCenterY - viewCenterY);
 
          this.context.centerM = this.context.coordS.PixelsToMeters ( lensCenterP.x, lensCenterP.y, this.maperial.getZoom(this.map) );
-         this.mapRenderer.DrawScene()
+         //this.mapRenderer.DrawScene()
          break;
    }
    

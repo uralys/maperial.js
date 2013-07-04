@@ -317,7 +317,7 @@ TileRenderer.PointSymbolizer = function ( ctx , line , attr , params ) {
 
 TileRenderer.TextSymbolizer = function ( ctx , line , attr , params ) {
    if (! attr)
-      return;
+      return false;
    
    var fontname = ("face-name" in params && params["face-name"]) ? params["face-name"] : "DejaVu Sans";
    var size     = "size" in params ? params.size+"px" : "8px";   
@@ -366,16 +366,18 @@ TileRenderer.TextSymbolizer = function ( ctx , line , attr , params ) {
          txt = txt.toLowerCase()()
       }
    }
+   isRenderer = false
    if (stokeit && fillit) {
-      ctx.strokeAndFillText (txt,line,cutSize,center,translate)
+      isRenderer = ctx.strokeAndFillText (txt,line,cutSize,center,translate)
    }
    else if (stokeit) {
-      ctx.strokeText (txt,line,cutSize,center,translate)
+      isRenderer = ctx.strokeText (txt,line,cutSize,center,translate)
    }
    else if (fillit) {
-      ctx.fillText (txt,line,cutSize,center,translate)
+      isRenderer = ctx.fillText (txt,line,cutSize,center,translate)
    }
    ctx.restore();
+   return isRenderer;
 }
 
 TileRenderer.RasterSymbolizer = function( ctx , line , attr , params ) {
@@ -385,24 +387,16 @@ TileRenderer.RasterSymbolizer = function( ctx , line , attr , params ) {
 }
 
 TileRenderer.ShieldSymbolizer = function ( ctx , line , attr , params ) {
-
-   var tx,ty;
-   if ("shield-dx" in params) tx = parseInt( params["shield-dx"] )
-   if ("shield-dy" in params) ty = parseInt( params["shield-dy"] )
-   ctx.save()
-   ctx.translate (tx,ty)
-   this.PointSymbolizer(ctx , line , attr , params)
-   ctx.restore ( )
-   //var np = [ line[0] +8 , line[1] - 8 ]
-   //this.TextSymbolizer (ctx , np , attr , params)
-   this.TextSymbolizer (ctx , line , attr + '', params)
-   //console.log ("ShieldSymbolizer : " + attr )
-   //console.log ( params)
-   //if (attr.indexOf("lermon") != -1)
-   //   console.log ("ShieldSymbolizer")
-   // ctx.save()
-   //console.log ("Not yet implemented : ShieldSymbolizer")
-   // ctx.restore()
+   rendererT = this.TextSymbolizer (ctx , line , attr + '', params)
+   if (rendererT) {
+      var tx,ty;
+      if ("shield-dx" in params) tx = parseInt( params["shield-dx"] )
+      if ("shield-dy" in params) ty = parseInt( params["shield-dy"] )
+      ctx.save()
+      ctx.translate (tx,ty)
+      this.PointSymbolizer(ctx , line , attr , params)
+      ctx.restore ( )
+   }
 }
 
 TileRenderer.BuildingSymbolizer = function ( ctx , line , attr , params ) {

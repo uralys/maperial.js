@@ -44,7 +44,7 @@ Maperial.DEFAULT_LONGITUDE      = 2.313;
 
 Maperial.bgdimg                 = "symbols/water.png";
 
-Maperial.refreshRate            = 15; // ms
+Maperial.refreshRate            = 1000/30; // ms
 Maperial.tileDLTimeOut          = 60000; //ms
 Maperial.tileSize               = 256;
 
