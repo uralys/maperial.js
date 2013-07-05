@@ -750,7 +750,7 @@ MapView.prototype.placeMap = function(lat, lon, zoom){
 MapView.prototype.SetCenter = function(lat,lon){
    this.context.centerM = this.context.coordS.LatLonToMeters( lat , lon );
    this.refreshCurrentLatLon();
-   this.mapRenderer.DrawScene();
+   //this.mapRenderer.DrawScene();
 }
 
 MapView.prototype.SetZoom = function(z){

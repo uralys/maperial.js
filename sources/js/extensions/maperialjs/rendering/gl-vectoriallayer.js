@@ -28,11 +28,17 @@ VectorialLayer.prototype.AllocCanvas = function ( ) {
    this.ctx.globalCompositeOperation="source-over";
 
    // Clear ...
-   this.ctx.beginPath   (  );
-   this.ctx.rect        ( 0,0,this.cnv.width,this.cnv.height );
-   this.ctx.closePath   (  );
-   this.ctx.fillStyle    = 'rgba(255,255,255,0.0)';
-   this.ctx.fill        (  );
+   
+   if (Maperial.bgdimg in window.maperialSymb) {
+      var symb = window.maperialSymb[Maperial.bgdimg];
+      this.ctx.drawImage( symb.data, 0 , 0 );
+   }else {
+      this.ctx.beginPath   (  );
+      this.ctx.rect        ( 0,0,this.cnv.width,this.cnv.height );
+      this.ctx.closePath   (  );
+      this.ctx.fillStyle    = 'rgba(255,255,255,0.0)';
+      this.ctx.fill        (  );
+   }
 }
 
 VectorialLayer.prototype.GetType = function ( ) {

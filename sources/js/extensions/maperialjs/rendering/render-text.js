@@ -641,6 +641,8 @@ function InitRenderText2( text , font, size, l , cutSize, center , translate) {
       bbox.y2  = bby2 > bbox.y2 ? bby2 : bbox.y2;
    }
 
+   if (!jumpsArray.length) return null;
+
    txtCtx.bbox = new Object() 
    txtCtx.bbox.x = bbox.x
    txtCtx.bbox.y = bbox.y
@@ -840,10 +842,12 @@ function ExtendCanvasContext ( ctx ) {
       var _font = globalFonts.Get(fname,this.fontParams["style"],this.fontParams["weight"]);
       if (!_font) {
          console.error ("fillTextOnLine2 : font error 2");
-         return ;
+         return false;
       }
       var _size = new FontSize ( this.fontParams["size"] , _font.baseSize );
       var txtCtx = InitRenderText2 (txt , _font, _size,  l , cutSize, center, translate);
+      if (!txtCtx)
+         return false;
       skipIt = false
       for ( b in this._textBBox ) {
          if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
@@ -853,10 +857,11 @@ function ExtendCanvasContext ( ctx ) {
       }
       if (!skipIt) {
          this._textBBox.push(txtCtx.bbox)
-         ctx.save()
+         this.save()
          RenderTextCufon ( txtCtx , _font ,this , true);
-         ctx.restore()
+         this.restore()
       }
+      return !skipIt;
    }
    Object.getPrototypeOf(ctx).strokeText = function ( txt , l , cutSize, center, translate) {
       
@@ -864,10 +869,12 @@ function ExtendCanvasContext ( ctx ) {
       var _font = globalFonts.Get(fname,this.fontParams["style"],this.fontParams["weight"]);
       if (!_font) {
          console.error ("fillTextOnLine2 : font error 2");
-         return ;
+         return false;
       }
       var _size = new FontSize ( this.fontParams["size"] , _font.baseSize );
       var txtCtx = InitRenderText2 (txt , _font, _size, l , cutSize, center, translate);
+      if (!txtCtx)
+         return false;
       skipIt = false
       for ( b in this._textBBox ) {
          if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
@@ -877,10 +884,11 @@ function ExtendCanvasContext ( ctx ) {
       }
       if (!skipIt) {
          this._textBBox.push(txtCtx.bbox)
-         ctx.save()
+         this.save()
          RenderTextCufon ( txtCtx , _font , this  , false);
-         ctx.restore()
+         this.restore()
       }
+      return !skipIt;
    }
    
    Object.getPrototypeOf(ctx).strokeAndFillText = function ( txt , l , cutSize, center, translate ) {
@@ -908,10 +916,12 @@ function ExtendCanvasContext ( ctx ) {
       var _font = globalFonts.Get(fname,this.fontParams["style"],this.fontParams["weight"]);
       if (!_font) {
          console.error ("fillTextOnLine2 : font error 2");
-         return ;
+         return false;
       }
       var _size = new FontSize ( this.fontParams["size"] , _font.baseSize );
       var txtCtx = InitRenderText2 (txt , _font, _size, l , cutSize, center, translate);
+      if (!txtCtx)
+         return false;
       var skipIt = false
       for ( var b = 0; b < this._textBBox.length; b++ ) {
          if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
@@ -937,6 +947,7 @@ function ExtendCanvasContext ( ctx ) {
             this.restore()
          }
       }
+      return !skipIt;
       /*else {
          this.save()
          this.fillStyle="rgba(0,255,0,1)";

@@ -37,11 +37,14 @@ Maperial.tileURL                = 'http://api.maperial.com';
 Maperial.DEFAULT_ZOOM           = 10;
 Maperial.DEFAULT_LATITUDE       = 48.813;
 Maperial.DEFAULT_LONGITUDE      = 2.313;
+
+//Clermont City
 //Maperial.DEFAULT_LATITUDE       = 45.779017;
 //Maperial.DEFAULT_LONGITUDE      = 3.10617;
 
+Maperial.bgdimg                 = "symbols/water.png";
 
-Maperial.refreshRate            = 15; // ms
+Maperial.refreshRate            = 1000/30; // ms
 Maperial.tileDLTimeOut          = 60000; //ms
 Maperial.tileSize               = 256;
 
