@@ -279,12 +279,12 @@ HUD.prototype.styleView = function(){
    childPanel.css ("padding",                this.mapView.options.padding            )
    childPanel.css ("border-radius",          this.mapView.options.borderRadius       )
    childPanel.css ("-moz-border-radius",     this.mapView.options.borderRadius       )
-   childPanel.css ("-moz-border-radius",     this.mapView.options.borderRadius       )
+   childPanel.css ("-webkit-border-radius",     this.mapView.options.borderRadius       )
    childPanel.css ("-khtml-border-radius",   this.mapView.options.borderRadius       )
    
    childCanvas.css("border-radius",          this.mapView.options.borderRadius       )
    childCanvas.css("-moz-border-radius",     this.mapView.options.borderRadius       )
-   childCanvas.css("-moz-border-radius",     this.mapView.options.borderRadius       )
+   childCanvas.css("-webkit-border-radius",     this.mapView.options.borderRadius       )
    childCanvas.css("-khtml-border-radius",   this.mapView.options.borderRadius       )
    childCanvas.css("overflow",               "hidden"                   )
    childCanvas.css("-webkit-mask-image",     "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC)")
@@ -299,7 +299,7 @@ HUD.prototype.styleView = function(){
       targetBorder.css("margin-left", this.mapView.options.width/2   - 25)
       targetBorder.css ("border-radius",          "50px" )
       targetBorder.css ("-moz-border-radius",     "50px" )
-      targetBorder.css ("-moz-border-radius",     "50px" )
+      targetBorder.css ("-webkit-border-radius",     "50px" )
       targetBorder.css ("-khtml-border-radius",   "50px" )
       targetBorder.css("border", "1px solid #000")
 
@@ -310,10 +310,18 @@ HUD.prototype.styleView = function(){
       targetCenter.css("margin-top", "24px")
       targetCenter.css("margin-left", "24px")
       targetCenter.css ("border-radius",          "2px" )
-      targetCenter.css ("-moz-border-radius",     "2px" )
+      targetCenter.css ("-webkit-border-radius",     "2px" )
       targetCenter.css ("-moz-border-radius",     "2px" )
       targetCenter.css ("-khtml-border-radius",   "2px" )
       targetCenter.css("border", "1px solid #000")
+   }
+
+   if(this.mapView.config.useLeaflet){
+      this.mapView.context.mapLeaflet.css ("border-radius",          this.mapView.options.borderRadius       )
+      this.mapView.context.mapLeaflet.css ("-webkit-border-radius",     this.mapView.options.borderRadius       )
+      this.mapView.context.mapLeaflet.css ("-moz-border-radius",     this.mapView.options.borderRadius       )
+      this.mapView.context.mapLeaflet.css ("-khtml-border-radius",   this.mapView.options.borderRadius       )
+      this.mapView.context.mapLeaflet.css("-webkit-mask-image",     "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC)")
    }
 }
 
