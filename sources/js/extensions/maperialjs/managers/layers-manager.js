@@ -503,3 +503,5 @@ LayersManager.defaultAlphaBlendParams = {
 LayersManager.defaultAlphaClipParams = {
       uParams : 0.5
 }
+
+//-------------------------------------------//

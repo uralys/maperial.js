@@ -5,9 +5,11 @@
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
 <link href="http://static.maperial.localhost/css/maperial-js.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
 </head>
 
 <body>
+	<div id="map" style="width: 600px; height: 400px"></div>
 	<img id="waitingSpin" src="http://static.maperial.localhost/images/mapediting/spin.gif" />
 </body>
 
@@ -19,6 +21,7 @@
                [
 	                "http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js",
 	                "http://code.jquery.com/ui/1.10.3/jquery-ui.js",
+	                "http://leafletjs.com/dist/leaflet.js",
 	
 	                // tools
 	                "/js/tools/utils.js",
@@ -37,6 +40,9 @@
 	                "/js/extensions/maperialjs/libs/canvasutilities.js",
 	                "/js/extensions/maperialjs/libs/canvg.js",
 	                "/js/extensions/maperialjs/libs/StackBlur.js",
+	                "/js/extensions/maperialjs/libs/heatmap.js",
+	                "/js/extensions/maperialjs/libs/heatmap-leaflet.js",
+	                "/js/extensions/maperialjs/libs/QuadTree.js",
 	
 	                // rendering
 	                "/js/extensions/maperialjs/rendering/gl-tools.js",
@@ -90,7 +96,6 @@
 	                "/js/extensions/maperialjs/mapView.js",
 	                "/js/extensions/maperialjs/maperial.js",
 
-
                      // google - geoloc
                      "https://maps.googleapis.com/maps/api/js?key=AIzaSyATwlkawyHykpfJF24jcPgL_b8kK8zO2Bc&sensor=false&libraries=places,panoramio", ],
                function() {
@@ -99,41 +104,106 @@
                      $("#waitingSpin").css("display", "none")
                   })
 
-               	  var mainConfig   = ConfigManager.newConfig();
+                  var mainConfig   = ConfigManager.newConfig();
+			      var lensConfig   = ConfigManager.newConfig();
+			      var minifierConfig   = ConfigManager.newConfig();
 			      
-			      mainConfig.map.defaultZoom    = 11
-			      mainConfig.map.latitude       = 46.316584
-			      mainConfig.map.longitude      = 6.486998
-
-			      mainConfig.hud.elements[HUD.COMPOSITIONS]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
-			      mainConfig.hud.elements[HUD.LAYER_SETTINGS]	= {show : true, 	type : HUD.PANEL, 	label : "Layer Settings", disableDrag : true };
+			      mainConfig.hud.elements[HUD.COMPOSITIONS]  = {
+			         show : true,  
+			         type : HUD.PANEL,    
+			         label : "Composition",      
+			         disableDrag : true,
+			         position   : { 
+			            left    : "0", 
+			            top     : "40%" 
+			         },
+			      };
+			
+			      mainConfig.map.defaultZoom    = 6
+			      mainConfig.map.latitude       = 51.505
+			      mainConfig.map.longitude      = -0.09
 			      
-			      mainConfig.layers.push(LayersManager.getOSMLayerConfig([Maperial.DEFAULT_STYLE_UID]))
-                  //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-                  
-                  //config.layers.push(LayersManager.getShadeLayerConfig())
-                  //config.layers.push(LayersManager.getSrtmLayerConfig())
-                  
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
+			      var customTransport = { 
+			            type: LayersManager.Images, 
+			            source: {
+			               type     : Source.Images,
+			               params   : { src: Source.IMAGES_STAMEN_WATERCOLOR },
+			               id       : Source.IMAGES_STAMEN_WATERCOLOR
+			            },
+			            params: {
+			               
+			            },
+			            composition: {
+			               shader : Maperial.MulBlend,
+			               params : { uParams : [ 0.38, -0.27, 3 ] }
+			            }
+			      }
+			      
+			      mainConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
+			      mainConfig.layers.push        (customTransport)
+			      
+			      lensConfig.layers       = mainConfig.layers
+			      minifierConfig.layers   = mainConfig.layers
 			      
 			      var mainOptions = {
 			         type       : Maperial.MAIN,
 			         name       : "maperialDemo"
 			      }
 			      
+			      var lensOptions = {
+			         type       : Maperial.LENS,
+			         width      : "200",
+			         height     : "200",
+			         position   : { 
+			            left    : "50%", 
+			            bottom  : "27%" 
+			         },
+			         padding    : 2,
+			         deltaZoom  : 1,
+			         borderRadius: 150,
+			         draggable  : true
+			      }
+			      
+			      var minifierOptions = {
+			         type       : Maperial.MINIFIER,
+			         width      : "200",
+			         height     : "200",
+			         position   : { 
+			            right   : "10%", 
+			            bottom  : "18%" 
+			         },
+			         padding    : 2,
+			         deltaZoom  : -2,
+			         draggable  : true
+			      }
+      
+                  //------------------------------------------//
+                  // test leaflet
+                  
+                  mainConfig.useLeaflet = true
+
+                  //------------------------------------------//
+			      
 			      var map = {
 			         views : [{
 			            config  : mainConfig,
 			            options : mainOptions,
+			         },{
+			            config  : lensConfig,
+			            options : lensOptions,
+			         },{
+			            config  : minifierConfig,
+			            options : minifierOptions,
 			         }]
 			      }
 			         
+                  //------------------------------------------//
+
                   var maperial = new Maperial()
             	  maperial.build([map])
+
                });
+   
 </script>
 
 
