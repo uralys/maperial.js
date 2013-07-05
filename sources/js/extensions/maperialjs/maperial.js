@@ -73,6 +73,27 @@ Maperial.DEMO_MAP = {
 
 //==================================================================//
 
+function Data  () {
+   this.gid     = 0
+   this.content = {"h":256 , "w":256 , "l" : [] }
+}
+
+Data.prototype.addPoint = function ( data , styleId ) {
+   this.content.l.push ( {'c':styleId,'g':[[[data[0],data[1]]]]} )
+}
+
+Maperial.prototype.createCustomData = function ( ) {
+   return new Data ()
+}
+
+Maperial.prototype.createStyle = function ( ) {
+   return new Style ()
+}
+
+Maperial.prototype.addCustom = function ( data , style ) {
+
+}
+
 Maperial.prototype.build = function(maps, options){
 
    if(!maps || maps.length == 0){

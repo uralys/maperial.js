@@ -29,6 +29,11 @@
 	                "/js/libs/proj4js-compressed.js",
 	
 	                // libs
+                   "/js/extensions/maperialjs/libs/proj4js-compressed.js",
+                   "/js/extensions/maperialjs/libs/proj4js-compressed.js",
+                   "/js/extensions/maperialjs/libs/defs/EPSG900913.js.js",
+                   
+                   
 	                "/js/extensions/maperialjs/libs/gl-matrix-min.js",
 	                "/js/extensions/maperialjs/libs/coordinate-system.js",
 	                "/js/extensions/maperialjs/libs/geoloc.js",
@@ -142,7 +147,12 @@
 			      }
 			         
                   var maperial = new Maperial()
-            	  maperial.build([map])
+                  maperial.build([map])
+                  
+                  var cstyle  = maperial.createStyle      ()
+                  var cdata   = maperial.createCustomData ()
+                  cdata.addPoint ( [44.926327,3.104466], "000" )
+                  
                });
 </script>
 

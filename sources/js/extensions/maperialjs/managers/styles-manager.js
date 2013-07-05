@@ -1,6 +1,38 @@
 //-------------------------------------------//
 //- StylesManager - note: "StyleManager" exists as webapp.managers.styleManager...
 //-------------------------------------------//
+__globalStyleCpt = 0
+function Style ( uid, content ) {
+   if (uid === "undefined") {
+      uid ="0_customstyle_" + str (__globalStyleCpt)
+      __globalStyleCpt = __globalStyleCpt + 1
+   }
+   if (content === "undefined") {
+      content = {}
+   }
+   window.maperialStyles   = window.maperialStyles || {};
+   if  ( uid in window.maperialStyles ) {
+      console.log ( "Style uid already in cache" )
+      return
+   }
+   
+   this.uid       = uid
+   this.name      = uid
+   this.content   = content
+   
+   // register 
+   window.maperialStyles[uid] = this
+}
+
+Style.prototype.AddSymbolizer = function() {
+   return "000"
+}
+Style.prototype.ChangeSymbolizer = function() {
+
+}
+Style.prototype.RemoveSymbolizer = function() {
+
+}
 
 function StylesManager(mapView){
 
@@ -85,7 +117,8 @@ StylesManager.prototype.loadStyle = function(styleUID, next) {
       url: styleURL,
       dataType: "json",
       success: function (style) {
-         window.maperialStyles[styleUID] = {uid : styleUID, name: styleUID, content:style};
+         //window.maperialStyles[styleUID] = {uid : styleUID, name: styleUID, content:style};
+         window.maperialStyles[styleUID] = new Style (styleUID , style)
          me.LoadFont(styleUID,next);
          //next()
       }
@@ -198,6 +231,8 @@ StylesManager.prototype.LoadSymb = function (styleUID,next) {
    }
 
    for ( var key in toLoadExt ) {
+      if ( key in window.maperialSymb )
+         continue
       url = this.getSymbURL(key)
       window.maperialSymb[key] = new Object()
       //window.maperialSymb[key].data = null;
