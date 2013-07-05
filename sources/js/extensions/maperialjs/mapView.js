@@ -446,11 +446,11 @@ MapView.prototype.buildAll = function() {
       this.initGeoloc();
 
    //--------------------------//
-
-   this.refreshScreen();
    
-   if(this.config.useLeaflet)
+   if(this.config.useLeaflet){
+      this.refreshScreen()      
       this.buildLeafletLayer();
+   }
    
    //--------------------------//
 
@@ -461,16 +461,24 @@ MapView.prototype.buildAll = function() {
 
 MapView.prototype.buildLeafletLayer = function() {
 
+   console.log("Adding Leaflet...")
+   
    var latitude   = this.startLatitude()
    var longitude  = this.startLongitude()
    var zoom       = this.startZoom()
 
    //-----------------------------------------------------------//
-   
-   var leafletLayer = L.map('MapLeaflet_'+this.name).setView([latitude, longitude], zoom);
 
-   L.marker([51.5, -0.09]).addTo(leafletLayer)
+   var leafletLayer = L.map('MapLeaflet_'+this.name, {
+      dragging : this.type == Maperial.MAIN,
+      zoomControl : this.type == Maperial.MAIN,
+      attributionControl : false,
+   }).setView([latitude, longitude], zoom);
+
+//   if(this.type == Maperial.MAIN){
+      L.marker([51.5, -0.09]).addTo(leafletLayer)
       .bindPopup("<b>Grreat!</b><br />GG Maperial").openPopup();
+//   }
 
    L.circle([51.508, -0.11], 500, {
       color: 'red',
@@ -490,8 +498,8 @@ MapView.prototype.buildLeafletLayer = function() {
    var heatmapLayer = L.TileLayer.heatMap({
       // radius could be absolute or relative
       // absolute: radius in meters, relative: radius in pixels
-//      radius: { value: 35000, absolute: true },
-      radius: { value: 60, absolute: false },
+      radius: { value: 40000, absolute: true },
+//      radius: { value: 60, absolute: false },
       opacity: 0.8,
       gradient: {
          0.45: "rgb(0,0,255)",
@@ -528,14 +536,21 @@ MapView.prototype.buildLeafletLayer = function() {
       mapView.SetZoom (leafletLayer.getZoom())
    }
 
-   leafletLayer.on('click', onMapClick);
-   leafletLayer.on('move',  onMapMove);
+   if(this.type == Maperial.MAIN){
+      leafletLayer.on('click', onMapClick);
+      leafletLayer.on('move',  onMapMove);
+   }
+   
    leafletLayer.on('zoomend',  onMapZom);
+   
+   this.context.leaflet = leafletLayer
+   console.log("  Leaflet ready")
 }
    
 //==================================================================//
    
 MapView.prototype.finishStartup = function() {
+   this.refreshScreen();
    console.log("MapView is ready")
    $(window).trigger(MaperialEvents.VIEW_READY, [this.name])
 }
@@ -869,6 +884,10 @@ MapView.prototype.refreshZoom = function (typeTriggering, zoom) {
 
 //==================================================================//
 
+MapView.prototype.refreshLeafletView = function () {
+   this.context.leaflet.setView([this.config.map.currentLat, this.config.map.currentLon], this.config.map.currentZoom, {pan: {animate: false}});
+}
+
 MapView.prototype.refreshCamera = function (viewTriggering, typeTriggering, zoom) {
 
    if(!viewTriggering)
@@ -915,9 +934,15 @@ MapView.prototype.refreshCamera = function (viewTriggering, typeTriggering, zoom
 
          this.context.centerM = this.context.coordS.PixelsToMeters ( lensCenterP.x, lensCenterP.y, this.maperial.getZoom(this.map) );
 //         this.mapRenderer.DrawScene()
+         
          break;
    }
    
+   this.refreshCurrentLatLon()
+   
+   if(this.type != Maperial.MAIN && this.context.leaflet){
+      this.refreshLeafletView()
+   }
 }
 
 //-------------------------------------------------//
