@@ -61,7 +61,7 @@ Tile.prototype.createLayerFromConfig = function (layer, index) {
          break;
          
       case LayersManager.Images:
-         this.layers.splice(index, 0, new ImageLayer     ( this.mapView.context.assets.ctx , this.z));
+         this.layers.splice(index, 0, new ImageLayer     ( this, this.mapView.context.assets.ctx , this.z));
          break;
          
       case LayersManager.Shade:

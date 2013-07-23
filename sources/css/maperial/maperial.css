@@ -32,7 +32,7 @@
 	filter: alpha(opacity =         85);
 	opacity: .85;
 	z-index: 101;
-	/* cursor: move; */
+	-webkit-user-select: none;
 }
 
 a.trigger {
@@ -447,7 +447,7 @@ a.triggerDetailsMenu {
 .styleMenu_menu_maindiv {
 	float: left;
 	font-size: 60%;
-	width: 350px;
+	width: 335px;
 	padding: 3px;
 	border-style: solid;
 	border-width: 0px;

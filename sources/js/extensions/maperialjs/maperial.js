@@ -222,9 +222,9 @@ Maperial.prototype.initListeners = function(){
    });
 
    $(window).on(MaperialEvents.ZOOM_TO_REFRESH, function(event, map, viewTriggering, typeTriggering, zoom){
+      maperial.sourcesManager.releaseNetwork()
       maperial.refreshAllViews(map, viewTriggering, typeTriggering, zoom)
    });
-   
    
    $(window).on(MaperialEvents.VIEW_READY, function(event, view){
       maperial.viewsReady[view] = true
@@ -262,6 +262,7 @@ Maperial.prototype.initListeners = function(){
 Maperial.prototype.refreshAllViews = function(map, viewTriggering, typeTriggering, zoom){
    for(var i = 0; i < this.views.length; i++){
       if(this.views[i].map == map && this.views[i].name != viewTriggering){
+         this.views[i].mapRenderer.SetNextDraw(true, true)
          this.views[i].refreshCamera(viewTriggering, typeTriggering, zoom)
       }
    }

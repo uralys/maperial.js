@@ -1,5 +1,6 @@
 
-function ImageLayer (gl, inZoom) {
+function ImageLayer (tile, gl, inZoom) {
+   this.tile     = tile;
    this.gl     = gl;
    
    this.tex    = null;
@@ -17,7 +18,7 @@ ImageLayer.prototype.Init = function ( data ) {
 
    if (this.tex){
       console.log("tex ready")
-      //this.Reset()
+      this.tile.Reset()
       return;
    }
    if (data) {

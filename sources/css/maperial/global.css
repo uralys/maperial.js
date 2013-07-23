@@ -585,6 +585,13 @@ body{
 }
 
 /*------------------------------------------------
+	overidding jquery-ui 		*/
+
+.ui-state-default {
+	background: #fff
+}
+
+/*------------------------------------------------
 
 ::-webkit-scrollbar {
 	width: 12px;

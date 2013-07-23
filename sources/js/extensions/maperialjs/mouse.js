@@ -53,6 +53,7 @@ MapMouse.prototype.removeListeners = function () {
    this.context.mapCanvas.off("mouseleave");
    this.context.mapCanvas.unbind('dblclick');  
    this.context.mapCanvas.unbind('mousewheel');  
+   this.context.mapCanvas.unbind('wheelOnZoomer');  
 }
 
 //==================================================================//
