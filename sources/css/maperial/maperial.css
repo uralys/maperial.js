@@ -509,9 +509,18 @@ a.triggerZooms {
 }
 
 .zoom-button {
-	background: #eee url('');
+	background: #94d894;
 	font-size: 11px;
 	color: #111;
+	width: 32px;
+	text-align: left;
+	border:0px
+}
+
+.zoom-button.ui-state-active{
+	font-size: 12px;
+	font-weight:bold;
+	background: #eee;
 }
 
 /*-------------------------*/

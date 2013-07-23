@@ -63,7 +63,7 @@ function StyleMenu(container, container2, container3, mapView){
 
    //-------------------------------------------------//
    //current zooms
-   this.activZooms = Array();
+   this.selectedZooms = []
    this.currentZmin = 0;
    this.currentZmax = 18;
 
@@ -239,7 +239,7 @@ StyleMenu.prototype.SetParamIdZNew = function(luid,param,value){
       var zmin = this.style.content[luid]["s"][rule]["zmin"];
       //if(this.debug)console.log(zmin);
       //var zmax = this.style.content[luid]["s"][rule]["zmax"];
-      if ( $.inArray(zmin, this.activZooms) > -1 ){
+      if ( $.inArray(zmin, this.selectedZooms) > -1 ){
          //if(this.debug)console.log("zoom is to be changed");
          var def = this.DefFromRule(luid,rule);
          if ( def < 0 ){
@@ -399,69 +399,90 @@ StyleMenu.prototype.BuildElements = function(){
 }  
 
 
-StyleMenu.prototype.UpdateActivZoom = function(){
-   this.activZooms = [];
+StyleMenu.prototype.resetEnabledZooms = function(){
+
+   this.enableZooms  = []
+   var rules         = this.style.content[this.currentLayerId]["s"]
+   var nbRules       = rules.length
+   var min           = rules[0]["zmin"]
+   var max           = rules[nbRules-1]["zmin"]
+   
+   for(var i = 0 ; i < nbRules; i++){
+      var zmin = rules[i]["zmin"]
+      this.enableZooms[zmin] = true
+      this.selectedZooms[zmin] = true // TODO verif d'un lock pour ne pas rest selection
+   }
+   
+   this.refreshZoomSelection(min, max)
+}
+
+StyleMenu.prototype.refreshZoomLabels = function(){
+   console.log("------------ refreshZoomLabels ", this.currentLayerId)
+
    for ( var z = 1 ; z < 19 ; ++z){
-      if ( z == this.mapView.GetZoom() ){
-         if(this.debug)console.log("map zoom is " + z);
-         $("#styleMenu_menu_zcheck"+z).button( "option", "label", "Z" + z + "*");
+      var label = z + ( z == this.mapView.GetZoom() ? "*" : "")
+      $("#styleMenu_menu_zcheck"+z).button( "option", "label", label);
+   }
+}
+
+StyleMenu.prototype.refreshZoomSelection = function(minV, maxV){
+   console.log("------------ refreshZoomSelection")
+
+   this.currentZmin = minV;
+   this.currentZmax = maxV;
+   
+   for(var z = 1 ; z < 19 ; z++){
+      if ( z >= minV && z <= maxV){
+         $("#styleMenu_menu_zcheck" + z ).check();
+         this.selectedZooms[z] = true
       }
       else{
-         $("#styleMenu_menu_zcheck"+z).button( "option", "label", "Z" + z );
+         $("#styleMenu_menu_zcheck" + z ).uncheck();
+         this.selectedZooms[z] = false
       }
-      if ( $("#styleMenu_menu_zcheck" + z).is(":checked") ){
-         this.activZooms.push(z);    
-         //$(".styleMenu_menu_symbz"+z).show(); 
-      }
-      else{
-         //$(".styleMenu_menu_symbz"+z).hide();
-         //nothing !
-      } 
-   } 
+      
+      $("#styleMenu_menu_zcheck" + z ).button("refresh");
+   }
+
+   $( "#styleMenu_menu_sliderrangez" ).slider( "values",  [this.currentZmin, this.currentZmax] );  
 }
 
 
-StyleMenu.prototype.ZoomOut = function(){
-   this.mapView.ZoomOut();
-   this.UpdateActivZoom();
-   this.refresh();
-}
-
-StyleMenu.prototype.ZoomIn = function(){
-   this.mapView.ZoomIn();
-   this.UpdateActivZoom();
-   this.refresh();
-}
-
+//StyleMenu.prototype.updateSelectedZooms = function(){
+//   console.log("------------ updateSelectedZooms ", this.currentLayerId)
+//   
+//   this.selectedZooms = [];
+//   for ( var z = 1 ; z < 19 ; ++z){
+//      if ( $("#styleMenu_menu_zcheck" + z).is(":checked") ){
+//         this.selectedZooms.push(z);    
+//      }
+//   } 
+//}
 
 StyleMenu.prototype.__InsertZoomEdition = function(){
-
-//   $('<button onclick="StyleMenu.ReLoad()"  class="styleMenu_menu_rlbutton" id="styleMenu_menu_rlbutton"  > Reload </button>').appendTo(this.zoomDiv).hide();
-//   $('<button onclick="StyleMenu.ZoomOut()" class="styleMenu_menu_zbutton" id="styleMenu_menu_zbuttonminus" > - </button>').appendTo(this.zoomDiv);
-//   $('<button onclick="StyleMenu.ZoomIn()"  class="styleMenu_menu_zbutton" id="styleMenu_menu_zbuttonplus"  > + </button>').appendTo(this.zoomDiv);
-
    $("#styleMenu_menu_rlbutton").button();
    $("#styleMenu_menu_zbuttonminus").button();
    $("#styleMenu_menu_zbuttonplus").button();
-
 }
-
 
 StyleMenu.prototype.__InsertZoomEdition2 = function(){
 
    var me = this;
    var tmpcb = '';
-   for ( var z = 1 ; z < 19 ; ++z){
-      tmpcb += '  <input type="checkbox" class="styleMenu_menu_checkboxz" id="styleMenu_menu_zcheck' + z + '"/><label class="zoom-button" for="styleMenu_menu_zcheck' + z + '">Z' + z + '</label>';
+   for ( var z = 1 ; z < 19 ; z++){
+      tmpcb += '  <input type="checkbox" class="styleMenu_menu_checkboxz" id="styleMenu_menu_zcheck' + z + '"/><label class="zoom-button" for="styleMenu_menu_zcheck' + z + '">' + z + '</label>';
    }    
 
    $('<h2 class="styleMenu_menu_par_title_z"> Edit some zoom</h2><div id="styleMenu_menu_zoom_selector">' +  tmpcb + '</div>' ).appendTo(this.zoomDiv);//.hide();
    $('<h2 class="styleMenu_menu_par_title_z"> Edit a zoom range</h2><div id="styleMenu_menu_sliderrangez"></div><br/>').appendTo(this.zoomDiv);
 
-   for ( var z = 1 ; z < 19 ; ++z){
-      $("#styleMenu_menu_zcheck"+z).change(function(){
-         me.UpdateActivZoom();
-      });
+   for ( var z = 1 ; z < 19 ; z++){
+      $("#styleMenu_menu_zcheck"+z).change(function(zoom){
+         return function(){
+            console.log("changing styleMenu_menu_zcheck"+zoom)
+            me.selectedZooms[zoom] = !me.selectedZooms[zoom] 
+         }
+      }(z));
    }
 
    $( "#styleMenu_menu_zoom_selector" ).buttonset();
@@ -469,46 +490,23 @@ StyleMenu.prototype.__InsertZoomEdition2 = function(){
    $( "#styleMenu_menu_sliderrangez" ).slider({
       range: true,
       min: 1,
-      max: 19,
+      max: 18,
       values: [ this.currentZmin, this.currentZmax ],
-      change: function( event, ui ) {
-         var minV = ui.values[0];
-         var maxV = ui.values[1];
-         me.currentZmin = minV;
-         me.currentZmax = maxV;
-         for(var z = 1 ; z < 19 ; ++z){
-            if ( z >= minV && z < maxV){
-               $("#styleMenu_menu_zcheck" + z ).check();
-            }
-            else{
-               $("#styleMenu_menu_zcheck" + z ).uncheck();
-            }
-            $("#styleMenu_menu_zcheck" + z ).button("refresh");
-         }
-         me.UpdateActivZoom();
-      },
       slide: function( event, ui ) {
          if ( (ui.values[0] + 1) > ui.values[1] ) {
             return false;      
          }                      
          var minV = ui.values[0];
          var maxV = ui.values[1];
-         me.currentZmin = minV;
-         me.currentZmax = maxV;
-         for(var z = 1 ; z < 19 ; ++z){
-            if ( z >= minV && z < maxV){
-               $("#styleMenu_menu_zcheck" + z ).check();
-            }
-            else{
-               $("#styleMenu_menu_zcheck" + z ).uncheck();
-            }
-            $("#styleMenu_menu_zcheck" + z ).button("refresh");
-         }
-         me.UpdateActivZoom();
+
+         console.log("slide ", minV, maxV)
+         me.refreshZoomSelection(minV, maxV)
       }
    });
 
-   $( "#styleMenu_menu_sliderrangez" ).slider( "values",  [this.currentZmin, this.currentZmax+1] );  
+//   $( "#styleMenu_menu_sliderrangez" ).slider( "values",  [this.currentZmin, this.currentZmax+1] );
+
+   Utils.buildSliderStyle("styleMenu_menu_sliderrangez");
 
 }
 
@@ -871,7 +869,7 @@ StyleMenu.prototype.__BuildWidget = function(group,name,uid){
       ///@todo
    }
 
-   this.UpdateActivZoom();
+   //this.updateSelectedZooms();
 }
 
 
@@ -1009,7 +1007,7 @@ StyleMenu.prototype.__InsertAccordion = function(){
    // fill an empty widget window ("zzz" does not exist !)
    this.__BuildWidget("xxx","yyy","zzz");
 
-   this.UpdateActivZoom();
+   //this.updateSelectedZooms();
 
    // configure accordion(s)
    $( ".styleMenu_menu_accordion" )
@@ -1141,8 +1139,8 @@ StyleMenu.prototype.refresh = function () {
    if ( data.group != null && data.name != null ){
       this.refreshWidget(data.group, data.name, data.uid);
       this.Accordion(data.group, data.name, data.uid);
-   }
-   
+      this.resetEnabledZooms()
+  }
 }
 
 StyleMenu.prototype.ChangeSelectedSubLayer = function (layerIndex, subLayerId) {
