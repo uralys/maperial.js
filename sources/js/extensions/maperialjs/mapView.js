@@ -540,7 +540,8 @@ MapView.prototype.buildLeafletLayer = function() {
    function onMapMove(e) {
       var center = leafletLayer.getCenter()
       mapView.SetCenter (center.lat, center.lng)
-      $(window).trigger(MaperialEvents.MAP_MOVING, [mapView.map, mapView.name, mapView.type]);
+      mapView.SetZoom (leafletLayer.getZoom())
+      $(window).trigger(MaperialEvents.MAP_MOVING, [mapView.map, mapView.name, mapView.type, mapView.context.zoom]);
    }
 
    function onMapZoom(e) {
@@ -598,11 +599,15 @@ MapView.prototype.buildMap = function() {
       panel.draggable({ 
          snap           : false, 
          containment    : "#TheMaperial",
-         scroll         : false,   
-         drag: function(event) {
+         scroll         : false,    
+         start: function(event) {
             if(me.type == Maperial.LENS)
-               me.refreshCamera()
+               me.moveChildInterval = setInterval( function(){ me.refreshCamera() } , 0.01 );
          },
+         stop: function(event) {
+            clearInterval(me.moveChildInterval);
+            me.moveChildInterval = null
+         }
       });
    }
       
@@ -915,7 +920,7 @@ MapView.prototype.refreshCamera = function (viewTriggering, typeTriggering, zoom
 
    if(!zoom)
       zoom = this.maperial.getZoom(this.map)
-
+      
    this.refreshZoom(typeTriggering, zoom);
    
    switch(this.type){

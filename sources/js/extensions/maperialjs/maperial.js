@@ -213,12 +213,12 @@ Maperial.prototype.initListeners = function(){
       }
    });
    
-   $(window).on(MaperialEvents.MOUSE_MOVE, function(event, map, viewTriggering, typeTriggering){
-      maperial.refreshAllViews(map, viewTriggering, typeTriggering)
+   $(window).on(MaperialEvents.MOUSE_MOVE, function(event, map, viewTriggering, typeTriggering, zoom){
+      maperial.refreshAllViews(map, viewTriggering, typeTriggering, zoom)
    });
 
-   $(window).on(MaperialEvents.MAP_MOVING, function(event, map, viewTriggering, typeTriggering){
-      maperial.refreshAllViews(map, viewTriggering, typeTriggering)
+   $(window).on(MaperialEvents.MAP_MOVING, function(event, map, viewTriggering, typeTriggering, zoom){
+      maperial.refreshAllViews(map, viewTriggering, typeTriggering, zoom)
    });
 
    $(window).on(MaperialEvents.ZOOM_TO_REFRESH, function(event, map, viewTriggering, typeTriggering, zoom){
@@ -260,6 +260,9 @@ Maperial.prototype.initListeners = function(){
 //==================================================================//
 
 Maperial.prototype.refreshAllViews = function(map, viewTriggering, typeTriggering, zoom){
+
+   console.log("------ ploc, refreshAllViews ", viewTriggering, typeTriggering, zoom)
+   
    for(var i = 0; i < this.views.length; i++){
       if(this.views[i].map == map && this.views[i].name != viewTriggering){
          this.views[i].mapRenderer.SetNextDraw(true, true)

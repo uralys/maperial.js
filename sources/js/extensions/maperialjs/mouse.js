@@ -109,6 +109,7 @@ MapMouse.prototype.doubleClick = function (event) {
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
    this.mapView.refreshCurrentLatLon();
+   
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
 
 }
@@ -148,6 +149,7 @@ MapMouse.prototype.wheel = function (event, delta) {
    this.context.mouseM = this.convertCanvasPointToMeters ( this.context.mouseP );
 
    this.mapView.refreshCurrentLatLon();
+
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
 }
 
@@ -180,7 +182,7 @@ MapMouse.prototype.wheelOnZoomer = function (event, delta) {
    }
    
    this.mapView.deltaZoom = this.context.zoom - mainZoom
-
+   
    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
 }
 
