@@ -438,9 +438,9 @@ a.triggerDetailsMenu {
 
 .panelDetailsMenu {
 	width: 356px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	overflow-x: hidden;
-	height: 437px;
+	height: 98%;
 }
 
 /* main menu div*/
@@ -468,6 +468,7 @@ a.triggerDetailsMenu {
 
 .panelQuickEdit {
 	color: #eee;
+	width: 300px;
 }
 
 /* main widget div*/
@@ -503,16 +504,16 @@ a.triggerZooms {
 }
 
 .panelZooms {
-	width: 780px;
+	width: 670px;
 	height: 50px;
 	text-align: center;
 }
 
 .zoom-button {
-	background: #94d894;
+	background: #aaa;
 	font-size: 11px;
 	color: #111;
-	width: 32px;
+	width: 31px;
 	text-align: left;
 	border:0px
 }

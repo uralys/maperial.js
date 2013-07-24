@@ -96,6 +96,7 @@
 	                "/js/extensions/maperialjs/mapView.js",
 	                "/js/extensions/maperialjs/maperial.js",
 
+
                      // google - geoloc
                      "https://maps.googleapis.com/maps/api/js?key=AIzaSyATwlkawyHykpfJF24jcPgL_b8kK8zO2Bc&sensor=false&libraries=places,panoramio", ],
                function() {
@@ -108,7 +109,7 @@
                   mainConfig.map.edition = true;
                   mainConfig.hud.elements[HUD.QUICK_EDIT]    	= {show : true,  	type : HUD.PANEL,  label : "Quick Edition", disableDrag : true	};
                   mainConfig.hud.elements[HUD.DETAILS_MENU]  	= {show : true, 	type : HUD.PANEL,  label : "Style Details", disableDrag : true 	};
-                  mainConfig.hud.elements[HUD.ZOOMS]         	= {show : true, 	type : HUD.PANEL,  label : "Zooms", 		disableDrag : true 	};
+                  mainConfig.hud.elements[HUD.ZOOMS]         	= {show : false, 	type : HUD.PANEL,  label : "Zooms", 		disableDrag : true 	};
                   
 			      mainConfig.layers.push (LayersManager.getOSMLayerConfig())
 			      

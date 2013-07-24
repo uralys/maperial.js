@@ -591,6 +591,11 @@ body{
 	background: #fff
 }
 
+.ui-buttonset .ui-button {
+	margin-left: 0px;
+	margin-right: -5px;
+}
+
 /*------------------------------------------------
 
 ::-webkit-scrollbar {

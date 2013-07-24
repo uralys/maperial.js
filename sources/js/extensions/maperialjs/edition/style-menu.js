@@ -8,6 +8,12 @@
       },
       uncheck : function()  {
          return this.filter(":radio, :checkbox").removeAttr("checked");
+      },
+      disable : function()  {
+         return this.filter(":radio, :checkbox").attr("disabled", true);
+      },
+      enable : function()  {
+         return this.filter(":radio, :checkbox").removeAttr("disabled");
       }
    });
 }(jQuery));
@@ -105,6 +111,15 @@ StyleMenu.prototype.initListeners = function (event) {
    $(window).on(MaperialEvents.OPEN_STYLE, function(event, layerIndex, layerId){
       styleMenu.ChangeSelectedSubLayer(layerIndex, layerId)
    });
+   
+   $(window).on(MaperialEvents.OPEN_ZOOMS, function(event){
+      styleMenu.mapView.hud.panel(HUD.ZOOMS).removeClass("hide")
+   });
+
+   $(window).on(MaperialEvents.ZOOM_TO_REFRESH, function(event, map, viewTriggering, typeTriggering, zoom){
+      if(viewTriggering == styleMenu.mapView.name)
+         styleMenu.highlightCurrentZoom()
+   });
 
    this.mapView.context.mapCanvas.on(MaperialEvents.MOUSE_DOWN, function(){
       $(".colorpicker").hide();
@@ -113,6 +128,7 @@ StyleMenu.prototype.initListeners = function (event) {
 
 StyleMenu.prototype.removeListeners = function (event) {
    $(window).off(MaperialEvents.OPEN_STYLE);
+   $(window).off(MaperialEvents.OPEN_ZOOMS);
    this.mapView.context.mapCanvas.off(MaperialEvents.MOUSE_DOWN)
 }
 
@@ -229,23 +245,28 @@ StyleMenu.prototype.SetParamId = function(luid,ruid,param,value){
 
 
 StyleMenu.prototype.SetParamIdZNew = function(luid,param,value){
+      
+   console.log("SetParamIdZNew", luid, param, value)
    
    if ( this.style.content[luid] == undefined ){
       if(this.debug)console.log( luid + " not in style");
       return false;
    }
 
-   for(var rule = 0 ; rule < Object.size(this.style.content[luid]["s"]) ; rule++){
-      var zmin = this.style.content[luid]["s"][rule]["zmin"];
-      //if(this.debug)console.log(zmin);
-      //var zmax = this.style.content[luid]["s"][rule]["zmax"];
-      if ( $.inArray(zmin, this.selectedZooms) > -1 ){
-         //if(this.debug)console.log("zoom is to be changed");
-         var def = this.DefFromRule(luid,rule);
+   var rules   = this.style.content[luid]["s"]
+   var nbRules = rules.length
+
+   for(var i = 0 ; i < nbRules; i++){
+      var z = rules[i]["zmin"];
+
+      if ( this.selectedZooms[z] ){
+         var def = this.DefFromRule(luid, i);
+         
          if ( def < 0 ){
             continue;
          }
-         this.SetParam(luid,rule,def,param,value);
+         
+         this.SetParam(luid,i,def,param,value);
       }
    }
    return true;
@@ -410,29 +431,45 @@ StyleMenu.prototype.resetEnabledZooms = function(){
    for(var i = 0 ; i < nbRules; i++){
       var zmin = rules[i]["zmin"]
       this.enableZooms[zmin] = true
-      this.selectedZooms[zmin] = true // TODO verif d'un lock pour ne pas rest selection
+      this.selectedZooms[zmin] = true
    }
+
+   for(var z = 0 ; z < 19 ; z++){
+      if ( z >= min && z <= max)
+         $("#styleMenu_menu_zcheck" + z ).enable();
+      else
+         $("#styleMenu_menu_zcheck" + z ).disable();
+   }
+
+
+   $( "#styleMenu_menu_sliderrangez" ).slider({
+      min: min,
+      max: max
+   })
    
-   this.refreshZoomSelection(min, max)
+   $( "#styleMenu_menu_sliderrangez" ).css("width", ((max-min+1)*30)+"px");
+   $( "#styleMenu_menu_sliderrangez" ).css("margin-left", (30 + min*33)+"px");
+   
+   this.highlightCurrentZoom()
 }
 
-StyleMenu.prototype.refreshZoomLabels = function(){
-   console.log("------------ refreshZoomLabels ", this.currentLayerId)
-
-   for ( var z = 1 ; z < 19 ; ++z){
-      var label = z + ( z == this.mapView.GetZoom() ? "*" : "")
-      $("#styleMenu_menu_zcheck"+z).button( "option", "label", label);
+StyleMenu.prototype.highlightCurrentZoom = function(){
+   for ( var z = 0 ; z < 19 ; ++z){
+      if(z == this.mapView.GetZoom())
+         $("#styleMenu_menu_zcheck"+z+"_label").css("border", "4px solid  #45f");
+      else
+         $("#styleMenu_menu_zcheck"+z+"_label").css("border", "1px solid");
    }
 }
 
-StyleMenu.prototype.refreshZoomSelection = function(minV, maxV){
-   console.log("------------ refreshZoomSelection")
+StyleMenu.prototype.refreshZoomSelection = function(min, max){
+   console.log("------------ refreshZoomSelection", min, max)
 
-   this.currentZmin = minV;
-   this.currentZmax = maxV;
+   this.currentZmin = min;
+   this.currentZmax = max;
    
-   for(var z = 1 ; z < 19 ; z++){
-      if ( z >= minV && z <= maxV){
+   for(var z = 0 ; z < 19 ; z++){
+      if ( z >= min && z <= max){
          $("#styleMenu_menu_zcheck" + z ).check();
          this.selectedZooms[z] = true
       }
@@ -452,7 +489,7 @@ StyleMenu.prototype.refreshZoomSelection = function(minV, maxV){
 //   console.log("------------ updateSelectedZooms ", this.currentLayerId)
 //   
 //   this.selectedZooms = [];
-//   for ( var z = 1 ; z < 19 ; ++z){
+//   for ( var z = 0 ; z < 19 ; ++z){
 //      if ( $("#styleMenu_menu_zcheck" + z).is(":checked") ){
 //         this.selectedZooms.push(z);    
 //      }
@@ -469,14 +506,14 @@ StyleMenu.prototype.__InsertZoomEdition2 = function(){
 
    var me = this;
    var tmpcb = '';
-   for ( var z = 1 ; z < 19 ; z++){
-      tmpcb += '  <input type="checkbox" class="styleMenu_menu_checkboxz" id="styleMenu_menu_zcheck' + z + '"/><label class="zoom-button" for="styleMenu_menu_zcheck' + z + '">' + z + '</label>';
+   for ( var z = 0 ; z < 19 ; z++){
+      tmpcb += '  <input type="checkbox" class="styleMenu_menu_checkboxz" id="styleMenu_menu_zcheck' + z + '"/><label id="styleMenu_menu_zcheck' + z + '_label" class="zoom-button" for="styleMenu_menu_zcheck' + z + '">' + z + '</label>';
    }    
 
    $('<h2 class="styleMenu_menu_par_title_z"> Edit some zoom</h2><div id="styleMenu_menu_zoom_selector">' +  tmpcb + '</div>' ).appendTo(this.zoomDiv);//.hide();
    $('<h2 class="styleMenu_menu_par_title_z"> Edit a zoom range</h2><div id="styleMenu_menu_sliderrangez"></div><br/>').appendTo(this.zoomDiv);
 
-   for ( var z = 1 ; z < 19 ; z++){
+   for ( var z = 0 ; z < 19 ; z++){
       $("#styleMenu_menu_zcheck"+z).change(function(zoom){
          return function(){
             console.log("changing styleMenu_menu_zcheck"+zoom)
@@ -496,11 +533,11 @@ StyleMenu.prototype.__InsertZoomEdition2 = function(){
          if ( (ui.values[0] + 1) > ui.values[1] ) {
             return false;      
          }                      
-         var minV = ui.values[0];
-         var maxV = ui.values[1];
+         var min = ui.values[0];
+         var max = ui.values[1];
 
-         console.log("slide ", minV, maxV)
-         me.refreshZoomSelection(minV, maxV)
+         console.log("slide ", min, max)
+//         me.refreshZoomSelection(min, max) -- TODO : refreshzoom EDition : creation d'un zoomGroup ici !
       }
    });
 
@@ -604,8 +641,8 @@ StyleMenu.prototype.GetCheckBoxCallBack = function(_uid){
 
 StyleMenu.prototype.AddColorPicker = function(_paramName,_paramValue,_uid,_ruleId,_container){
    // add to view
-//   $("<li>" + _paramName + " : " + "<div class=\"colorSelector \" id=\"styleMenu_menu_colorpicker_" + _ruleId + "\"><div style=\"background-color:" + ColorTools.RGBAToHex(_paramValue) + "\"></div></div> </li>").appendTo(_container);
-   $("<div class=\"colorSelector \" id=\"styleMenu_menu_colorpicker_" + _ruleId + "\"><div style=\"background-color:" + ColorTools.RGBAToHex(_paramValue) + "\"></div></div>").appendTo(_container);
+//   $("<li>" + _paramName + " : " + "<div class='colorSelector ' id='styleMenu_menu_colorpicker_" + _ruleId + "'><div style='background-color:" + ColorTools.RGBAToHex(_paramValue) + "'></div></div> </li>").appendTo(_container);
+   $("<div class='colorSelector ' id='styleMenu_menu_colorpicker_" + _ruleId + "'><div style='background-color:" + ColorTools.RGBAToHex(_paramValue) + "'></div></div>").appendTo(_container);
 
    // plug callback
    $("#styleMenu_menu_colorpicker_"+_ruleId).ColorPicker({
@@ -626,7 +663,7 @@ StyleMenu.prototype.AddColorPicker = function(_paramName,_paramValue,_uid,_ruleI
 
 StyleMenu.prototype.AddSpinner = function(_paramName,_paramValue,_uid,_ruleId,_container,_step,_min,_max){
    // add to view
-   $( "<li>" + _paramName + " : " +"<input class=\"styleMenu_menu_spinner\" id=\"styleMenu_menu_spinner_" + _paramName + "_" + _ruleId + "\"></li>").appendTo(_container);
+   $( "<li>" + _paramName + " : " +"<input class='styleMenu_menu_spinner' id='styleMenu_menu_spinner_" + _paramName + "_" + _ruleId + "'></li>").appendTo(_container);
 
    // set callback
    $( "#styleMenu_menu_spinner_"+_paramName+"_"+_ruleId ).spinner({
@@ -646,7 +683,7 @@ StyleMenu.prototype.AddSlider = function(_paramName,_paramValue,_uid,_ruleId,_co
    
    var me = this;
    // add to view
-   $( "<li>" + _paramName + " : " +"<div class=\"styleMenu_menu_slider\" id=\"styleMenu_menu_slider_" + _paramName + "_" + _ruleId + "\"></li>").appendTo(_container);
+   $( "<li>" + _paramName + " : " +"<div class='styleMenu_menu_slider' id='styleMenu_menu_slider_" + _paramName + "_" + _ruleId + "'></li>").appendTo(_container);
 
    // set callback
    $( "#styleMenu_menu_slider_"+_paramName+"_"+_ruleId ).slider({
@@ -665,10 +702,10 @@ StyleMenu.prototype.AddSlider = function(_paramName,_paramValue,_uid,_ruleId,_co
 
 StyleMenu.prototype.AddCombo = function(_paramName,_paramValue,_uid,_ruleId,_container,_values){
    // add to view
-   $( "<li>" + _paramName + " : " +"<select id=\"styleMenu_menu_select_" + _paramName + "_" + _ruleId + "\"></li>").appendTo(_container);
+   $( "<li>" + _paramName + " : " +"<select id='styleMenu_menu_select_" + _paramName + "_" + _ruleId + "'></li>").appendTo(_container);
    // add options
    for( var v = 0 ; v < Object.size(_values) ; v++){
-      $("#styleMenu_menu_select_" + _paramName + "_" + _ruleId).append("<option value=\"" + _values[v] + "\"> " + _values[v] + "</option>");
+      $("#styleMenu_menu_select_" + _paramName + "_" + _ruleId).append("<option value='" + _values[v] + "'> " + _values[v] + "</option>");
    }
    // set value
    $("#styleMenu_menu_select_" + _paramName + "_" + _ruleId).val(_paramValue);
@@ -701,8 +738,10 @@ StyleMenu.prototype.Accordion = function(_group,_name,uid){
    $("#styleMenu_menu_groupaccordion_div_group_" + groupNum).accordion("option", "active", n);
 }
 
-StyleMenu.prototype.GetFilterAlias = function(group,name,uid){
+StyleMenu.prototype.filterName = function(group,name,uid){
+   
    if ( this.groups[group][name].hasOwnProperty("alias") ){
+      
       for ( var al in this.groups[group][name]["alias"] ){
          var fal = this.groups[group][name]["alias"][al];
          if ( this.mappingArray[uid].filter.indexOf(fal) >= 0 ){
@@ -710,84 +749,169 @@ StyleMenu.prototype.GetFilterAlias = function(group,name,uid){
             return al;
          }
       }
-      if ( ! aliasFound ){
-         return this.mappingArray[uid].filter;
-         //return this.mappingArray[uid].name;
+   }
+   
+   return this.mappingArray[uid].filter;
+}
+
+//------------------------------------------------------------------//
+
+StyleMenu.prototype.gatherRulesByZoom = function(uid){
+   console.log("Gather rules")
+   var rules         = this.style.content[uid]["s"]
+   var start         = rules[0].zmin
+   var end           = rules[0].zmin
+   var currentRule   = rules[0]["s"][0]
+   
+   var endWithNewRule
+   var zoomGroups    = []
+   
+   
+   for (var i = 1; i < rules.length; i++){
+      var nextRule = rules[i]["s"][0]
+      if(this.isSameRule(currentRule, nextRule)){
+         end = rules[i].zmin
+         endWithNewRule = false
+      }
+      else{
+         zoomGroups.push({zmin:start, zmax : end, rule:currentRule})
+         currentRule = nextRule
+         start       = rules[i].zmin
+         end         = rules[i].zmin
+         endWithNewRule = true
       }
    }
-   else{
-      return this.mappingArray[uid].filter;
-      //return this.mappingArray[uid].name;
+
+   if(!endWithNewRule){
+      zoomGroups.push({zmin:start, zmax : end, rule:currentRule})
+   }
+   
+   return zoomGroups
+}
+
+//------------------------------------------------------------------//
+
+StyleMenu.prototype.isSameRule = function(rule1, rule2){
+  
+   for(var property1 in rule1){
+      var found = false
+
+      for(var property2 in rule2){
+         
+         if(property1 == property2){
+            found = true
+         
+            if(rule1.property1 != rule2.property2)
+               return false
+         }
+      }
+      
+      if(!found)
+         return false
+   }
+   
+   return true
+}
+
+//------------------------------------------------------------------//
+
+StyleMenu.prototype.changeWidgetContent = function(zoomGroups, selection, uid){
+   
+   var zoomGroup  = zoomGroups[selection.input[0]["value"]]
+   var rule       = zoomGroup.rule
+   
+   var container = $("#widgetDivContent")
+   container.empty()
+   
+   this.refreshZoomSelection(zoomGroup.zmin, zoomGroup.zmax)
+
+   for( var p = 0 ; p < Symbolizer.params[rule["rt"]].length ; p++){  // this is read from a list of known params. 
+
+      var paramName = Symbolizer.getParamName(rule["rt"],p);
+      var paramValue = this.GetParamId(uid, rule["id"], paramName);   
+
+      if ( paramValue === undefined ){
+         paramValue = Symbolizer.defaultValues[paramName];
+      }
+
+      if ( paramName == "width" ){  
+         this.AddSlider(paramName, paramValue, uid, rule["id"], container, 0.25, 0, 20);
+      }
+      else if ( paramName == "fill" || paramName == "stroke" ){
+         this.AddColorPicker(paramName, paramValue, uid, rule["id"], container);
+      }
+      else if ( paramName == "alpha" ){
+         this.AddSlider(paramName, paramValue, uid, rule["id"], container, 0.05, 0, 1);
+      }
+      else if ( paramName == "linejoin" ){
+         this.AddCombo(paramName, paramValue, uid, rule["id"], container, Symbolizer.combos["linejoin"]);
+      }  
+      else if ( paramName == "linecap" ){
+         this.AddCombo(paramName, paramValue, uid, rule["id"], container, Symbolizer.combos["linecap"]);
+      }  
+      else{
+         $("<li>" + paramName + "(not implemented yet) : " + paramValue + "</li>").appendTo(container) ; 
+      }
    }
 }
 
+//------------------------------------------------------------------//
+
+StyleMenu.prototype.getZoomGroupLabel = function(zoomGroup){
+   if(zoomGroup.zmin != zoomGroup.zmax)
+      return zoomGroup.zmin +" - "+zoomGroup.zmax   
+   else
+      return zoomGroup.zmin
+}
+
+//------------------------------------------------------------------//
+   
 StyleMenu.prototype.FillWidget = function(uid){
+
    if ( this.style.content[uid]["s"].length < 1 ){
       if(this.debug)console.log("Error : empty style " + uid );
       return;
    }
 
-   if(this.debug)console.log("Current zoom is " , this.mapView.GetZoom() , uid, def , rule); 
+   //-----------------------------------------------------//
 
-   //var def = 0; // first def is always the good one :-)
-   var rd = this.DefRuleIdFromZoom(uid,this.mapView.GetZoom());
-   var def = rd.def;
-   var ruleId = rd.ruleId;
-   var rule = rd.rule;
+   var zoomGroups = this.gatherRulesByZoom(uid)
 
-   if(this.debug)console.log("Fill widget for",def,ruleId,rule);
+   //-----------------------------------------------------//
+   // template selectbox
 
-   if ( ruleId < 0 ){
-      if(this.debug)console.log("Cannot find ruleId for zoom " + this.mapView.GetZoom());
-      return;
+   var div = "<div class='row-fluid marginbottom'>";
+   div += "<div class='span7 offset1'><select class='shaderSelectbox' name='ruleSelector' id='ruleSelector'>";
+
+   for( var i = 0 ; i < zoomGroups.length; i++){
+      var label = this.getZoomGroupLabel(zoomGroups[i])
+      div += "<option value='"+i+"'>"+label+"</option>"
    }
 
-   if ( rule < 0 ){
-      if(this.debug)console.log("Cannot find rule for zoom " + this.mapView.GetZoom());
-      return;
-   }
+   div += "</select></div>";
+   
+   div += "<div class='span3 offset1'><button class='btn-small btn-success' onclick='$(window).trigger(MaperialEvents.OPEN_ZOOMS)'><i class='icon-edit icon-white'></i></button></div>";
 
-   if ( def < 0 ){
-      if(this.debug)console.log("Cannot find def for zoom " + this.mapView.GetZoom());
-      return;
-   }
+   div += "</div>";
 
-   var symbDiv = $('<div></div>');
-   symbDiv.appendTo(this.widgetDiv);
+   this.widgetDiv.append(div);
+   this.widgetDiv.append("<div class='row-fluid marginbottom' id='widgetDivContent'></div>");
 
-   var ulul = $("<ul></ul>");
-   ulul.appendTo(symbDiv);
+   //-----------------------------------------------------//
+   // build selectbox
 
-   for( var p = 0 ; p < Object.size(Symbolizer.params[this.style.content[uid]["s"][rule]["s"][def]["rt"]] ) ; p++){  // this is read from a list of known params. 
+     var me = this
+   $("#ruleSelector").selectbox({
+      onChange: function(zoomGroups, uid){
+         return function (val,  inst) {
+            me.changeWidgetContent(zoomGroups, inst,uid)
+         }
+      }(zoomGroups, uid),
+      effect: "slide"
+   });
 
-      var paramName = Symbolizer.getParamName(this.style.content[uid]["s"][rule]["s"][def]["rt"],p);
-      var paramValue = this.GetParamId(uid,ruleId,paramName);   
-
-      if ( paramValue === undefined ){
-         paramValue = Symbolizer.defaultValues[paramName];
-         //continue;
-      }
-      //if(this.debug)console.log( paramName + " : " + paramValue ) ;
-
-      if ( paramName == "width" ){  
-         this.AddSlider(paramName,paramValue,uid,ruleId,ulul,0.25,0,20);
-      }
-      else if ( paramName == "fill" || paramName == "stroke" ){
-         this.AddColorPicker(paramName,paramValue,uid,ruleId,ulul);
-      }
-      else if ( paramName == "alpha" ){
-         this.AddSlider(paramName,paramValue,uid,ruleId,ulul,0.05,0,1);
-      }
-      else if ( paramName == "linejoin" ){
-         this.AddCombo(paramName,paramValue,uid,ruleId,ulul,Symbolizer.combos["linejoin"]);
-      }  
-      else if ( paramName == "linecap" ){
-         this.AddCombo(paramName,paramValue,uid,ruleId,ulul,Symbolizer.combos["linecap"]);
-      }  
-      else{
-         $("<li>" + paramName + "(not implemented yet) : " + paramValue + "</li>").appendTo(ulul) ; 
-      }
-   }
+   // init selectbox value
+   $("#ruleSelector").selectbox('change', "", this.getZoomGroupLabel(zoomGroups[0]));
 }
    
 StyleMenu.prototype.__BuildWidget = function(group,name,uid){
@@ -797,14 +921,16 @@ StyleMenu.prototype.__BuildWidget = function(group,name,uid){
 
    //clear parent div
    this.widgetDiv.empty();
+   this.widgetDiv.append("<div id='widgetDivHeader' class='row-fluid marginbottom'></div>");
+   this.widgetDivHeader = $("#widgetDivHeader")
 
-   var openSmallestButton = $("<i class=\"icon-zoom-out icon-white touchable\"></i>");
+   var openSmallestButton = $("<div class='span1'><i class='icon-zoom-out icon-white touchable'></i></div>");
    openSmallestButton.click(function() {
       me.size = StyleMenu.SMALLEST;
       me.refresh();
    });
    
-   openSmallestButton.appendTo(this.widgetDiv);
+   openSmallestButton.appendTo(this.widgetDivHeader);
 
    this.currentUid = uid;
    this.currentGroup = group;
@@ -815,42 +941,46 @@ StyleMenu.prototype.__BuildWidget = function(group,name,uid){
       return;
    }
 
-   $("<h2 class=\"styleMenu_menu_par_title\">" + this.mappingArray[uid].name + "</h2>").appendTo(this.widgetDiv);
+   
+   $("<div class='span7 offset1'><h2 class='styleMenu_menu_par_title'>" + this.mappingArray[uid].name + "</h2></div>").appendTo(this.widgetDivHeader);
    if ( this.mappingArray[uid].filter != "" && this.GetUids(name).length > 1){
-      $("<p class=\"styleMenu_menu_filter_title\">(" + this.GetFilterAlias(group,name,uid) + ")</p>").appendTo(this.widgetDiv);
-      //$("<p class=\"styleMenu_menu_filter_title\">(" + this.mappingArray[uid].filter + ")</p>").appendTo(this.widgetDiv);
+      $("<p class='styleMenu_menu_filter_title'>(" + this.filterName(group,name,uid) + ")</p>").appendTo(this.widgetDivHeader);
    }
 
    if( this.groups[group][this.mappingArray[uid].name].type == "line" ){
-      //if(this.debug)console.log("I'm a line !");
+      console.log("----------------");
+      console.log("line");
 
       this.FillWidget(uid);
 
-      var casing = this.groups[group][this.mappingArray[uid].name].casing;
-      var center = this.groups[group][this.mappingArray[uid].name].center;
-      var casing_uid = this.GetUid(casing,this.mappingArray[uid].filter);
-      var center_uid = this.GetUid(center,this.mappingArray[uid].filter);
-
-      if ( casing_uid == null){
-         //if(this.debug)console.log("casing not found : " + casing);
-      }
-      else{
-         //if(this.debug)console.log("casing found : " + casing);
-         $('<h2 class="styleMenu_menu_par_title">casing </h2>').appendTo(this.widgetDiv);
-         this.FillWidget(casing_uid);
-      }
-
-      if ( center_uid == null){
-         //if(this.debug)console.log("center not found : " + center);
-      }
-      else{
-         //if(this.debug)console.log("center found : " + center);
-         $('<h2 class="styleMenu_menu_par_title">center line </h2>').appendTo(this.widgetDiv);
-         this.FillWidget(center_uid);
-      }                      
+//      var casing = this.groups[group][this.mappingArray[uid].name].casing;
+//      var center = this.groups[group][this.mappingArray[uid].name].center;
+//      var casing_uid = this.GetUid(casing,this.mappingArray[uid].filter);
+//      var center_uid = this.GetUid(center,this.mappingArray[uid].filter);
+//
+//      if ( casing_uid == null){
+//         console.log("------");
+//         console.log("no casing");
+//      }
+//      else{
+//         console.log("------");
+//         console.log("casing : " + casing_uid);
+//         $('<h2 class="styleMenu_menu_par_title">casing </h2>').appendTo(this.widgetDiv);
+//         this.FillWidget(casing_uid);
+//      }
+//
+//      if ( center_uid == null){
+//         console.log("no center");
+//      }
+//      else{
+//         console.log("center : " + center_uid);
+//         $('<h2 class="styleMenu_menu_par_title">center line </h2>').appendTo(this.widgetDiv);
+//         this.FillWidget(center_uid);
+//      }                      
    }
    else if( this.groups[group][this.mappingArray[uid].name].type == "poly" ){
-      //if(this.debug)console.log("I'm a poly !");
+      console.log("----------------");
+      console.log("poly");
 
       this.FillWidget(uid);	  
 
@@ -866,6 +996,8 @@ StyleMenu.prototype.__BuildWidget = function(group,name,uid){
 //      }      
    }
    else{
+      console.log("----------------");
+      console.log("Other");
       ///@todo
    }
 
@@ -873,11 +1005,12 @@ StyleMenu.prototype.__BuildWidget = function(group,name,uid){
 }
 
 
-StyleMenu.prototype.GetWidgetCallBack = function(group,name,uid){
+StyleMenu.prototype.openWidget = function(group,name,uid){
    var me = this;
    return function(){
-      //if(this.debug)console.log(uid + " clicked");
-      me.__BuildWidget(group,name,uid);
+      me.currentLayerId    = uid;
+      me.refreshWidget(group,name,uid);
+      me.resetEnabledZooms()
    } 
 }
 
@@ -939,7 +1072,7 @@ StyleMenu.prototype.__InsertAccordion = function(){
 
    $("#styleMenu_menu_accordion").remove();
 
-   var outterAcc = $("<div class=\"styleMenu_menu_accordion\" id=\"styleMenu_menu_accordion\"></div>");
+   var outterAcc = $("<div class='styleMenu_menu_accordion' id='styleMenu_menu_accordion'></div>");
    outterAcc.appendTo(this.mainDiv);
 
    var groupNum = 0;
@@ -950,8 +1083,8 @@ StyleMenu.prototype.__InsertAccordion = function(){
       }
       if(this.debug)console.log(group);
 
-      $("<h1 id=\"styleMenu_menu_groupaccordion_head_group_" + groupNum + "\"> Group : " + group + "</h1>").appendTo(outterAcc);
-      var groupAcc = $("<div class=\"styleMenu_menu_accordion\" id=\"styleMenu_menu_groupaccordion_div_group_" + groupNum +  "\"></div>");
+      $("<h1 id='styleMenu_menu_groupaccordion_head_group_" + groupNum + "'> Group : " + group + "</h1>").appendTo(outterAcc);
+      var groupAcc = $("<div class='styleMenu_menu_accordion' id='styleMenu_menu_groupaccordion_div_group_" + groupNum +  "'></div>");
       groupAcc.appendTo(outterAcc);
 
       groupNum++;
@@ -977,16 +1110,17 @@ StyleMenu.prototype.__InsertAccordion = function(){
             // make header
 
             if ( this.mappingArray[uid].filter != "" && this.GetUids(name).length > 1){
-               $('<h2 id="styleMenu_menu_headeraccordion_' + uid + '">' + this.GetFilterAlias(group,name,uid)  + "</h2>").appendTo(groupAcc);
+               $('<h2 id="styleMenu_menu_headeraccordion_' + uid + '">' + this.filterName(group,name,uid)  + "</h2>").appendTo(groupAcc);
             }
             else{
                $('<h2 id="styleMenu_menu_headeraccordion_' + uid + '">' + this.mappingArray[uid].name + "</h2>").appendTo(groupAcc);
             }
 
             // bind onclick header event!
-            $("#styleMenu_menu_headeraccordion_"+uid).bind('click',this.GetWidgetCallBack(group,name,uid));
+            var me = this
+            $("#styleMenu_menu_headeraccordion_"+uid).bind('click', this.openWidget(group,name,uid));
             // fill inner div with some info
-            var divIn = $("<div class=\"inner\" id=\"divinner_" + groupNum + "_" + uid + "\"></div>");
+            var divIn = $("<div class='inner' id='divinner_" + groupNum + "_" + uid + "'></div>");
             divIn.appendTo(groupAcc);
 
             $("<strong>Properties :<strong>").appendTo(divIn);
@@ -994,7 +1128,7 @@ StyleMenu.prototype.__InsertAccordion = function(){
             ul.appendTo(divIn);
 
             $("<li>" + "Filter : " + this.mappingArray[uid].filter + "</li>").appendTo(ul);
-            $("<li>" + "Visible  : " + "<input type=\"checkbox\" id=\"styleMenu_menu_check_" + uid + "\" />" + "</li>").appendTo(ul);
+            $("<li>" + "Visible  : " + "<input type='checkbox' id='styleMenu_menu_check_" + uid + "' />" + "</li>").appendTo(ul);
             $("#styleMenu_menu_check_" + uid).click( this.GetCheckBoxCallBack(uid) );
             $("#styleMenu_menu_check_" + uid).attr('checked', this.style.content[uid]["visible"]);
             $("<li>" + "Place : " + this.style.content[uid]["layer"] + "</li>").appendTo(ul);
@@ -1044,7 +1178,7 @@ StyleMenu.prototype.BuildSimpleWidget = function(group, name, uid){
    }
    catch(e){}
 
-   var openMediumButton = $("<i class=\"icon-zoom-in icon-white touchable\"></i>");
+   var openMediumButton = $("<i class='icon-zoom-in icon-white touchable'></i>");
    openMediumButton.click(function() {
       me.size = StyleMenu.MEDIUM;
       me.refresh();

@@ -33,8 +33,11 @@ MaperialEvents.ZOOM_TO_REFRESH      = "MaperialEvents.ZOOM_TO_REFRESH";
 MaperialEvents.ZOOM_CHANGED         = "MaperialEvents.ZOOM_CHANGED";
 
 MaperialEvents.UPDATE_LATLON        = "MaperialEvents.UPDATE_LATLON";
-MaperialEvents.OPEN_STYLE           = "MaperialEvents.OPEN_STYLE";
 MaperialEvents.NEW_BOUNDING_BOX     = "MaperialEvents.NEW_BOUNDING_BOX";
+
+// Style Menu Events
+MaperialEvents.OPEN_STYLE           = "MaperialEvents.OPEN_STYLE";
+MaperialEvents.OPEN_ZOOMS           = "MaperialEvents.OPEN_ZOOMS";
 
 // Rendering Events
 MaperialEvents.SOURCE_READY         = "MaperialEvents.SOURCE_READY";
