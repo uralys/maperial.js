@@ -88,7 +88,7 @@ HUD.positions[HUD.LATLON]        = { left  : "30%",  bottom : "0"   };
 HUD.positions[HUD.GEOLOC]        = { left  : "50%",  top    : "0"   };
 HUD.positions[HUD.DETAILS_MENU]  = { left  : "0",    top    : "0"   };
 HUD.positions[HUD.QUICK_EDIT]    = { right : "5",    top    : "70" };
-HUD.positions[HUD.ZOOMS]         = { left  : "400",  top    : "0"   };
+HUD.positions[HUD.ZOOMS]         = { left  : "500",  top    : "0"   };
 HUD.positions[HUD.BASEMAPS]      = { right : "-550", top    : "0"   };
 HUD.positions[HUD.DATA]          = { right : "-550", top    : "0"   };
 HUD.positions[HUD.LAYERS_CREATION]={ right : "-2",   top    : "0"   };
@@ -436,10 +436,12 @@ HUD.prototype.showAllHUD = function(dontHideColorpickers){
 //------------------------------------------------//
 
 HUD.prototype.putOnTop = function(element){
-   this.allTriggers().css({ zIndex : 101 });
-   this.allPanels().css({ zIndex : 100 });
-   this.trigger(element).css({ zIndex : 201 });
-   this.panel(element).css({ zIndex : 200 });  
+   this.allTriggers().css({ zIndex : 11 });
+   this.allPanels().css({ zIndex : 10 });
+   this.trigger(element).css({ zIndex : 21 });
+   this.panel(element).css({ zIndex : 20 });  
+
+   this.panel(HUD.ZOOMS).css({ zIndex : 101 });  
 }
 
 //----------------------------------------------------------------------//

@@ -286,7 +286,17 @@ TemplateBuilder.prototype.buildQuickEdit = function(){
 //==================================================================//
 
 TemplateBuilder.prototype.buildZooms = function(){
-   this.buildPanel(HUD.ZOOMS);
+//   
+//   this.buildPanel(HUD.ZOOMS);
+   
+
+   var html = "";
+   html += "<div class=\"panel panel"+HUD.ZOOMS+" reveal-modal\" id=\"panel"+this.mapView.getFullName(HUD.ZOOMS)+"\" >";
+   html += "    <div id=\""+this.mapView.getFullName(HUD.ZOOMS)+"\"></div>";
+   html += "</div>";
+
+   this.container.append(html);
+   
 }
 
 //==================================================================//

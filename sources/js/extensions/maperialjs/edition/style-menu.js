@@ -113,7 +113,8 @@ StyleMenu.prototype.initListeners = function (event) {
    });
    
    $(window).on(MaperialEvents.OPEN_ZOOMS, function(event){
-      styleMenu.mapView.hud.panel(HUD.ZOOMS).removeClass("hide")
+//      styleMenu.mapView.hud.panel(HUD.ZOOMS).reveal();
+      styleMenu.showZoomGroupEdition()
    });
 
    $(window).on(MaperialEvents.ZOOM_TO_REFRESH, function(event, map, viewTriggering, typeTriggering, zoom){
@@ -134,60 +135,35 @@ StyleMenu.prototype.removeListeners = function (event) {
 
 //==================================================================//
 
+StyleMenu.prototype.showZoomGroupEdition = function(){
+   this.container = $("#"+this.mapView.name);
+
+   var html = "<div id='menuZoomGroupEdition' class='reveal-modal'><h2>Edit zoom selection</h2>"
+   
+//   if(this.zoomGroups.length == 1){
+//     
+//   }
+   
+   html +=  "<div class='row-fluid'><div class='span3 offset2 btn-primary btn-large touchable '>Merge left keep</div><div class='span3 offset2 btn-large btn-primary touchable'>Merge right keep</div></div>"
+   html +=  "<div class='row-fluid'><div class='span3 offset2 btn-large btn-primary touchable'>Merge left take</div><div class='span3 offset2 btn-large btn-primary touchable'>Merge right take</div></div>"
+   html +=  "<div class='row-fluid'><div class='span4 offset4 btn-large btn-primary touchable'>Split</div></div>"
+
+   html +=  "<a class='close-reveal-modal'>&#215;</a></div>"
+      
+       
+   this.container.append(html);
+   
+   $("#menuZoomGroupEdition").reveal();
+}
+
+//==================================================================//
+
 StyleMenu.prototype.Refresh = function(){
    $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.mapView.name, this.currentLayerIndex]);
 }
 
-StyleMenu.prototype.DefFromRule = function(luid,rule){
-   // CARE DEPRECATED this one is not usefull anymore and will/should return 0
-   // because there is ONLY one def in each rule
-
-   if ( this.style.content[luid] == undefined ){
-      if(this.debug)console.log( luid + " not in style");
-      return -1;
-   }
-
-   var def = 0;
-   while ( Object.size(this.style.content[luid]["s"][rule]["s"][def]) < 3 ){
-      def = def + 1;
-      if ( def >= Object.size(this.style.content[luid]["s"][rule]["s"]) ){
-         if(this.debug)console.log("cannot find def ...", luid, rule);
-         return -1;
-      }
-   }
-   return def;
-}
-
-
-StyleMenu.prototype.DefRuleIdFromZoom = function(luid,zoom){
-   // CARE DEPRECATED this one will return the good ruleId and will/should return def 0
-
-   if ( this.style.content[luid] == undefined ){
-      if(this.debug)console.log( luid + " not in style");
-      return {"def" : -1, "ruleId" : -1, "rule" : -1};
-   }
-
-   for(var rule = 0 ; rule < Object.size(this.style.content[luid]["s"]) ; rule++){ // rule
-      var zmin = this.style.content[luid]["s"][rule]["zmin"];
-      if ( zmin == zoom ){
-         var def = 0;
-         while ( Object.size(this.style.content[luid]["s"][rule]["s"][def]) < 3 ){
-            def = def + 1;
-            if ( def >= Object.size(this.style.content[luid]["s"][rule]["s"]) ){
-               if(this.debug)console.log("cannot find def ...", luid, rule);
-               def = -1;
-               return {"def" : -1, "ruleId" : -1, "rule" : -1};
-            }
-         }
-         return {"def" : def, "ruleId" : this.style.content[luid]["s"][rule]["s"][def]["id"], "rule" : rule};
-      }
-   }
-   
-   return {"def" : -1, "ruleId" : -1, "rule" : -1};
-}
-
-
-StyleMenu.prototype.SetParam = function(luid,rule,def,param,value){
+StyleMenu.prototype.SetParam = function(luid,rule,param,value){
+   var def = 0
    if ( this.style.content[luid] == undefined ){
       if(this.debug)console.log( luid + " not in style");
       return false;
@@ -260,13 +236,7 @@ StyleMenu.prototype.SetParamIdZNew = function(luid,param,value){
       var z = rules[i]["zmin"];
 
       if ( this.selectedZooms[z] ){
-         var def = this.DefFromRule(luid, i);
-         
-         if ( def < 0 ){
-            continue;
-         }
-         
-         this.SetParam(luid,i,def,param,value);
+         this.SetParam(luid,i,param,value);
       }
    }
    return true;
@@ -297,6 +267,7 @@ StyleMenu.prototype.GetParamId = function(luid,ruid,param){
    return undefined;
 }
 
+//=================================================================================================================//
 
 //the main function
 StyleMenu.prototype.Load = function(){
@@ -394,6 +365,7 @@ StyleMenu.prototype.LoadMapping = function(){
    });
 }
 
+//========================================================================================================================================//
 
 //Dirty version ... draw view on the fly ...
 StyleMenu.prototype.BuildElements = function(){
@@ -419,6 +391,7 @@ StyleMenu.prototype.BuildElements = function(){
    this.__InsertAccordion();
 }  
 
+//========================================================================================================================================//
 
 StyleMenu.prototype.resetEnabledZooms = function(){
 
@@ -453,6 +426,8 @@ StyleMenu.prototype.resetEnabledZooms = function(){
    this.highlightCurrentZoom()
 }
 
+//----------------------------------------------------------------------------------------------------------------------//
+
 StyleMenu.prototype.highlightCurrentZoom = function(){
    for ( var z = 0 ; z < 19 ; ++z){
       if(z == this.mapView.GetZoom())
@@ -461,6 +436,8 @@ StyleMenu.prototype.highlightCurrentZoom = function(){
          $("#styleMenu_menu_zcheck"+z+"_label").css("border", "1px solid");
    }
 }
+
+//----------------------------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.refreshZoomSelection = function(min, max){
    console.log("------------ refreshZoomSelection", min, max)
@@ -495,6 +472,8 @@ StyleMenu.prototype.refreshZoomSelection = function(min, max){
 //      }
 //   } 
 //}
+
+//----------------------------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.__InsertZoomEdition = function(){
    $("#styleMenu_menu_rlbutton").button();
@@ -552,6 +531,7 @@ StyleMenu.prototype.__InsertZoomEdition2 = function(){
 //but thanks to SetParamIdZNew we are updating many zooms at the same time
 
 
+//----------------------------------------------------------------------------------------------------------------------//
 
 //Closure for colorpicker callback
 StyleMenu.prototype.ColorPickerChange = function(_ruleId,pName){
@@ -569,6 +549,7 @@ StyleMenu.prototype.ColorPickerSubmit = function(_uid,_ruleId,pName){
    }
 }
 
+//----------------------------------------------------------------------------------------------------------------------//
 
 //Closure for spinner callback
 StyleMenu.prototype.GetSpinnerCallBack = function(_uid,_ruleId,pName){  
@@ -590,6 +571,7 @@ StyleMenu.prototype.GetSliderCallBack = function(_uid,_ruleId,pName){
    }
 }
 
+//----------------------------------------------------------------------------------------------------------------------//
 
 //Closure for select callback
 StyleMenu.prototype.GetSelectCallBack = function(_uid,_ruleId,_pName){
@@ -638,6 +620,7 @@ StyleMenu.prototype.GetCheckBoxCallBack = function(_uid){
    }
 }; 
 
+//----------------------------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.AddColorPicker = function(_paramName,_paramValue,_uid,_ruleId,_container){
    // add to view
@@ -660,6 +643,7 @@ StyleMenu.prototype.AddColorPicker = function(_paramName,_paramValue,_uid,_ruleI
    });
 }
 
+//----------------------------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.AddSpinner = function(_paramName,_paramValue,_uid,_ruleId,_container,_step,_min,_max){
    // add to view
@@ -678,6 +662,7 @@ StyleMenu.prototype.AddSpinner = function(_paramName,_paramValue,_uid,_ruleId,_c
    $( "#styleMenu_menu_spinner_"+_paramName+"_"+_ruleId ).spinner("value" , _paramValue);  
 }
 
+//----------------------------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.AddSlider = function(_paramName,_paramValue,_uid,_ruleId,_container,_step,_min,_max){
    
@@ -699,6 +684,7 @@ StyleMenu.prototype.AddSlider = function(_paramName,_paramValue,_uid,_ruleId,_co
    $( "#styleMenu_menu_slider_"+_paramName+"_"+_ruleId ).slider("value" , _paramValue);
 }
 
+//----------------------------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.AddCombo = function(_paramName,_paramValue,_uid,_ruleId,_container,_values){
    // add to view
@@ -713,6 +699,7 @@ StyleMenu.prototype.AddCombo = function(_paramName,_paramValue,_uid,_ruleId,_con
    $("#styleMenu_menu_select_" + _paramName + "_" + _ruleId).change(this.GetSelectCallBack(_uid,_ruleId,_paramName));
 }
 
+//----------------------------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.Accordion = function(_group,_name,uid){
 
@@ -737,6 +724,8 @@ StyleMenu.prototype.Accordion = function(_group,_name,uid){
    $("#styleMenu_menu_accordion").accordion("option", "active", groupNum);
    $("#styleMenu_menu_groupaccordion_div_group_" + groupNum).accordion("option", "active", n);
 }
+
+//----------------------------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.filterName = function(group,name,uid){
    
@@ -764,7 +753,7 @@ StyleMenu.prototype.gatherRulesByZoom = function(uid){
    var currentRule   = rules[0]["s"][0]
    
    var endWithNewRule
-   var zoomGroups    = []
+   this.zoomGroups    = []
    
    
    for (var i = 1; i < rules.length; i++){
@@ -774,7 +763,7 @@ StyleMenu.prototype.gatherRulesByZoom = function(uid){
          endWithNewRule = false
       }
       else{
-         zoomGroups.push({zmin:start, zmax : end, rule:currentRule})
+         this.zoomGroups.push({zmin:start, zmax : end, rule:currentRule})
          currentRule = nextRule
          start       = rules[i].zmin
          end         = rules[i].zmin
@@ -783,10 +772,8 @@ StyleMenu.prototype.gatherRulesByZoom = function(uid){
    }
 
    if(!endWithNewRule){
-      zoomGroups.push({zmin:start, zmax : end, rule:currentRule})
+      this.zoomGroups.push({zmin:start, zmax : end, rule:currentRule})
    }
-   
-   return zoomGroups
 }
 
 //------------------------------------------------------------------//
@@ -815,10 +802,10 @@ StyleMenu.prototype.isSameRule = function(rule1, rule2){
 
 //------------------------------------------------------------------//
 
-StyleMenu.prototype.changeWidgetContent = function(zoomGroups, selection, uid){
+StyleMenu.prototype.changeWidgetContent = function(selection, uid){
    
-   var zoomGroup  = zoomGroups[selection.input[0]["value"]]
-   var rule       = zoomGroup.rule
+   var zoomGroup  = this.zoomGroups[selection.input[0]["value"]]
+   var rule       = this.zoomGroup.rule
    
    var container = $("#widgetDivContent")
    container.empty()
@@ -875,7 +862,7 @@ StyleMenu.prototype.FillWidget = function(uid){
 
    //-----------------------------------------------------//
 
-   var zoomGroups = this.gatherRulesByZoom(uid)
+   this.gatherRulesByZoom(uid)
 
    //-----------------------------------------------------//
    // template selectbox
@@ -883,8 +870,8 @@ StyleMenu.prototype.FillWidget = function(uid){
    var div = "<div class='row-fluid marginbottom'>";
    div += "<div class='span7 offset1'><select class='shaderSelectbox' name='ruleSelector' id='ruleSelector'>";
 
-   for( var i = 0 ; i < zoomGroups.length; i++){
-      var label = this.getZoomGroupLabel(zoomGroups[i])
+   for( var i = 0 ; i < this.zoomGroups.length; i++){
+      var label = this.getZoomGroupLabel(this.zoomGroups[i])
       div += "<option value='"+i+"'>"+label+"</option>"
    }
 
@@ -902,16 +889,16 @@ StyleMenu.prototype.FillWidget = function(uid){
 
      var me = this
    $("#ruleSelector").selectbox({
-      onChange: function(zoomGroups, uid){
+      onChange: function(uid){
          return function (val,  inst) {
-            me.changeWidgetContent(zoomGroups, inst,uid)
+            me.changeWidgetContent(inst,uid)
          }
-      }(zoomGroups, uid),
+      }(uid),
       effect: "slide"
    });
 
    // init selectbox value
-   $("#ruleSelector").selectbox('change', "", this.getZoomGroupLabel(zoomGroups[0]));
+   $("#ruleSelector").selectbox('change', "", this.getZoomGroupLabel(this.zoomGroups[0]));
 }
    
 StyleMenu.prototype.__BuildWidget = function(group,name,uid){
@@ -1283,3 +1270,53 @@ StyleMenu.prototype.ChangeSelectedSubLayer = function (layerIndex, subLayerId) {
    this.refresh();
 }
 
+//--------------------------------------------------------------------------//
+// DEPRECATED
+
+
+//StyleMenu.prototype.DefFromRule = function(luid,rule){
+// // CARE DEPRECATED this one is not usefull anymore and will/should return 0
+// // because there is ONLY one def in each rule
+//
+// if ( this.style.content[luid] == undefined ){
+//    if(this.debug)console.log( luid + " not in style");
+//    return -1;
+// }
+//
+// var def = 0;
+// while ( Object.size(this.style.content[luid]["s"][rule]["s"][def]) < 3 ){
+//    def = def + 1;
+//    if ( def >= Object.size(this.style.content[luid]["s"][rule]["s"]) ){
+//       if(this.debug)console.log("cannot find def ...", luid, rule);
+//       return -1;
+//    }
+// }
+// return def;
+//}
+//
+StyleMenu.prototype.DefRuleIdFromZoom = function(luid,zoom){
+ // CARE DEPRECATED this one will return the good ruleId and will/should return def 0
+
+ if ( this.style.content[luid] == undefined ){
+    if(this.debug)console.log( luid + " not in style");
+    return {"def" : -1, "ruleId" : -1, "rule" : -1};
+ }
+
+ for(var rule = 0 ; rule < Object.size(this.style.content[luid]["s"]) ; rule++){ // rule
+    var zmin = this.style.content[luid]["s"][rule]["zmin"];
+    if ( zmin == zoom ){
+       var def = 0;
+       while ( Object.size(this.style.content[luid]["s"][rule]["s"][def]) < 3 ){
+          def = def + 1;
+          if ( def >= Object.size(this.style.content[luid]["s"][rule]["s"]) ){
+             if(this.debug)console.log("cannot find def ...", luid, rule);
+             def = -1;
+             return {"def" : -1, "ruleId" : -1, "rule" : -1};
+          }
+       }
+       return {"def" : def, "ruleId" : this.style.content[luid]["s"][rule]["s"][def]["id"], "rule" : rule};
+    }
+ }
+ 
+ return {"def" : -1, "ruleId" : -1, "rule" : -1};
+}
