@@ -260,9 +260,7 @@ Maperial.prototype.initListeners = function(){
 //==================================================================//
 
 Maperial.prototype.refreshAllViews = function(map, viewTriggering, typeTriggering, zoom){
-
-   console.log("------ ploc, refreshAllViews ", viewTriggering, typeTriggering, zoom)
-   
+    
    for(var i = 0; i < this.views.length; i++){
       if(this.views[i].map == map && this.views[i].name != viewTriggering){
          this.views[i].mapRenderer.SetNextDraw(true, true)

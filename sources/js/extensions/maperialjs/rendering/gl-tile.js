@@ -27,9 +27,20 @@ Tile.prototype.Init = function () {
    this.nbErrors     = 0;
 
    this.prepareBuffering();
-   
+   this.load()
+}
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+Tile.prototype.load = function () {
    this.buildLayers();
-   this.mapView.maperial.sourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name);
+   
+   var isTileLoaded = this.mapView.maperial.sourcesManager.isTileLoaded(this.x, this.y, this.z, this.mapView.name)
+   
+   if(this.mapView.maperial.sourcesManager.isTileLoaded(this.x, this.y, this.z, this.mapView.name))
+      this.sourcesAllHere()
+   else
+      this.mapView.maperial.sourcesManager.loadSources(this.x, this.y, this.z, this.mapView.name);
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -200,7 +211,6 @@ Tile.prototype.sourceReady = function ( source, data ) {
   
    if(!data){
       console.log("-------> tile.sourceReady : DATA NULL !")
-      //this.nbErrors ++;
       this.Release();
       this.Reset();
       return
@@ -217,6 +227,18 @@ Tile.prototype.sourceReady = function ( source, data ) {
       catch(e){
          console.log("-------> ERROR")
       }
+   }   
+}
+
+//----------------------------------------------------------------------------------------------------------------------//
+// when creating a tile, sources may be still in sourcesManager => no need to ask for sourcesManager + maprenderer to use sourceReady.
+// moreover, sourcesManager.isTileLoaded will be true meanwhile and mapRenderer will update empty layers...
+// soltution : sourcesAllHere() => fecthing the sources ready right here at the creation !
+
+Tile.prototype.sourcesAllHere = function () {
+   console.log("sourcesAllHere", this)
+   for(var i = 0; i< this.config.layers.length; i++){
+      this.layers[i].Init( this.mapView.maperial.sourcesManager.getData(this.config.layers[i].source, this.x, this.y, this.z))
    }   
 }
 

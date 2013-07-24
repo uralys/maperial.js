@@ -17,8 +17,8 @@ ImageLayer.prototype.GetType = function ( ) {
 ImageLayer.prototype.Init = function ( data ) {
 
    if (this.tex){
-      console.log("tex ready")
-      this.tile.Reset()
+      var isTileLoaded = this.tile.mapView.maperial.sourcesManager.isTileLoaded(this.tile.x, this.tile.y, this.tile.z, this.tile.mapView.name)
+      console.log("text ready", this.tile.mapView.name, this.tile, isTileLoaded)      
       return;
    }
    if (data) {
@@ -50,6 +50,7 @@ ImageLayer.prototype.IsUpToDate = function ( ) {
 }
 
 ImageLayer.prototype.Update = function () {
+   
    if (this.tex)
       return 0;
 

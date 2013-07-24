@@ -315,7 +315,7 @@ TemplateBuilder.prototype.prepareAttribution = function(){
    html += "<p id=\"attribution_"+this.name+"\" class=\"attribution\">"
    html += "</p>"
 
-      this.container.append(html);
+   this.container.append(html);
 }
 
 //==================================================================//
