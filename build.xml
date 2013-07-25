@@ -679,9 +679,14 @@
 	</target>
 
 	<!-- DEV ONLY -->
-	<target name="copy-bootstrap">
+	<target name="_dev-copy-bootstrap">
 		<copy file="/Users/mad/Projects/Maperial/MaperialWebapp/target/scala-2.10/resource_managed/main/public/stylesheets/bootstrap/bootstrap.min.css" todir="sources/css/" />
 		<copy file="/Users/mad/Projects/Maperial/MaperialWebapp/target/scala-2.10/resource_managed/main/public/stylesheets/bootstrap/responsive.min.css" todir="sources/css/" />
 		<antcall target="copy-assets"/>
+	</target>
+
+	<target name="_dev-build-css">
+		<antcall target="build-css"/>
+		<antcall target="replace-urls"/>
 	</target>
 </project>

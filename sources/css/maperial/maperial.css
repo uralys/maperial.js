@@ -468,7 +468,6 @@ a.triggerDetailsMenu {
 
 .panelQuickEdit {
 	color: #eee;
-	width: 300px;
 }
 
 /* main widget div*/
@@ -477,6 +476,18 @@ a.triggerDetailsMenu {
 	overflow-x: hidden;
 	overflow-y: auto;
 	padding-right: 10px;
+}
+
+#widgetDivContent {
+	padding-top: 5px;
+}
+
+.detailLevelButton {
+	float: right;
+}
+
+.widgetSlider {
+	margin-top: 20px;
 }
 
 /*-------------------------*/
@@ -565,6 +576,14 @@ a.triggerColorBar {
 	color: #fff;
 	font-size: 17px;
 	padding-left: 10px;
+}
+
+/* header of main section */
+.styleMenu_menu_par_subrow {
+	color: #fff;
+	font-size: 13px;
+	padding-left: 10px;
+	padding-top: 20px;
 }
 
 /****************************/
