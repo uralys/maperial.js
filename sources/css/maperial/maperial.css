@@ -579,12 +579,18 @@ a.triggerColorBar {
 	padding-left: 10px;
 }
 
-/* header of main section */
 .styleMenu_menu_par_subrow {
 	color: #fff;
 	font-size: 13px;
 	padding-left: 10px;
 	padding-top: 20px;
+}
+
+.sublayerPartTitle {
+	font-style: italic;
+	margin-left: -14px;
+	margin-top: -5px;
+	color: #fff;
 }
 
 /****************************/

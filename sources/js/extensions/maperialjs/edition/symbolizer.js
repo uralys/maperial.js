@@ -26,8 +26,9 @@ Symbolizer.params2 = {
  */
 
 Symbolizer.combos = {
-      "linejoin" : [ "miter" , "round" , "bevel" ],
-      "linecap"  : [ "butt" , "round" , "square" ],
+      "linejoin"  : [ "miter" , "round" , "bevel" ],
+      "linecap"   : [ "butt" , "round" , "square" ],
+      "width"     : [ "xsmall" , "small" , "standard" , "large" , "xlarge" ],
 };
 
 Symbolizer.defaultValues = {

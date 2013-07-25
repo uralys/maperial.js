@@ -11,6 +11,14 @@ StyleMenu.BIGGEST = 3;
 
 //==================================================================//
 
+StyleMenu.XSMALL     = "xsmall";
+StyleMenu.SMALL      = "small";
+StyleMenu.STANDART   = "standart";
+StyleMenu.LARGE      = "large";
+StyleMenu.XLARGE     = "xlarge";
+
+//==================================================================//
+
 function StyleMenu(container, container2, container3, mapView){
 
    console.log("  building style menu...");
@@ -226,6 +234,7 @@ StyleMenu.prototype.BuildElements = function(){
 //-------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.Refresh = function(){
+   console.log("STYLE_CHANGED -> REFRESH")
    $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.mapView.name, this.currentLayerIndex]);
 }
 
@@ -308,9 +317,9 @@ StyleMenu.prototype.SetParamId = function(uid,ruid,param,value){
 }
 
 
-StyleMenu.prototype.SetParamIdZNew = function(uid, param, value){
+StyleMenu.prototype.changeProperty = function(uid, param, value){
 
-   console.log("SetParamIdZNew", uid, param, value, this.selectedZooms)
+   console.log("changeProperty", uid, param, value, this.selectedZooms)
 
    if ( this.style.content[uid] == undefined ){
       if(this.debug)console.log( uid + " not in style");
@@ -672,7 +681,7 @@ StyleMenu.prototype.__InsertZoomEdition2 = function(){
 
 
 //in the next callback "_ruleId" is the *caller* rule id.
-//but thanks to SetParamIdZNew we are updating many zooms at the same time
+//but thanks to changeProperty we are updating many zooms at the same time
 
 
 //------------------------------------------------------------------//
@@ -764,7 +773,6 @@ StyleMenu.prototype.createZoomGroup = function(start, end, currentRule, uid){
    }
    catch(e){}
 
-   console.log("created zoomGroup ", zoomGroup)
    this.zoomGroups.push(zoomGroup)
 }
 
@@ -1148,7 +1156,7 @@ StyleMenu.prototype.BuildFullWidget = function(group,name,uid){
 // ///@todo
 // }
 
-   this.widgetDiv.css("width", "375px");
+   this.widgetDiv.css("width", "410px");
 }
 
 
@@ -1224,11 +1232,11 @@ StyleMenu.prototype.changeWidgetContent = function(selection, uid){
 
 StyleMenu.prototype.buildFullRule = function(rule, uid){
 
-   $("<div class='span4'><p class='styleMenu_menu_par_subrow'>" + this.mappingArray[uid].name + "</p></div>").appendTo($("#widgetDivContent"));
+   $("<hr/><div class='span4'><p class='sublayerPartTitle'>" + this.mappingArray[uid].name + "</p></div>").appendTo($("#widgetDivContent"));
 
    //-------------------------------------------//
 
-   var propertyGroups = {"color" : [], "size" : [], "details" : []}
+   var propertyGroups = {"color" : [], "details" : [], "size" : []}
 
    for( var p = 0 ; p < Symbolizer.params[rule["rt"]].length ; p++){  // this is read from a list of known params. 
       var property = Symbolizer.getParamName(rule["rt"], p);
@@ -1240,13 +1248,13 @@ StyleMenu.prototype.buildFullRule = function(rule, uid){
             propertyGroups["color"].push(property)
             break
 
-         case "width": 
-            propertyGroups["size"].push(property)
-            break
-
          case "linejoin": 
          case "linecap": 
             propertyGroups["details"].push(property)
+            break
+            
+         case "width": 
+            propertyGroups["size"].push(property)
             break
       }
    }
@@ -1256,7 +1264,7 @@ StyleMenu.prototype.buildFullRule = function(rule, uid){
    for(var group in propertyGroups){
 
       var properties = propertyGroups[group]
-      var container = $("<div class='row-fluid'></div>");
+      var container = $("<div class='row-fluid marginbottom'></div>");
       container.appendTo($("#widgetDivContent"))
 
       for(var i = 0; i< properties.length; i++ ){
@@ -1280,7 +1288,7 @@ StyleMenu.prototype.AddItem = function(uid, rule, property, container){
    }
 
    if ( property == "width" ){  
-      this.AddSlider(property, value, uid, rule["id"], container, 0.25, 0, 20);
+      this.AddSlider(property, value, uid, rule["id"], container, 1, 1, 10);
    }
    else if ( property == "fill" || property == "stroke" ){
       this.AddColorPicker(property, value, uid, rule["id"], container);
@@ -1308,12 +1316,12 @@ StyleMenu.prototype.AddItem = function(uid, rule, property, container){
 
 
 StyleMenu.prototype.AddColorPicker = function(_property,_value,_uid,_ruleId,_container){
-   console.log("colorpicker init value : " + _value)
+   var id = "styleMenu_menu_colorpicker_" + _property + "_" + _ruleId
    // add to view
-   $("<div class='span2'><div class='colorSelector' id='styleMenu_menu_colorpicker_" + _ruleId + "'><div style='background-color:" + ColorTools.RGBAToHex(_value) + "'></div></div></div>").appendTo(_container);
+   $("<div class='span2'><div class='colorSelector' id='" + id + "'><div style='background-color:" + ColorTools.RGBAToHex(_value) + "'></div></div></div>").appendTo(_container);
 
    // plug callback
-   $("#styleMenu_menu_colorpicker_"+_ruleId).ColorPicker({
+   $("#"+id).ColorPicker({
       color: ColorTools.RGBAToHex(_value),   // set initial value
       onShow: function (colpkr) {
          $(colpkr).fadeIn(500);
@@ -1373,71 +1381,80 @@ StyleMenu.prototype.AddSlider = function(_property,_value,_uid,_ruleId,_containe
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-StyleMenu.prototype.AddCombo = function(_property,_value,_uid,_ruleId,_container,_values){
-   // add to view
-   $( "<div class='span5'>" + _property + " : " +"<select id='styleMenu_menu_select_" + _property + "_" + _ruleId + "'></div>").appendTo(_container);
-   // add options
-   for( var v = 0 ; v < _values.length ; v++){
-      $("#styleMenu_menu_select_" + _property + "_" + _ruleId).append("<option value='" + _values[v] + "'> " + _values[v] + "</option>");
+StyleMenu.prototype.AddCombo = function(property, value, uid, ruleId, container, values){
+   
+   //----------------------------------------------//
+
+   var id = "styleMenu_menu_select_" + property + "_" + ruleId
+   $( "<div class='span2'><p>" + property + " : " +"</p></div><div class='span4'><select id='" + id + "' class='shaderSelectbox' name="+id+" ></div>").appendTo(container);
+
+   //----------------------------------------------//
+
+   // set option list
+   for( var v = 0 ; v < values.length ; v++){
+      $("#"+id).append("<option value='" + values[v] + "'> " + values[v] + "</option>");
    }
-   // set value
-   $("#styleMenu_menu_select_" + _property + "_" + _ruleId).val(_value);
-   // set callback
-   $("#styleMenu_menu_select_" + _property + "_" + _ruleId).change(this.GetSelectCallBack(_uid,_ruleId,_property));
+
+   // start value
+   $("#"+id).val(value);
+   
+   //----------------------------------------------//
+
+   var me = this
+   $("#"+id).selectbox({
+      onChange: function(uid,ruleId,property){
+         return function (val,  inst) {
+            me.changeProperty(uid, property, val);
+         }
+      }(uid, ruleId, property),
+      effect: "slide"
+   });
+
+   //----------------------------------------------//
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
 //Closure for colorpicker callback
-StyleMenu.prototype.ColorPickerChange = function(_ruleId,pName){
+StyleMenu.prototype.ColorPickerChange = function(_ruleId,property){
    return function (hsb, hex, rgb) {
       $("#styleMenu_menu_colorpicker_"+_ruleId +" div").css('backgroundColor', '#' + hex);
    }
 }
 
-StyleMenu.prototype.ColorPickerSubmit = function(_uid,_ruleId,pName){
+StyleMenu.prototype.ColorPickerSubmit = function(_uid,_ruleId,property){
    var me = this;
    return function (hsb, hex, rgb) {
       var linkedUIDs = me.linkedUIDs(_uid);
       for(var i = 0 ; i < linkedUIDs.length; i++)
-         me.SetParamIdZNew(linkedUIDs[i], pName, ColorTools.HexToRGBA(hex));
+         me.changeProperty(linkedUIDs[i], property, ColorTools.HexToRGBA(hex));
    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
 ////Closure for spinner callback
-//StyleMenu.prototype.GetSpinnerCallBack = function(_uid,_ruleId,pName){  
+//StyleMenu.prototype.GetSpinnerCallBack = function(_uid,_ruleId,property){  
 //var me = this;
 //return function (event, ui) {
 //var newV = ui.value;
-//me.SetParamIdZNew(_uid,pName,newV);
+//me.changeProperty(_uid,property,newV);
 //}
 //}
 
 
 //Closure for slider callback
-StyleMenu.prototype.GetSliderCallBack = function(_uid,_ruleId,pName){  
+StyleMenu.prototype.GetSliderCallBack = function(_uid,_ruleId,property){  
    var me = this;
 
    return function (event, ui) {
       var newV = ui.value;
-      me.SetParamIdZNew(_uid,pName,newV);
+      me.changeProperty(_uid,property,newV);
    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
-
-//Closure for select callback
-StyleMenu.prototype.GetSelectCallBack = function(_uid,_ruleId,_pName){
-   var me = this;
-   return function (){
-      var newV = $("#styleMenu_menu_select_" + _pName + "_" + _ruleId + " option:selected").text();
-      me.SetParamIdZNew(_uid,_pName,newV);
-      ///@todo bug ... seems to work only once ...
-   }
-}
-
 
 //Closure for checkbox callback
 StyleMenu.prototype.GetCheckBoxCallBack = function(_uid){
