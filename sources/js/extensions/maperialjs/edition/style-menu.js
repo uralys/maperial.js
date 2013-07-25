@@ -69,7 +69,7 @@ function StyleMenu(container, container2, container3, mapView){
 
    //-------------------------------------------------//
 
-   this.debug = false;
+   this.debug = true;
 
    //-------------------------------------------------//
 
@@ -153,15 +153,17 @@ StyleMenu.prototype.LoadGroup = function(){
    if(this.debug)console.log("Loading groups");
    var me = this;
    $.ajax({
-      url: Maperial.staticURL+'/style/group3.json',
+      url: Maperial.staticURL+'/style/groups.json',
       async: false,
       dataType: 'json',
       //contentType:"application/x-javascript",
       success: function (data) {
-         me.groups = data;
+         me.groups   = data.oldies;
+         me.news     = data.groups;
          me.LoadMapping();
       },
       error: function (){
+         console.log("==========================================================")
          if(me.debug)console.log("Loading group failed");
       }
    });
@@ -312,7 +314,7 @@ StyleMenu.prototype.SetParamId = function(uid,ruid,param,value){
          }
       }
    }
-   if(this.debug)console.log(" not found !" , uid , ruid , param);
+   if(this.debug)console.log("----------->   uid not found !" , uid , ruid , param);
    return false;
 }
 
@@ -389,19 +391,22 @@ StyleMenu.prototype.GetUid = function(name,filter){
 }
 
 
-StyleMenu.prototype.filterName = function(group,name,uid){
+StyleMenu.prototype.filterAlias = function(group,name,uid){
 
+   console.log("---> filterAlias", name)
    if ( this.groups[group][name].hasOwnProperty("alias") ){
 
       for ( var al in this.groups[group][name]["alias"] ){
          var fal = this.groups[group][name]["alias"][al];
          if ( this.mappingArray[uid].filter.indexOf(fal) >= 0 ){
-            if(this.debug)console.log( fal + " is in " + this.mappingArray[uid].filter );
+            console.log( fal + " is in " + this.mappingArray[uid].filter );
+            console.log("-> alias", al)
             return al;
          }
       }
    }
 
+   console.log("--------> no alias", this.mappingArray[uid].filter)
    return this.mappingArray[uid].filter;
 }
 
@@ -810,11 +815,9 @@ StyleMenu.prototype.getZoomGroupLabel = function(zoomGroup){
 }
 
 
-
 //=============================================================================================================================//
 //ACCORDION
 //========================================================================================================================//
-
 
 
 StyleMenu.prototype.__InsertAccordion = function(){
@@ -824,7 +827,17 @@ StyleMenu.prototype.__InsertAccordion = function(){
    var outterAcc = $("<div class='styleMenu_menu_accordion' id='styleMenu_menu_accordion'></div>");
    outterAcc.appendTo(this.mainDiv);
 
+   var newsNum = 0;
    var groupNum = 0;
+   
+   for ( var group in this.news ){
+      
+      $("<h1 id='styleMenu_menu_groupaccordion_head_group_" + groupNum + "'> " + group + "</h1>").appendTo(outterAcc);
+      var groupAcc = $("<div class='styleMenu_menu_accordion' id='styleMenu_menu_groupaccordion_div_group_" + groupNum +  "'></div>");
+      groupAcc.appendTo(outterAcc);
+      
+      newsNum++
+   }
 
    for ( var group in this.groups ){ // for all groups of element
       if (!this.groups.hasOwnProperty(group)) {
@@ -842,7 +855,7 @@ StyleMenu.prototype.__InsertAccordion = function(){
          if (!this.groups[group].hasOwnProperty(name)) {
             continue;
          }
-         if(this.debug)console.log("found ! : " + name );
+         if(this.debug)console.log("------------- > name : " + name );
 
          var uids = this.GetUids(name);
 
@@ -859,7 +872,7 @@ StyleMenu.prototype.__InsertAccordion = function(){
             // make header
 
             if ( this.mappingArray[uid].filter != "" && this.GetUids(name).length > 1){
-               $('<h2 id="styleMenu_menu_headeraccordion_' + uid + '">' + this.filterName(group,name,uid)  + "</h2>").appendTo(groupAcc);
+               $('<h2 id="styleMenu_menu_headeraccordion_' + uid + '">' + this.filterAlias(group,name,uid)  + "</h2>").appendTo(groupAcc);
             }
             else{
                $('<h2 id="styleMenu_menu_headeraccordion_' + uid + '">' + this.mappingArray[uid].name + "</h2>").appendTo(groupAcc);
