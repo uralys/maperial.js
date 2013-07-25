@@ -1,37 +1,8 @@
-//----------------------------------------------------------------------------------------//
-
-//upgrade jquery checkboxes
-(function($)  {
-   $.fn.extend({
-      check : function()  {
-         return this.filter(":radio, :checkbox").attr("checked", true);
-      },
-      uncheck : function()  {
-         return this.filter(":radio, :checkbox").removeAttr("checked");
-      },
-      disable : function()  {
-         return this.filter(":radio, :checkbox").attr("disabled", true);
-      },
-      enable : function()  {
-         return this.filter(":radio, :checkbox").removeAttr("disabled");
-      }
-   });
-}(jQuery));
-
-//----------------------------------------------------------------------------------------//
-
-//upgrade Object prototype
-Object.size = function(obj) {
-   var size = 0, key;
-   for (key in obj) {
-      if (obj.hasOwnProperty(key)) size++;
-   }
-   return size;
-};
-
 //==================================================================//
-//StyleMenu
+
+//StyleEditor
 ///@todo define a xsmall small standard large xlarge size for each element and each zoom level
+
 //==================================================================//
 
 StyleMenu.SIMPLE  = 1;
@@ -135,36 +106,163 @@ StyleMenu.prototype.removeListeners = function (event) {
    this.mapView.context.mapCanvas.off(MaperialEvents.MOUSE_DOWN)
 }
 
-//==================================================================//
 
-StyleMenu.prototype.showZoomGroupEdition = function(){
-   this.container = $("#"+this.mapView.name);
-
-   var html = "<div id='menuZoomGroupEdition' class='reveal-modal'><h2>Edit zoom selection</h2>"
-
-//    if(this.zoomGroups.length == 1){
-
-//    }
-
-      html +=  "<div class='row-fluid'><div class='span3 offset2 btn-primary btn-large touchable '>Merge left keep</div><div class='span3 offset2 btn-large btn-primary touchable'>Merge right keep</div></div>"
-         html +=  "<div class='row-fluid'><div class='span3 offset2 btn-large btn-primary touchable'>Merge left take</div><div class='span3 offset2 btn-large btn-primary touchable'>Merge right take</div></div>"
-            html +=  "<div class='row-fluid'><div class='span4 offset4 btn-large btn-primary touchable'>Split</div></div>"
-
-               html +=  "<a class='close-reveal-modal'>&#215;</a></div>"
+//=================================================================================================================//
+//PREPARE
+//========================================================================================================================//
 
 
-                  this.container.append(html);
-
-   $("#menuZoomGroupEdition").reveal();
+//the main function
+StyleMenu.prototype.Load = function(){
+   this.LoadGroup();
 }
 
-//==================================================================//
+
+StyleMenu.prototype.ReLoad = function(){
+   this.BuildElements();
+}
+
+//AJaX load group
+StyleMenu.prototype.LoadGroup = function(){
+   if(this.debug)console.log("Loading groups");
+   var me = this;
+   $.ajax({
+      url: Maperial.staticURL+'/style/group3.json',
+      async: false,
+      dataType: 'json',
+      //contentType:"application/x-javascript",
+      success: function (data) {
+         me.groups = data;
+         me.LoadMapping();
+      },
+      error: function (){
+         if(me.debug)console.log("Loading group failed");
+      }
+   });
+}
+
+
+StyleMenu.prototype.__LoadMapping = function(){
+   if(this.debug)console.log("##### MAPPING ####");
+   this.mappingArray.uids = []
+
+   for(var entrie = 0 ; entrie < Object.size(this.mapping) ; entrie++){
+      //if(this.debug)console.log(this.mapping[entrie]["name"]);
+      // build mappingArray object
+      for( var layer = 0 ; layer < Object.size(this.mapping[entrie]["layers"]) ; layer++){
+         //if(this.debug)console.log("    filter : " + this.mapping[entrie]["layers"][layer]["filter"]);
+         //if(this.debug)console.log("    uid : " + this.mapping[entrie]["layers"][layer]["id"]);
+         this.mappingArray[ this.mapping[entrie]["layers"][layer]["id"] ] = { name : this.mapping[entrie]["name"] , filter : this.mapping[entrie]["layers"][layer]["filter"]};
+         this.mappingArray.uids[this.mapping[entrie]["name"]] = this.mapping[entrie]["layers"][layer]["id"]
+      }
+   }
+   this.BuildElements();  
+}
+
+//AJaX load mapping
+StyleMenu.prototype.LoadMapping = function(){
+   if(this.debug)console.log("Loading mapping");
+   var me = this;
+
+   $.ajax({
+      url: Maperial.staticURL+'/style/mapping.json',
+      async: false,
+      dataType: 'json',
+      //contentType:"application/x-javascript",
+      success: function (data) {
+         me.mapping = data;
+         me.__LoadMapping();
+      },
+      error: function (){
+         if(me.debug)console.log("Loading mapping failed");
+      }
+   });
+}
+
+//-------------------------------------------------------------------------------------------------//
+
+//Dirty version ... draw view on the fly ...
+StyleMenu.prototype.BuildElements = function(){
+
+   this.styleMenuParentEl.empty();   
+   this.styleMenuParentEl2.empty();   
+   this.styleMenuParentEl3.empty();   
+
+   this.styleMenuParentEl.hide(); // hide me during loading
+
+   this.mainDiv = $('<div id="styleMenu_menu_maindiv'+this.mapView.name+'" class="styleMenu_menu_maindiv"></div>');
+   this.mainDiv.appendTo(this.styleMenuParentEl);
+
+   this.widgetDiv = $('<div id="styleMenu_menu_widgetDiv'+this.mapView.name+'" class="styleMenu_menu_widgetDiv"></div>');
+   this.widgetDiv.appendTo(this.styleMenuParentEl2);
+
+   this.zoomDiv = $('<div id="styleMenu_menu_zoomDiv'+this.mapView.name+'" class="styleMenu_menu_zoomDiv" ></div>');
+   this.zoomDiv.appendTo(this.styleMenuParentEl3);
+
+   //this.__FillZoomDef();
+   this.__InsertZoomEdition();
+   this.__InsertZoomEdition2();
+   this.__InsertAccordion();
+}  
+
+//-------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.Refresh = function(){
    $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.mapView.name, this.currentLayerIndex]);
 }
 
-//==================================================================//
+//===============================================================================================================//
+//UTILS
+//========================================================================================================================//
+
+//upgrade jquery checkboxes
+(function($)  {
+   $.fn.extend({
+      check : function()  {
+         return this.filter(":radio, :checkbox").attr("checked", true);
+      },
+      uncheck : function()  {
+         return this.filter(":radio, :checkbox").removeAttr("checked");
+      },
+      disable : function()  {
+         return this.filter(":radio, :checkbox").attr("disabled", true);
+      },
+      enable : function()  {
+         return this.filter(":radio, :checkbox").removeAttr("disabled");
+      }
+   });
+}(jQuery));
+
+//----------------------------------------------------------------------------------------//
+
+//TODO : remove + use length
+//upgrade Object prototype
+Object.size = function(obj) {
+   var size = 0, key;
+   for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+   }
+   return size;
+};
+
+//----------------------------------------------------------------------------------------//
+
+StyleMenu.prototype.linkedUIDs = function (uid) {
+   switch (uid) {
+      case "000":
+      case "001":
+         return ["000", "001"]
+
+      case "008":
+      case "014":
+         return ["008", "014"]
+
+      default: 
+         return [uid];
+   }
+}
+
+//----------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.SetParam = function(luid,rule,param,value){
    var def = 0
@@ -271,56 +369,6 @@ StyleMenu.prototype.getValue = function(luid,ruid,param){
    return undefined;
 }
 
-//=================================================================================================================//
-
-//the main function
-StyleMenu.prototype.Load = function(){
-   this.LoadGroup();
-}
-
-
-StyleMenu.prototype.ReLoad = function(){
-   this.BuildElements();
-}
-
-
-//AJaX load group
-StyleMenu.prototype.LoadGroup = function(){
-   if(this.debug)console.log("Loading groups");
-   var me = this;
-   $.ajax({
-      url: Maperial.staticURL+'/style/group3.json',
-      async: false,
-      dataType: 'json',
-      //contentType:"application/x-javascript",
-      success: function (data) {
-         me.groups = data;
-         me.LoadMapping();
-      },
-      error: function (){
-         if(me.debug)console.log("Loading group failed");
-      }
-   });
-}
-
-
-StyleMenu.prototype.__LoadMapping = function(){
-   if(this.debug)console.log("##### MAPPING ####");
-   this.mappingArray.uids = []
-
-   for(var entrie = 0 ; entrie < Object.size(this.mapping) ; entrie++){
-      //if(this.debug)console.log(this.mapping[entrie]["name"]);
-      // build mappingArray object
-      for( var layer = 0 ; layer < Object.size(this.mapping[entrie]["layers"]) ; layer++){
-         //if(this.debug)console.log("    filter : " + this.mapping[entrie]["layers"][layer]["filter"]);
-         //if(this.debug)console.log("    uid : " + this.mapping[entrie]["layers"][layer]["id"]);
-         this.mappingArray[ this.mapping[entrie]["layers"][layer]["id"] ] = { name : this.mapping[entrie]["name"] , filter : this.mapping[entrie]["layers"][layer]["filter"]};
-         this.mappingArray.uids[this.mapping[entrie]["name"]] = this.mapping[entrie]["layers"][layer]["id"]
-      }
-   }
-   this.BuildElements();  
-}
-
 //TODO use this.mappingArray.uids
 StyleMenu.prototype.GetUids = function(name){
    var ids = Array();
@@ -352,53 +400,126 @@ StyleMenu.prototype.GetUid = function(name,filter){
 }
 
 
-//AJaX load mapping
-StyleMenu.prototype.LoadMapping = function(){
-   if(this.debug)console.log("Loading mapping");
-   var me = this;
+StyleMenu.prototype.filterName = function(group,name,uid){
 
-   $.ajax({
-      url: Maperial.staticURL+'/style/mapping.json',
-      async: false,
-      dataType: 'json',
-      //contentType:"application/x-javascript",
-      success: function (data) {
-         me.mapping = data;
-         me.__LoadMapping();
-      },
-      error: function (){
-         if(me.debug)console.log("Loading mapping failed");
+   if ( this.groups[group][name].hasOwnProperty("alias") ){
+
+      for ( var al in this.groups[group][name]["alias"] ){
+         var fal = this.groups[group][name]["alias"][al];
+         if ( this.mappingArray[uid].filter.indexOf(fal) >= 0 ){
+            if(this.debug)console.log( fal + " is in " + this.mappingArray[uid].filter );
+            return al;
+         }
       }
-   });
+   }
+
+   return this.mappingArray[uid].filter;
 }
 
+StyleMenu.prototype.GetGroupNameFilterFromLayerId = function(uid){
+   for ( var group in this.groups ){ // for all groups of element
+      if (!this.groups.hasOwnProperty(group)) {
+         continue;
+      }
+      for ( var name in this.groups[group] ){    // for elements in group
+         if (!this.groups[group].hasOwnProperty(name)) {
+            continue;
+         }
+         var uids = this.GetUids(name);
+         var childs = Array();
+         if ( this.groups[group][name].type == "line" ){
+            var casing = this.groups[group][name].casing;
+            var center = this.groups[group][name].center;
+            //if(this.debug)console.log(casing,center);
+            childs = childs.concat( this.GetUids(casing) );
+            childs = childs.concat( this.GetUids(center) );
+         }
+         else if (this.groups[group][name].type == "poly"){
+            childs = childs.concat( this.GetUids(this.groups[group][name].line) );
+         } 
+         else{
+            ///@todo
+         }
+         //if(this.debug)console.log(group,name,uids);
+         if ( uids.length == 0 ){
+            continue;
+         }
+         // primary object case
+         for (var i = 0 ; i < uids.length ; i++){        // for uids of type "element" (different filters ... see landmark for exemple)
+            var _uid = uids[i];
+            if ( uid == _uid ){
+               return {"group": group,"name": name, "filter": this.mappingArray[uid].filter, "uid": uid};
+            }  
+         }
+         // child case
+         for (var i = 0 ; i < childs.length ; i++){        // for uids of type "element" (different filters ... see landmark for exemple)
+            var _uid = childs[i];
+            if ( uid == _uid ){
+               // lets find parent id
+               for(var k = 0 ; k < uids.length ; ++k){
+                  if ( this.mappingArray[uids[k]].filter == this.mappingArray[_uid].filter ){
+                     return {"group": group,"name": name, "filter": this.mappingArray[uid].filter, "uid": uids[k]};
+                  }
+               }
+            }  
+         }
+      }
+   }
+   return {"group": null, "name": null, "filter": null, "uid": null};
+}
+
+//--------------------------------------------------------------------------//
+
+/**
+ * exemple : clic sur motorway_centerline :
+ * on a le uid de name = 'motorway_centerline', ce qui n'est pas bon
+ *  
+ * donc ici on recup le parent : parent.name = motorway, puis le parent.uid dans mappingArray.uids
+ * => return le parent.uid = mappingArray.uids['motorway']
+ */
+StyleMenu.prototype.getParentUID = function (subLayerId) {
+
+   var name = this.mappingArray[subLayerId].name
+
+   var splitCasing = name.split("_casing")
+   if(splitCasing.length > 1)
+      return this.mappingArray.uids[splitCasing[0]]
+
+   var splitCenter = name.split("_centerline")
+   if(splitCenter.length > 1)
+      return this.mappingArray.uids[splitCenter[0]]
+
+   return subLayerId
+}
+
+
 //========================================================================================================================================//
+//ZOOMS
+//========================================================================================================================//
 
-//Dirty version ... draw view on the fly ...
-StyleMenu.prototype.BuildElements = function(){
+StyleMenu.prototype.showZoomGroupEdition = function(){
+   this.container = $("#"+this.mapView.name);
 
-   this.styleMenuParentEl.empty();   
-   this.styleMenuParentEl2.empty();   
-   this.styleMenuParentEl3.empty();   
+   var html = "<div id='menuZoomGroupEdition' class='reveal-modal'><h2>Edit zoom selection</h2>";
 
-   this.styleMenuParentEl.hide(); // hide me during loading
+// if(this.zoomGroups.length == 1){
 
-   this.mainDiv = $('<div id="styleMenu_menu_maindiv'+this.mapView.name+'" class="styleMenu_menu_maindiv"></div>');
-   this.mainDiv.appendTo(this.styleMenuParentEl);
+// }
 
-   this.widgetDiv = $('<div id="styleMenu_menu_widgetDiv'+this.mapView.name+'" class="styleMenu_menu_widgetDiv"></div>');
-   this.widgetDiv.appendTo(this.styleMenuParentEl2);
+   html +=  "<div class='row-fluid'><div class='span3 offset2 btn-primary btn-large touchable '>Merge left keep</div><div class='span3 offset2 btn-large btn-primary touchable'>Merge right keep</div></div>";
+   html +=  "<div class='row-fluid'><div class='span3 offset2 btn-large btn-primary touchable'>Merge left take</div><div class='span3 offset2 btn-large btn-primary touchable'>Merge right take</div></div>";
+   html +=  "<div class='row-fluid'><div class='span4 offset4 btn-large btn-primary touchable'>Split</div></div>";
 
-   this.zoomDiv = $('<div id="styleMenu_menu_zoomDiv'+this.mapView.name+'" class="styleMenu_menu_zoomDiv" ></div>');
-   this.zoomDiv.appendTo(this.styleMenuParentEl3);
+   html +=  "<a class='close-reveal-modal'>&#215;</a></div>";
 
-   //this.__FillZoomDef();
-   this.__InsertZoomEdition();
-   this.__InsertZoomEdition2();
-   this.__InsertAccordion();
-}  
 
-//========================================================================================================================================//
+   this.container.append(html);
+
+   $("#menuZoomGroupEdition").reveal();
+}
+
+
+//-------------------------------------------------------------------------------------------------//
 
 StyleMenu.prototype.resetEnabledZooms = function(){
 
@@ -574,130 +695,6 @@ StyleMenu.prototype.__InsertZoomEdition2 = function(){
 //but thanks to SetParamIdZNew we are updating many zooms at the same time
 
 
-//----------------------------------------------------------------------------------------------------------------------//
-
-StyleMenu.prototype.refreshAccordion = function(){
-
-   var _group  = this.currentGroup
-   var _name   = this.currentName
-   var uid     = this.currentLayerId
-
-   if ( this.style.content[uid]["s"].length < 1 ){
-      if(this.debug)console.log("Error : empty style " + uid );
-      return;
-   }
-
-   var groupNum = 0;
-   for ( var group in this.groups ){ // for all groups of element
-      if (!this.groups.hasOwnProperty(group)) {
-         continue;
-      }
-      if ( group == _group){
-         break;
-      }
-      groupNum++;
-   }
-   n = $("#styleMenu_menu_groupaccordion_div_group_"+groupNum+" h2").index($("#styleMenu_menu_headeraccordion_" + uid));
-   //console.log($("#styleMenu_menu_groupaccordion_div_group_"+groupNum+" h2"));
-   //console.log(n);
-   $("#styleMenu_menu_accordion").accordion("option", "active", groupNum);
-   $("#styleMenu_menu_groupaccordion_div_group_" + groupNum).accordion("option", "active", n);
-}
-
-//----------------------------------------------------------------------------------------------------------------------//
-
-StyleMenu.prototype.filterName = function(group,name,uid){
-
-   if ( this.groups[group][name].hasOwnProperty("alias") ){
-
-      for ( var al in this.groups[group][name]["alias"] ){
-         var fal = this.groups[group][name]["alias"][al];
-         if ( this.mappingArray[uid].filter.indexOf(fal) >= 0 ){
-            if(this.debug)console.log( fal + " is in " + this.mappingArray[uid].filter );
-            return al;
-         }
-      }
-   }
-
-   return this.mappingArray[uid].filter;
-}
-
-StyleMenu.prototype.GetGroupNameFilterFromLayerId = function(uid){
-   for ( var group in this.groups ){ // for all groups of element
-      if (!this.groups.hasOwnProperty(group)) {
-         continue;
-      }
-      for ( var name in this.groups[group] ){    // for elements in group
-         if (!this.groups[group].hasOwnProperty(name)) {
-            continue;
-         }
-         var uids = this.GetUids(name);
-         var childs = Array();
-         if ( this.groups[group][name].type == "line" ){
-            var casing = this.groups[group][name].casing;
-            var center = this.groups[group][name].center;
-            //if(this.debug)console.log(casing,center);
-            childs = childs.concat( this.GetUids(casing) );
-            childs = childs.concat( this.GetUids(center) );
-         }
-         else if (this.groups[group][name].type == "poly"){
-            childs = childs.concat( this.GetUids(this.groups[group][name].line) );
-         } 
-         else{
-            ///@todo
-         }
-         //if(this.debug)console.log(group,name,uids);
-         if ( uids.length == 0 ){
-            continue;
-         }
-         // primary object case
-         for (var i = 0 ; i < uids.length ; i++){        // for uids of type "element" (different filters ... see landmark for exemple)
-            var _uid = uids[i];
-            if ( uid == _uid ){
-               return {"group": group,"name": name, "filter": this.mappingArray[uid].filter, "uid": uid};
-            }  
-         }
-         // child case
-         for (var i = 0 ; i < childs.length ; i++){        // for uids of type "element" (different filters ... see landmark for exemple)
-            var _uid = childs[i];
-            if ( uid == _uid ){
-               // lets find parent id
-               for(var k = 0 ; k < uids.length ; ++k){
-                  if ( this.mappingArray[uids[k]].filter == this.mappingArray[_uid].filter ){
-                     return {"group": group,"name": name, "filter": this.mappingArray[uid].filter, "uid": uids[k]};
-                  }
-               }
-            }  
-         }
-      }
-   }
-   return {"group": null, "name": null, "filter": null, "uid": null};
-}
-
-//--------------------------------------------------------------------------//
-
-/**
- * exemple : clic sur motorway_centerline :
- * on a le uid de name = 'motorway_centerline', ce qui n'est pas bon
- *  
- * donc ici on recup le parent : parent.name = motorway, puis le parent.uid dans mappingArray.uids
- * => return le parent.uid = mappingArray.uids['motorway']
- */
-StyleMenu.prototype.getParentUID = function (subLayerId) {
-
-   var name = this.mappingArray[subLayerId].name
-
-   var splitCasing = name.split("_casing")
-   if(splitCasing.length > 1)
-      return this.mappingArray.uids[splitCasing[0]]
-
-   var splitCenter = name.split("_centerline")
-   if(splitCenter.length > 1)
-      return this.mappingArray.uids[splitCenter[0]]
-
-   return subLayerId
-}
-
 //------------------------------------------------------------------//
 
 StyleMenu.prototype.getRuleForCurrentZoom = function(uid){
@@ -770,49 +767,6 @@ StyleMenu.prototype.isSameRule = function(rule1, rule2){
 
 //------------------------------------------------------------------//
 
-StyleMenu.prototype.changeWidgetContent = function(selection, uid){
-
-   var zoomGroup  = this.zoomGroups[selection.input[0]["value"]]
-   var rule       = zoomGroup.rule
-
-   var container = $("#widgetDivContent")
-   container.empty()
-
-   this.refreshZoomSelection(zoomGroup)
-
-   for( var p = 0 ; p < Symbolizer.params[rule["rt"]].length ; p++){  // this is read from a list of known params. 
-
-      var property = Symbolizer.getParamName(rule["rt"],p);
-      var value = this.getValue(uid, rule["id"], property);   
-
-      if ( value === undefined ){
-         value = Symbolizer.defaultValues[property];
-      }
-
-      if ( property == "width" ){  
-         this.AddSlider(property, value, uid, rule["id"], container, 0.25, 0, 20);
-      }
-      else if ( property == "fill" || property == "stroke" ){
-         this.AddColorPicker(property, value, uid, rule["id"], container);
-      }
-      else if ( property == "alpha" ){
-         console.log("adding alpha", property, value)
-         this.AddSlider(property, value, uid, rule["id"], container, 0.05, 0, 1);
-      }
-      else if ( property == "linejoin" ){
-         this.AddCombo(property, value, uid, rule["id"], container, Symbolizer.combos["linejoin"]);
-      }  
-      else if ( property == "linecap" ){
-         this.AddCombo(property, value, uid, rule["id"], container, Symbolizer.combos["linecap"]);
-      }  
-      else{
-         $("<li>" + property + "(not implemented yet) : " + value + "</li>").appendTo(container) ; 
-      }
-   }
-}
-
-//------------------------------------------------------------------//
-
 StyleMenu.prototype.getZoomGroupLabel = function(zoomGroup){
    if(zoomGroup.zmin != zoomGroup.zmax)
       return zoomGroup.zmin +" - "+zoomGroup.zmax   
@@ -820,141 +774,13 @@ StyleMenu.prototype.getZoomGroupLabel = function(zoomGroup){
          return zoomGroup.zmin
 }
 
-//------------------------------------------------------------------//
 
-StyleMenu.prototype.FillWidget = function(uid){
 
-   if ( this.style.content[uid]["s"].length < 1 ){
-      if(this.debug)console.log("Error : empty style " + uid );
-      return;
-   }
+//=============================================================================================================================//
+//ACCORDION
+//========================================================================================================================//
 
-   //-----------------------------------------------------//
 
-   this.gatherRulesByZoom(uid)
-
-   //-----------------------------------------------------//
-   // template selectbox
-
-   var div = "<div class='row-fluid marginbottom'>";
-   div += "<div class='span7 offset1'><select class='shaderSelectbox' name='ruleSelector' id='ruleSelector'>";
-
-   for( var i = 0 ; i < this.zoomGroups.length; i++){
-      var label = this.getZoomGroupLabel(this.zoomGroups[i])
-      div += "<option value='"+i+"'>"+label+"</option>"
-   }
-
-   div += "</select></div>";
-
-   div += "<div class='span3 offset1'><button class='btn-small btn-success' onclick='$(window).trigger(MaperialEvents.OPEN_ZOOMS)'><i class='icon-edit icon-white'></i></button></div>";
-
-   div += "</div>";
-
-   this.widgetDiv.append(div);
-   this.widgetDiv.append("<div class='row-fluid' id='widgetDivContent'></div>");
-
-   //-----------------------------------------------------//
-   // build selectbox
-
-   var me = this
-   $("#ruleSelector").selectbox({
-      onChange: function(uid){
-         return function (val,  inst) {
-            me.changeWidgetContent(inst,uid)
-         }
-      }(uid),
-      effect: "slide"
-   });
-
-   // init selectbox value
-   $("#ruleSelector").selectbox('change', "", this.getZoomGroupLabel(this.zoomGroups[0]));
-}
-
-StyleMenu.prototype.BuildFullWidget = function(group,name,uid){
-
-   var me = this;
-   this.widgetDiv.css("width", "375px");
-   if(this.debug)console.log("building widget ",group,name,uid);
-
-   //clear parent div
-   this.widgetDiv.empty();
-   this.widgetDiv.append("<div id='widgetDivHeader' class='row-fluid'></div>");
-   this.widgetDivHeader = $("#widgetDivHeader")
-
-   var openSmallestButton = $("<i class='icon-zoom-out icon-white touchable detailLevelButton'></i>");
-   openSmallestButton.click(function() {
-      me.size = StyleMenu.SIMPLE;
-      me.refresh();
-   });
-
-   openSmallestButton.appendTo(this.widgetDivHeader);
-
-   if ( this.style.content[uid] == undefined ){
-      if(this.debug)console.log( uid + " not in style");
-      return;
-   }
-
-   $("<div class='span7 offset1'><h2 class='styleMenu_menu_par_title'>" + this.mappingArray[uid].name + "</h2></div>").appendTo(this.widgetDivHeader);
-   if ( this.mappingArray[uid].filter != "" && this.GetUids(name).length > 1){
-      $("<p class='styleMenu_menu_filter_title'>(" + this.filterName(group,name,uid) + ")</p>").appendTo(this.widgetDivHeader);
-   }
-
-   if( this.groups[group][this.mappingArray[uid].name].type == "line" ){
-      console.log("----------------");
-      console.log("line");
-
-      this.FillWidget(uid);
-
-//    var casing = this.groups[group][this.mappingArray[uid].name].casing;
-//    var center = this.groups[group][this.mappingArray[uid].name].center;
-//    var casing_uid = this.GetUid(casing,this.mappingArray[uid].filter);
-//    var center_uid = this.GetUid(center,this.mappingArray[uid].filter);
-
-//    if ( casing_uid == null){
-//    console.log("------");
-//    console.log("no casing");
-//    }
-//    else{
-//    console.log("------");
-//    console.log("casing : " + casing_uid);
-//    $('<h2 class="styleMenu_menu_par_title">casing </h2>').appendTo(this.widgetDiv);
-//    this.FillWidget(casing_uid);
-//    }
-
-//    if ( center_uid == null){
-//    console.log("no center");
-//    }
-//    else{
-//    console.log("center : " + center_uid);
-//    $('<h2 class="styleMenu_menu_par_title">center line </h2>').appendTo(this.widgetDiv);
-//    this.FillWidget(center_uid);
-//    }                      
-   }
-   else if( this.groups[group][this.mappingArray[uid].name].type == "poly" ){
-      console.log("----------------");
-      console.log("poly");
-
-      this.FillWidget(uid);	  
-
-      var border = this.groups[group][this.mappingArray[uid].name].line;
-      var border_uid = this.GetUid(border,this.mappingArray[uid].filter);
-
-//    if ( border_uid == null){
-//    //if(this.debug)console.log("border not found : " + border);
-//    }
-//    else{
-//    //if(this.debug)console.log("border found : " + border);
-//    ///@todo
-//    }      
-   }
-   else{
-      console.log("----------------");
-      console.log("Other");
-      ///@todo
-   }
-
-// this.mapView.hud.placeElements()
-}
 
 StyleMenu.prototype.__InsertAccordion = function(){
 
@@ -1042,7 +868,105 @@ StyleMenu.prototype.__InsertAccordion = function(){
    this.styleMenuParentEl.show();   //show me !
 }
 
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+StyleMenu.prototype.refreshAccordion = function(){
+
+   var _group  = this.currentGroup
+   var _name   = this.currentName
+   var uid     = this.currentLayerId
+
+   if ( this.style.content[uid]["s"].length < 1 ){
+      if(this.debug)console.log("Error : empty style " + uid );
+      return;
+   }
+
+   var groupNum = 0;
+   for ( var group in this.groups ){ // for all groups of element
+      if (!this.groups.hasOwnProperty(group)) {
+         continue;
+      }
+      if ( group == _group){
+         break;
+      }
+      groupNum++;
+   }
+   n = $("#styleMenu_menu_groupaccordion_div_group_"+groupNum+" h2").index($("#styleMenu_menu_headeraccordion_" + uid));
+   //console.log($("#styleMenu_menu_groupaccordion_div_group_"+groupNum+" h2"));
+   //console.log(n);
+   $("#styleMenu_menu_accordion").accordion("option", "active", groupNum);
+   $("#styleMenu_menu_groupaccordion_div_group_" + groupNum).accordion("option", "active", n);
+}
+
 //--------------------------------------------------------------------------//
+
+StyleMenu.prototype.openWidgetFromAccordion = function(group,name,uid){
+   var me = this;
+   return function(){
+      me.currentLayerId  = uid;
+      me.currentGroup    = group;
+      me.currentName     = name;
+      me.refreshZoomAndWidget();
+   } 
+}
+
+StyleMenu.prototype.openWidgetFromMap = function (layerIndex, subLayerId) {
+   this.currentLayerIndex = layerIndex;
+   this.currentLayerId    = this.getParentUID(subLayerId);
+   this.refresh();
+}
+
+//--------------------------------------------------------------------------//
+
+StyleMenu.prototype.refresh = function () {
+
+   var data = this.GetGroupNameFilterFromLayerId(this.currentLayerId);
+   if ( data.group != null && data.name != null ){
+
+      this.currentGroup = data.group;
+      this.currentName  = data.name;
+
+      this.refreshAccordion();
+      this.refreshZoomAndWidget()
+   }
+}
+
+StyleMenu.prototype.refreshZoomAndWidget = function () {
+   this.refreshWidget();
+   this.resetEnabledZooms()
+   this.refreshZoomSelection()
+}
+
+
+//--------------------------------------------------------------------------//
+
+StyleMenu.prototype.refreshWidget = function(){
+
+   var group = this.currentGroup
+   var name = this.currentName
+   var uid = this.currentLayerId
+
+   switch (this.size) {
+
+      case StyleMenu.SIMPLE:
+         this.BuildSimpleWidget(group, name, uid);
+         break;   
+
+      case StyleMenu.FULL:
+         this.BuildFullWidget(group, name, uid);
+         break;
+   }
+
+   this.mapView.hud.placeElements();
+}
+
+
+
+//========================================================================================================================//
+//SIMPLE - all zooms
+//========================================================================================================================//
+
 
 StyleMenu.prototype.BuildSimpleWidget = function(group, name, uid){
 
@@ -1116,90 +1040,203 @@ StyleMenu.prototype.AddSimpleWidgetRow = function(uid, title, isMain){
    else{
       $("<div class='span4 offset1'><p class='styleMenu_menu_par_subrow'>(Not in zoom "+this.mapView.context.zoom+")</p></div>").appendTo(container);
    }
-
 }
 
-//--------------------------------------------------------------------------//
 
-StyleMenu.prototype.refreshWidget = function(){
 
-   var group = this.currentGroup
-   var name = this.currentName
-   var uid = this.currentLayerId
+//========================================================================================================================//
+//FULL - zoomGroup
+//========================================================================================================================//
 
-   switch (this.size) {
 
-      case StyleMenu.SIMPLE:
-         this.BuildSimpleWidget(group, name, uid);
-         break;   
 
-      case StyleMenu.FULL:
-         this.BuildFullWidget(group, name, uid);
-         break;
-   }
+StyleMenu.prototype.BuildFullWidget = function(group,name,uid){
 
-   this.mapView.hud.placeElements();
-}
-
-//--------------------------------------------------------------------------//
-
-StyleMenu.prototype.openWidgetFromAccordion = function(group,name,uid){
    var me = this;
-   return function(){
-      me.currentLayerId  = uid;
-      me.currentGroup    = group;
-      me.currentName     = name;
-      me.refreshZoomAndWidget();
-   } 
+   this.widgetDiv.css("width", "375px");
+   if(this.debug)console.log("building widget ",group,name,uid);
+
+   //clear parent div
+   this.widgetDiv.empty();
+   this.widgetDiv.append("<div id='widgetDivHeader' class='row-fluid'></div>");
+   this.widgetDivHeader = $("#widgetDivHeader")
+
+   var openSmallestButton = $("<i class='icon-zoom-out icon-white touchable detailLevelButton'></i>");
+   openSmallestButton.click(function() {
+      me.size = StyleMenu.SIMPLE;
+      me.refresh();
+   });
+
+   openSmallestButton.appendTo(this.widgetDivHeader);
+
+   if ( this.style.content[uid] == undefined ){
+      if(this.debug)console.log( uid + " not in style");
+      return;
+   }
+
+   $("<div class='span7 offset1'><h2 class='styleMenu_menu_par_title'>" + this.mappingArray[uid].name + "</h2></div>").appendTo(this.widgetDivHeader);
+   if ( this.mappingArray[uid].filter != "" && this.GetUids(name).length > 1){
+      $("<p class='styleMenu_menu_filter_title'>(" + this.filterName(group,name,uid) + ")</p>").appendTo(this.widgetDivHeader);
+   }
+
+   if( this.groups[group][this.mappingArray[uid].name].type == "line" ){
+      console.log("----------------");
+      console.log("line");
+
+      this.FillWidget(uid);
+
+//    var casing = this.groups[group][this.mappingArray[uid].name].casing;
+//    var center = this.groups[group][this.mappingArray[uid].name].center;
+//    var casing_uid = this.GetUid(casing,this.mappingArray[uid].filter);
+//    var center_uid = this.GetUid(center,this.mappingArray[uid].filter);
+
+//    if ( casing_uid == null){
+//    console.log("------");
+//    console.log("no casing");
+//    }
+//    else{
+//    console.log("------");
+//    console.log("casing : " + casing_uid);
+//    $('<h2 class="styleMenu_menu_par_title">casing </h2>').appendTo(this.widgetDiv);
+//    this.FillWidget(casing_uid);
+//    }
+
+//    if ( center_uid == null){
+//    console.log("no center");
+//    }
+//    else{
+//    console.log("center : " + center_uid);
+//    $('<h2 class="styleMenu_menu_par_title">center line </h2>').appendTo(this.widgetDiv);
+//    this.FillWidget(center_uid);
+//    }                      
+   }
+   else if( this.groups[group][this.mappingArray[uid].name].type == "poly" ){
+      console.log("----------------");
+      console.log("poly");
+
+      this.FillWidget(uid);     
+
+      var border = this.groups[group][this.mappingArray[uid].name].line;
+      var border_uid = this.GetUid(border,this.mappingArray[uid].filter);
+
+//    if ( border_uid == null){
+//    //if(this.debug)console.log("border not found : " + border);
+//    }
+//    else{
+//    //if(this.debug)console.log("border found : " + border);
+//    ///@todo
+//    }      
+   }
+   else{
+      console.log("----------------");
+      console.log("Other");
+      ///@todo
+   }
+
+// this.mapView.hud.placeElements()
 }
 
-StyleMenu.prototype.openWidgetFromMap = function (layerIndex, subLayerId) {
-   this.currentLayerIndex = layerIndex;
-   this.currentLayerId    = this.getParentUID(subLayerId);
-   this.refresh();
+
+
+StyleMenu.prototype.FillWidget = function(uid){
+
+   if ( this.style.content[uid]["s"].length < 1 ){
+      if(this.debug)console.log("Error : empty style " + uid );
+      return;
+   }
+
+   //-----------------------------------------------------//
+
+   this.gatherRulesByZoom(uid)
+
+   //-----------------------------------------------------//
+   // template selectbox
+
+   var div = "<div class='row-fluid marginbottom'>";
+   div += "<div class='span7 offset1'><select class='shaderSelectbox' name='ruleSelector' id='ruleSelector'>";
+
+   for( var i = 0 ; i < this.zoomGroups.length; i++){
+      var label = this.getZoomGroupLabel(this.zoomGroups[i])
+      div += "<option value='"+i+"'>"+label+"</option>"
+   }
+
+   div += "</select></div>";
+
+   div += "<div class='span3 offset1'><button class='btn-small btn-success' onclick='$(window).trigger(MaperialEvents.OPEN_ZOOMS)'><i class='icon-edit icon-white'></i></button></div>";
+
+   div += "</div>";
+
+   this.widgetDiv.append(div);
+   this.widgetDiv.append("<div class='row-fluid' id='widgetDivContent'></div>");
+
+   //-----------------------------------------------------//
+   // build selectbox
+
+   var me = this
+   $("#ruleSelector").selectbox({
+      onChange: function(uid){
+         return function (val,  inst) {
+            me.changeWidgetContent(inst,uid)
+         }
+      }(uid),
+      effect: "slide"
+   });
+
+   // init selectbox value
+   $("#ruleSelector").selectbox('change', "", this.getZoomGroupLabel(this.zoomGroups[0]));
 }
 
-//--------------------------------------------------------------------------//
 
-StyleMenu.prototype.refresh = function () {
+//------------------------------------------------------------------//
 
-   var data = this.GetGroupNameFilterFromLayerId(this.currentLayerId);
-   if ( data.group != null && data.name != null ){
+StyleMenu.prototype.changeWidgetContent = function(selection, uid){
 
-      this.currentGroup = data.group;
-      this.currentName  = data.name;
+   var zoomGroup  = this.zoomGroups[selection.input[0]["value"]]
+   var rule       = zoomGroup.rule
 
-      this.refreshAccordion();
-      this.refreshZoomAndWidget()
+   var container = $("#widgetDivContent")
+   container.empty()
+
+   this.refreshZoomSelection(zoomGroup)
+
+   for( var p = 0 ; p < Symbolizer.params[rule["rt"]].length ; p++){  // this is read from a list of known params. 
+
+      var property = Symbolizer.getParamName(rule["rt"],p);
+      var value = this.getValue(uid, rule["id"], property);   
+
+      if ( value === undefined ){
+         value = Symbolizer.defaultValues[property];
+      }
+
+      if ( property == "width" ){  
+         this.AddSlider(property, value, uid, rule["id"], container, 0.25, 0, 20);
+      }
+      else if ( property == "fill" || property == "stroke" ){
+         this.AddColorPicker(property, value, uid, rule["id"], container);
+      }
+      else if ( property == "alpha" ){
+         console.log("adding alpha", property, value)
+         this.AddSlider(property, value, uid, rule["id"], container, 0.05, 0, 1);
+      }
+      else if ( property == "linejoin" ){
+         this.AddCombo(property, value, uid, rule["id"], container, Symbolizer.combos["linejoin"]);
+      }  
+      else if ( property == "linecap" ){
+         this.AddCombo(property, value, uid, rule["id"], container, Symbolizer.combos["linecap"]);
+      }  
+      else{
+         $("<li>" + property + "(not implemented yet) : " + value + "</li>").appendTo(container) ; 
+      }
    }
 }
 
-StyleMenu.prototype.refreshZoomAndWidget = function () {
-   this.refreshWidget();
-   this.resetEnabledZooms()
-   this.refreshZoomSelection()
-}
-
-//--------------------------------------------------------------------------//
-
-StyleMenu.prototype.linkedUIDs = function (uid) {
-   switch (uid) {
-      case "000":
-      case "001":
-         return ["000", "001"]
-
-      case "008":
-      case "014":
-         return ["008", "014"]
-
-      default: 
-         return [uid];
-   }
-}
 
 
+//========================================================================================================================//
+//Widgets
+//========================================================================================================================//
 
-//----------------------------------------------------------------------------------------------------------------------//
+
 
 StyleMenu.prototype.AddColorPicker = function(_property,_value,_uid,_ruleId,_container){
    // add to view
