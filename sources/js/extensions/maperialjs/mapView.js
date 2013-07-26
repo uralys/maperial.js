@@ -48,7 +48,7 @@ function MapView(maperial, map, options, config){
    this.layersManager      = null;
 
    this.geoloc             = null;
-   this.styleMenu          = null;
+   this.styleEditor          = null;
    this.colorbarRenderer   = null;
    
    //--------------------------------------------------------------//
@@ -105,8 +105,8 @@ MapView.prototype.reset = function(){
    }
 
    try{
-      if(this.styleMenu)
-         this.styleMenu.removeListeners();
+      if(this.styleEditor)
+         this.styleEditor.removeListeners();
    }catch(e){}
 
    try{
@@ -434,7 +434,7 @@ MapView.prototype.buildAll = function() {
    this.buildHUD();
 
    if(this.config.map.edition)
-      this.buildStyleMenu();
+      this.buildStyleEditor();
 
    if(!this.colorbarsManager.colorbarCacheEmpty()){
       this.buildColorbar();
@@ -625,8 +625,8 @@ MapView.prototype.initGeoloc = function() {
 
 //==================================================================//
 
-MapView.prototype.buildStyleMenu = function() {
-   this.styleMenu = new StyleMenu($("#DetailsMenu_"+this.name) , $("#QuickEdit_"+this.name) , $("#Zooms_"+this.name) , this);
+MapView.prototype.buildStyleEditor = function() {
+   this.styleEditor = new StyleEditor($("#DetailsMenu_"+this.name) , $("#QuickEdit_"+this.name) , $("#Zooms_"+this.name) , this);
 }
 
 //==================================================================//

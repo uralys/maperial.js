@@ -321,7 +321,7 @@
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/edition/symbolizer.js" />
 			<arg value="--js" />
-			<arg value="sources/js/extensions/maperialjs/edition/style-menu.js" />
+			<arg value="sources/js/extensions/maperialjs/edition/style-editor.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/colorbar/colorbar-rainbow.js" />

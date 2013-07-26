@@ -444,7 +444,7 @@ a.triggerDetailsMenu {
 }
 
 /* main menu div*/
-.styleMenu_menu_maindiv {
+.styleEditor_menu_maindiv {
 	float: left;
 	font-size: 60%;
 	width: 335px;
@@ -471,7 +471,7 @@ a.triggerDetailsMenu {
 }
 
 /* main widget div*/
-.styleMenu_menu_widgetDiv {
+.styleEditor_menu_widgetDiv {
 	max-height: 700px;
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -551,35 +551,35 @@ a.triggerColorBar {
 /* StyleMenu */
 
 /* zoom h2 */
-.styleMenu_menu_par_title_z {
+.styleEditor_menu_par_title_z {
 	display: none;
 }
 
 /*zoom select buttons*/
-.styleMenu_menu_zoom_selector {
+.styleEditor_menu_zoom_selector {
 	width: 100%;
 }
 
 /*zoom slider*/
-.styleMenu_menu_sliderrangez {
+.styleEditor_menu_sliderrangez {
 	width: 92%;
 	margin-left: 4%;
 }
 
 /* Widget slider*/
-.styleMenu_menu_slider {
+.styleEditor_menu_slider {
 	width: 100px !important;
 	display: inline-block !important;
 }
 
 /* header of main section */
-.styleMenu_menu_par_title {
+.styleEditor_menu_par_title {
 	color: #fff;
 	font-size: 17px;
 	padding-left: 10px;
 }
 
-.styleMenu_menu_par_subrow {
+.styleEditor_menu_par_subrow {
 	color: #fff;
 	font-size: 13px;
 	padding-left: 10px;
