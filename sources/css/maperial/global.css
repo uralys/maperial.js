@@ -596,6 +596,12 @@ body{
 	margin-right: -5px;
 }
 
+.ui-accordion .ui-accordion-content {
+	padding: 1em 3.2em;
+	border-top: 0;
+	overflow: auto;
+}
+
 /*------------------------------------------------
 
 ::-webkit-scrollbar {

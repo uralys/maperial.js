@@ -449,13 +449,8 @@ a.triggerDetailsMenu {
 	font-size: 60%;
 	width: 335px;
 	padding: 3px;
-	border-style: solid;
-	border-width: 0px;
-	border-color: #000;
-	background-color: #000;
+	border: 0px;
 	color: #fff;
-	filter: alpha(opacity =         85);
-	opacity: .85;
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
@@ -472,7 +467,6 @@ a.triggerDetailsMenu {
 
 /* main widget div*/
 .styleEditor_menu_widgetDiv {
-	max-height: 700px;
 	overflow-x: hidden;
 	overflow-y: auto;
 	padding-right: 10px;
@@ -480,15 +474,71 @@ a.triggerDetailsMenu {
 }
 
 #widgetDivContent {
-	padding-top: 5px;
+	margin-top: -12px;
 }
 
 .detailLevelButton {
 	float: right;
+	margin-top: 15px;
 }
 
 .widgetSlider {
 	margin-top: 20px;
+}
+
+.accordionElementName {
+	font-size: 14px;
+	margin-top: 7px;
+	margin-left: 10px;
+}
+
+.accordionElement.selected {
+	background-color: rgba(12,12,12,1)!important;
+}
+
+#accordion {
+	margin-bottom:0px;
+}
+
+.accordionGroupTitle {
+	background-color: rgba(0,0,0,0)!important;
+	color: #eee!important;
+	font-size: 14px!important;
+	border: 0px!important;
+	padding-left: 35px!important;
+	padding-right: 0px!important;
+	padding-top: 0px!important;
+	padding-bottom: 0px!important;
+}
+
+.accordionGroupTitle.selected {
+	background-color: rgba(12,12,12,1)!important;
+}
+
+
+.accordionGroup {
+	background-color: rgba(0,0,0,0)!important;
+	color: #eee!important;
+	font-size: 13px!important;
+	border: 0px!important;
+	padding-left: 60px!important;
+}
+
+.accordionCategoryTitle {
+	background-color: rgba(0,0,0,0);
+	color: #eee;
+	font-size: 16px;
+	border: 0px;
+}
+
+.accordionCategory {
+	background-color: rgba(0,0,0,0);
+	color: #eee;
+	border: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
 /*-------------------------*/
@@ -577,6 +627,7 @@ a.triggerColorBar {
 	color: #fff;
 	font-size: 17px;
 	padding-left: 10px;
+	padding-top: 20px;
 }
 
 .styleEditor_menu_par_subrow {

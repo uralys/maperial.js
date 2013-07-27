@@ -73,7 +73,8 @@ StylesManager.prototype.loadStyle = function(styleUID, next) {
       return;
    }
 
-   var styleURL = this.getURL(styleUID);
+//   var styleURL = this.getURL(styleUID);
+   var styleURL = "http://sources.maperial.localhost/pages/dev/misc/1_style_13ed75438c8b2ed8914.json"
    console.log("  fetching : " + styleURL);
 
    $.ajax({  
