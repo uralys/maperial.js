@@ -37,6 +37,7 @@ MaperialEvents.NEW_BOUNDING_BOX     = "MaperialEvents.NEW_BOUNDING_BOX";
 
 // Style Menu Events
 MaperialEvents.OPEN_STYLE           = "MaperialEvents.OPEN_STYLE";
+MaperialEvents.EDIT_ZOOMS           = "MaperialEvents.EDIT_ZOOMS";
 MaperialEvents.OPEN_ZOOMS           = "MaperialEvents.OPEN_ZOOMS";
 
 // Rendering Events

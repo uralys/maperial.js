@@ -626,7 +626,7 @@ MapView.prototype.initGeoloc = function() {
 //==================================================================//
 
 MapView.prototype.buildStyleEditor = function() {
-   this.styleEditor = new StyleEditor($("#DetailsMenu_"+this.name) , $("#QuickEdit_"+this.name) , $("#Zooms_"+this.name) , this);
+   this.styleEditor = new StyleEditor($("#DetailsMenu_"+this.name) , $("#QuickEdit_"+this.name) , $("#"+HUD.ZOOMS) , this);
 }
 
 //==================================================================//

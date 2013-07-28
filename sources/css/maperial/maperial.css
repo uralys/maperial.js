@@ -447,7 +447,7 @@ a.triggerDetailsMenu {
 .styleEditor_menu_maindiv {
 	float: left;
 	font-size: 60%;
-	width: 335px;
+	width: 285px;
 	padding: 3px;
 	border: 0px;
 	color: #fff;
@@ -479,7 +479,7 @@ a.triggerDetailsMenu {
 
 .detailLevelButton {
 	float: right;
-	margin-top: 15px;
+	margin-top: 3px;
 }
 
 .widgetSlider {
@@ -565,10 +565,9 @@ a.triggerZooms {
 	
 }
 
-.panelZooms {
+#Zooms {
 	width: 670px;
-	height: 50px;
-	text-align: center;
+    width: 665px;
 }
 
 .zoom-button {
@@ -606,18 +605,18 @@ a.triggerColorBar {
 }
 
 /*zoom select buttons*/
-.styleEditor_menu_zoom_selector {
+.zoomButtons {
 	width: 100%;
 }
 
 /*zoom slider*/
-.styleEditor_menu_sliderrangez {
+.zoomSlider {
 	width: 92%;
 	margin-left: 4%;
 }
 
 /* Widget slider*/
-.styleEditor_menu_slider {
+.styleEditorSlider {
 	width: 100px !important;
 	display: inline-block !important;
 }
