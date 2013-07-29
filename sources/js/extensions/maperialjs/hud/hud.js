@@ -442,6 +442,7 @@ HUD.prototype.putOnTop = function(element){
    this.panel(element).css({ zIndex : 20 });  
 
    this.panel(HUD.ZOOMS).css({ zIndex : 101 });  
+   $(".panel-external").css({ zIndex : 102 });  
 }
 
 //----------------------------------------------------------------------//

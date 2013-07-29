@@ -440,7 +440,7 @@ a.triggerDetailsMenu {
 	width: 290px;
 	overflow-y: auto;
 	overflow-x: hidden;
-	height: 98%;
+	max-height: 700px;
 }
 
 /* main menu div*/
