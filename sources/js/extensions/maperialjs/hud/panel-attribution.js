@@ -15,7 +15,6 @@ HUD.prototype.refreshAttribution = function(){
       this.buildAttributions(true)
    }
    else{
-      
       console.log( this.element("attribution"))
       this.element("attribution").css("max-width", "1500px")      
       this.element("attribution").css("width", this.element("attribution").width() + 2)

@@ -9,10 +9,13 @@ this.Symbolizer = {};
 //Sym / param list
 
 Symbolizer.params = {
-      "PolygonSymbolizer" : [ "fill", "alpha" ],
-      "LineSymbolizer" : [ "width", "stroke", "dasharray", "alpha" , "linejoin" , "linecap" ],
+      "PolygonSymbolizer"        : [ "fill", "alpha" ],
+      "LineSymbolizer"           : [ "width", "stroke", "dasharray", "alpha" , "linejoin" , "linecap" ],
       "PolygonPatternSymbolizer" : [ "file" ],
-      "PointSymbolizer" : [ "file" , "opacity" ],
+      "PointSymbolizer"          : [ "file" , "opacity" ],
+      "TextSymbolizer"           : [ "face-name", "size" , "opacity" , "dx", "dy" , "fill", "text-transform" ],
+      "ShieldSymbolizer"         : [  "file" , "opacity" , "face-name", "size" , "opacity" , "dx", "dy" , "fill", "text-transform", "shield-dx" , "shield-dy" ],
+      "MarkersSymbolizer"        : [ "placement", "marker-type", "file", "width", "height", "stroke-opacity", "stroke-width", "stroke", "opacity", "fill" ],
 };
 
 /*
