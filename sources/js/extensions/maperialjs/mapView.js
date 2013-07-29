@@ -605,8 +605,10 @@ MapView.prototype.buildMap = function() {
                me.moveChildInterval = setInterval( function(){ me.refreshCamera() } , 0.01 );
          },
          stop: function(event) {
-            clearInterval(me.moveChildInterval);
-            me.moveChildInterval = null
+            if(me.moveChildInterval){
+               clearInterval(me.moveChildInterval);
+               me.moveChildInterval = null
+            }
          }
       });
    }
@@ -928,7 +930,7 @@ MapView.prototype.refreshCamera = function (viewTriggering, typeTriggering, zoom
          this.context.centerM = this.maperial.getMainView(this.map).context.centerM
          break;
 
-      case Maperial.MAGNIFIER : 
+      case Maperial.MAGNIFIER :
          this.context.centerM = this.maperial.getView(viewTriggering).context.mouseM
          break;
 

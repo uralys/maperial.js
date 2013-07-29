@@ -11,6 +11,8 @@ this.Symbolizer = {};
 Symbolizer.params = {
       "PolygonSymbolizer" : [ "fill", "alpha" ],
       "LineSymbolizer" : [ "width", "stroke", "dasharray", "alpha" , "linejoin" , "linecap" ],
+      "PolygonPatternSymbolizer" : [ "file" ],
+      "PointSymbolizer" : [ "file" , "opacity" ],
 };
 
 /*

@@ -250,10 +250,14 @@ StyleEditor.prototype.buildFullRule = function(rule, uid, title){
 
    //--------------------------------------------------------------//
 
-   for(var group = 0; group < propertyGroups.length; group++){
-      var properties = propertyGroups[group]
+   console.log(propertyGroups)
+   
+   for(var g in propertyGroups){
+      var properties = propertyGroups[g]
       if(properties.length == 0)
          continue;
+      
+      console.log(properties)
 
       var container = $("<div class='row-fluid marginbottom'></div>");
       container.appendTo($("#widgetDivContent"))
