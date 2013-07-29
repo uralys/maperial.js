@@ -81,8 +81,6 @@ function StyleEditor(container, container2, container3, mapView){
    this.LoadCategories();
 
    //-------------------------------------------------//
-   // style edition default 
-   this.openWidgetFromMap(this.currentLayerIndex, this.currentLayerId);
 }
 
 //==================================================================//
@@ -101,6 +99,14 @@ StyleEditor.prototype.initListeners = function (event) {
    
    $(window).on(MaperialEvents.OPEN_ZOOMS, function(event){
       styleEditor.openZooms()
+   });
+
+   $(window).on(MaperialEvents.VALIDATE_ZOOMS, function(event){
+      styleEditor.newZoomGroup()
+   });
+   
+   $(window).on(MaperialEvents.DELETE_ZOOM_GROUP, function(event){
+      styleEditor.deleteZoomGroup()
    });
 
    $(window).on(MaperialEvents.ZOOM_TO_REFRESH, function(event, map, viewTriggering, typeTriggering, zoom){
@@ -132,6 +138,7 @@ StyleEditor.prototype.removeListeners = function (event) {
    $(window).off(MaperialEvents.OPEN_STYLE);
    $(window).off(MaperialEvents.EDIT_ZOOMS);
    $(window).off(MaperialEvents.OPEN_ZOOMS);
+   $(window).off(MaperialEvents.VALIDATE_ZOOMS);
    $(window).off(MaperialEvents.MOUSE_UP);
 
    this.mapView.hud.panel(HUD.QUICK_EDIT).off("mouseup");
@@ -200,12 +207,12 @@ StyleEditor.prototype.buildMappingElements = function(){
       }
    }
    
-   this.BuildElements();  
+   this.buildStyleEditor();  
 }
 
 //-------------------------------------------------------------------------------------------------//
 
-StyleEditor.prototype.BuildElements = function(){
+StyleEditor.prototype.buildStyleEditor = function(){
 
    this.styleEditorParentEl.empty();   
    this.styleEditorParentEl2.empty();   
@@ -224,12 +231,16 @@ StyleEditor.prototype.BuildElements = function(){
 
    this.buildZoomView();
    this.buildAccordion();
+
+   this.refresh()
+   this.selectGroup(this.categories["Landscape"][0])()
 }  
 
 //-------------------------------------------------------------------------------------------------//
 
 StyleEditor.prototype.Refresh = function(){
-   $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.mapView.name, this.currentLayerIndex]);
+   if(this.size != StyleEditor.FULL || this.selectedZooms[this.mapView.context.zoom])
+      $(window).trigger(MaperialEvents.STYLE_CHANGED, [this.mapView.name, this.currentLayerIndex]);
 }
 
 //===============================================================================================================//
@@ -302,17 +313,14 @@ StyleEditor.prototype.changeProperty = function(uid, param, value){
       for ( var e in this.selectedGroup.elements ){   
          var element = this.selectedGroup.elements[e]
          uidsToEdit.push(element.uid)
-         console.log(element.uid)
       }
    }
    else{
       uidsToEdit.push(uid)
    }
    
-   console.log(uidsToEdit.length + " uids")
    for(var i = 0; i < uidsToEdit.length; i++){
       var uid = uidsToEdit[i]
-      console.log("changeProperty", uid, param, value, this.selectedZooms)
       
       if ( this.style.content[uid] == undefined ){
          console.log( uid + " not in style");
@@ -322,12 +330,10 @@ StyleEditor.prototype.changeProperty = function(uid, param, value){
       var rules   = this.style.content[uid]["s"]
       var nbRules = rules.length
       
-      console.log(nbRules + " rules")
       for(var r = 0 ; r < nbRules; r++){
          var z = rules[r]["zmin"];
          
          if ( this.selectedGroup || this.selectedZooms[z] ){
-            console.log("set param")
             this.SetParam(uid,r,param,value);
          }
       }
@@ -423,84 +429,81 @@ StyleEditor.prototype.getParentUID = function (subLayerId) {
 
 StyleEditor.prototype.showZoomGroupEdition = function(){
    this.container = $("#"+this.mapView.name);
+   $("#menuZoomGroupEdition").remove()
 
-   var html = "<div id='menuZoomGroupEdition' class='reveal-modal'><h2>Zooms "+this.selectedZoomGroup.zmin+" to "+this.selectedZoomGroup.zmax+"</h2>";
+   if(parseInt(this.selectedZoomGroup.zmax) > parseInt(this.selectedZoomGroup.zmin))
+      var zoomRangeText = "Zooms " +this.selectedZoomGroup.zmin+" to "+this.selectedZoomGroup.zmax;
+   else
+      var zoomRangeText = "Zoom " +this.selectedZoomGroup.zmin;
+   
+   var html = "<div id='menuZoomGroupEdition' class='reveal-modal'><h2>"+zoomRangeText+"</h2>";
+   html +=  "<div class='row-fluid'>";
+   html +=  "<div class='span4 offset4 btn-large btn-primary touchable' onclick='$(window).trigger(MaperialEvents.OPEN_ZOOMS)'>Split</div>";
 
    if(this.zoomGroups.length > 1){
-      html +=  "<div class='row-fluid'><div class='span3 offset2 btn-danger btn-large touchable '>Delete</div></div>";
+      html +=  "<div class='span3 offset1 btn-danger btn-large touchable' onclick='$(window).trigger(MaperialEvents.DELETE_ZOOM_GROUP)'>Delete</div>";
    }
 
-   html +=  "<div class='row-fluid'><div class='span4 offset4 btn-large btn-primary touchable' onclick='$(window).trigger(MaperialEvents.OPEN_ZOOMS)'>Split</div></div>";
+   html +=  "</div>";
 
    html +=  "<a class='close-reveal-modal'>&#215;</a></div>";
 
-//   this.container.append(html);
+   this.container.append(html);
 
-//   this.menuZoomGroupEdition = $("#menuZoomGroupEdition").reveal({
-//      animation: 'fade',
-//      animationspeed: 300, 
-//   });
-
-  this.openZooms()
+   this.menuZoomGroupEdition = $("#menuZoomGroupEdition").reveal({
+      animation: 'fade',
+      animationspeed: 300, 
+   });
 }
 
 //-------------------------------------------------------------------------------------------------//
 
 StyleEditor.prototype.openZooms = function(){
-   //this.menuZoomGroupEdition.trigger("reveal:close")
+   
+   //------------------------------------------------------//
+
+   this.menuZoomGroupEdition.trigger("reveal:close")
 
    //------------------------------------------------------//
 
-   var availableMin, availableMax
-   var selectedMin           = parseInt(this.selectedZoomGroup.zmin)
-   var selectedMax           = parseInt(this.selectedZoomGroup.zmax)
+   var selectedMin   = parseInt(this.selectedZoomGroup.zmin)
+   var selectedMax   = parseInt(this.selectedZoomGroup.zmax)
 
    //------------------------------------------------------//
    
    for(var z = 0 ; z < 19 ; z++){
-      
       $("#zoomButton" + z ).uncheck();
       $("#zoomButton" + z ).disable();
       $("#zoomButton" + z ).button("refresh");
-      
-      if(this.enableZooms[z]){
-         if(availableMin == null)
-            availableMin = z
-         
-         availableMax = z
-         $("#zoomButton" + z ).enable();
-         $("#zoomButton" + z ).button("refresh");
-      }
    }
-
-   console.log("available " + availableMin, availableMax)
-   console.log("selected " + selectedMin, selectedMax)
 
    //------------------------------------------------------//
 
    for(var z = selectedMin ; z <= selectedMax ; z++){
       $("#zoomButton" + z ).check();
+      $("#zoomButton" + z ).enable();
       $("#zoomButton" + z ).button("refresh");
    }
 
    //------------------------------------------------------//
 
    $( "#zoomSlider" ).slider({
-      min: availableMin,
-      max: availableMax
+      min: selectedMin,
+      max: selectedMax
    })
 
    $( "#zoomSlider" ).slider( "values",  [selectedMin, selectedMax] );  
 
    //------------------------------------------------------//
 
-   $( "#zoomSlider" ).css("width", ((availableMax-availableMin)*35)+"px");
-   $( "#zoomSlider" ).css("margin-left", (10 + availableMin*35)+"px");
+   $( "#zoomSlider" ).css("width", ((selectedMax-selectedMin)*34.5)+"px");
+   $( "#zoomSlider" ).css("margin-left", (15 + selectedMin*34.5)+"px");
 
    //------------------------------------------------------//
 
-   $("#"+HUD.ZOOMS).reveal({
-      animation: 'none',
+   this.zoomView = $("#"+HUD.ZOOMS).reveal({
+      animation: 'fade',
+      animationspeed: 100, 
    });
 }
 
@@ -510,11 +513,9 @@ StyleEditor.prototype.resetEnabledZooms = function(){
    this.enableZooms  = []
    var rules         = this.style.content[this.currentLayerId]["s"]
    var nbRules       = rules.length
-   console.log("---------- resetEnabledZooms, nbRules : " + nbRules)
 
    for(var i = 0 ; i < nbRules; i++){
       var zmin = rules[i]["zmin"]
-      console.log("- enable : " + zmin)
       this.enableZooms[zmin] = true
    }
 }
@@ -556,50 +557,147 @@ StyleEditor.prototype.refreshZoomSelection = function(){
 
          if(!this.selectedZoomGroup)
             this.selectedZoomGroup  = this.zoomGroups[0]
+         
+         console.log("open FULL view ", this.selectedZoomGroup);
 
          for(var z = parseInt(this.selectedZoomGroup.zmin) ; z < parseInt(this.selectedZoomGroup.zmax)+1 ; z++)
-            this.selectedZooms[""+z] = true
+            this.selectedZooms[""+z] = true;
 
-            break;
+         break;
    }   
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
-//
-//StyleEditor.prototype.refreshSliderSelection = function(min, max){
-//
-//   this.currentZmin = min;
-//   this.currentZmax = max;
-//
-//   for(var z = 0 ; z < 19 ; z++){
-//      if ( z >= min && z <= max){
-//         $("#zoomButton" + z ).check();
-//      }
-//      else{
-//         $("#zoomButton" + z ).uncheck();
-//      }
-//
-//      $("#zoomButton" + z ).button("refresh");
-//   }
-//
-//   $( "#zoomSlider" ).slider( "values",  [min, max] );  
-//}
 
+StyleEditor.prototype.refreshSliderSelection = function(min, max){
 
-//StyleEditor.prototype.updateSelectedZooms = function(){
-//console.log("------------ updateSelectedZooms ", this.currentLayerId)
+   for(var z = 0 ; z < 19 ; z++){
+      if ( z >= min && z <= max){
+         $("#zoomButton" + z ).check();
+      }
+      else{
+         $("#zoomButton" + z ).uncheck();
+      }
 
-//this.selectedZooms = [];
-//for ( var z = 0 ; z < 19 ; ++z){
-//if ( $("#zoomButton" + z).is(":checked") ){
-//this.selectedZooms.push(z);    
-//}
-//} 
-//}
+      $("#zoomButton" + z ).button("refresh");
+   }
+}
+
+//-------------------------------------------------------------------------------------//
+
+StyleEditor.prototype.newZoomGroup = function(){
+
+   //------------------------------------------------------//
+
+   var group0 = []
+   var group1 = []
+   var group2 = []
+   
+   var groups = [group0, group1, group2]
+   
+   //------------------------------------------------------//
+
+   var selectedMin   = parseInt(this.selectedZoomGroup.zmin)
+   var selectedMax   = parseInt(this.selectedZoomGroup.zmax)
+
+   //------------------------------------------------------//
+
+   var checkGroup = function(z){
+      if($("#zoomButton"+z).is(":checked"))
+         return true;
+      else
+         return false;
+   }
+   
+   var currentGroup = 0
+   var currentGroupState = checkGroup(selectedMin)
+
+   for ( var zoom = selectedMin ; zoom <= selectedMax ; zoom++){
+      
+      if ( checkGroup(zoom) != currentGroupState ){
+         currentGroupState = !currentGroupState
+         currentGroup ++
+      }
+
+      groups[currentGroup].push(zoom)
+   } 
+
+   //------------------------------------------------------//
+   
+   for(var g = 0; g < 3; g++){
+      if(groups[g].length > 0){
+         var splitId = Utils.generateGuid() // pour differencier les rules lors du gatherRules
+
+         // - modify each rule in this.style.content to match each split
+         for(var i = groups[g][0]; i <= groups[g][groups[g].length-1] ; i++){
+            var ruleInStyle = this.getRule(this.currentLayerId, i)
+            ruleInStyle.splitId = splitId
+         }
+      }
+   }
+   
+   //-------------------------------------------------------//
+
+   this.refreshWidget()
+   
+   //-------------------------------------------------------//
+
+   this.zoomView.trigger("reveal:close")
+}
+
+//-------------------------------------------------------------------------------------//
+
+StyleEditor.prototype.deleteZoomGroup = function(){
+
+   //-------------------------------------------------------//
+
+   var selectedMin   = parseInt(this.selectedZoomGroup.zmin)
+   var selectedMax   = parseInt(this.selectedZoomGroup.zmax)
+
+   var newMin, newMax, splitId
+   
+   //-------------------------------------------------------//
+   
+   // delete first zoomGroup : zoomGroup[1] 'eats' the range
+   if(selectedMin == this.zoomGroups[0].zmin){
+      newMin = selectedMin
+      newMax = this.zoomGroups[1].zmax
+      splitId =  this.getRule(this.currentLayerId, this.zoomGroups[1].zmin).splitId
+   }
+
+   // delete another zoomGroup : the previous zoomGroup 'eats' the range
+   else{
+      for(var i = 1; i < this.zoomGroups.length; i++){
+         if(selectedMin == this.zoomGroups[i].zmin){
+            newMin = this.zoomGroups[i-1].zmin
+            newMax = selectedMax
+            splitId =  this.getRule(this.currentLayerId, this.zoomGroups[i-1].zmin).splitId
+            break
+         }
+      }
+   }
+
+   console.log(newMin, newMax, splitId)
+   
+   for(var i = newMin; i <= newMax ; i++){
+      var ruleInStyle = this.getRule(this.currentLayerId, i)
+      ruleInStyle.splitId = splitId
+   }
+   
+   //-------------------------------------------------------//
+
+   this.refreshWidget()
+   
+   //-------------------------------------------------------//
+
+   this.menuZoomGroupEdition.trigger("reveal:close")
+}
 
 //----------------------------------------------------------------------------------------------------------------------//
 
 StyleEditor.prototype.buildZoomView = function(){
+   
+   this.zoomDiv.append("<a class='close-reveal-modal'>&#215;</a></div>");
    
    var me = this;
    var buttons = '';
@@ -609,12 +707,24 @@ StyleEditor.prototype.buildZoomView = function(){
 
    $('<div id="zoomButtons">' +  buttons + '</div>' ).appendTo(this.zoomDiv);
    $('<div id="zoomSlider"></div><br/>').appendTo(this.zoomDiv);
+   $("<div class='row-fluid'><div class='span2 offset10 btn-large btn-primary touchable' onclick='$(window).trigger(MaperialEvents.VALIDATE_ZOOMS)'>Ok</div></div><br/>").appendTo(this.zoomDiv);
 
    for ( var z = 0 ; z < 19 ; z++){
       $("#zoomButton"+z).change(function(zoom){
          return function(){
-            console.log("changing zoomButton"+zoom)
-            me.selectedZooms[zoom] = !me.selectedZooms[zoom] 
+            console.log("changed " + zoom)
+            var attr = $(this).attr('checked');
+            var isCheck = (typeof attr !== 'undefined' && attr !== false)
+            console.log("isCheck " + isCheck)
+            
+            if ( isCheck ){
+               $("#zoomButton" + zoom ).uncheck();
+            }
+            else{
+               $("#zoomButton" + zoom ).check();
+            }
+
+            $("#zoomButton" + zoom ).button("refresh");
          }
       }(z));
    }
@@ -627,27 +737,15 @@ StyleEditor.prototype.buildZoomView = function(){
       max: 18,
       values: [ this.currentZmin, this.currentZmax ],
       slide: function( event, ui ) {
-         if ( (ui.values[0] + 1) > ui.values[1] ) {
-            return false;      
-         }                      
          var min = ui.values[0];
          var max = ui.values[1];
 
-         console.log("slide ", min, max)
-//       me.refreshZoomSelection(min, max) -- TODO : refreshzoom EDition : creation d'un zoomGroup ici !
+         me.refreshSliderSelection(min, max)
       }
    });
 
-// $( "#zoomSlider" ).slider( "values",  [this.currentZmin, this.currentZmax+1] );
-
    Utils.buildSliderStyle("zoomSlider");
-
 }
-
-
-//in the next callback "_ruleId" is the *caller* rule id.
-//but thanks to changeProperty we are updating many zooms at the same time
-
 
 //------------------------------------------------------------------//
 
@@ -681,35 +779,40 @@ StyleEditor.prototype.gatherRulesByZoom = function(uid){
    var end           = rules[0].zmin
    var currentRule   = rules[0]["s"][0]
 
-   var endWithNewRule
+   var loopEndsWithNewRule
    this.zoomGroups    = []
 
    for (var i = 1; i < rules.length; i++){
+      loopEndsWithNewRule = false
       var nextRule = rules[i]["s"][0]
+
       if(this.isSameRule(currentRule, nextRule)){
          end = rules[i].zmin
-         endWithNewRule = false
       }
       else{
          this.createZoomGroup(start, end, currentRule, uid)
          currentRule = nextRule
          start       = rules[i].zmin
          end         = rules[i].zmin
-         endWithNewRule = true
+         
+         if(i < rules.length - 1) // else last rule = require a createZoomGroup for it
+            loopEndsWithNewRule = true
       }
    }
 
-   if(!endWithNewRule){
+   if(!loopEndsWithNewRule){
       this.createZoomGroup(start, end, currentRule, uid)
    }
 }
 
-StyleEditor.prototype.createZoomGroup = function(start, end, currentRule, uid){
-
+StyleEditor.prototype.createZoomGroup = function(start, end, rule, uid){
+   
+   console.log("createZoomGroup", start,end,rule,uid)
+   
    var zoomGroup = {}
    zoomGroup.zmin = start
    zoomGroup.zmax = end
-   zoomGroup.rule = currentRule
+   zoomGroup.rule = rule
 
    try{
       var casing = { name : this.accordionElements[uid].casing }
@@ -748,20 +851,27 @@ StyleEditor.prototype.createZoomGroup = function(start, end, currentRule, uid){
 StyleEditor.prototype.isSameRule = function(rule1, rule2){
 
    for(var property1 in rule1){
+
+      if(property1 == "id") continue 
       var found = false
 
       for(var property2 in rule2){
+         if(property2 == "id") continue
 
          if(property1 == property2){
             found = true
 
-            if(rule1.property1 != rule2.property2)
+            if(rule1[property1] != rule2[property2]){
                return false
+            }
+            
+            break
          }
       }
 
-      if(!found)
+      if(!found){
          return false
+      }
    }
 
    return true
@@ -813,7 +923,7 @@ StyleEditor.prototype.buildAccordion = function(){
          
          //--------------------------------------------------------------------//
          
-         var groupTitle = $('<p class="accordionGroupTitle" id="accordionGroupTitle_' + group.id + '">' + group.surname + "</p>");
+         var groupTitle = $('<p class="accordionGroupTitle rounded" id="accordionGroupTitle_' + group.id + '">' + group.surname + "</p>");
          accordionCategory.append(groupTitle);
          groupTitle.bind('click', this.selectGroup(group));
          
@@ -843,8 +953,6 @@ StyleEditor.prototype.buildAccordion = function(){
    }
 
 
-   //this.updateSelectedZooms();
-
    // configure accordion(s)
    $( ".accordion" )
    .accordion({
@@ -868,8 +976,6 @@ StyleEditor.prototype.buildAccordion = function(){
 
 StyleEditor.prototype.registerElement = function(element, container){
    
-   console.log("     registerElement", element.name)
-   
    //-------------------------------------//
    
    var uid = this.getUID(element)
@@ -878,7 +984,7 @@ StyleEditor.prototype.registerElement = function(element, container){
    //-------------------------------------//
 
    // bind onclick header event!
-   var html = "<div id='accordionElement_"+uid+"' class='row-fluid accordionElement'><p class='accordionElementName'>"+element.surname+"</p></div"
+   var html = "<div id='accordionElement_"+uid+"' class='row-fluid accordionElement rounded'><p class='accordionElementName'>"+element.surname+"</p></div"
    container.append(html)
    $("#accordionElement_"+uid).bind('click', this.openWidgetFromAccordion(uid));
 }
@@ -899,6 +1005,8 @@ StyleEditor.prototype.refreshAccordion = function(){
 StyleEditor.prototype.selectGroup = function(group){
    var me = this
    return function() {
+      console.log("select", group)
+      
       me.unselectElements()
       
       if(me.selectedGroup)$("#accordionGroupTitle_" + me.selectedGroup.id).removeClass("selected")
@@ -1218,6 +1326,7 @@ StyleEditor.prototype.changeWidgetContent = function(selection, uid){
    this.selectedZoomGroup  = this.zoomGroups[selection.input[0]["value"]]
    this.refreshZoomSelection()
    $("#widgetDivContent").empty()
+
 
    //-------------------------------------------//
 

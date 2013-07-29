@@ -1,6 +1,43 @@
 {
    "categories" : {
       
+
+      "Landscape" : [
+         { "id" : "grounds", "surname": "Grounds", 
+           "elements" : [
+               { "name" : "world",             "surname": "Ground 0 - 9",   "type": "poly" , "line" : "none" },
+               { "name" : "coast_poly",        "surname": "Ground 10+",     "type": "poly" , "line" : "none" }
+            ]
+         },
+         { "id" : "trees", "surname": "Trees", 
+           "elements" : [
+               { "name" : "landmark", "filter" : "forest",        "surname" : "Forest",   "type": "poly" , "line" : "none"},
+               { "name" : "landmark", "filter" : "playground",    "surname" : "Park",   "type": "poly" , "line" : "none"},
+               { "name" : "landmark", "filter" : "golf_course",   "surname" : "Golf",   "type": "poly" , "line" : "none"}
+            ]
+         },
+         { "id" : "buildings", "surname": "Buildings", 
+           "elements" : [
+               { "name" : "building",                             "surname" : "building",  "type": "poly" , "line" : "none" },
+               { "name" : "landmark", "filter" : "residential",   "surname" : "Residential",   "type": "poly" , "line" : "none"},
+               { "name" : "landmark", "filter" : "parking",       "surname" : "Parking",   "type": "poly" , "line" : "none"}
+            ]
+         },
+         { "id" : "military", "surname": "Military", 
+           "elements" : [
+               { "name" : "landmark", "filter" : "barracks",      "surname" : "Barracks",   "type": "poly" , "line" : "none"},
+               { "name" : "landmark", "filter" : "military",      "surname" : "Military",   "type": "poly" , "line" : "none"},
+               { "name" : "military",                             "surname" : "military",  "type": "poly" , "line" : "none" }
+             ]
+         },
+         { "id" : "other_grounds", "surname": "Other", 
+           "elements" : [
+               { "name" : "landmark", "filter" : "beach",         "surname" : "Beach",   "type": "poly" , "line" : "none"},
+               { "name" : "landmark", "filter" : "runway",        "surname" : "Runway",   "type": "poly" , "line" : "none"}
+            ]
+         }
+      ],
+      
       
       
       "Road" : [
@@ -50,56 +87,6 @@
                 { "name" : "pedestrian_polygon",          "surname": "Polygon",           "type": "none"}
             ]
           }
-      ],
-      
-      
-      
-      "Landscape" : [
-         { "id" : "grounds", "surname": "Grounds", 
-           "elements" : [
-               { "name" : "world",             "surname": "Ground 0 - 9",   "type": "poly" , "line" : "none" },
-               { "name" : "coast_poly",        "surname": "Ground 10+",     "type": "poly" , "line" : "none" }
-            ]
-         },
-         { "id" : "trees", "surname": "Trees", 
-           "elements" : [
-               { "name" : "landmark", "filter" : "forest",        "surname" : "Forest",   "type": "poly" , "line" : "none"},
-               { "name" : "landmark", "filter" : "playground",    "surname" : "Park",   "type": "poly" , "line" : "none"},
-               { "name" : "landmark", "filter" : "golf_course",   "surname" : "Golf",   "type": "poly" , "line" : "none"}
-            ]
-         },
-         { "id" : "buildings", "surname": "Buildings", 
-           "elements" : [
-               { "name" : "building",                             "surname" : "building",  "type": "poly" , "line" : "none" },
-               { "name" : "landmark", "filter" : "residential",   "surname" : "Residential",   "type": "poly" , "line" : "none"},
-               { "name" : "landmark", "filter" : "parking",       "surname" : "Parking",   "type": "poly" , "line" : "none"}
-            ]
-         },
-         { "id" : "military", "surname": "Military", 
-           "elements" : [
-               { "name" : "landmark", "filter" : "barracks",      "surname" : "Barracks",   "type": "poly" , "line" : "none"},
-               { "name" : "landmark", "filter" : "military",      "surname" : "Military",   "type": "poly" , "line" : "none"},
-               { "name" : "military",                             "surname" : "military",  "type": "poly" , "line" : "none" }
-             ]
-         },
-         { "id" : "other_grounds", "surname": "Other", 
-           "elements" : [
-               { "name" : "landmark", "filter" : "beach",         "surname" : "Beach",   "type": "poly" , "line" : "none"},
-               { "name" : "landmark", "filter" : "runway",        "surname" : "Runway",   "type": "poly" , "line" : "none"}
-            ]
-         }
-      ],
-      
-      
-      
-      "Water" : [
-         { "id" : "water", "surname": "Water", 
-            "elements" : [
-               { "name" : "water_lines",  "surname" : "Water lines",   "type": "poly" , "line" : "none"},
-               { "name" : "water_areas",  "surname" : "Water areas",   "type": "poly" , "line" : "none"},
-               { "name" : "ferry_routes",   "surname" : "Ferry routes",   "type": "none"}
-             ]
-         }
       ],
       
       
@@ -156,6 +143,20 @@
         }
       ],
 
+
+      
+      
+      "Water" : [
+         { "id" : "water", "surname": "Water", 
+            "elements" : [
+               { "name" : "water_lines",  "surname" : "Water lines",   "type": "poly" , "line" : "none"},
+               { "name" : "water_areas",  "surname" : "Water areas",   "type": "poly" , "line" : "none"},
+               { "name" : "ferry_routes",   "surname" : "Ferry routes",   "type": "none"}
+             ]
+         }
+      ],
+      
+      
       
       
       

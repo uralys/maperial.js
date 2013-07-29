@@ -70,6 +70,7 @@
 	width: 120px;
 	z-index: 10;
 	overflow-y: auto;
+	max-height:95px!important;
 }
 .sbOptions li{
 	padding: 0 7px;

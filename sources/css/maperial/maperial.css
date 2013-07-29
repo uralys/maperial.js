@@ -437,7 +437,7 @@ a.triggerDetailsMenu {
 }
 
 .panelDetailsMenu {
-	width: 356px;
+	width: 290px;
 	overflow-y: auto;
 	overflow-x: hidden;
 	height: 98%;
@@ -493,7 +493,8 @@ a.triggerDetailsMenu {
 }
 
 .accordionElement.selected {
-	background-color: rgba(12,12,12,1)!important;
+	background-color: #ddd!important;
+	color: #000!important;
 }
 
 #accordion {
@@ -512,9 +513,9 @@ a.triggerDetailsMenu {
 }
 
 .accordionGroupTitle.selected {
-	background-color: rgba(12,12,12,1)!important;
+	background-color: #ddd!important;
+	color: #000!important;
 }
-
 
 .accordionGroup {
 	background-color: rgba(0,0,0,0)!important;
@@ -527,7 +528,7 @@ a.triggerDetailsMenu {
 .accordionCategoryTitle {
 	background-color: rgba(0,0,0,0);
 	color: #eee;
-	font-size: 16px;
+	font-size: 20px;
 	border: 0px;
 }
 
@@ -576,7 +577,8 @@ a.triggerZooms {
 	color: #111;
 	width: 31px;
 	text-align: left;
-	border:0px
+	border:0px;
+	cursor: default;
 }
 
 .zoom-button.ui-state-active{

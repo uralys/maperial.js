@@ -35,10 +35,12 @@ MaperialEvents.ZOOM_CHANGED         = "MaperialEvents.ZOOM_CHANGED";
 MaperialEvents.UPDATE_LATLON        = "MaperialEvents.UPDATE_LATLON";
 MaperialEvents.NEW_BOUNDING_BOX     = "MaperialEvents.NEW_BOUNDING_BOX";
 
-// Style Menu Events
+// StyleEditor Events
 MaperialEvents.OPEN_STYLE           = "MaperialEvents.OPEN_STYLE";
 MaperialEvents.EDIT_ZOOMS           = "MaperialEvents.EDIT_ZOOMS";
 MaperialEvents.OPEN_ZOOMS           = "MaperialEvents.OPEN_ZOOMS";
+MaperialEvents.VALIDATE_ZOOMS       = "MaperialEvents.VALIDATE_ZOOMS";
+MaperialEvents.DELETE_ZOOM_GROUP    = "MaperialEvents.DELETE_ZOOM_GROUP";
 
 // Rendering Events
 MaperialEvents.SOURCE_READY         = "MaperialEvents.SOURCE_READY";
