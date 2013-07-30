@@ -21,7 +21,10 @@
 
 	DatasetsController.openUploadWindow = function() 
 	{
-		$('#uploadDatasetsWindow').modal();
+      $("#uploadDatasetsWindow").reveal({
+         animation: 'fade',
+         animationspeed: 100, 
+      });
 	}
 	
 	DatasetsController.startUpload = function(data) 
@@ -78,9 +81,13 @@
 	   App.datasetsData.set("selectedDataset", dataset);
 	   $( "#datasetNameInput" ).val(dataset.name);
 
-      $('#editDatasetWindow').modal();
-      $('#editDatasetWindow').off("hide");
-      $('#editDatasetWindow').on("hide", function(){
+      $("#editDatasetWindow").reveal({
+         animation: 'fade',
+         animationspeed: 100, 
+      });
+      
+      $("#editDatasetWindow").off("reveal:hidden");
+      $('#editDatasetWindow').on("reveal:hidden", function(){
          Utils.editObjectInArray(dataset, "name", $("#datasetNameInput").val());
          DatasetManager.editDataset(dataset);
       });
@@ -130,7 +137,11 @@
          }
 	   });
 
-	   $('#configureRasterWindow').modal();
+      $("#configureRasterWindow").reveal({
+         animation: 'fade',
+         animationspeed: 100, 
+      });
+      
 	}
 
 	//----------------------------------------------------//

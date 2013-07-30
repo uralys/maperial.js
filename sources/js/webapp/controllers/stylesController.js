@@ -21,7 +21,10 @@
 
 	StylesController.openStyleSelectionWindow = function() 
 	{
-		$('#selectStyleWindow').modal();
+      $("#selectStyleWindow").reveal({
+         animation: 'fade',
+         animationspeed: 100
+      });
 	}
 
 	//------------------------------------------------//
@@ -43,7 +46,7 @@
 	StylesController.editStyle = function(style) 
 	{
 	   if(App.Globals.isTryscreen){
-	      $("#selectStyleWindow").modal("hide");
+	      $("#selectStyleWindow").trigger("reveal:close");
 	      StylesController.backUpMap = App.maperial.config
 	   }
 	      
@@ -85,7 +88,7 @@
 	 */
 	StylesController.openStyleEditor = function() 
 	{
-	   $("#selectStyleWindow").modal("hide");
+	   $("#selectStyleWindow").trigger("reveal:close");
 	   App.stylesData.set("editingStyle", false);
 	   App.get('router').transitionTo('styleEditor');
 	}

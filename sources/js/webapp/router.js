@@ -25,7 +25,14 @@
 			translateFr    : function(){ App.translator.setLang('fr') },
 
 			openTryscreen  : function(){ App.finishLoadings("tryscreen") },
-			signin         : function(){$("#loginWindow").modal()},
+			signin         : function(){
+
+			   $("#loginWindow").reveal({
+			      animation: 'fade',
+			      animationspeed: 100, 
+			   });
+			   
+			},
 	      maperialLogin  : function(){MaperialAuth.authorize()},
 			
 			//-------------------------------------------------------//

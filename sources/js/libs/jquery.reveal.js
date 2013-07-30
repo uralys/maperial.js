@@ -73,18 +73,25 @@
 						modal.delay(options.animationspeed/2).animate({
 							"top": $(document).scrollTop()+topMeasure + 'px',
 							"opacity" : 1
-						}, options.animationspeed,unlockModal());					
+						}, options.animationspeed,function() {
+					      modal.trigger('reveal:revealed')
+                     unlockModal();
+                  });               				
 					}
 					if(options.animation == "fade") {
 						modal.css({'opacity' : 0, 'visibility' : 'visible', 'top': $(document).scrollTop()+topMeasure});
 						modalBG.fadeIn(options.animationspeed/2);
 						modal.delay(options.animationspeed/2).animate({
 							"opacity" : 1
-						}, options.animationspeed,unlockModal());					
+						}, options.animationspeed,function() {
+                     modal.trigger('reveal:revealed')
+                     unlockModal();
+                  });                        		
 					} 
 					if(options.animation == "none") {
 						modal.css({'visibility' : 'visible', 'top':$(document).scrollTop()+topMeasure});
 						modalBG.css({"display":"block"});	
+                  modal.trigger('reveal:revealed')
 						unlockModal()				
 					}
 				}
@@ -102,6 +109,7 @@
 							"opacity" : 0
 						}, options.animationspeed/2, function() {
 							modal.css({'top':topMeasure, 'opacity' : 1, 'visibility' : 'hidden'});
+                     modal.trigger('reveal:hidden')
 							unlockModal();
 						});					
 					}  	
@@ -111,12 +119,14 @@
 							"opacity" : 0
 						}, options.animationspeed, function() {
 							modal.css({'opacity' : 1, 'visibility' : 'hidden', 'top' : topMeasure});
+                     modal.trigger('reveal:hidden')
 							unlockModal();
 						});					
 					}  	
 					if(options.animation == "none") {
 						modal.css({'visibility' : 'hidden', 'top' : topMeasure});
 						modalBG.css({'display' : 'none'});	
+                  modal.trigger('reveal:hidden')
 					}		
 				}
 				modal.unbind('reveal:close');

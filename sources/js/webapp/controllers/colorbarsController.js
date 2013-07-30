@@ -21,7 +21,10 @@
 
 	ColorbarsController.openColorbarSelectionWindow = function() 
 	{
-		$('#selectColorbarWindow').modal();
+      $("#selectColorbarWindow").reveal({
+         animation: 'fade',
+         animationspeed: 100, 
+      });
 	}
 
 	//------------------------------------------------//
@@ -58,7 +61,7 @@
 	
 	ColorbarsController.continueColorbarCreation = function() 
 	{
-		$("#selectColorbarWindow").modal("hide");
+		$("#selectColorbarWindow").trigger("reveal:close");
 		App.colorbarsData.set("editingColorbar", false);
 		App.get('router').transitionTo('colorbarEditor');
 	}

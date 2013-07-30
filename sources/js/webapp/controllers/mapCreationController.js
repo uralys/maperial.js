@@ -172,9 +172,14 @@
    // Layers
    
    MapCreationController.openDemoSelection = function(){
-      $("#demoSelectionWindow").modal();
-      $('#demoSelectionWindow').off('hidden');
-      $('#demoSelectionWindow').on('hidden', function(){
+
+      $("#demoSelectionWindow").reveal({
+         animation: 'fade',
+         animationspeed: 100, 
+      });
+      
+      $('#demoSelectionWindow').off('reveal:hidden');
+      $('#demoSelectionWindow').on('reveal:hidden', function(){
          setTimeout(function(){
             if(MapCreationController.mapView.config.layers.length == 0)
                App.maperial.layersCreation.openBasemaps();
@@ -228,7 +233,7 @@
          App.user.set("selectedMap", map);
          App.user.set("isCreatingANewMap", false);
          MapCreationController.openLayersCreation();
-         $("#demoSelectionWindow").modal("hide");
+         $("#demoSelectionWindow").trigger("reveal:close");
       });
    }
    
@@ -246,7 +251,7 @@
    // mieux integrer ca dans la webapp entierement ET ne permettre que du switch de config dans le maperial pour les viewers
    MapCreationController.changeStyle = function(){
       App.maperial.views[0].changeStyle(App.stylesData.selectedStyle.uid);
-      $("#selectStyleWindow").modal("hide");
+      $("#selectStyleWindow").trigger("reveal:close");
    }
    
    //=============================================================================//
@@ -353,7 +358,7 @@
       signin      : function(){window.location.href="/?login"},
       
       startDemo   : function(){
-         $("#demoSelectionWindow").modal("hide");
+         $("#demoSelectionWindow").trigger("reveal:close");
          App.user.set("isCreatingANewMap", true);  
 
          var map = MapCreationController.getLayersCreationConfig()

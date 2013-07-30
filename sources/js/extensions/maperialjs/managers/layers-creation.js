@@ -249,9 +249,14 @@ LayersCreation.prototype.deleteLayer = function(viewName, layerIndex){
 /** Attention ! dependant de WEBAPP **/
 LayersCreation.prototype.openSelectStyleWindow = function(){
    App.get('router').transitionTo('mapCreation.publicStyles');
-   $("#selectStyleWindow").modal();
-   $('#selectStyleWindow').off('hidden');
-   $('#selectStyleWindow').on('hidden', this.setSelectedStyle);
+
+   $("#selectStyleWindow").reveal({
+      animation: 'fade',
+      animationspeed: 100, 
+   });
+   
+   $('#selectStyleWindow').off('reveal:hidden');
+   $('#selectStyleWindow').on('reveal:hidden', this.setSelectedStyle);
 }
 
 //=============================================================================//
@@ -264,7 +269,12 @@ LayersCreation.prototype.openCustomizeLayerWindow = function(view, layer){
    switch(layer.source.type){
 
       case Source.MaperialOSM :
-         $("#customizeLayerOSMWindow").modal();
+
+         $("#customizeLayerOSMWindow").reveal({
+            animation: 'fade',
+            animationspeed: 100, 
+         });
+         
          view.hud.buildOSMSets(this.currentLayerIndex);
          break;
          
@@ -281,12 +291,15 @@ LayersCreation.prototype.openCustomizeLayerWindow = function(view, layer){
 
 /** Attention ! dependant de WEBAPP **/
 LayersCreation.prototype.openSelectRasterWindow = function(){
-   $("#selectRasterWindow").modal();
+   $("#selectRasterWindow").reveal({
+      animation: 'fade',
+      animationspeed: 100, 
+   });
 }
 
 /** Attention ! dependant de WEBAPP **/
 LayersCreation.prototype.selectRaster = function(raster){
-   $("#selectRasterWindow").modal("hide");
+   $("#selectRasterWindow").trigger("reveal:close");
    
    if(this.currentLayerIndex >= 0){
       console.log("editing a raster");
