@@ -8,7 +8,7 @@
 
 	HomeController.renderUI = function(){
 	    App.get('router').transitionTo('home.news');
-	    setTimeout( HomeController.loadTopImage, 300)
+//	    setTimeout( HomeController.loadTopImage, 300)
 	}
 
 	HomeController.cleanUI = function()	{
