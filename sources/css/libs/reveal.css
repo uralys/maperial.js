@@ -35,6 +35,8 @@
 	.reveal-modal.medium 		{ width: 400px; margin-left: -240px;}
 	.reveal-modal.large 		{ width: 600px; margin-left: -340px;}
 	.reveal-modal.xlarge 		{ width: 800px; margin-left: -440px;}
+
+	.reveal-modal.withborder 	{ padding: 30px 40px 34px; }
 	
 	.reveal-modal .close-reveal-modal {
 		font-size: 22px;

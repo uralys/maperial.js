@@ -12,7 +12,7 @@ StyleEditor.prototype.showZoomGroupEdition = function(){
    else
       var zoomRangeText = "Zoom " +this.selectedZoomGroup.zmin;
    
-   var html = "<div id='menuZoomGroupEdition' class='reveal-modal'><h2>"+zoomRangeText+"</h2>";
+   var html = "<div id='menuZoomGroupEdition' class='reveal-modal withborder'><h2>"+zoomRangeText+"</h2>";
    html +=  "<div class='row-fluid'>";
    html +=  "<div class='span4 offset4 btn-large btn-primary touchable' onclick='$(window).trigger(MaperialEvents.OPEN_ZOOMS)'>Split</div>";
 

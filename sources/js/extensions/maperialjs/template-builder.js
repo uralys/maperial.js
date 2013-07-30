@@ -286,7 +286,7 @@ TemplateBuilder.prototype.buildQuickEdit = function(){
 //==================================================================//
 
 TemplateBuilder.prototype.buildZooms = function(){
-   var html = "<div class=\"reveal-modal\" id=\""+HUD.ZOOMS+"\" ></div>";
+   var html = "<div class=\"reveal-modal withborder\" id=\""+HUD.ZOOMS+"\" ></div>";
    this.container.append(html);
 }
 
