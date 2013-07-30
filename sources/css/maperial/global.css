@@ -15,6 +15,7 @@ body{
 	cursor: pointer;
 	cursor: hand;
 	background: transparent;
+	width: 40px;
 }
 
 #langButtons{
