@@ -271,7 +271,6 @@ SourcesManager.prototype.LoadVectorial = function ( source, x, y, z ) {
          else {
             me.data[requestId] = data;
             $(window).trigger(MaperialEvents.SOURCE_READY, [source, data, x, y, z])
-//            me.maperial.mapRenderer.sourceReady(source, data, x, y, z);
          }
 
          me.complete[requestId] = true;
@@ -346,18 +345,18 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
    this.requests[requestId].open ("GET", this.getURL(source, x, y, z), true);
    this.requests[requestId].responseType = "arraybuffer";
 
-   this.requests[requestId].onload = function (oEvent) {      
+   this.requests[requestId].onload = function (oEvent) {  
+      
       var arrayBuffer = me.requests[requestId].response;  // Note: not this.requests[requestId].responseText
       if (arrayBuffer && ( me.requests[requestId].status != 200 || arrayBuffer.byteLength <= 0 )) {
          arrayBuffer = null;
       }
 
-      me.errors[requestId] = arrayBuffer != null;
+      me.errors[requestId] = arrayBuffer == null;
       me.complete[requestId]  = true;
       me.data[requestId]  = arrayBuffer;
-
+      
       $(window).trigger(MaperialEvents.SOURCE_READY, [source, me.data[requestId], x, y, z])
-     // me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
    };
 
    this.requests[requestId].onerror = function (oEvent) {
@@ -390,6 +389,7 @@ SourcesManager.prototype.isTileLoaded = function ( x, y, z, receiverName) {
          continue
          
       var requestId = this.requestId(source, x, y, z);
+//      console.log("requestId", requestId)
 
       if (!this.complete[requestId] || this.errors[requestId] || !this.data[requestId])
          return false;

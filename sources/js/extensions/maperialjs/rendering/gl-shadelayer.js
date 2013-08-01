@@ -18,6 +18,9 @@ ShadeLayer.prototype.GetType = function ( ) {
 ShadeLayer.prototype.Init = function ( data ) {
    if (this.tex)
       return;
+   
+   console.log("init shade")
+   
    if (data) {
       var newV                   = []
       /*
@@ -49,11 +52,12 @@ ShadeLayer.prototype.Init = function ( data ) {
       var byteArray              = new Uint8Array        ( data );
       var nl = []
       for ( var i = 0 ; i < 256*256*2 ; i = i+2 ) {
+
          var a = ( byteArray[i] / 255.0 ) * 2.0 - 1.0;
          var b = ( byteArray[i+1] / 255.0 ) * 2.0 - 1.0;
          var tmp = - (a*a) - (b*b) + 1.0
          var c = Math.sqrt( tmp );
-         
+
          var tt = (a*a) + (b*b) + (c*c);
          
          nl.push(  Math.ceil( ((a + 1.0)/2.0) * 255));
@@ -120,8 +124,8 @@ ShadeLayer.prototype.Update = function ( params ) {
       gl.viewport                ( 0, 0, fbtx[0].width, fbtx[0].height);
       gl.clear                   ( gl.COLOR_BUFFER_BIT );
 
-      mvMatrix                   = mat4.create();
-      pMatrix                    = mat4.create();
+      var mvMatrix               = mat4.create();
+      var pMatrix                = mat4.create();
       mat4.identity              ( mvMatrix );
       mat4.scale                 ( mvMatrix, [this.w  / Maperial.tileSize , this.h / Maperial.tileSize, 1.0] );
       mat4.identity              ( pMatrix );
