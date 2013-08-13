@@ -20,6 +20,7 @@
 	      openScreenshots: Ember.Route.transitionTo('screenshots'),
 	      openAllNews    : Ember.Route.transitionTo('allNews'),
 			openDashboard  : Ember.Route.transitionTo('dashboard'),
+			openPrezi      : function(){ App.openPrezi() },
 
 			translateEn    : function(){ App.translator.setLang('en') },
 			translateFr    : function(){ App.translator.setLang('fr') },

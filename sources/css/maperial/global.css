@@ -450,8 +450,8 @@ body{
 /*--------------------------------*/
 #headerButtons {
 	float: right;
-	margin-top: 25px;
-	margin-right: 65px;
+	margin-top: 10px;
+	margin-right: 75px;
 }
 
 #headerButtons .btn-large {
