@@ -583,5 +583,12 @@ SourcesManager.prototype.getWMSURL = function (source, tx, ty, z, receiverName) 
          
          
          break;
+         
+      default :
+         var topLeft       = topLeftM;
+         var bottomRight   = bottomRightM;
+      
+         return(source.params.src + "&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+         
    }
 }
