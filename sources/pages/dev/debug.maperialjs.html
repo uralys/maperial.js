@@ -113,7 +113,7 @@
 
                	  var mainConfig   = ConfigManager.newConfig();
 			      
-			      mainConfig.map.defaultZoom    = 11
+			      mainConfig.map.defaultZoom    = 8
 			      mainConfig.map.latitude       = 46.316584
 			      mainConfig.map.longitude      = 6.486998
 
@@ -126,19 +126,20 @@
              //  mainConfig.map.longitude      = 98.653793;
 
                
+			      mainConfig.hud.elements[HUD.CONTROLS]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
 			      mainConfig.hud.elements[HUD.COMPOSITIONS]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
-			      mainConfig.hud.elements[HUD.LAYER_SETTINGS]	= {show : true, 	type : HUD.PANEL, 	label : "Layer Settings", disableDrag : true };
+			      //mainConfig.hud.elements[HUD.LAYER_SETTINGS]	= {show : true, 	type : HUD.PANEL, 	label : "Layer Settings", disableDrag : true };
 			      
 			      //mainConfig.layers.push(LayersManager.getOSMLayerConfig([Maperial.DEFAULT_STYLE_UID]))
                   //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
                   
-                  mainConfig.layers.push(LayersManager.getShadeLayerConfig())
+                  //mainConfig.layers.push(LayersManager.getShadeLayerConfig())
                   //mainConfig.layers.push(LayersManager.getSrtmLayerConfig())
                   
                   //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-                  //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+                  mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
                   //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
+                  mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
 			      
 			      var mainOptions = {
 			         type       : Maperial.MAIN,
