@@ -98,9 +98,13 @@
       else
          $("#exportArea").removeClass("hide")
          
-      $("#exportMapWindow").modal();
-      $("#exportMapWindow").off("hidden");
-      $("#exportMapWindow").on("hidden", function(){
+      $("#exportMapWindow").reveal({
+         animation: 'fade',
+         animationspeed: 100, 
+      });
+      
+      $("#exportMapWindow").off("reveal:hidden");
+      $("#exportMapWindow").on("reveal:hidden", function(){
          App.user.set("selectedMap", null);
          App.user.set("isExportingAMap", false);
       });

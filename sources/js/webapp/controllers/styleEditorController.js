@@ -52,29 +52,43 @@
 
    StyleEditorController.getMap = function(){
 
+      //------------------------------------------//
+
       var config = ConfigManager.newConfig();
       var magnifierConfig = ConfigManager.newConfig();
 
-      // custom
-      config.hud.elements["StyleEditorMenu"] = {show : true, type : HUD.PANEL, position : { right: "0", top: "0"}, disableHide : true, disableDrag : true  };
-      config.map.edition = true;
+      //------------------------------------------//
 
+      // custom
+      config.hud.elements["StyleEditorMenu"] = {show : true, type : HUD.PANEL, position : { right: "450", top: "0"}, disableDrag : true  };
+      config.map.edition = true;
+      
+      //------------------------------------------//
+      
       // maperial hud
-      config.hud.elements[HUD.SETTINGS]      = {show : true,  type : HUD.TRIGGER,  disableHide : true, disableDrag : true };
-      config.hud.elements[HUD.GEOLOC]        = {show : false, type : HUD.PANEL,  label : "Location" };
-      config.hud.elements[HUD.QUICK_EDIT]    = {show : true,  type : HUD.PANEL,  label : "Quick Edition", disableDrag : true};
-      config.hud.elements[HUD.DETAILS_MENU]  = {show : false, type : HUD.PANEL,  label : "Style Details" };
-      config.hud.elements[HUD.ZOOMS]         = {show : false, type : HUD.PANEL,  label : "Zooms" };
+      config.hud.elements[HUD.GEOLOC]        = {show : true,   type : HUD.PANEL,  label : "Location", position : { left : "380", top:"0"}  };
+      config.hud.elements[HUD.QUICK_EDIT]    = {show : true,   type : HUD.PANEL,  label : "Quick Edition", disableDrag : true};
+      config.hud.elements[HUD.DETAILS_MENU]  = {show : true,   type : HUD.PANEL,  label : "Style Details", disableDrag : true    };
+      config.hud.elements[HUD.ZOOMS]         = {show : false,  type : HUD.PANEL,  label : "Zooms",         disableDrag : true   };
+      config.hud.elements[HUD.CONTROLS]      = {show : true,   type : HUD.PANEL,  label : "Controls",      disableDrag : true, position : { left : "320", top:"10"} };
+
+      //------------------------------------------//
 
       config.layers.push            (LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
       magnifierConfig.layers.push   (LayersManager.getOSMLayerConfig([App.stylesData.selectedStyle.uid]))
+
+      //------------------------------------------//
       
       App.addMargins(config);
+
+      //------------------------------------------//
 
       var mapOptions = {
          type       : Maperial.MAIN,
          name       : "maperial"
       }
+
+      //------------------------------------------//
 
       var magnifierOptions = {
          type       : Maperial.MAGNIFIER,
@@ -83,7 +97,7 @@
          width      : "200",
          height     : "200",
          position   : { 
-            left     : "10", 
+            left     : "310", 
             bottom   : "10" 
          },
          padding    : 4,
@@ -91,6 +105,8 @@
          borderRadius: 10,
          draggable  : true
       }
+
+      //------------------------------------------//
       
       var map = {
          views : [{
@@ -101,6 +117,8 @@
             options : magnifierOptions,
          }]
       }
+
+      //------------------------------------------//
       
       return map
    }  

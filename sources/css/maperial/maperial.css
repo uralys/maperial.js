@@ -32,7 +32,7 @@
 	filter: alpha(opacity =         85);
 	opacity: .85;
 	z-index: 101;
-	/* cursor: move; */
+	-webkit-user-select: none;
 }
 
 a.trigger {
@@ -437,25 +437,20 @@ a.triggerDetailsMenu {
 }
 
 .panelDetailsMenu {
-	width: 356px;
-	overflow-y: scroll;
+	width: 290px;
+	overflow-y: auto;
 	overflow-x: hidden;
-	height: 437px;
+	max-height: 700px;
 }
 
 /* main menu div*/
-.styleMenu_menu_maindiv {
+.styleEditor_menu_maindiv {
 	float: left;
 	font-size: 60%;
-	width: 350px;
+	width: 285px;
 	padding: 3px;
-	border-style: solid;
-	border-width: 0px;
-	border-color: #000;
-	background-color: #000;
+	border: 0px;
 	color: #fff;
-	filter: alpha(opacity =         85);
-	opacity: .85;
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
@@ -471,11 +466,80 @@ a.triggerDetailsMenu {
 }
 
 /* main widget div*/
-.styleMenu_menu_widgetDiv {
-	max-height: 450px;
+.styleEditor_menu_widgetDiv {
 	overflow-x: hidden;
 	overflow-y: auto;
 	padding-right: 10px;
+	padding-left: 10px;
+}
+
+#widgetDivContent {
+	margin-top: -12px;
+}
+
+.detailLevelButton {
+	float: right;
+	margin-top: 3px;
+}
+
+.widgetSlider {
+	margin-top: 20px;
+}
+
+.accordionElementName {
+	font-size: 14px;
+	margin-top: 7px;
+	margin-left: 10px;
+}
+
+.accordionElement.selected {
+	background-color: #ddd!important;
+	color: #000!important;
+}
+
+#accordion {
+	margin-bottom:0px;
+}
+
+.accordionGroupTitle {
+	background-color: rgba(0,0,0,0)!important;
+	color: #eee!important;
+	font-size: 14px!important;
+	border: 0px!important;
+	padding-left: 35px!important;
+	padding-right: 0px!important;
+	padding-top: 0px!important;
+	padding-bottom: 0px!important;
+}
+
+.accordionGroupTitle.selected {
+	background-color: #ddd!important;
+	color: #000!important;
+}
+
+.accordionGroup {
+	background-color: rgba(0,0,0,0)!important;
+	color: #eee!important;
+	font-size: 13px!important;
+	border: 0px!important;
+	padding-left: 60px!important;
+}
+
+.accordionCategoryTitle {
+	background-color: rgba(0,0,0,0);
+	color: #eee;
+	font-size: 20px;
+	border: 0px;
+}
+
+.accordionCategory {
+	background-color: rgba(0,0,0,0);
+	color: #eee;
+	border: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
 /*-------------------------*/
@@ -502,16 +566,25 @@ a.triggerZooms {
 	
 }
 
-.panelZooms {
-	width: 780px;
-	height: 50px;
-	text-align: center;
+#Zooms {
+	width: 670px;
+    width: 665px;
 }
 
 .zoom-button {
-	background: #eee url('');
+	background: #aaa;
 	font-size: 11px;
 	color: #111;
+	width: 31px;
+	text-align: left;
+	border:0px;
+	cursor: default;
+}
+
+.zoom-button.ui-state-active{
+	font-size: 12px;
+	font-weight:bold;
+	background: #eee;
 }
 
 /*-------------------------*/
@@ -529,32 +602,47 @@ a.triggerColorBar {
 /* StyleMenu */
 
 /* zoom h2 */
-.styleMenu_menu_par_title_z {
+.styleEditor_menu_par_title_z {
 	display: none;
 }
 
 /*zoom select buttons*/
-.styleMenu_menu_zoom_selector {
+.zoomButtons {
 	width: 100%;
 }
 
 /*zoom slider*/
-.styleMenu_menu_sliderrangez {
+.zoomSlider {
 	width: 92%;
 	margin-left: 4%;
 }
 
 /* Widget slider*/
-.styleMenu_menu_slider {
+.styleEditorSlider {
 	width: 100px !important;
 	display: inline-block !important;
 }
 
 /* header of main section */
-.styleMenu_menu_par_title {
+.styleEditor_menu_par_title {
 	color: #fff;
 	font-size: 17px;
 	padding-left: 10px;
+	padding-top: 20px;
+}
+
+.styleEditor_menu_par_subrow {
+	color: #fff;
+	font-size: 13px;
+	padding-left: 10px;
+	padding-top: 20px;
+}
+
+.sublayerPartTitle {
+	font-style: italic;
+	margin-left: -14px;
+	margin-top: -5px;
+	color: #fff;
 }
 
 /****************************/

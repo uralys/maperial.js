@@ -38,7 +38,6 @@
 	      })
 	   }
 	   
-	   console.log("OPEN")
 	   CartothequeController.openDemo(0)
 	}
 
@@ -60,11 +59,114 @@
 
       App.maperial.build(CartothequeController.maps[num](), options)
 	}
-	
+
+   //==================================================================//
+   
+   CartothequeController.maps0 = function()
+   {
+      var mainConfig   = ConfigManager.newConfig();
+      var lensConfig   = ConfigManager.newConfig();
+      var minifierConfig   = ConfigManager.newConfig();
+      
+      mainConfig.hud.elements[HUD.COMPOSITIONS]  = {
+         show : true,  
+         type : HUD.PANEL,    
+         label : "Composition",      
+         disableDrag : true,
+         position   : { 
+            left    : "0", 
+            top     : "40%" 
+         },
+      };
+
+      mainConfig.map.defaultZoom    = 6
+      mainConfig.map.latitude       = 51.505
+      mainConfig.map.longitude      = -0.09
+      
+      var customTransport = { 
+            type: LayersManager.Images, 
+            source: {
+               type     : Source.Images,
+               params   : { src: Source.IMAGES_STAMEN_WATERCOLOR },
+               id       : Source.IMAGES_STAMEN_WATERCOLOR
+            },
+            params: {
+               
+            },
+            composition: {
+               shader : Maperial.MulBlend,
+               params : { uParams : [ 0.38, -0.27, 3 ] }
+            }
+      }
+      
+      mainConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
+      mainConfig.layers.push        (customTransport)
+      
+      lensConfig.layers       = mainConfig.layers
+      minifierConfig.layers   = mainConfig.layers
+      
+      var mainOptions = {
+         type       : Maperial.MAIN,
+         name       : "maperialDemo"
+      }
+      
+      var lensOptions = {
+         type       : Maperial.LENS,
+         width      : "200",
+         height     : "200",
+         position   : { 
+            left    : "50%", 
+            bottom  : "27%" 
+         },
+         padding    : 2,
+         deltaZoom  : 1,
+         borderRadius: 150,
+         draggable  : true
+      }
+      
+      var minifierOptions = {
+         type       : Maperial.MINIFIER,
+         width      : "200",
+         height     : "200",
+         position   : { 
+            right   : "10%", 
+            bottom  : "18%" 
+         },
+         padding    : 2,
+         deltaZoom  : -2,
+         draggable  : true
+      }
+
+      //------------------------------------------//
+      // test leaflet
+      
+      mainConfig.useLeaflet = true
+      lensConfig.useLeaflet = true
+      minifierConfig.useLeaflet = true
+
+      //------------------------------------------//
+   
+      var map = {
+         views : [{
+            config  : mainConfig,
+            options : mainOptions,
+         },{
+            config  : lensConfig,
+            options : lensOptions,
+         },{
+            config  : minifierConfig,
+            options : minifierOptions,
+         }]
+      }
+         
+      //------------------------------------------//
+         
+      return [map]
+   }
 	
 	//==================================================================//
 	
-	CartothequeController.maps0 = function()
+	CartothequeController.maps1 = function()
 	{
 	   var mainConfig   = ConfigManager.newConfig();
       var minifierConfig   = ConfigManager.newConfig();
@@ -112,7 +214,7 @@
 	
 	//==================================================================//
 	
-	CartothequeController.maps1 = function()
+	CartothequeController.maps2 = function()
 	{
 	   var mainConfig   = ConfigManager.newConfig();
 	   var anchor1Config   = ConfigManager.newConfig();
@@ -170,7 +272,7 @@
 
    //==================================================================//
    
-   CartothequeController.maps2 = function()
+   CartothequeController.maps3 = function()
    {
       var mainConfig   = ConfigManager.newConfig();
       var magnifierConfig   = ConfigManager.newConfig();
@@ -217,7 +319,7 @@
 
    //==================================================================//
    
-   CartothequeController.maps3 = function()
+   CartothequeController.maps4 = function()
    {
       var mainConfig   = ConfigManager.newConfig();
       var lensConfig   = ConfigManager.newConfig();
@@ -261,99 +363,6 @@
       return [map]
    }
 
-   //==================================================================//
-   
-   CartothequeController.maps4 = function()
-   {
-      var mainConfig   = ConfigManager.newConfig();
-      var lensConfig   = ConfigManager.newConfig();
-      var minifierConfig   = ConfigManager.newConfig();
-      
-      mainConfig.hud.elements[HUD.COMPOSITIONS]  = {
-         show : true,  
-         type : HUD.PANEL,    
-         label : "Composition",      
-         disableDrag : true,
-         position   : { 
-            left    : "0", 
-            top     : "40%" 
-         },
-      };
-      
-      mainConfig.map.defaultZoom    = 6
-      mainConfig.map.latitude       = 39.504041
-      mainConfig.map.longitude      = 134.139633
-      
-      var customTransport = { 
-            type: LayersManager.Images, 
-            source: {
-               type     : Source.Images,
-               params   : { src: Source.IMAGES_STAMEN_WATERCOLOR },
-               id       : Source.IMAGES_STAMEN_WATERCOLOR
-            },
-            params: {
-               
-            },
-            composition: {
-               shader : Maperial.MulBlend,
-               params : { uParams : [ 0.38, -0.27, 3 ] }
-            }
-      }
-      
-      mainConfig.layers.push        (LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-      mainConfig.layers.push        (customTransport)
-      
-      lensConfig.layers       = mainConfig.layers
-      minifierConfig.layers   = mainConfig.layers
-      
-      var mainOptions = {
-         type       : Maperial.MAIN,
-         name       : "maperialDemo"
-      }
-      
-      var lensOptions = {
-         type       : Maperial.LENS,
-         width      : "200",
-         height     : "200",
-         position   : { 
-            left    : "50%", 
-            bottom  : "27%" 
-         },
-         padding    : 2,
-         deltaZoom  : 1,
-         borderRadius: 150,
-         draggable  : true
-      }
-      
-      var minifierOptions = {
-         type       : Maperial.MINIFIER,
-         width      : "200",
-         height     : "200",
-         position   : { 
-            right   : "10%", 
-            bottom  : "18%" 
-         },
-         padding    : 2,
-         deltaZoom  : -2,
-         draggable  : true
-      }
-      
-      var map = {
-         views : [{
-            config  : mainConfig,
-            options : mainOptions,
-         },{
-            config  : lensConfig,
-            options : lensOptions,
-         },{
-            config  : minifierConfig,
-            options : minifierOptions,
-         }]
-      }
-         
-      return [map]
-   }
-   
 	//==================================================================//
 
 	App.CartothequeController = CartothequeController;

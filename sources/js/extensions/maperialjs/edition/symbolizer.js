@@ -1,16 +1,21 @@
 
-// -------------------------------------------//
-//	 	Symbolizer
-// -------------------------------------------//
+//-------------------------------------------//
+//Symbolizer
+//-------------------------------------------//
 
 this.Symbolizer = {};
 
-// -------------------------------------------//
+//-------------------------------------------//
 //Sym / param list
 
 Symbolizer.params = {
-    PolygonSymbolizer : [ "fill", "alpha" ],
-    LineSymbolizer : [ "width", "stroke", "dasharray", "alpha" , "linejoin" , "linecap" ],
+      "PolygonSymbolizer"        : [ "fill", "alpha" ],
+      "LineSymbolizer"           : [ "width", "stroke", "dasharray", "alpha" , "linejoin" , "linecap" ],
+      "PolygonPatternSymbolizer" : [ "file" ],
+      "PointSymbolizer"          : [ "file" , "opacity" ],
+      "TextSymbolizer"           : [ "face-name", "size" , "opacity" , "dx", "dy" , "fill", "text-transform" ],
+      "ShieldSymbolizer"         : [  "file" , "opacity" , "face-name", "size" , "opacity" , "dx", "dy" , "fill", "text-transform", "shield-dx" , "shield-dy" ],
+      "MarkersSymbolizer"        : [ "placement", "marker-type", "file", "width", "height", "stroke-opacity", "stroke-width", "stroke", "opacity", "fill" ],
 };
 
 /*
@@ -23,22 +28,23 @@ Symbolizer.params2 = {
                "center_width", "center_stroke", "center_dasharray", "center_alpha" , "center_linejoin" , "center_linecap"
     ]
 };
-*/
+ */
 
 Symbolizer.combos = {
-    "linejoin" : [ "miter" , "round" , "bevel" ],
-    "linecap"  : [ "butt" , "round" , "square" ],
+      "linejoin"  : [ "miter" , "round" , "bevel" ],
+      "linecap"   : [ "butt" , "round" , "square" ],
+      "width"     : [ "xsmall" , "small" , "standard" , "large" , "xlarge" ],
 };
 
 Symbolizer.defaultValues = {
-   fill : "rgba(0,0,0,0)",
-   stroke : "rgba(0,0,0,0)",
-   width : "0",
-   alpha : "1.0",
-   dasharray : "",
-   linejoin : "round",
-   linecap : "round",
-   /*
+      fill : "rgba(0,0,0,0)",
+      stroke : "rgba(0,0,0,0)",
+      width : "0",
+      alpha : "1.0",
+      dasharray : "",
+      linejoin : "round",
+      linecap : "round",
+      /*
    casing_stroke : "rgba(0,0,0,0)",
    casing_width : "0",
    casing_alpha : "1.0",
@@ -57,12 +63,12 @@ Symbolizer.defaultValues = {
    border_dasharray : "",
    border_linejoin : "round",
    border_linecap : "round" 
-   */  
+       */  
 };
 
-// -------------------------------------------//
+//-------------------------------------------//
 
 Symbolizer.getParamName = function(symb,id){
-     return Symbolizer.params[symb][id];
+   return Symbolizer.params[symb][id];
 }
 

@@ -10,12 +10,17 @@ YoutubeManager.prototype.openVideoWindow = function(lang)
    var me = this;
    this.lang = lang;
 
-   $("#videoWindow").modal();
-   $('#videoWindow').off("hide");
-   $('#videoWindow').off("show");
+   $('#videoWindow').off('reveal:hidden');
+   $('#videoWindow').off("reveal:revealed");
+   
+   $("#videoWindow").reveal({
+      animation: 'fade',
+      animationspeed: 100, 
+   });
 
-   $('#videoWindow').on("hide", function(){
+   $('#videoWindow').on('reveal:hidden', function(){
       me.stop();
+      $("#maperialVideo").remove()
    });
 
    var me = this;

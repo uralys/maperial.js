@@ -8,11 +8,14 @@ HUD.prototype.refreshAttribution = function(){
    //------------------------------------------------------------//
    
    var mapWidth = this.mapView.context.mapCanvas[0].offsetWidth
+   console.log("refreshAttribution", mapWidth)
    
    if(this.element("attribution").width() > mapWidth){
+      console.log("refreshAttribution SMALL")
       this.buildAttributions(true)
    }
    else{
+      console.log( this.element("attribution"))
       this.element("attribution").css("max-width", "1500px")      
       this.element("attribution").css("width", this.element("attribution").width() + 2)
       this.placeElementAt(this.element("attribution"), -2, "bottom")

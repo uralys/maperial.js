@@ -1,0 +1,139 @@
+<html>
+
+<head>
+<title>Demo Maperial- Style Edition</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+<link href="http://static.maperial.localhost/css/maperial-js.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<img id="waitingSpin" src="http://static.maperial.localhost/images/mapediting/spin.gif" />
+</body>
+
+<script type="text/javascript" src="/js/tools/script-loader.js"></script>
+
+<script type="text/javascript">
+   window.scriptLoader
+         .getScripts(
+               [
+                "http://sources.maperial.localhost/pages/dev/misc/jquery.min.js",
+                "http://sources.maperial.localhost/pages/dev/misc/jquery-ui.js",
+                "http://sources.maperial.localhost/pages/dev/misc/leaflet.js",
+                "/js/libs/jquery.reveal.js",
+
+                // tools
+                "/js/tools/utils.js",
+                "/js/libs/jquery.mousewheel.min.js",
+                "/js/libs/jquery.selectbox-0.2.min.js",
+                "/js/libs/jquery.validate.min.js",
+                "/js/libs/proj4js-compressed.js",
+
+                // libs
+                "/js/extensions/maperialjs/libs/gl-matrix-min.js",
+                "/js/extensions/maperialjs/libs/coordinate-system.js",
+                "/js/extensions/maperialjs/libs/geoloc.js",
+                "/js/extensions/maperialjs/libs/colorpicker.js",
+                "/js/extensions/maperialjs/libs/RGBColor.js",
+                "/js/extensions/maperialjs/libs/hashmap.js",
+                "/js/extensions/maperialjs/libs/canvasutilities.js",
+                "/js/extensions/maperialjs/libs/canvg.js",
+                "/js/extensions/maperialjs/libs/StackBlur.js",
+                "/js/extensions/maperialjs/libs/heatmap.js",
+                "/js/extensions/maperialjs/libs/heatmap-leaflet.js",
+                "/js/extensions/maperialjs/libs/QuadTree.js",
+
+                // rendering
+                "/js/extensions/maperialjs/rendering/gl-tools.js",
+                "/js/extensions/maperialjs/rendering/gl-rasterlayer.js",
+                "/js/extensions/maperialjs/rendering/gl-imagelayer.js",
+                "/js/extensions/maperialjs/rendering/gl-shadelayer.js",
+                "/js/extensions/maperialjs/rendering/gl-tile.js",
+                "/js/extensions/maperialjs/rendering/gl-vectoriallayer.js",
+                "/js/extensions/maperialjs/rendering/render-line.js",
+                "/js/extensions/maperialjs/rendering/render-text.js",
+                "/js/extensions/maperialjs/rendering/tile-renderer.js",
+                "/js/extensions/maperialjs/rendering/map-renderer.js",
+
+                // modules
+                "/js/extensions/maperialjs/events.js",
+                "/js/extensions/maperialjs/source.js",
+                "/js/extensions/maperialjs/mouse.js",
+                "/js/extensions/maperialjs/mover.js",
+                "/js/extensions/maperialjs/template-builder.js",
+
+                // hud
+                "/js/extensions/maperialjs/hud/hud.js",
+                "/js/extensions/maperialjs/hud/panel-composition.js",
+                "/js/extensions/maperialjs/hud/panel-layer-settings.js",
+                "/js/extensions/maperialjs/hud/panel-switch.js",
+                "/js/extensions/maperialjs/hud/panel-controls.js",
+                "/js/extensions/maperialjs/hud/panel-latlon.js",
+                "/js/extensions/maperialjs/hud/panel-scale.js",
+                "/js/extensions/maperialjs/hud/panel-settings.js",
+                "/js/extensions/maperialjs/hud/panel-attribution.js",
+                "/js/extensions/maperialjs/hud/triggers.js",
+
+                // managers
+                "/js/extensions/maperialjs/managers/config-manager.js",
+                "/js/extensions/maperialjs/managers/styles-manager.js",
+                "/js/extensions/maperialjs/managers/colorbars-manager.js",
+                "/js/extensions/maperialjs/managers/layers-manager.js",
+                "/js/extensions/maperialjs/managers/sources-manager.js",
+                "/js/extensions/maperialjs/managers/layers-creation.js",
+
+                // styleEditor
+                "/js/extensions/maperialjs/styleEditor/style-editor.js",
+                "/js/extensions/maperialjs/styleEditor/loader.js",
+                "/js/extensions/maperialjs/styleEditor/accordion.js",
+                "/js/extensions/maperialjs/styleEditor/widget-manager.js",
+                "/js/extensions/maperialjs/styleEditor/zoom-manager.js",
+                "/js/extensions/maperialjs/styleEditor/tools.js",
+                
+                // edition
+                "/js/extensions/maperialjs/edition/boundingbox-drawer.js",
+                "/js/extensions/maperialjs/edition/colortool.js",
+                "/js/extensions/maperialjs/edition/symbolizer.js",
+
+                // colorbar
+                "/js/extensions/maperialjs/colorbar/colorbar-rainbow.js",
+                "/js/extensions/maperialjs/colorbar/colorbar.js",
+
+                "/js/extensions/maperialjs/mapView.js",
+                "/js/extensions/maperialjs/maperial.js"],
+
+            function() {
+
+                  $(window).on(MaperialEvents.READY, function() {
+                     $("#waitingSpin").css("display", "none")
+                  })
+
+               	  var mainConfig   = ConfigManager.newConfig();
+			      
+			      mainConfig.map.defaultZoom    = 11
+			      mainConfig.map.latitude       = 46.316584
+			      mainConfig.map.longitude      = 6.486998
+
+			      var wmsURL = "http://api.maperial.com/geo3?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913"
+                  mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.WMS, wmsURL))
+                  
+			      var mainOptions = {
+			         type       : Maperial.MAIN,
+			         name       : "maperialDemo"
+			      }
+			      
+			      var map = {
+			         views : [{
+			            config  : mainConfig,
+			            options : mainOptions,
+			         }]
+			      }
+			         
+                  var maperial = new Maperial()
+            	  maperial.build([map])
+               });
+</script>
+
+
+</html>
+

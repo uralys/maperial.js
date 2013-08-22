@@ -11,7 +11,7 @@ MaperialAuth.authorize = function()
    if(App.Globals.isLocal){
       MaperialAuth.dummy();
       UserManager.getAccount();
-      $("#loginWindow").modal("hide");
+      $("#loginWindow").trigger("reveal:close");
       return;
    }
 
@@ -32,7 +32,7 @@ MaperialAuth.tokenGranted = function (token, email)
    App.user.set("loggedIn", true);
 
    UserManager.getAccount();
-   $("#loginWindow").modal("hide");
+   $("#loginWindow").trigger("reveal:close");
 
    MaperialAuth.checkIfIsLoggedIn();
 }

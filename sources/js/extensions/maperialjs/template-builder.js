@@ -286,7 +286,8 @@ TemplateBuilder.prototype.buildQuickEdit = function(){
 //==================================================================//
 
 TemplateBuilder.prototype.buildZooms = function(){
-   this.buildPanel(HUD.ZOOMS);
+   var html = "<div class=\"reveal-modal withborder\" id=\""+HUD.ZOOMS+"\" ></div>";
+   this.container.append(html);
 }
 
 //==================================================================//
@@ -315,7 +316,7 @@ TemplateBuilder.prototype.prepareAttribution = function(){
    html += "<p id=\"attribution_"+this.name+"\" class=\"attribution\">"
    html += "</p>"
 
-      this.container.append(html);
+   this.container.append(html);
 }
 
 //==================================================================//

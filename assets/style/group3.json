@@ -23,7 +23,7 @@
         "landmark": { "type": "poly" , "line" : "none" , 
                        "alias" : { 
                            "Forest" : "forest" , 
-                           "Military" : "military" , 
+                           "Military1" : "military" , 
                            "Park" : "playground" , 
                            "Cemetery" : "cemetery" , 
                            "Attraction" : "attraction" , 
@@ -37,10 +37,10 @@
                            "Aerodrome" : "aerodrome" , 
                            "Runway" : "runway" , 
                            "Residential" : "residential" , 
-                           "Barrack" : "barracks"  
+                           "Barracks" : "barracks"  
                        } 
                     },
-        "military": { "type": "poly" , "line" : "none" }
+        "military2": { "type": "poly" , "line" : "none" }
             },
    "text":  {
         "landmark_poly_text": { "type": "text"},

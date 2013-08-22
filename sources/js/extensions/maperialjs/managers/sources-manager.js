@@ -144,7 +144,7 @@ SourcesManager.prototype.releaseNetwork = function () {
    
    for(var requestId in this.requests){
 
-      if(!this.complete[requestId]){
+      if(!this.complete[requestId] || this.errors[requestId] || !this.data[requestId]){
          try{
             this.requests[requestId].abort();
          }
@@ -156,7 +156,7 @@ SourcesManager.prototype.releaseNetwork = function () {
       delete this.complete[requestId];
       delete this.requests[requestId];
    }
-   
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -221,10 +221,13 @@ SourcesManager.prototype.loadSources = function (x, y, z, receiverName) {
 
       //------------------------------------------//
 
-      if (this.requests[requestId]){
-         if (this.complete[requestId])
-            $(window).trigger(MaperialEvents.SOURCE_READY, [source, this.data[requestId], x, y, z])
-         
+      if (this.requests[requestId] && !this.complete[requestId]){
+         // request already launched
+         continue
+      }
+      
+      if ( this.complete[requestId] && !this.errors[requestId]){
+         $(window).trigger(MaperialEvents.SOURCE_READY, [source, this.data[requestId], x, y, z])
          continue
       }
 
@@ -268,7 +271,6 @@ SourcesManager.prototype.LoadVectorial = function ( source, x, y, z ) {
          else {
             me.data[requestId] = data;
             $(window).trigger(MaperialEvents.SOURCE_READY, [source, data, x, y, z])
-//            me.maperial.mapRenderer.sourceReady(source, data, x, y, z);
          }
 
          me.complete[requestId] = true;
@@ -299,7 +301,6 @@ SourcesManager.prototype.LoadImage = function ( source, x, y, z, receiverName ) 
       me.data[requestId]  = img;
 
       $(window).trigger(MaperialEvents.SOURCE_READY, [source, me.data[requestId], x, y, z])
-//      me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
    };
 
    this.requests[requestId].onerror = function (oEvent) {
@@ -344,18 +345,18 @@ SourcesManager.prototype.LoadRaster = function ( source, x, y, z ) {
    this.requests[requestId].open ("GET", this.getURL(source, x, y, z), true);
    this.requests[requestId].responseType = "arraybuffer";
 
-   this.requests[requestId].onload = function (oEvent) {      
+   this.requests[requestId].onload = function (oEvent) {  
+      
       var arrayBuffer = me.requests[requestId].response;  // Note: not this.requests[requestId].responseText
       if (arrayBuffer && ( me.requests[requestId].status != 200 || arrayBuffer.byteLength <= 0 )) {
          arrayBuffer = null;
       }
 
-      me.errors[requestId] = arrayBuffer != null;
+      me.errors[requestId] = arrayBuffer == null;
       me.complete[requestId]  = true;
       me.data[requestId]  = arrayBuffer;
-
+      
       $(window).trigger(MaperialEvents.SOURCE_READY, [source, me.data[requestId], x, y, z])
-     // me.maperial.mapRenderer.sourceReady(source, me.data[requestId], x, y, z);
    };
 
    this.requests[requestId].onerror = function (oEvent) {
@@ -388,8 +389,9 @@ SourcesManager.prototype.isTileLoaded = function ( x, y, z, receiverName) {
          continue
          
       var requestId = this.requestId(source, x, y, z);
+//      console.log("requestId", requestId)
 
-      if (source.type != Source.Custom && !this.complete[requestId])
+      if ( source.type != Source.Custom && (!this.complete[requestId] || this.errors[requestId] || !this.data[requestId]))
          return false;
    }
 
@@ -581,5 +583,12 @@ SourcesManager.prototype.getWMSURL = function (source, tx, ty, z, receiverName) 
          
          
          break;
+         
+      default :
+         var topLeft       = topLeftM;
+         var bottomRight   = bottomRightM;
+      
+         return(source.params.src + "&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+         
    }
 }

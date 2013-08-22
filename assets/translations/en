@@ -152,6 +152,15 @@
 
     "New8Title"			: "Bathymetry",
     "New8Text"			: "We are currently working on another algorithm measuring bathymetry, and will provide soon new beautiful tiles for your maps.",
+
+    "New9Title"			: "New map renderer",
+    "New9Text"			: "We've built a new system to render maps client side. Now it's possible to have many views on a single map to enhance the user's experience : lens, minifier, anchors. Check out our demos",
+    
+    "New10Title"		: "Heatmap",
+    "New10Text"			: "From our freshly baked algotrithm to render vectorial data, we are about to release our own heatmap renderer",
+
+    "New11Title"		: "Prezi",
+    "New11Text"			: "10 bubbles to present Maperial within 5 min : check out our latest Prezi !",
     
     "KeepInMind"		: "Keep in mind this list is entirely customisable to suit your needs (Formats, representations). Contact us !",
     
@@ -230,7 +239,7 @@
     "Prices"			: "Prices", 
     "PricesText"		: "The tool and its features are entirely built on your need. We choose with you the best solution and the price is calculated from this step. Contact us !",
    
-    "DemoTitle"			: ["Minifier","Anchors","Lens","Magnifier"], 
+    "DemoTitle"			: ["Heatmap", "Minifier","Anchors","Lens","Magnifier"], 
     
     "":""
 }

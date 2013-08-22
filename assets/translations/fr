@@ -151,6 +151,15 @@
 
     "New8Title"			: "Bathymétrie",
     "New8Text"			: "Nous travaillons actuellement sur un nouvel algorithme de calcul de topographie basé sur la bathymétrie. Nous vous proposerons bientôt de nouvelles tuiles pour des cartes encore plus belles.",
+
+    "New9Title"			: "Nouveau moteur client",
+    "New9Text"			: "Le moteur de rendu des cartographies coté client à été entièrement retravaillé et propose dorénavant plusieurs vues pour une même carte. Ce système permet par exemple d'avoir une lentille sur la carte, ou inversement une minicarte pour situer l'utilisateur plus globalement.",
+
+    "New10Title"		: "Heatmap",
+    "New10Text"			: "Basé sur notre nouvel algorithme de rendu des données vectorielles, nous finalisons notre système de rendu de heatmaps.",
+    
+    "New11Title"		: "Prezi",
+    "New11Text"			: "10 points pour présenter Maperial en 5 minutes : ouvrez notre dernier Prezi !",
     
     "KeepInMind"		: "N'oubliez pas que cette liste de fonctionnalités est entièrement adaptable à votre besoin (formats, représentations...). Contactez nous !",
     
@@ -229,7 +238,7 @@
     "Prices"			: "Tarifs",
     "PricesText"		: "La liste des fonctionnalités de l'outil est entièrement adaptable à votre besoin. Nous déterminons avec vous la solution la plus efficace et vous proposons un tarif sur mesure. Contactez nous !",
  
-    "DemoTitle"			: ["Travelling","Ancres","Lentille","Zoom"], 
+    "DemoTitle"			: ["Heatmap", "Travelling","Ancres","Lentille","Zoom"], 
        
     "":""
 }

@@ -185,7 +185,7 @@ DatasetManager.createRaster = function(){
          dataset.rasters.pushObject(raster);
          Utils.editObjectInArray(dataset, "hasNoRaster", false);
 
-         $('#configureRasterWindow').modal("hide");
+         $('#configureRasterWindow').trigger("reveal:close");
 
          DatasetManager.addRaster(raster);
          DatasetManager.checkRaster(raster);

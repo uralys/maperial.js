@@ -28,10 +28,10 @@ HomeMover.prototype.move = function() {
 
 // ----------------------------//
 
-var homeMover = new HomeMover();
-setInterval( (function(homeMover){
-   return function(){
-      homeMover.move();
-   }
-})(homeMover) 
-, 30 );
+//var homeMover = new HomeMover();
+//setInterval( (function(homeMover){
+//   return function(){
+//      homeMover.move();
+//   }
+//})(homeMover) 
+//, 30 );

@@ -48,7 +48,7 @@ function MapView(maperial, map, options, config){
    this.layersManager      = null;
 
    this.geoloc             = null;
-   this.styleMenu          = null;
+   this.styleEditor          = null;
    this.colorbarRenderer   = null;
    
    //--------------------------------------------------------------//
@@ -106,8 +106,8 @@ MapView.prototype.reset = function(){
    }
 
    try{
-      if(this.styleMenu)
-         this.styleMenu.removeListeners();
+      if(this.styleEditor)
+         this.styleEditor.removeListeners();
    }catch(e){}
 
    try{
@@ -438,7 +438,7 @@ MapView.prototype.buildAll = function() {
    this.buildHUD();
 
    if(this.config.map.edition)
-      this.buildStyleMenu();
+      this.buildStyleEditor();
 
    if(!this.colorbarsManager.colorbarCacheEmpty()){
       this.buildColorbar();
@@ -462,11 +462,14 @@ MapView.prototype.buildAll = function() {
 }
 
 //==================================================================//
+// DEMO LEAFLET ONLY
 
 MapView.prototype.buildLeafletLayer = function() {
 
    console.log("Adding Leaflet...")
    
+   //-----------------------------------------------------------//
+
    var latitude   = this.startLatitude()
    var longitude  = this.startLongitude()
    var zoom       = this.startZoom()
@@ -479,10 +482,18 @@ MapView.prototype.buildLeafletLayer = function() {
       attributionControl : false,
    }).setView([latitude, longitude], zoom);
 
-//   if(this.type == Maperial.MAIN){
-      L.marker([51.5, -0.09]).addTo(leafletLayer)
-      .bindPopup("<b>Grreat!</b><br />GG Maperial").openPopup();
-//   }
+   var london =  L.marker([51.505537, -0.075452]).addTo(leafletLayer)
+   .bindPopup("<b>London</b><br/>Tower Bridge");
+
+   var paris = L.marker([48.87197, 2.331713]).addTo(leafletLayer)
+   .bindPopup("<b>Paris</b><br/>Opéra");
+   
+   var brussel = L.marker([50.84191, 4.362424]).addTo(leafletLayer)
+   .bindPopup("<b>Brussel</b><br/>Royal Palace");
+
+   if(this.type == Maperial.MAIN){
+      london.openPopup()
+   }
 
    L.circle([51.508, -0.11], 500, {
       color: 'red',
@@ -533,10 +544,11 @@ MapView.prototype.buildLeafletLayer = function() {
    function onMapMove(e) {
       var center = leafletLayer.getCenter()
       mapView.SetCenter (center.lat, center.lng)
-      $(window).trigger(MaperialEvents.MAP_MOVING, [mapView.map, mapView.name, mapView.type]);
+      mapView.SetZoom (leafletLayer.getZoom())
+      $(window).trigger(MaperialEvents.MAP_MOVING, [mapView.map, mapView.name, mapView.type, mapView.context.zoom]);
    }
 
-   function onMapZom(e) {
+   function onMapZoom(e) {
       mapView.SetZoom (leafletLayer.getZoom())
    }
 
@@ -545,7 +557,7 @@ MapView.prototype.buildLeafletLayer = function() {
       leafletLayer.on('move',  onMapMove);
    }
    
-   leafletLayer.on('zoomend',  onMapZom);
+   leafletLayer.on('zoomend',  onMapZoom);
    
    this.context.leaflet = leafletLayer
    console.log("  Leaflet ready")
@@ -591,14 +603,16 @@ MapView.prototype.buildMap = function() {
       panel.draggable({ 
          snap           : false, 
          containment    : "#TheMaperial",
-         scroll         : false,   
+         scroll         : false,    
          start: function(event) {
             if(me.type == Maperial.LENS)
                me.moveChildInterval = setInterval( function(){ me.refreshCamera() } , 0.01 );
          },
          stop: function(event) {
-            clearInterval(me.moveChildInterval);
-            me.moveChildInterval = null
+            if(me.moveChildInterval){
+               clearInterval(me.moveChildInterval);
+               me.moveChildInterval = null
+            }
          }
       });
    }
@@ -617,8 +631,8 @@ MapView.prototype.initGeoloc = function() {
 
 //==================================================================//
 
-MapView.prototype.buildStyleMenu = function() {
-   this.styleMenu = new StyleMenu($("#DetailsMenu_"+this.name) , $("#QuickEdit_"+this.name) , $("#Zooms_"+this.name) , this);
+MapView.prototype.buildStyleEditor = function() {
+   this.styleEditor = new StyleEditor($("#DetailsMenu_"+this.name) , $("#QuickEdit_"+this.name) , $("#"+HUD.ZOOMS) , this);
 }
 
 //==================================================================//
@@ -694,10 +708,9 @@ MapView.prototype.refreshScreen = function() {
       
    this.setCanvasSize()
       
-   $('body').css('overflow', 'hidden');
    this.context.mapCanvas.css("position", "relative");
-   $('body').css("position", "relative");
-   
+//   $('body').css("position", "relative");
+
    try{
       this.mapRenderer.fitToSize();
    }
@@ -705,6 +718,7 @@ MapView.prototype.refreshScreen = function() {
       console.log("------------> fito size pb")
       console.log(e)
    }
+
 
    try{
       this.hud.placeElements();
@@ -721,7 +735,6 @@ MapView.prototype.refreshScreen = function() {
    }
 
    this.hud.styleView()
-
    $('body').css('overflow', 'auto');
 }
 
@@ -774,7 +787,18 @@ MapView.prototype.SetCenter = function(lat,lon){
 }
 
 MapView.prototype.SetZoom = function(z){
-   if ( z > -1 && z < 19 ){
+   
+   if ( z > 0 && z < 19 ){
+
+      switch(this.type){
+         case Maperial.MINIFIER : 
+         case Maperial.MAGNIFIER : 
+         case Maperial.LENS :
+            this.deltaZoom += z - this.context.zoom
+            break;
+      }
+      
+   
       this.context.zoom = z;
    }
 }
@@ -903,7 +927,7 @@ MapView.prototype.refreshCamera = function (viewTriggering, typeTriggering, zoom
 
    if(!zoom)
       zoom = this.maperial.getZoom(this.map)
-
+      
    this.refreshZoom(typeTriggering, zoom);
    
    switch(this.type){
@@ -911,7 +935,7 @@ MapView.prototype.refreshCamera = function (viewTriggering, typeTriggering, zoom
          this.context.centerM = this.maperial.getMainView(this.map).context.centerM
          break;
 
-      case Maperial.MAGNIFIER : 
+      case Maperial.MAGNIFIER :
          this.context.centerM = this.maperial.getView(viewTriggering).context.mouseM
          break;
 

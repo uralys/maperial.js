@@ -20,12 +20,20 @@
 	      openScreenshots: Ember.Route.transitionTo('screenshots'),
 	      openAllNews    : Ember.Route.transitionTo('allNews'),
 			openDashboard  : Ember.Route.transitionTo('dashboard'),
+			openPrezi      : function(){ App.openPrezi() },
 
 			translateEn    : function(){ App.translator.setLang('en') },
 			translateFr    : function(){ App.translator.setLang('fr') },
 
 			openTryscreen  : function(){ App.finishLoadings("tryscreen") },
-			signin         : function(){$("#loginWindow").modal()},
+			signin         : function(){
+
+			   $("#loginWindow").reveal({
+			      animation: 'fade',
+			      animationspeed: 100, 
+			   });
+			   
+			},
 	      maperialLogin  : function(){MaperialAuth.authorize()},
 			
 			//-------------------------------------------------------//

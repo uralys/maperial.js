@@ -15,6 +15,7 @@ body{
 	cursor: pointer;
 	cursor: hand;
 	background: transparent;
+	width: 40px;
 }
 
 #langButtons{
@@ -449,8 +450,8 @@ body{
 /*--------------------------------*/
 #headerButtons {
 	float: right;
-	margin-top: 25px;
-	margin-right: 65px;
+	margin-top: 10px;
+	margin-right: 75px;
 }
 
 #headerButtons .btn-large {
@@ -582,6 +583,24 @@ body{
 
 .selectable:hover {
 	outline: 3px solid #217E03;
+}
+
+/*------------------------------------------------
+	overidding jquery-ui 		*/
+
+.ui-state-default {
+	background: #fff
+}
+
+.ui-buttonset .ui-button {
+	margin-left: 0px;
+	margin-right: -5px;
+}
+
+.ui-accordion .ui-accordion-content {
+	padding: 1em 3.2em;
+	border-top: 0;
+	overflow: auto;
 }
 
 /*------------------------------------------------

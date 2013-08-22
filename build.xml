@@ -78,6 +78,7 @@
 			<fileset file="sources/css/libs/jquery.selectbox.css" />
 			<fileset file="sources/css/libs/maki-sprite.css" />
 			<fileset file="sources/css/libs/tooltipster.css" />
+			<fileset file="sources/css/libs/reveal.css" />
 
 			<fileset file="sources/css/mapediting/colorpicker.css" />
 			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
@@ -127,6 +128,7 @@
 			<fileset file="sources/css/libs/maki-sprite.css" />
 			<fileset file="sources/css/libs/jquery.selectbox.css" />
 			<fileset file="sources/css/libs/tooltipster.css" />
+			<fileset file="sources/css/libs/reveal.css" />
 
 			<fileset file="sources/css/mapediting/colorpicker.css" />
 			<fileset file="sources/css/mapediting/ajaxwaitspin.css" />
@@ -209,6 +211,8 @@
 			<arg value="--js" />
 			<arg value="sources/js/libs/jquery.tooltipster.min.js" />
 			<arg value="--js" />
+			<arg value="sources/js/libs/jquery.reveal.js" />
+			<arg value="--js" />
 			<arg value="sources/js/tools/utils.js" />
 			<arg value="--js" />
 			<arg value="sources/js/tools/offscreen.js" />
@@ -231,6 +235,13 @@
 			<arg value="sources/js/extensions/maperialjs/libs/canvg.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/libs/StackBlur.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/heatmap.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/heatmap-leaflet.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/QuadTree.js" />
+
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/rendering/gl-tools.js" />
@@ -307,13 +318,24 @@
 			<arg value="sources/js/extensions/maperialjs/managers/layers-creation.js" />
 
 			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/styleEditor/style-editor.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/styleEditor/loader.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/styleEditor/accordion.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/styleEditor/widget-manager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/styleEditor/zoom-manager.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/styleEditor/tools.js" />
+			
+			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/edition/boundingbox-drawer.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/edition/colortool.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/edition/symbolizer.js" />
-			<arg value="--js" />
-			<arg value="sources/js/extensions/maperialjs/edition/style-menu.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/colorbar/colorbar-rainbow.js" />
@@ -671,9 +693,14 @@
 	</target>
 
 	<!-- DEV ONLY -->
-	<target name="copy-bootstrap">
+	<target name="_dev-copy-bootstrap">
 		<copy file="/Users/mad/Projects/Maperial/MaperialWebapp/target/scala-2.10/resource_managed/main/public/stylesheets/bootstrap/bootstrap.min.css" todir="sources/css/" />
 		<copy file="/Users/mad/Projects/Maperial/MaperialWebapp/target/scala-2.10/resource_managed/main/public/stylesheets/bootstrap/responsive.min.css" todir="sources/css/" />
 		<antcall target="copy-assets"/>
+	</target>
+
+	<target name="_dev-build-css">
+		<antcall target="build-css"/>
+		<antcall target="replace-urls"/>
 	</target>
 </project>

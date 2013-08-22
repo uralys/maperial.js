@@ -34,6 +34,34 @@
    }
 
    //------------------------------------------------------//
+   
+
+   App.openPrezi = function() 
+   {
+      $('#preziWindow').off('reveal:hidden');
+      $('#preziWindow').off("reveal:revealed");
+      
+      $("#preziWindow").reveal({
+         animation: 'fade',
+         animationspeed: 100, 
+      });
+
+      $('#preziWindow').on('reveal:hidden', function(){
+         $("#maperialPrezi").remove()
+      });
+
+      $('#preziWindow').append("<div class='row-fluid darkest' id='maperialPrezi'>" +
+            "<object data='http://prezi.com/e6x5_urdmufe/view' width='100%' height='600px'  ></object >" +
+      "</div>")
+      
+      // center.....dont ask me about the + 285 stuff
+      var left = ($(window).width()/2 - $("#preziWindow").width()/2) + 285
+      
+      $("#preziWindow").css("left",left+"px");
+   }
+
+   
+   //------------------------------------------------------//
 
    App.placeFooter = function(forceFix){
       setTimeout(function(){
@@ -102,6 +130,7 @@
       var maperialJSScripts = "";
       
       scripts.push("http://fabricjs.com/lib/fabric.js");
+      scripts.push("https://maps.googleapis.com/maps/api/js?key=AIzaSyATwlkawyHykpfJF24jcPgL_b8kK8zO2Bc&sensor=false&libraries=places,panoramio");
 
       //-------------------------------------------//
 
