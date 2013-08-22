@@ -1,5 +1,4 @@
 
-
 //color Bar object
 //offsets are "in canvas" offset. They are provided because **** YOU MUST NOT USE CSS PADDING *** for canvas !!!!!!    
 

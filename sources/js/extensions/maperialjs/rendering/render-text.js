@@ -530,7 +530,7 @@ function InitRenderTextPoint(text , font, size, l)  {
 }
 */
 
-function InitRenderText2( text , font, size, l , cutSize, center , translate) {
+function InitRenderText2( text , font, size, l , cutSize, center , translate , scale__) {
 
    var shift      = parseInt(font.face["x-height"]) /100 * size.value 
    var viewBox    = font.viewBox;
@@ -548,11 +548,11 @@ function InitRenderText2( text , font, size, l , cutSize, center , translate) {
    var py = 0
    if (l.length > 2) {
 
-      var minx = 99999
-      var maxx = -99999
-      var miny = 99999
-      var maxy = -99999
-      for ( var i = 0 ; i < l.length-1 ; i = i + 2 ) {
+      var minx = l[0]
+      var maxx = l[0]
+      var miny = l[1]
+      var maxy = l[1]
+      for ( var i = 2 ; i < l.length-1 ; i = i + 2 ) {
          minx = (l[i] < minx)? l[i] : minx;
          maxx = (l[i] > maxx)? l[i] : maxx;
          miny = (l[i+1] < miny)? l[i+1] : miny;
@@ -567,8 +567,8 @@ function InitRenderText2( text , font, size, l , cutSize, center , translate) {
       px   = l[0]
       py   = l[1]
    }
-   px   = px + translate[0]
-   py   = py + translate[1]
+   px   = px * scale__[0] + translate[0]
+   py   = py * scale__[1] + translate[1]
       
    var maxW       = cutSize; // px
    var maxChar    = Math.floor ( (maxW / size.value) * 6 );   
@@ -814,14 +814,21 @@ function BoxesIntersect(a, b) {
    */
 }
 
-var viewBBox = new Object ();
-viewBBox.x = -1;
-viewBBox.y = -1;
-viewBBox.w = 258;
-viewBBox.h = 258;
-
 function ExtendCanvasContext ( ctx ) {
+   ctx.viewBBox = new Object ();
+   ctx.viewBBox.x = -1;
+   ctx.viewBBox.y = -1;
+   ctx.viewBBox.w = 258;
+   ctx.viewBBox.h = 258;
+
    ctx._textBBox  = [ ] ;
+   
+   Object.getPrototypeOf(ctx).setTexViewBox = function ( x,y,w,h) {
+      this.viewBBox.x = x;
+      this.viewBBox.y = y;
+      this.viewBBox.w = w;
+      this.viewBBox.h = h;
+   }
    /*
    Object.getPrototypeOf(ctx).fillTextOnLine = function ( txt , l ) {
       ctx.save()
@@ -836,34 +843,43 @@ function ExtendCanvasContext ( ctx ) {
       ctx.restore()
    }
    */
-   Object.getPrototypeOf(ctx).fillText = function ( txt , l , cutSize, center, translate) {
-   
+   Object.getPrototypeOf(ctx).fillText = function ( txt , l , cutSize, center, translate,collisionDetection) {
       var fname = this.fontParams["family"].replace ( /(^["' \t])|(["' \t]$)/g, "" ).toLowerCase();
       var _font = globalFonts.Get(fname,this.fontParams["style"],this.fontParams["weight"]);
       if (!_font) {
          console.error ("fillTextOnLine2 : font error 2");
          return false;
       }
+      var scale = [1.0,1.0];
+      if ('_sx' in ctx ) {
+         scale[0] = ctx._sx;
+         scale[1] = ctx._sy;
+      }
       var _size = new FontSize ( this.fontParams["size"] , _font.baseSize );
-      var txtCtx = InitRenderText2 (txt , _font, _size,  l , cutSize, center, translate);
+      var txtCtx = InitRenderText2 (txt , _font, _size,  l , cutSize, center, translate,scale);
       if (!txtCtx)
          return false;
       skipIt = false
-      for ( b in this._textBBox ) {
-         if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
-            skipIt = true
-            break
+      if (collisionDetection[0]) {
+         for ( b in this._textBBox ) {
+            if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
+               skipIt = true
+               break
+            }
          }
       }
       if (!skipIt) {
-         this._textBBox.push(txtCtx.bbox)
-         this.save()
-         RenderTextCufon ( txtCtx , _font ,this , true);
-         this.restore()
+         if (collisionDetection[1])
+            this._textBBox.push(txtCtx.bbox)
+         if (  BoxesIntersect ( this.viewBBox , txtCtx.bbox ) ) {
+            this.save()
+            RenderTextCufon ( txtCtx , _font ,this , true);
+            this.restore()
+         }
       }
       return !skipIt;
    }
-   Object.getPrototypeOf(ctx).strokeText = function ( txt , l , cutSize, center, translate) {
+   Object.getPrototypeOf(ctx).strokeText = function ( txt , l , cutSize, center, translate,collisionDetection) {
       
       var fname = this.fontParams["family"].replace ( /(^["' \t])|(["' \t]$)/g, "" ).toLowerCase();
       var _font = globalFonts.Get(fname,this.fontParams["style"],this.fontParams["weight"]);
@@ -871,68 +887,66 @@ function ExtendCanvasContext ( ctx ) {
          console.error ("fillTextOnLine2 : font error 2");
          return false;
       }
+      var scale = [1.0,1.0];
+      if ('_sx' in ctx ) {
+         scale[0] = ctx._sx;
+         scale[1] = ctx._sy;
+      }
       var _size = new FontSize ( this.fontParams["size"] , _font.baseSize );
-      var txtCtx = InitRenderText2 (txt , _font, _size, l , cutSize, center, translate);
+      var txtCtx = InitRenderText2 (txt , _font, _size, l , cutSize, center, translate,scale);
       if (!txtCtx)
          return false;
       skipIt = false
-      for ( b in this._textBBox ) {
-         if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
-            skipIt = true
-            break
+      if (collisionDetection[0]) {
+         for ( b in this._textBBox ) {
+            if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
+               skipIt = true
+               break
+            }
          }
       }
       if (!skipIt) {
-         this._textBBox.push(txtCtx.bbox)
-         this.save()
-         RenderTextCufon ( txtCtx , _font , this  , false);
-         this.restore()
+         if (collisionDetection[1]) 
+            this._textBBox.push(txtCtx.bbox)
+         if (  BoxesIntersect ( this.viewBBox , txtCtx.bbox ) ) {
+            this.save()
+            RenderTextCufon ( txtCtx , _font , this  , false);
+            this.restore()
+         }
       }
       return !skipIt;
    }
    
-   Object.getPrototypeOf(ctx).strokeAndFillText = function ( txt , l , cutSize, center, translate ) {
-      /*
-      if (txt.indexOf('Clermont-Ferrand Auvergne') != -1){
-         var ezrzer = "op"
-      }
-      if (txt.indexOf('Notre Dame') != -1){
-         var ezrzer = "op"
-      }
-      if (txt.indexOf('La Barri') != -1){
-         var ezrzer = "op"
-      }
-      if (txt.indexOf('Durtol') != -1){
-         var ezrzer = "op"
-      }
-      if (txt.indexOf('Les Hauts-de') != -1){
-         var ezrzer = "op"
-      }
-      if (txt.indexOf('Clermont-Ferrand') != -1){
-         var ezrzer = "op"
-      }
-      */
+   Object.getPrototypeOf(ctx).strokeAndFillText = function ( txt , l , cutSize, center, translate , collisionDetection) {
       var fname = this.fontParams["family"].replace ( /(^["' \t])|(["' \t]$)/g, "" ).toLowerCase();
       var _font = globalFonts.Get(fname,this.fontParams["style"],this.fontParams["weight"]);
       if (!_font) {
          console.error ("fillTextOnLine2 : font error 2");
          return false;
       }
+      var scale = [1.0,1.0];
+      if ('_sx' in this ) {
+         scale[0] = this._sx;
+         scale[1] = this._sy;
+      }
       var _size = new FontSize ( this.fontParams["size"] , _font.baseSize );
-      var txtCtx = InitRenderText2 (txt , _font, _size, l , cutSize, center, translate);
+      var txtCtx = InitRenderText2 (txt , _font, _size, l , cutSize, center, translate,scale);
       if (!txtCtx)
          return false;
       var skipIt = false
-      for ( var b = 0; b < this._textBBox.length; b++ ) {
-         if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
-            skipIt = true
-            break
+      if (collisionDetection[0]) {
+         for ( var b = 0; b < this._textBBox.length; b++ ) {
+            if ( BoxesIntersect ( this._textBBox[b] , txtCtx.bbox ) ) {
+               skipIt = true
+               break
+            }
          }
       }
       if (!skipIt) {
-         this._textBBox.push(txtCtx.bbox)
+         if (collisionDetection[1])
+            this._textBBox.push(txtCtx.bbox)
          
-         if (  BoxesIntersect ( viewBBox , txtCtx.bbox ) ) {
+         if (  BoxesIntersect ( this.viewBBox , txtCtx.bbox ) ) {
             this.save()
             /*this.fillStyle="rgba(255,0,0,1)";
             this.rect(txtCtx.bbox.x,txtCtx.bbox.y,txtCtx.bbox.w,txtCtx.bbox.h);

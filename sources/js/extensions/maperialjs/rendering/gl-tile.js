@@ -78,6 +78,11 @@ Tile.prototype.createLayerFromConfig = function (layer, index) {
       case LayersManager.Shade:
          this.layers.splice(index, 0, new ShadeLayer    ( this.mapView , this.z));
          break;
+         
+      case LayersManager.Heat:
+      case LayersManager.Custom:
+         this.layers.splice(index, 0, new CustomLayer    ( this.mapView , this.x, this.y , this.z));
+         break;
    }
 }
 

@@ -391,7 +391,7 @@ SourcesManager.prototype.isTileLoaded = function ( x, y, z, receiverName) {
       var requestId = this.requestId(source, x, y, z);
 //      console.log("requestId", requestId)
 
-      if (!this.complete[requestId] || this.errors[requestId] || !this.data[requestId])
+      if ( source.type != Source.Custom && (!this.complete[requestId] || this.errors[requestId] || !this.data[requestId]))
          return false;
    }
 

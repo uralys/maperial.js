@@ -60,6 +60,7 @@ Maperial.AlphaClip              = "AlphaClip";
 Maperial.AlphaBlend             = "AlphaBlend";
 Maperial.MulBlend               = "MulBlend";
 
+Maperial.globalDataCpt          = 0;
 //==================================================================//
 
 Maperial.DEMO_MAP = {
@@ -72,6 +73,14 @@ Maperial.DEMO_MAP = {
 }
 
 //==================================================================//
+
+Maperial.prototype.createCustomData = function ( ) {
+   return new CustomData ()
+}
+
+Maperial.prototype.createStyle = function ( ) {
+   return new Style ()
+}
 
 Maperial.prototype.build = function(maps, options){
 
