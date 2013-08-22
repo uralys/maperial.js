@@ -241,8 +241,11 @@
 			<arg value="sources/js/extensions/maperialjs/libs/heatmap-leaflet.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/libs/QuadTree.js" />
-
-
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/proj4js-compressed.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/libs/EPSG900913.js" />
+			
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/rendering/gl-tools.js" />
 			<arg value="--js" />
@@ -263,6 +266,12 @@
 			<arg value="sources/js/extensions/maperialjs/rendering/tile-renderer.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/rendering/map-renderer.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/gl-customrenderer.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/gl-heatrenderer.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/rendering/gl-customlayer.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/mapView.js" />
@@ -276,6 +285,14 @@
 			<arg value="sources/js/extensions/maperialjs/mover.js" />
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/template-builder.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/customdata.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/color.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/colorbardata.js" />
+			<arg value="--js" />
+			<arg value="sources/js/extensions/maperialjs/style.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/hud/hud.js" />
