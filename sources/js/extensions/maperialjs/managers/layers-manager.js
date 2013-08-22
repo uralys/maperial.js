@@ -14,6 +14,8 @@ LayersManager.Raster = "raster";
 LayersManager.Images = "images";
 LayersManager.Shade  = "shade";
 LayersManager.SRTM   = "SRTM";
+LayersManager.Custom = "custom";
+LayersManager.Heat   = "heat";
 
 //-------------------------------------------//
 
@@ -358,6 +360,55 @@ LayersManager.getOSMLayerConfig = function(styleUIDs) {
       composition: {
          shader : Maperial.MulBlend,
          params : LayersManager.defaultMulBlendParams
+      }
+   }
+}
+
+//-------------------------------------------//
+
+LayersManager.getCustomLayerConfig = function(dataObj,styleObj) {
+   return { 
+      type: LayersManager.Custom, 
+      source: {
+         type  : Source.Custom,
+         data  : dataObj,
+         id    : dataObj.gid
+      },
+      params: { // only One Style !
+         styles         : [styleObj.uid],
+         styleData      : styleObj,
+         selectedStyle  : 0
+      },
+      composition: {
+         shader : Maperial.AlphaBlend,
+         params : /*LayersManager.defaultAlphaBlendParams*/ {uParams:1.0}
+      }
+   }
+}
+
+//-------------------------------------------//
+
+LayersManager.getHeatLayerConfig = function(dataObj,colorbarUIDs) {
+   var colorbars = (colorbarUIDs === undefined) ? [Maperial.DEFAULT_COLORBAR_UID] : colorbarUIDs; 
+   colorbars = (typeof (colorbarUIDs) != typeof([])) ? [colorbars] : colorbars;
+   return { 
+      type: LayersManager.Heat, 
+      source: {
+         type  : Source.Custom,
+         data  : dataObj,
+         id    : dataObj.gid
+      },
+      params: { // only One Style !
+         colorbars         : colorbars,
+         selectedColorbar  : 0,
+         diameter          : 100,
+         scale             : 1.0,
+         diameterUnit      : "pixel", // or meter, or metereq (meter at equator)
+         fill              : "gaussian" , // or linear
+      },
+      composition: {
+         shader : Maperial.AlphaBlend,
+         params : /*LayersManager.defaultAlphaBlendParams*/ {uParams:1.0}
       }
    }
 }

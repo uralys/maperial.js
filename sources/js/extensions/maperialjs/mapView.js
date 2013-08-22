@@ -62,6 +62,7 @@ function MapView(maperial, map, options, config){
 
 MapView.prototype.build = function(){
    console.log("MapView", this.name, "starts building", this.config);
+   
    this.checkConfig();
    this.restart();
 }
@@ -124,6 +125,9 @@ MapView.prototype.reset = function(){
    for(var i = 0; i < this.config.layers.length; i++){
       if(this.config.layers[i].source.type == Source.WMS){
          this.centerWMS( this.config.layers[i].source.params.src, "prepare" )
+      }
+      if(this.config.layers[i].type == LayersManager.Custom){
+         this.stylesManager.addStyle ( this.config.layers[i].params.styleData ) ;
       }
    }
    
@@ -620,12 +624,13 @@ MapView.prototype.buildStyleMenu = function() {
 //==================================================================//
 
 MapView.prototype.buildColorbar = function() {
+   /*
    this.colorbar = new Colorbar(
          $("#ColorBar_"+this.name),
          this.colorbarsManager.getColorbar(Maperial.DEFAULT_COLORBAR_UID),
          50,355,50,40,true,25.4,375.89
    );
-   
+   */
    this.mapRenderer.renderAllColorBars();
 }
 

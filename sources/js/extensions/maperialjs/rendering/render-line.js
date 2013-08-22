@@ -1,8 +1,19 @@
 function RenderLine ( ctx , line )  {
    ctx.beginPath();
-   ctx.moveTo(line[0],line[1]);
-   for (var p = 2 ; p < line.length - 1 ; p = p + 2) {
-      ctx.lineTo(line[p],line[p+1]);      
+   if ('_tx' in ctx ) {
+      ctx.translate (ctx._tx,ctx._ty)
+   }
+   if ('_sx' in ctx ) {
+      ctx.moveTo( line[0] * ctx._sx , line[1] * ctx._sy );
+      for (var p = 2 ; p < line.length - 1 ; p = p + 2) {
+         ctx.lineTo(line[p] * ctx._sx , line[p+1] * ctx._sy);      
+      }
+   }
+   else {
+      ctx.moveTo( line[0] , line[1] );
+      for (var p = 2 ; p < line.length - 1 ; p = p + 2) {
+         ctx.lineTo(line[p],line[p+1]);      
+      }
    }
    if (line[line.length-1] == 'c')
       ctx.closePath();
@@ -29,18 +40,27 @@ function RenderLineDA ( ctx , line , da)  {
       return 
    }
    
+   var sx = 1.0;
+   var sy = 1.0;
+   if ('_sx' in ctx ) {
+      sx = ctx._sx;
+      sy = ctx._sy;
+   }
+   if ('_tx' in ctx ) {
+      ctx.translate (ctx._tx,ctx._ty)
+   }
    ctx.beginPath();
-   ctx.moveTo(line[0],line[1]);
+   ctx.moveTo(line[0]*sx,line[1]*sy);
 
    var i = 0;
    var m = da.length;
    var c = 0; // carry
    var a = 0; // acc
    for (var p = 0 ; p < line.length - 4 ; p = p + 2) {
-      var p0x = line [p +0  ];
-      var p0y = line [p + 1 ];
-      var p1x = line [p + 2 ];
-      var p1y = line [p + 3 ];
+      var p0x = line [p +0  ]*sx;
+      var p0y = line [p + 1 ]*sy;
+      var p1x = line [p + 2 ]*sx;
+      var p1y = line [p + 3 ]*sy;
       var vx = p1x - p0x;
       var vy = p1y - p0y;
       var n = Math.sqrt ( vx*vx + vy*vy );

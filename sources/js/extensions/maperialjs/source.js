@@ -3,6 +3,7 @@
 
 Source.MaperialOSM      = "osm";
 Source.Vector           = "vector";
+Source.Custom           = "custom";
 
 Source.Raster           = "raster";
 

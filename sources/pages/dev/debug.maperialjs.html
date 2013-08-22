@@ -8,7 +8,9 @@
 </head>
 
 <body>
+    
 	<img id="waitingSpin" src="http://static.maperial.localhost/images/mapediting/spin.gif" />
+   
 </body>
 
 <script type="text/javascript" src="/js/tools/script-loader.js"></script>
@@ -25,12 +27,10 @@
 	                "/js/libs/jquery.mousewheel.min.js",
 	                "/js/libs/jquery.selectbox-0.2.min.js",
 	                "/js/libs/jquery.validate.min.js",
-	                "/js/libs/proj4js-compressed.js",
-	
+		
 	                // libs
                    "/js/extensions/maperialjs/libs/proj4js-compressed.js",
-                   "/js/extensions/maperialjs/libs/proj4js-compressed.js",
-                   "/js/extensions/maperialjs/libs/defs/EPSG900913.js.js",
+                   "/js/extensions/maperialjs/libs/defs/EPSG900913.js",
                    
                    
 	                "/js/extensions/maperialjs/libs/gl-matrix-min.js",
@@ -48,6 +48,9 @@
 	                "/js/extensions/maperialjs/rendering/gl-rasterlayer.js",
 	                "/js/extensions/maperialjs/rendering/gl-imagelayer.js",
 	                "/js/extensions/maperialjs/rendering/gl-shadelayer.js",
+                   "/js/extensions/maperialjs/rendering/gl-customrenderer.js",
+                   "/js/extensions/maperialjs/rendering/gl-heatrenderer.js",
+                   "/js/extensions/maperialjs/rendering/gl-customlayer.js",
 	                "/js/extensions/maperialjs/rendering/gl-tile.js",
 	                "/js/extensions/maperialjs/rendering/gl-vectoriallayer.js",
 	                "/js/extensions/maperialjs/rendering/render-line.js",
@@ -56,6 +59,10 @@
 	                "/js/extensions/maperialjs/rendering/map-renderer.js",
 	
 	                // modules
+                   "/js/extensions/maperialjs/customdata.js",
+                   "/js/extensions/maperialjs/color.js",
+                   "/js/extensions/maperialjs/colorbardata.js",
+                   "/js/extensions/maperialjs/style.js",
 	                "/js/extensions/maperialjs/events.js",
 	                "/js/extensions/maperialjs/source.js",
 	                "/js/extensions/maperialjs/mouse.js",
@@ -103,55 +110,114 @@
                   $(window).on(MaperialEvents.READY, function() {
                      $("#waitingSpin").css("display", "none")
                   })
+                                    
+                  var maperial      = new Maperial()
+               	var mainConfig    = ConfigManager.newConfig();
+                  var cdata         = maperial.createCustomData ()
+                  var cbm           = new ColorbarsManager ( null );
+                  var cb            = new ColorBarData()
+                  
+                  cb.BeginWithAlphaZero ( true )
+                  cb.Set(0.0  ,new GradiantColor(0.0,0.0,1.0,0.0))
+                  cb.Set(0.10 ,new GradiantColor(0.0,0.0,1.0,1.0))
+                  cb.Set(0.15 ,new GradiantColor(0.0,1.0,1.0,1.0))
+                  cb.Set(0.45 ,new GradiantColor(0.0,1.0,0.0,1.0))
+                  cb.Set(0.75 ,new GradiantColor(1.0,1.0,0.0,1.0))
+                  cb.Set(1.0  ,new GradiantColor(1.0,0.0,0.0,1.0))
+                  cbm.SetColorBar(cb)
+                  
+                  cdata.addPoint    ( [44.926327,3.104466], null , { diameter : 150 , scale : 0.6 } )
+                  cdata.addPoint    ( [44.897957,3.138466], null , { diameter : 250 , scale : 0.2 } )
+                  cdata.addPoint    ( [44.926327,3.138466], null /*, { diameter : 250 , scale : 0.35 }*/ )
 
-               	  var mainConfig   = ConfigManager.newConfig();
-			      
-			      mainConfig.map.defaultZoom    = 11
-			      mainConfig.map.latitude       = 46.316584
-			      mainConfig.map.longitude      = 6.486998
+                  mainConfig.map.defaultZoom    = 11
+                  mainConfig.map.latitude       = 44.926327
+                  mainConfig.map.longitude      = 3.104466
+                  //mainConfig.map.defaultZoom    = 18;
+                  //mainConfig.map.latitude       = 44.926327;
+                  //mainConfig.map.longitude      = 3.104466;                  
+                  //mainConfig.map.defaultZoom    = 6;
+                  //mainConfig.map.latitude       = 34.885931;
+                  //mainConfig.map.longitude      = 98.653793;
+                  
+                  mainConfig.hud.elements[HUD.COMPOSITIONS]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
+                  mainConfig.hud.elements[HUD.LAYER_SETTINGS]	= {show : true, 	type : HUD.PANEL, 	label : "Layer Settings", disableDrag : true };
 
-               //mainConfig.map.defaultZoom    = 18;
-               //mainConfig.map.latitude       = 44.926327;
-               //mainConfig.map.longitude      = 3.104466;
-               
-             //  mainConfig.map.defaultZoom    = 6;
-             //  mainConfig.map.latitude       = 34.885931;
-             //  mainConfig.map.longitude      = 98.653793;
+                  mainConfig.layers.push( LayersManager.getOSMLayerConfig   ( [Maperial.DEFAULT_STYLE_UID] ) )                  
+                  
+                  var conf = LayersManager.getHeatLayerConfig( cdata, cb.Uid() )
+                  conf.params.diameter = 300;
+                  conf.params.scale    = 0.8;
+                  mainConfig.layers.push( conf )
 
-               
-			      mainConfig.hud.elements[HUD.COMPOSITIONS]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
-			      mainConfig.hud.elements[HUD.LAYER_SETTINGS]	= {show : true, 	type : HUD.PANEL, 	label : "Layer Settings", disableDrag : true };
-			      
-			      mainConfig.layers.push(LayersManager.getOSMLayerConfig([Maperial.DEFAULT_STYLE_UID]))
+                  //mainConfig.layers.push( LayersManager.getCustomLayerConfig( cdata,cstyle ) )
+                  //mainConfig.layers.push(LayersManager.getShadeLayerConfig())
                   //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
+                  //mainConfig.layers.push(LayersManager.getSrtmLayerConfig())
+                  //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
+                  //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+                  //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+                  //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
+
+                  /*
+                  cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Angelus ")
+                  cdata.addPoint ([50.485569,2.8307250000000295], pSymbId, "Abbaye de Lille ")
+                  cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Abbaye de St Landelin ")
+                  cdata.addPoint ([44.85579000000001,-0.6157699999999977], pSymbId, "Abbatiale St Amand ")
+                  cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Bière Lepers 8 ")
+                  cdata.addPoint ([50.69285499999999,2.4138020000000324], pSymbId, "Bracine ")
+                  cdata.addPoint ([50.866145,1.6313259999999445], pSymbId, "Belle dale ")
+                  cdata.addPoint ([50.750115,2.252207999999996], pSymbId, "Bière des ruchettes ")
+                  cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Bière du désert ")
+                  cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Belzébuth ")
+                  cdata.addPoint ([44.85579000000001,-0.6157699999999977], pSymbId, "Braderie de Lille ")
+                  cdata.addPoint ([44.397248,0.8049350000000004], pSymbId, "Bière Nouvelle ")
+                  cdata.addPoint ([50.298389,3.7941940000000614], pSymbId, "Bière de luxe ")
+                  cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Bière des Flandres ")
+                  cdata.addPoint ([50.33858499999999,3.7523610000000645], pSymbId, "Cuvée des Jonquilles ")
+                  cdata.addPoint ([50.281524,3.3199749999999995], pSymbId, "Choulette ")
+                  cdata.addPoint ([50.281524,3.3199749999999995], pSymbId, "D'Artagnan ")
+                  cdata.addPoint ([50.724993,3.1620699999999715], pSymbId, "Duc d'Havré ")
+                  cdata.addPoint ([50.2279399,3.6767340000000104], pSymbId, "Ecume des jours ")
+                  cdata.addPoint ([50.750115,2.252207999999996], pSymbId, "Epi de Facon ")
+                  cdata.addPoint ([50.816405,2.5752219999999397], pSymbId, "Fromulus ")
+                  cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Goudale ")
+                  cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Gold Triumph ")
+                  cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Grain d'Orge ")
+                  cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Harengus ")
+                  cdata.addPoint ([50.42672100000001,2.7106039999999894], pSymbId, "Hildegarde ")
+                  cdata.addPoint ([50.26655299999999,3.1663929000000053], pSymbId, "Iris Beer ")
+                  cdata.addPoint ([50.312073,3.6277169999999614], pSymbId, "Jenlain ")
+                  cdata.addPoint ([50.642989,2.6392740000000003], pSymbId, "Kaou'ët ")
+                  cdata.addPoint ([50.485569,2.8307250000000295], pSymbId, "Maltesse ")
+                  cdata.addPoint ([50.891315,2.4271360000000186], pSymbId, "Maline ")
+                  cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Orpal ")
+                  cdata.addPoint ([50.42672100000001,2.7106039999999894], pSymbId, "Page24 ")
+                  cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Rijsel ")
+                  cdata.addPoint ([50.891315,2.4271360000000186], pSymbId, "Rouge Flamande ")
+                  cdata.addPoint ([50.510693,2.785233000000062], pSymbId, "Saint Glinglin Triple ")
+                  cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Saaz ")
+                  cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Septante 5 ")
+                  cdata.addPoint ([45.138896,4.643035000000054], pSymbId, "Mythique ")
+                  cdata.addPoint ([-20.963728,55.647265999999945], pSymbId, "St Leu ")
+                  cdata.addPoint ([50.281524,3.3199749999999995], pSymbId, "Tour d'Ostrevant ")
+                  cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Tequieros ")
+                  cdata.addPoint ([50.103942,3.544234999999958], pSymbId, "Vivat ")
+                  cdata.addPoint ([50.510693,2.785233000000062], pSymbId, "Weed ")
+                  */
                   
-                  //config.layers.push(LayersManager.getShadeLayerConfig())
-                  //config.layers.push(LayersManager.getSrtmLayerConfig())
+                  var mainOptions = {
+                     type       : Maperial.MAIN,
+                     name       : "maperialDemo"
+                  }
                   
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-                  //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
-			      
-			      var mainOptions = {
-			         type       : Maperial.MAIN,
-			         name       : "maperialDemo"
-			      }
-			      
-			      var map = {
-			         views : [{
-			            config  : mainConfig,
-			            options : mainOptions,
-			         }]
-			      }
-			         
-                  var maperial = new Maperial()
+                  var map = {
+                     views : [{
+                        config  : mainConfig,
+                        options : mainOptions,
+                     }]
+                  }
                   maperial.build([map])
-                  
-                  var cstyle  = maperial.createStyle      ()
-                  var cdata   = maperial.createCustomData ()
-                  cdata.addPoint ( [44.926327,3.104466], "000" )
-                  
                });
 </script>
 

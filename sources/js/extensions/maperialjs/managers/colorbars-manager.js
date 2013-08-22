@@ -74,16 +74,32 @@ ColorbarsManager.prototype.loadColorbar = function(colorbarUID) {
       url: colorbarURL,
       dataType: "json",
       success: function (json) {
+         /*
          window.maperialColorbars[colorbarUID] = {
                uid : colorbarUID, 
                name: colorbarUID, 
                content:json, 
                data: me.convertJsonToData(json)
          };
+         */
+         var cb = new ColorBarData ( );
+         cb.FromJson (json) 
+         me.SetColorBar (colorbarUID,cb ) 
          me.loadNextColorbar();
       }
    });
 
+}
+
+//----------------------------//
+
+ColorbarsManager.prototype.SetColorBar = function( cb  ) {
+   window.maperialColorbars[cb.Uid()] = {
+      uid      : cb.Uid(), 
+      name     : cb.Uid(), 
+      data     : cb
+   };
+   return cb.Uid();
 }
 
 //----------------------------//
@@ -99,12 +115,12 @@ ColorbarsManager.prototype.getURL = function(colorbarUID) {
 }
 
 //----------------------------//
-
+/*
 ColorbarsManager.prototype.convertJsonToData = function(colorbarJson) {
    
    var data = [];   
    var previousStep = 0;
-   for ( i in colorbarJson) {
+   for (var i in colorbarJson) {
       for ( var n = previousStep; n <= parseInt(i); n++) {
          data.push ( colorbarJson[i].r );
          data.push ( colorbarJson[i].g );
@@ -117,3 +133,4 @@ ColorbarsManager.prototype.convertJsonToData = function(colorbarJson) {
    
    return new Uint8Array(data);
 }
+*/

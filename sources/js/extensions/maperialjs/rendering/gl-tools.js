@@ -141,7 +141,10 @@ function GLTools () {
       return tex
    }
    
-   GLTools.prototype.CreateFrameBufferTex = function  ( gl , sizeX, sizeY ) {
+   GLTools.prototype.CreateFrameBufferTex = function  ( gl , sizeX, sizeY , linear /*, useFloat*/) {
+      linear = typeof linear !== 'undefined' ? linear : false;
+      //useFloat = typeof useFloat !== 'undefined' ? useFloat : false;
+      
       var fb                        = gl.createFramebuffer();
       var tex                       = gl.createTexture(); 
 
@@ -150,9 +153,19 @@ function GLTools () {
       fb.height                     = sizeY;
       
       gl.bindTexture                ( gl.TEXTURE_2D, tex );
-      gl.texParameteri              ( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
-      gl.texParameteri              ( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
-      gl.texImage2D                 ( gl.TEXTURE_2D, 0, gl.RGBA, fb.width, fb.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null );
+      if (linear) {
+         gl.texParameteri              ( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR );
+         gl.texParameteri              ( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR );
+      }else {
+         gl.texParameteri              ( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+         gl.texParameteri              ( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
+      }
+      //if (! useFloat ) {
+         gl.texImage2D                 ( gl.TEXTURE_2D, 0, gl.RGBA, fb.width, fb.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null );
+      /*}
+      else {
+         gl.texImage2D                 ( gl.TEXTURE_2D, 0, gl.RGBA, fb.width, fb.height, 0, gl.RGBA, gl.FLOAT, null );
+      }*/
       gl.framebufferTexture2D       ( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0 );
       gl.bindTexture                ( gl.TEXTURE_2D, null );
       gl.bindFramebuffer            ( gl.FRAMEBUFFER, null );

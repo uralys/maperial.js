@@ -57,6 +57,7 @@ RasterLayer.prototype.Update = function ( params ) {
    }
 
    if ( this.data && colorbar) {
+   
       var gltools                = new GLTools ()
       var fbtx                   = gltools.CreateFrameBufferTex(gl,this.w,this.h)
       var tmpTex                 = gl.createTexture (      );

@@ -16,11 +16,12 @@ TileRenderer.ApplyStyle = function ( ctx , line , attr, subLayerId , zoom , styl
 
       for (var _s = 0 ; _s < subLayer.s.length ; _s++ ) {
          var curStyle = subLayer.s[_s];
-
-         if ( zoom >= curStyle.zmax && zoom <= curStyle.zmin ) {
+         if ( zoom >= curStyle.zmax && zoom <= curStyle.zmin) {            
             for (var _ss = 0 ; _ss < curStyle.s.length ; _ss++){ 
                var params = curStyle.s[_ss];
-
+               if ( "custom" in params && typeof (params.custom) == 'function' ) {
+                  params.custom (attr)
+               }
                if ( TileRenderer[params.rt] ) 
                   TileRenderer[ params.rt ] ( ctx , line, attr, params )
             }
@@ -68,7 +69,7 @@ TileRenderer.RenderLayers = function (osmVisibilities, layerPosition , ctx , dat
    var date    = new Date();
    var startT  = date.getTime();
 
-   ctx.scale(1,1);
+   //ctx.scale(1,1);
 
    //-------------------------------------------------//
    
@@ -77,7 +78,7 @@ TileRenderer.RenderLayers = function (osmVisibilities, layerPosition , ctx , dat
       var layer = data["l"][i]; // layerGroup
       var subLayerId = layer["c"]; // class - il devrait y avoir une class par Layer, pas par LayerGroup ?
       
-      if( layerPosition != null &&  osmVisibilities[subLayerId] != layerPosition)
+      if( osmVisibilities != null &&  layerPosition != null &&  osmVisibilities[subLayerId] != layerPosition )
          continue;
       
       var ll = layer["g"]; // liste de listes de lignes
@@ -276,6 +277,8 @@ TileRenderer.PolygonPatternSymbolizer = function ( ctx , line , attr , params ) 
       ctx.save()
       RenderLine(ctx,line);
       ctx.clip()
+      if ( "alpha" in params ) 
+         ctx.globalAlpha=params["alpha"]
       ctx.drawImage( symb.data, 0 , 0 );
       ctx.restore()
    }
@@ -288,6 +291,12 @@ TileRenderer.PolygonPatternSymbolizer = function ( ctx , line , attr , params ) 
 
 TileRenderer.PointSymbolizer = function ( ctx , line , attr , params ) {
    if ( params.file in window.maperialSymb ) {
+      var sx = 1.0;
+      var sy = 1.0;
+      if ('_sx' in ctx ) {
+         sx = ctx._sx;
+         sy = ctx._sy;
+      }
       var symb = window.maperialSymb[params.file];
       if (symb.type == "svg") {
          var w    = 0.0
@@ -298,10 +307,13 @@ TileRenderer.PointSymbolizer = function ( ctx , line , attr , params ) {
             h = parseInt(node.getAttribute("height"));
          }
          ctx.save()
+         if ('_tx' in ctx ) {
+            ctx.translate (ctx._tx,ctx._ty)
+         }
          if ( "opacity" in params ) {
             ctx.globalAlpha=params["opacity"]
          }
-         ctx.drawSvg( symb.data, line[0] - (w / 2.0), line[1] - (w / 2.0));
+         ctx.drawSvg( symb.data, (line[0]*sx) - (w / 2.0), (line[1]*sy) - (w / 2.0));
          ctx.restore()
       }
       else { //"img"
@@ -309,7 +321,7 @@ TileRenderer.PointSymbolizer = function ( ctx , line , attr , params ) {
          if ( "opacity" in params ) {
             ctx.globalAlpha=params["opacity"]
          }
-         ctx.drawImage( symb.data, line[0] - (symb.data.width / 2.0) , line[1] - (symb.data.height / 2.0) );
+         ctx.drawImage( symb.data, (line[0]*sx) - (symb.data.width / 2.0) , (line[1]*sy) - (symb.data.height / 2.0) );
          ctx.restore()
       }
    }
@@ -333,11 +345,11 @@ TileRenderer.TextSymbolizer = function ( ctx , line , attr , params ) {
    var cutSize = 0;
    var center  = false;
 
-   var translate = [ 0 , 0 ];
-   if ("dx" in params) translate[0] = parseInt( params["dx"] )
-   if ("dy" in params) translate[1] = parseInt( params["dy"] )
-   if ("shield-dx" in params) translate[0] = translate[0] + parseInt( params["shield-dx"] )
-   if ("shield-dy" in params) translate[1] = translate[1] + parseInt( params["shield-dy"] )
+   var translate = [ '_tx' in ctx ? ctx._tx : 0.0 , '_ty' in ctx ? ctx._ty : 0.0 ];
+   if ("dx" in params) translate[0] += parseInt( params["dx"] )
+   if ("dy" in params) translate[1] += parseInt( params["dy"] )
+   if ("shield-dx" in params) translate[0] += parseInt( params["shield-dx"] )
+   if ("shield-dy" in params) translate[1] += parseInt( params["shield-dy"] )
    
    if ( "halo-fill" in params &&  "halo-radius" in params ) {
       ctx.lineWidth  = parseInt ( params["halo-radius"] ) * 2 ;
@@ -366,15 +378,22 @@ TileRenderer.TextSymbolizer = function ( ctx , line , attr , params ) {
          txt = txt.toLowerCase()()
       }
    }
+
+   var colDetection = [true,true]
+   if ('collisionThis' in params)
+      colDetection[0] = params['collisionThis']
+   if ('collisionOther' in params)
+      colDetection[1] = params['collisionOther']
+      
    isRenderer = false
    if (stokeit && fillit) {
-      isRenderer = ctx.strokeAndFillText (txt,line,cutSize,center,translate)
+      isRenderer = ctx.strokeAndFillText (txt,line,cutSize,center,translate,colDetection)
    }
    else if (stokeit) {
-      isRenderer = ctx.strokeText (txt,line,cutSize,center,translate)
+      isRenderer = ctx.strokeText (txt,line,cutSize,center,translate,colDetection)
    }
    else if (fillit) {
-      isRenderer = ctx.fillText (txt,line,cutSize,center,translate)
+      isRenderer = ctx.fillText (txt,line,cutSize,center,translate,colDetection)
    }
    ctx.restore();
    return isRenderer;
@@ -419,8 +438,19 @@ TileRenderer.MarkersSymbolizer = function ( ctx , line , attr , params ) {
    if ( "file" in params ) file = params["file"]
    
    if ( geom == "ellipse" && placement == "point" && !file) {
+      var sx = 1.0;
+      var sy = 1.0;
+      if ('_sx' in ctx ) {
+         sx = ctx._sx;
+         sy = ctx._sy;
+      }
+      
       ctx.save()
 
+      if ('_tx' in ctx ) {
+         ctx.translate (ctx._tx,ctx._ty)
+      }
+      
       var w = 10.0
       var h = 10.0
       if ( "width" in params )   {  w=parseFloat(params["width"])  }
@@ -429,7 +459,7 @@ TileRenderer.MarkersSymbolizer = function ( ctx , line , attr , params ) {
       w=h // I don't know why our style is broken => draw allipse and not circle ...
       ctx.scale(1,h/w)
       ctx.beginPath();
-      ctx.arc( line[0], line[1], w ,0 , Math.PI*2 , false );
+      ctx.arc( line[0] * sx, line[1] * sy , w ,0 , Math.PI*2 , false );
       
       if ( "stroke-opacity" in params ){  ctx.globalAlpha=params["stroke-opacity"]}
       else                             {  ctx.globalAlpha=1 }
