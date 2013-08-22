@@ -122,49 +122,67 @@
                   var maperial = new Maperial()
                	  var mainConfig   = ConfigManager.newConfig();
 			      
-			      mainConfig.map.defaultZoom    = 8
-			      mainConfig.map.latitude       = 49.316584
-			      mainConfig.map.longitude      = 6.486998
+			      mainConfig.map.defaultZoom    = 9
+			      mainConfig.map.latitude       = 50.516584
+			      mainConfig.map.longitude      = 3.186998
 
 			      //-----------------------------------------------//
  			      
 			      var cstyle        = maperial.createStyle      ()
 					var cdata         = maperial.createCustomData ()
 					
-					
-					var ps            = new PointSymbolizer("symbols/airfield.svg") 
-					/*ps.SetCustomFunction ( 
-					   function (attr) {
-					      if (attr < 10 ) {
-					         this.file = "symbols/airfield.svg"
-					      }
-					      else {
-					         this.file = "symbols/ferry.svg"
-					      }
-					   },
-					   function () {
-					      this.Load (["symbols/airfield.svg","symbols/ferry.svg"])
-					   }
-					)*/
-					
+					//var ps            = new PointSymbolizer("symbols/blue.pointer.jpg") 
+					var ps            = new PointSymbolizer("symbols/beer.svg") 
+					//var ps            = new PointSymbolizer("symbols/airfield.svg") 
 					var pSymbId       = cstyle.AddSymbolizer ( ps , 18 , 0  );
-					var sy            = new LineSymbolizer   ( new RGBAColor (1.0,0,0,0.5) , 2 )
-					var lSymbId       = cstyle.AddSymbolizer ( sy , 18 , 0  );
-					var poSymbId      = cstyle.AddSymbolizer ( new PolygonSymbolizer (new RGBAColor (0,1.0,1.0,0.4)) , 18 , 0  );
-					
-					
-					var tsy           = new TextSymbolizer ( "DejaVu Sans",12 );
-					tsy.Fill          ( new RGBAColor (0.0,0.0,1.0,0.4) )
-					tsy.Halo          ( new RGBAColor (1.0,1.0,1.0,1.0) , 1)
-					var tSymbId       = cstyle.AddSymbolizer ( tsy , 18 , 0  );
-					var sPT           = new SymbolizerComposer  ( 18, 0)
-					sPT.Add           ( new PointSymbolizer("symbols/peak.svg") )
-					sPT.Add           ( tsy )
-					var tpSymbId      = cstyle.AddSymbsComposer ( sPT ) 
-					                  
-					cdata.addPoint    ( [44.926327,3.104466], tpSymbId , "Point" )
-					cdata.addLine     ( [44.926327,3.104466,44.897957,3.104466,44.897957,3.138458] , poSymbId , true, "Poly" );
-					cdata.addLine     ( [44.926327,3.104466,44.897957,3.138458,44.897957,3.104466] , lSymbId);
+			      
+			      // http://thenounproject.com/noun/beer/?dwn=CCBY&dwn_icon=634#icon-No634
+			            
+					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Angelus ") 
+					cdata.addPoint ([50.485569,2.8307250000000295], pSymbId, "Abbaye de Lille ") 
+					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Abbaye de St Landelin ") 
+					cdata.addPoint ([44.85579000000001,-0.6157699999999977], pSymbId, "Abbatiale St Amand ") 
+					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Bière Lepers 8 ") 
+					cdata.addPoint ([50.69285499999999,2.4138020000000324], pSymbId, "Bracine ") 
+					cdata.addPoint ([50.866145,1.6313259999999445], pSymbId, "Belle dale ") 
+					cdata.addPoint ([50.750115,2.252207999999996], pSymbId, "Bière des ruchettes ") 
+					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Bière du désert ") 
+					cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Belzébuth ") 
+					cdata.addPoint ([44.85579000000001,-0.6157699999999977], pSymbId, "Braderie de Lille ") 
+					cdata.addPoint ([44.397248,0.8049350000000004], pSymbId, "Bière Nouvelle ") 
+					cdata.addPoint ([50.298389,3.7941940000000614], pSymbId, "Bière de luxe ") 
+					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Bière des Flandres ") 
+					cdata.addPoint ([50.33858499999999,3.7523610000000645], pSymbId, "Cuvée des Jonquilles ") 
+					cdata.addPoint ([50.281524,3.3199749999999995], pSymbId, "Choulette ") 
+					cdata.addPoint ([50.281524,3.3199749999999995], pSymbId, "D'Artagnan ") 
+					cdata.addPoint ([50.724993,3.1620699999999715], pSymbId, "Duc d'Havré ") 
+					cdata.addPoint ([50.2279399,3.6767340000000104], pSymbId, "Ecume des jours ") 
+					cdata.addPoint ([50.750115,2.252207999999996], pSymbId, "Epi de Facon ") 
+					cdata.addPoint ([50.816405,2.5752219999999397], pSymbId, "Fromulus ") 
+					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Goudale ") 
+					cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Gold Triumph ") 
+					cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Grain d'Orge ") 
+					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Harengus ") 
+					cdata.addPoint ([50.42672100000001,2.7106039999999894], pSymbId, "Hildegarde ") 
+					cdata.addPoint ([50.26655299999999,3.1663929000000053], pSymbId, "Iris Beer ") 
+					cdata.addPoint ([50.312073,3.6277169999999614], pSymbId, "Jenlain ") 
+					cdata.addPoint ([50.642989,2.6392740000000003], pSymbId, "Kaou'ët ") 
+					cdata.addPoint ([50.485569,2.8307250000000295], pSymbId, "Maltesse ") 
+					cdata.addPoint ([50.891315,2.4271360000000186], pSymbId, "Maline ") 
+					cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Orpal ") 
+					cdata.addPoint ([50.42672100000001,2.7106039999999894], pSymbId, "Page24 ") 
+					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Rijsel ") 
+					cdata.addPoint ([50.891315,2.4271360000000186], pSymbId, "Rouge Flamande ") 
+					cdata.addPoint ([50.510693,2.785233000000062], pSymbId, "Saint Glinglin Triple ") 
+					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Saaz ") 
+					cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Septante 5 ") 
+					cdata.addPoint ([45.138896,4.643035000000054], pSymbId, "Mythique ") 
+					cdata.addPoint ([-20.963728,55.647265999999945], pSymbId, "St Leu ") 
+					cdata.addPoint ([50.281524,3.3199749999999995], pSymbId, "Tour d'Ostrevant ") 
+					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Tequieros ") 
+					cdata.addPoint ([50.103942,3.544234999999958], pSymbId, "Vivat ") 
+					cdata.addPoint ([50.510693,2.785233000000062], pSymbId, "Weed ")
+
 					                  
 	              //-----------------------------------------------//
 
