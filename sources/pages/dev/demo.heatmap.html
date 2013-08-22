@@ -128,48 +128,33 @@
 
 			      //-----------------------------------------------//
  			      
-			      var cstyle        = maperial.createStyle      ()
-					var cdata         = maperial.createCustomData ()
-					
-					
-					var ps            = new PointSymbolizer("symbols/airfield.svg") 
-					/*ps.SetCustomFunction ( 
-					   function (attr) {
-					      if (attr < 10 ) {
-					         this.file = "symbols/airfield.svg"
-					      }
-					      else {
-					         this.file = "symbols/ferry.svg"
-					      }
-					   },
-					   function () {
-					      this.Load (["symbols/airfield.svg","symbols/ferry.svg"])
-					   }
-					)*/
-					
-					var pSymbId       = cstyle.AddSymbolizer ( ps , 18 , 0  );
-					var sy            = new LineSymbolizer   ( new RGBAColor (1.0,0,0,0.5) , 2 )
-					var lSymbId       = cstyle.AddSymbolizer ( sy , 18 , 0  );
-					var poSymbId      = cstyle.AddSymbolizer ( new PolygonSymbolizer (new RGBAColor (0,1.0,1.0,0.4)) , 18 , 0  );
-					
-					
-					var tsy           = new TextSymbolizer ( "DejaVu Sans",12 );
-					tsy.Fill          ( new RGBAColor (0.0,0.0,1.0,0.4) )
-					tsy.Halo          ( new RGBAColor (1.0,1.0,1.0,1.0) , 1)
-					var tSymbId       = cstyle.AddSymbolizer ( tsy , 18 , 0  );
-					var sPT           = new SymbolizerComposer  ( 18, 0)
-					sPT.Add           ( new PointSymbolizer("symbols/peak.svg") )
-					sPT.Add           ( tsy )
-					var tpSymbId      = cstyle.AddSymbsComposer ( sPT ) 
-					                  
-					cdata.addPoint    ( [44.926327,3.104466], tpSymbId , "Point" )
-					cdata.addLine     ( [44.926327,3.104466,44.897957,3.104466,44.897957,3.138458] , poSymbId , true, "Poly" );
-					cdata.addLine     ( [44.926327,3.104466,44.897957,3.138458,44.897957,3.104466] , lSymbId);
-					                  
+	              var cdata         = maperial.createCustomData ()
+	              var cbm           = new ColorbarsManager ( null );
+	              var cb            = new ColorBarData()
+	               
+	              cb.BeginWithAlphaZero ( true )
+	              cb.Set(0.0  ,new GradiantColor(0.0,0.0,1.0,0.0))
+	              cb.Set(0.10 ,new GradiantColor(0.0,0.0,1.0,1.0))
+	              cb.Set(0.15 ,new GradiantColor(0.0,1.0,1.0,1.0))
+	              cb.Set(0.45 ,new GradiantColor(0.0,1.0,0.0,1.0))
+	              cb.Set(0.75 ,new GradiantColor(1.0,1.0,0.0,1.0))
+	              cb.Set(1.0  ,new GradiantColor(1.0,0.0,0.0,1.0))
+	              cbm.SetColorBar(cb)
+	               
+	              cdata.addPoint    ( [44.926327,3.104466], null , { diameter : 150 , scale : 0.6 } )
+	              cdata.addPoint    ( [44.897957,3.138466], null , { diameter : 250 , scale : 0.2 } )
+	              cdata.addPoint    ( [44.926327,3.138466], null /*, { diameter : 250 , scale : 0.35 }*/ )
+	              
+	              
 	              //-----------------------------------------------//
 
 	              mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-	              mainConfig.layers.push( LayersManager.getCustomLayerConfig( cdata,cstyle ) )  
+    	          mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
+	              
+	              var heatmapLayer = LayersManager.getHeatLayerConfig( cdata, cb.Uid() )
+	              heatmapLayer.params.diameter = 300;
+	              heatmapLayer.params.scale    = 0.8;
+	              mainConfig.layers.push( heatmapLayer )
 
 	              //-----------------------------------------------//
 
