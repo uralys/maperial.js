@@ -297,6 +297,14 @@ TileRenderer.PointSymbolizer = function ( ctx , line , attr , params ) {
          sx = ctx._sx;
          sy = ctx._sy;
       }
+      
+      var trX = 0;
+      var trY = 0;
+      if ( 'trX' in params )
+         trX = params.trX;
+      if ( 'trY' in params )
+         trY = params.trY;
+
       var symb = window.maperialSymb[params.file];
       if (symb.type == "svg") {
          var w    = 0.0
@@ -306,6 +314,22 @@ TileRenderer.PointSymbolizer = function ( ctx , line , attr , params ) {
             w = parseInt(node.getAttribute("width"));
             h = parseInt(node.getAttribute("height"));
          }
+         
+         var shiftX = - (w / 2.0); // default centered
+         var shiftY = - (h / 2.0); // default centered
+         if ('centerX' in params) {
+            if (params.centerX == "left")
+               shiftX = 0;
+            else if (params.centerX == "right")
+               shiftX = -w
+         }
+         if ('centerY' in params) {
+            if (params.centerY == "top")
+               shiftY = 0;
+            else if (params.centerY == "bottom")
+               shiftY = -h
+         }
+         
          ctx.save()
          if ('_tx' in ctx ) {
             ctx.translate (ctx._tx,ctx._ty)
@@ -313,10 +337,25 @@ TileRenderer.PointSymbolizer = function ( ctx , line , attr , params ) {
          if ( "opacity" in params ) {
             ctx.globalAlpha=params["opacity"]
          }
-         ctx.drawSvg( symb.data, (line[0]*sx) - (w / 2.0), (line[1]*sy) - (w / 2.0));
+         ctx.drawSvg( symb.data, (line[0]*sx) + shiftX + trX, (line[1]*sy) + shiftY + trY);
          ctx.restore()
       }
       else { //"img"
+         var shiftX = -(symb.data.width / 2.0); // default centered
+         var shiftY = -(symb.data.height / 2.0); // default centered
+         if ('centerX' in params) {
+            if (params.centerX == "left")
+               shiftX = 0;
+            else if (params.centerX == "right")
+               shiftX = -symb.data.width
+         }
+         if ('centerY' in params) {
+            if (params.centerY == "top")
+               shiftY = 0;
+            else if (params.centerY == "bottom")
+               shiftY = -symb.data.height
+         }
+         
          ctx.save()
          if ('_tx' in ctx ) {
             ctx.translate (ctx._tx,ctx._ty)
@@ -324,7 +363,7 @@ TileRenderer.PointSymbolizer = function ( ctx , line , attr , params ) {
          if ( "opacity" in params ) {
             ctx.globalAlpha=params["opacity"]
          }
-         ctx.drawImage( symb.data, (line[0]*sx) - (symb.data.width / 2.0) , (line[1]*sy) - (symb.data.height / 2.0) );
+         ctx.drawImage( symb.data, (line[0]*sx) + shiftX + trX, (line[1]*sy) + shiftY + trY);
          ctx.restore()
       }
    }

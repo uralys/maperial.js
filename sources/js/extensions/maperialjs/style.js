@@ -97,6 +97,16 @@ PointSymbolizer.prototype.Load = function  (symblist) {
    _LoadSymbList (symbs,function(){})
 }
 
+PointSymbolizer.prototype.Translate = function  ( trX, trY ) {
+   this.trX = trX
+   this.trY = trY
+}
+
+PointSymbolizer.prototype.Alignement = function  ( xAlign, yAlign ) { // top, bottom, left,right , center (default)
+   this.centerX = xAlign
+   this.centerY = yAlign
+}
+
 PointSymbolizer.prototype.SetCustomFunction = function  (fctCustom, fctInit) {
    if (typeof fctCustom == 'function') {
       this.custom = fctCustom

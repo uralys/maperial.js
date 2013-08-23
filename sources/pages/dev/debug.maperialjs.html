@@ -135,6 +135,8 @@
                cbm.SetColorBar(cb)
                
                var ps            = new PointSymbolizer("symbols/airfield.svg") 
+               ps.Alignement("center",'center')
+               ps.Translate (100,100)
                var pSymbId       = cstyle.AddSymbolizer ( ps , 18 , 0  );
                cdata.addPoint    ( [44.926327,3.104466], pSymbId , { diameter : 150 , scale : 0.6 } )
                cdata.addPoint    ( [44.897957,3.138466], pSymbId , { diameter : 250 , scale : 0.2 } )
