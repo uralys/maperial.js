@@ -212,7 +212,7 @@ Tile.prototype.Reset = function (onlyFuse) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.sourceReady = function ( source, data ) {
+Tile.prototype.sourceReady = function ( source, data , li) { /* li is for customRenderer => HEAT/Vector can use the same source (same source gid)!!!*/
   
    if(!data){
       console.log("-------> tile.sourceReady : DATA NULL !")
@@ -220,19 +220,24 @@ Tile.prototype.sourceReady = function ( source, data ) {
       this.Reset();
       return
    }
+   if  ( (typeof(li) ==='undefined') || li < 0 || li >= this.config.layers.length) {
+      for(var i = 0; i< this.config.layers.length; i++){
+         
+         if(this.config.layers[i].source.id != source.id )
+            continue;
 
-   for(var i = 0; i< this.config.layers.length; i++){
-      
-      if(this.config.layers[i].source.id != source.id )
-         continue;
-
-      try{
-         this.layers[i].Init( data )
-      }
-      catch(e){
-         console.log("-------> ERROR")
-      }
-   }   
+         try{
+            this.layers[i].Init( data )
+         }
+         catch(e){
+            console.log("-------> ERROR")
+         }
+      }   
+   }
+   else {
+      if ( this.config.layers[li].source.id == source.id )
+         this.layers[li].Init( data )
+   }
 }
 
 //----------------------------------------------------------------------------------------------------------------------//

@@ -506,7 +506,7 @@ MapRenderer.prototype.UpdateTileCache = function (zoom, txB , txE , tyB , tyE, f
             
             for(var i = 0; i< this.config.layers.length; i++){
                if ( this.config.layers[i].type == LayersManager.Custom || this.config.layers[i].type == LayersManager.Heat) {
-                  this.tileCache[key].sourceReady ( this.config.layers[i].source ,this.customLayersRenderer[i])
+                  this.tileCache[key].sourceReady ( this.config.layers[i].source ,this.customLayersRenderer[i], i)
                }
             }   
          }

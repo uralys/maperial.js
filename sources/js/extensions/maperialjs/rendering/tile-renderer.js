@@ -318,6 +318,9 @@ TileRenderer.PointSymbolizer = function ( ctx , line , attr , params ) {
       }
       else { //"img"
          ctx.save()
+         if ('_tx' in ctx ) {
+            ctx.translate (ctx._tx,ctx._ty)
+         }
          if ( "opacity" in params ) {
             ctx.globalAlpha=params["opacity"]
          }
