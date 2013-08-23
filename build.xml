@@ -390,8 +390,6 @@
 			<arg value="sources/js/libs/jquery.coda-slider-3.0.js" />
 			<arg value="--js" />
 			<arg value="sources/js/libs/xdr.js" />
-			<arg value="--js" />
-			<arg value="sources/js/libs/proj4js-compressed.js" />
 
 			<arg value="--js" />
 			<arg value="sources/js/tools/common-handlebars.js" />
