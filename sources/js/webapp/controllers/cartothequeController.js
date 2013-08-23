@@ -11,7 +11,7 @@
 	   $("#listDemos").empty()
 	   $("#listDemos").css("max-height", $(window).height() - 105)
 	   CartothequeController.maps = []
-	   console.log("adding maps")
+	   
 	   CartothequeController.maps.push(CartothequeController.maps0)
 	   CartothequeController.maps.push(CartothequeController.maps1)
 	   CartothequeController.maps.push(CartothequeController.maps2)
@@ -19,11 +19,8 @@
 	   CartothequeController.maps.push(CartothequeController.maps4)
 	   CartothequeController.maps.push(CartothequeController.maps5)
 	   
-	   console.log("adding maps done")
-	   
 	   for(var i = 0; i < CartothequeController.maps.length; i++){
 	      
-	      console.log("tagging map",i)
 	      var thumb = ""
 
 	      thumb += "<div class='row-fluid'>"
@@ -150,8 +147,8 @@
          width      : "200",
          height     : "200",
          position   : { 
-            left    : "50%", 
-            bottom  : "27%" 
+            left    : "45%", 
+            top     : "27%" 
          },
          padding    : 2,
          deltaZoom  : 1,
