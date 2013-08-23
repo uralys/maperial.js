@@ -441,6 +441,7 @@ MapView.prototype.buildAll = function() {
       this.buildStyleEditor();
 
    if(!this.colorbarsManager.colorbarCacheEmpty()){
+      console.log("---> buildColorbar")
       this.buildColorbar();
    }
 

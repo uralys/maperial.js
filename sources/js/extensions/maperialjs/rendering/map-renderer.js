@@ -404,7 +404,7 @@ MapRenderer.prototype.renderAllColorBars = function () {
    this.gl.flush ()
    this.gl.finish()
       
-   for ( colorbarUID in colorbarUIDs ) {
+   for ( var colorbarUID in colorbarUIDs ) {
       var colorbar = colorbarUIDs[ colorbarUID ];
       if ( colorbar == null  || ! colorbar.data.IsValid () ) {
          console.log ( "Invalid colorbar data : " + colorbarUID )

@@ -125,14 +125,18 @@
 			      mainConfig.map.defaultZoom    = 9
 			      mainConfig.map.latitude       = 50.516584
 			      mainConfig.map.longitude      = 3.186998
+			      
+			      mainConfig.hud.elements[HUD.LATLON]        = {show : true,  type : HUD.PANEL,    label : "Lat/Lon",	 position : { left:"50%", top: "0"} } ;
+					
 
 			      //-----------------------------------------------//
  			      
 			      var cstyle        = maperial.createStyle      ()
 					var cdata         = maperial.createCustomData ()
 					
-					//var ps            = new PointSymbolizer("symbols/blue.pointer.jpg") 
-					var ps            = new PointSymbolizer("symbols/beer.svg") 
+					var ps            = new PointSymbolizer("symbols/blue.pointer.png") 
+			      	ps.Alignement("center", "bottom")
+					//var ps            = new PointSymbolizer("symbols/beer.svg") 
 					//var ps            = new PointSymbolizer("symbols/airfield.svg") 
 					var pSymbId       = cstyle.AddSymbolizer ( ps , 18 , 0  );
 			      
@@ -182,11 +186,10 @@
 					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Tequieros ") 
 					cdata.addPoint ([50.103942,3.544234999999958], pSymbId, "Vivat ") 
 					cdata.addPoint ([50.510693,2.785233000000062], pSymbId, "Weed ")
-
 					                  
 	              //-----------------------------------------------//
 
-	              mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+	              mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
 	              mainConfig.layers.push( LayersManager.getCustomLayerConfig( cdata,cstyle ) )  
 
 	              //-----------------------------------------------//

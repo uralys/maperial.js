@@ -250,7 +250,7 @@ HeatRenderer.prototype._BuildTexture = function ( params ) {
       console.log("Invalid color bar : setting default") ;
       return;
    }
-   
+
    var mvMatrix                   = mat4.create();
    var pMatrix                    = mat4.create();
    mat4.identity                 ( pMatrix );

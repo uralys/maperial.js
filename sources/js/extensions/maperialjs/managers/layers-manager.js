@@ -408,7 +408,7 @@ LayersManager.getHeatLayerConfig = function(dataObj,colorbarUIDs) {
       },
       composition: {
          shader : Maperial.AlphaBlend,
-         params : /*LayersManager.defaultAlphaBlendParams*/ {uParams:1.0}
+         params : /*LayersManager.defaultAlphaBlendParams*/ {uParams:0.6}
       }
    }
 }

@@ -236,15 +236,7 @@
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/libs/StackBlur.js" />
 			<arg value="--js" />
-			<arg value="sources/js/extensions/maperialjs/libs/heatmap.js" />
-			<arg value="--js" />
-			<arg value="sources/js/extensions/maperialjs/libs/heatmap-leaflet.js" />
-			<arg value="--js" />
-			<arg value="sources/js/extensions/maperialjs/libs/QuadTree.js" />
-			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/libs/proj4js-compressed.js" />
-			<arg value="--js" />
-			<arg value="sources/js/extensions/maperialjs/libs/EPSG900913.js" />
 			
 			<arg value="--js" />
 			<arg value="sources/js/extensions/maperialjs/rendering/gl-tools.js" />

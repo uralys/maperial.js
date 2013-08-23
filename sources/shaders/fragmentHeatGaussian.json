@@ -1,0 +1,14 @@
+{
+ "code": "precision mediump float;---varying vec2 vTextureCoord;---uniform sampler2D uSamplerTex;---uniform float      uParams;---void main(void) {---float x        = vTextureCoord.s;---float a        = uParams;---float c        = 0.22 ;---float e        = ( x * x ) / ( 4.0 * c * c ) ;---float v        = a * exp ( - e ) ;---gl_FragColor   = vec4 (v,v,v,1.0);---}---", 
+ "type": "x-shader/x-fragment", 
+ "parameters": {
+  "uParams": [
+   "uParams", 
+   null
+  ], 
+  "uSamplerTex1": [
+   "uSamplerTex", 
+   null
+  ]
+ }
+}
