@@ -16,14 +16,13 @@
 <script type="text/javascript">
    window.scriptLoader
          .getScripts(
-               [
+               [ 
                 "http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js",
                 "http://code.jquery.com/ui/1.10.3/jquery-ui.js" ,
                 "/js/libs/jquery.reveal.js",
 
                // new 
                "/js/extensions/maperialjs/libs/proj4js-compressed.js",
-               "/js/extensions/maperialjs/libs/defs/EPSG900913.js",
                "/js/extensions/maperialjs/rendering/gl-customrenderer.js",
                "/js/extensions/maperialjs/rendering/gl-heatrenderer.js",
                "/js/extensions/maperialjs/rendering/gl-customlayer.js",
@@ -114,73 +113,67 @@
                   "https://maps.googleapis.com/maps/api/js?key=AIzaSyATwlkawyHykpfJF24jcPgL_b8kK8zO2Bc&sensor=false&libraries=places,panoramio", ],
             function() {
 
-               $(window).on(MaperialEvents.READY, function() {
-                  $("#waitingSpin").css("display", "none")
-               })
+                  $(window).on(MaperialEvents.READY, function() {
+                     $("#waitingSpin").css("display", "none")
+                  })
 
-               var maperial      = new Maperial()
-               var mainConfig    = ConfigManager.newConfig();
-               var cstyle        = maperial.createStyle      ()
-               var cdata         = maperial.createCustomData ()
-               var cbm           = new ColorbarsManager ( null );
-               var cb            = new ColorBarData()
-               
-               cb.BeginWithAlphaZero ( true )
-               cb.Set(0.0  ,new GradiantColor(0.0,0.0,1.0,0.0))
-               cb.Set(0.10 ,new GradiantColor(0.0,0.0,1.0,1.0))
-               cb.Set(0.15 ,new GradiantColor(0.0,1.0,1.0,1.0))
-               cb.Set(0.45 ,new GradiantColor(0.0,1.0,0.0,1.0))
-               cb.Set(0.75 ,new GradiantColor(1.0,1.0,0.0,1.0))
-               cb.Set(1.0  ,new GradiantColor(1.0,0.0,0.0,1.0))
-               cbm.SetColorBar(cb)
-               
-               var ps            = new PointSymbolizer("symbols/airfield.svg") 
-               var pSymbId       = cstyle.AddSymbolizer ( ps , 18 , 0  );
-               cdata.addPoint    ( [44.926327,3.104466], pSymbId , { diameter : 150 , scale : 0.6 } )
-               cdata.addPoint    ( [44.897957,3.138466], pSymbId , { diameter : 250 , scale : 0.2 } )
-               cdata.addPoint    ( [44.926327,3.138466], pSymbId )
+                  //-----------------------------------------------//
+                  
+                  var maperial = new Maperial()
+               	  var mainConfig   = ConfigManager.newConfig();
+			      
+			      mainConfig.map.defaultZoom    = 8
+			      mainConfig.map.latitude       = 49.316584
+			      mainConfig.map.longitude      = 6.486998
 
-               mainConfig.map.defaultZoom    = 11
-               mainConfig.map.latitude       = 44.926327
-               mainConfig.map.longitude      = 3.104466
-               
-               mainConfig.hud.elements[HUD.CONTROLS]  	   = {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
-               mainConfig.hud.elements[HUD.COMPOSITIONS]  	= {show : true,  	type : HUD.PANEL,   label : "Composition", disableDrag : true };
-               
-               //mainConfig.hud.elements[HUD.LAYER_SETTINGS]	= {show : true, 	type : HUD.PANEL, 	label : "Layer Settings", disableDrag : true };
-               
-               //mainConfig.layers.push(LayersManager.getOSMLayerConfig([Maperial.DEFAULT_STYLE_UID]))
-               //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-                  
-               //mainConfig.layers.push(LayersManager.getShadeLayerConfig())
-               //mainConfig.layers.push(LayersManager.getSrtmLayerConfig())
-                  
-               //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-               //mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-               //config.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
-               mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
-               
-               var conf = LayersManager.getHeatLayerConfig( cdata, cb.Uid() )
-               conf.params.diameter = 300;
-               conf.params.scale    = 0.8;
-               mainConfig.layers.push( conf )
+			      //-----------------------------------------------//
+ 			      
+	              var cdata         = maperial.createCustomData ()
+	              var cbm           = new ColorbarsManager ( null );
+	              var cb            = new ColorBarData()
+	               
+	              cb.BeginWithAlphaZero ( true )
+	              cb.Set(0.0  ,new GradiantColor(0.0,0.0,1.0,0.0))
+	              cb.Set(0.10 ,new GradiantColor(0.0,0.0,1.0,1.0))
+	              cb.Set(0.15 ,new GradiantColor(0.0,1.0,1.0,1.0))
+	              cb.Set(0.45 ,new GradiantColor(0.0,1.0,0.0,1.0))
+	              cb.Set(0.75 ,new GradiantColor(1.0,1.0,0.0,1.0))
+	              cb.Set(1.0  ,new GradiantColor(1.0,0.0,0.0,1.0))
+	              cbm.SetColorBar(cb)
+	               
+	              cdata.addPoint    ( [44.926327,3.104466], null , { diameter : 150 , scale : 0.6 } )
+	              cdata.addPoint    ( [44.897957,3.138466], null , { diameter : 250 , scale : 0.2 } )
+	              cdata.addPoint    ( [44.926327,3.138466], null /*, { diameter : 250 , scale : 0.35 }*/ )
+	              
+	              
+	              //-----------------------------------------------//
 
-               mainConfig.layers.push( LayersManager.getCustomLayerConfig( cdata,cstyle ) )                  
-               
-               var mainOptions = {
-                  type       : Maperial.MAIN,
-                  name       : "maperialDemo"
-               }
-               
-               var map = {
-                  views : [{
-                     config  : mainConfig,
-                     options : mainOptions,
-                  }]
-               }
-                  
-               maperial.build([map])
-            });
+	              mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_STAMEN_WATERCOLOR))
+    	          mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_CYCLE))
+	              
+	              var heatmapLayer = LayersManager.getHeatLayerConfig( cdata, cb.Uid() )
+	              heatmapLayer.params.diameter = 300;
+	              heatmapLayer.params.scale    = 0.8;
+	              mainConfig.layers.push( heatmapLayer )
+
+	              //-----------------------------------------------//
+
+	              var mainOptions = {
+			         type       : Maperial.MAIN,
+			         name       : "maperialDemo"
+			      }
+			      
+			      var map = {
+			         views : [{
+			            config  : mainConfig,
+			            options : mainOptions,
+			         }]
+			      }
+
+	              //-----------------------------------------------//
+			         
+            	  maperial.build([map])
+               });
 </script>
 
 
