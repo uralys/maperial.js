@@ -102,10 +102,10 @@ HeatRenderer.prototype.Update = function ( params ) {
       return 0;
       
    var gl       = this.gl;
-   this.scaleX  = null;
-   this.scaleY  = null;
-   this.trX     = null;
-   this.trY     = null;
+//   this.scaleX;
+//   this.scaleY;
+//   this.trX;
+//   this.trY;
    
    gl.bindFramebuffer         ( gl.FRAMEBUFFER, this.frmB );
    this.gl.clearColor         ( 0.0, 0.0, 0.0, 0.0  );

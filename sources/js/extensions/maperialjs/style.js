@@ -145,7 +145,7 @@ TextSymbolizer.prototype.CollisionDetection = function  ( this_, others ) {
 
 TextSymbolizer.prototype.SetTransform = function  ( tr ) { 
    if ( tr && tr in TextSymbolizer.TextTransform ) {
-      this["text-transform"] = tr
+      this["text-transform"] == tr
    }
    else {
       delete this["text-transform"];
