@@ -290,7 +290,7 @@ HeatRenderer.prototype._BuildTexture = function ( params ) {
          gl.uniform1i               (prog.params.uSamplerTex1.name, 0);
          
          gl.activeTexture           (gl.TEXTURE1);
-         gl.bindTexture             (gl.TEXTURE_2D, colorbar.tex );
+         gl.bindTexture             (gl.TEXTURE_2D, colorbar.tex[this.mapView.name] );
          gl.uniform1i               (prog.params.uSamplerTex2.name, 1);      
                
          mat4.identity              ( mvMatrix );

@@ -274,7 +274,6 @@ MapView.prototype.createContext = function() {
    // set new divs (ember erase and build new divs)
 
    this.context.mapCanvas = $("#Map_"+this.name);
-   this.context.mapLeaflet = $("#MapLeaflet_"+this.name);
    this.setCanvasSize();
 
    if(this.config.hud.elements[HUD.MAGNIFIER]){
@@ -441,7 +440,6 @@ MapView.prototype.buildAll = function() {
       this.buildStyleEditor();
 
    if(!this.colorbarsManager.colorbarCacheEmpty()){
-      console.log("---> buildColorbar")
       this.buildColorbar();
    }
 
@@ -452,118 +450,9 @@ MapView.prototype.buildAll = function() {
 
    //--------------------------//
    
-   if(this.config.useLeaflet){
-      this.refreshScreen()      
-      this.buildLeafletLayer();
-   }
-   
-   //--------------------------//
-
    this.finishStartup();
 }
 
-//==================================================================//
-// DEMO LEAFLET ONLY
-
-MapView.prototype.buildLeafletLayer = function() {
-
-   console.log("Adding Leaflet...")
-   
-   //-----------------------------------------------------------//
-
-   var latitude   = this.startLatitude()
-   var longitude  = this.startLongitude()
-   var zoom       = this.startZoom()
-
-   //-----------------------------------------------------------//
-
-   var leafletLayer = L.map('MapLeaflet_'+this.name, {
-      dragging : this.type == Maperial.MAIN,
-      zoomControl : this.type == Maperial.MAIN,
-      attributionControl : false,
-   }).setView([latitude, longitude], zoom);
-
-   var london =  L.marker([51.505537, -0.075452]).addTo(leafletLayer)
-   .bindPopup("<b>London</b><br/>Tower Bridge");
-
-   var paris = L.marker([48.87197, 2.331713]).addTo(leafletLayer)
-   .bindPopup("<b>Paris</b><br/>Opéra");
-   
-   var brussel = L.marker([50.84191, 4.362424]).addTo(leafletLayer)
-   .bindPopup("<b>Brussel</b><br/>Royal Palace");
-
-   if(this.type == Maperial.MAIN){
-      london.openPopup()
-   }
-
-   L.circle([51.508, -0.11], 500, {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 0.5
-   }).addTo(leafletLayer).bindPopup("I am a circle.");
-
-   L.polygon([
-      [51.509, -0.08],
-      [51.503, -0.06],
-      [51.51, -0.047]
-   ]).addTo(leafletLayer).bindPopup("I am a polygon.");
-
-   //-----------------------------------------------------------//
-
-
-   var heatmapLayer = L.TileLayer.heatMap({
-      // radius could be absolute or relative
-      // absolute: radius in meters, relative: radius in pixels
-      radius: { value: 40000, absolute: true },
-//      radius: { value: 60, absolute: false },
-      opacity: 0.8,
-      gradient: {
-         0.45: "rgb(0,0,255)",
-         0.55: "rgb(0,255,255)",
-         0.65: "rgb(0,255,0)",
-         0.95: "yellow",
-         1.0: "rgb(255,0,0)"
-      }
-   });
-
-   heatmapLayer.setData(MapView.testData.data);
-   
-   heatmapLayer.addTo(leafletLayer);
-
-   //-----------------------------------------------------------//
-   
-   var popup = L.popup();
-
-   function onMapClick(e) {
-      popup
-         .setLatLng(e.latlng)
-         .setContent("You clicked the map at " + e.latlng.toString())
-         .openOn(leafletLayer);
-   }
-
-   var mapView = this
-   function onMapMove(e) {
-      var center = leafletLayer.getCenter()
-      mapView.SetCenter (center.lat, center.lng)
-      mapView.SetZoom (leafletLayer.getZoom())
-      $(window).trigger(MaperialEvents.MAP_MOVING, [mapView.map, mapView.name, mapView.type, mapView.context.zoom]);
-   }
-
-   function onMapZoom(e) {
-      mapView.SetZoom (leafletLayer.getZoom())
-   }
-
-   if(this.type == Maperial.MAIN){
-      leafletLayer.on('click', onMapClick);
-      leafletLayer.on('move',  onMapMove);
-   }
-   
-   leafletLayer.on('zoomend',  onMapZoom);
-   
-   this.context.leaflet = leafletLayer
-   console.log("  Leaflet ready")
-}
-   
 //==================================================================//
    
 MapView.prototype.finishStartup = function() {
@@ -669,16 +558,6 @@ MapView.prototype.setCanvasSize = function() {
       this.context.mapCanvas[0].height = h;
    }
    
-   if(this.context.mapLeaflet[0]){
-      this.context.mapLeaflet.css("position", "absolute");
-      this.context.mapLeaflet.css("left", "0px");
-      this.context.mapLeaflet.css("top", "0px");
-      this.context.mapLeaflet.css("background", "rgba(0,0,0,0)");
-      this.context.mapLeaflet.css("width", w);
-      this.context.mapLeaflet.css("height", h);
-      this.context.mapLeaflet[0].width = w;
-      this.context.mapLeaflet[0].height = h;
-   }
 }
 
 MapView.prototype.refreshScreen = function() {
@@ -914,10 +793,6 @@ MapView.prototype.refreshZoom = function (typeTriggering, zoom) {
 
 //==================================================================//
 
-MapView.prototype.refreshLeafletView = function () {
-   this.context.leaflet.setView([this.config.map.currentLat, this.config.map.currentLon], this.config.map.currentZoom, {pan: {animate: false}});
-}
-
 MapView.prototype.refreshCamera = function (viewTriggering, typeTriggering, zoom) {
 
    if(!viewTriggering)
@@ -963,16 +838,15 @@ MapView.prototype.refreshCamera = function (viewTriggering, typeTriggering, zoom
          var lensCenterP = new Point( viewTriggeringCenterP.x - panelTriggeringCenterX + viewCenterX , viewTriggeringCenterP.y + panelTriggeringCenterY - viewCenterY);
 
          this.context.centerM = this.context.coordS.PixelsToMeters ( lensCenterP.x, lensCenterP.y, this.maperial.getZoom(this.map) );
-//         this.mapRenderer.DrawScene()
          
          break;
    }
+
+   if(this.type == Maperial.LENS){
+      this.mapRenderer.DrawScene()
+   }
    
    this.refreshCurrentLatLon()
-   
-   if(this.type != Maperial.MAIN && this.context.leaflet){
-      this.refreshLeafletView()
-   }
 }
 
 //-------------------------------------------------//

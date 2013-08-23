@@ -316,13 +316,6 @@ HUD.prototype.styleView = function(){
       targetCenter.css("border", "1px solid #000")
    }
 
-   if(this.mapView.config.useLeaflet){
-      this.mapView.context.mapLeaflet.css ("border-radius",          this.mapView.options.borderRadius       )
-      this.mapView.context.mapLeaflet.css ("-webkit-border-radius",     this.mapView.options.borderRadius       )
-      this.mapView.context.mapLeaflet.css ("-moz-border-radius",     this.mapView.options.borderRadius       )
-      this.mapView.context.mapLeaflet.css ("-khtml-border-radius",   this.mapView.options.borderRadius       )
-      this.mapView.context.mapLeaflet.css("-webkit-mask-image",     "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC)")
-   }
 }
 
 //==================================================================//

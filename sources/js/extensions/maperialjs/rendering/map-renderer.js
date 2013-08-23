@@ -406,11 +406,15 @@ MapRenderer.prototype.renderAllColorBars = function () {
       
    for ( var colorbarUID in colorbarUIDs ) {
       var colorbar = colorbarUIDs[ colorbarUID ];
+      
       if ( colorbar == null  || ! colorbar.data.IsValid () ) {
          console.log ( "Invalid colorbar data : " + colorbarUID )
          break;
       }
-      //console.log(colorbar);
+
+      if(!colorbar.tex)
+         colorbar.tex = []
+      
       // Raster it !
       var data = []
       for (var i = 0.0 ; i < 1.0 ; i+= 1.0/256) {
@@ -422,15 +426,15 @@ MapRenderer.prototype.renderAllColorBars = function () {
       }
       data = new Uint8Array(data)
       
-      if ( colorbar.tex ) {
-         this.gl.deleteTexture ( colorbar.tex )
-         delete colorbar.tex // good ??
-         colorbar.tex = null;
+      if ( colorbar.tex[this.mapView.name] ) {
+         this.gl.deleteTexture ( colorbar.tex[this.mapView.name] )
+         delete colorbar.tex[this.mapView.name] // good ??
+         colorbar.tex[this.mapView.name] = null;
       }
     
       try {
-         colorbar.tex = this.gl.createTexture();
-         this.gl.bindTexture  (this.gl.TEXTURE_2D, colorbar.tex );
+         colorbar.tex[this.mapView.name] = this.gl.createTexture();
+         this.gl.bindTexture  (this.gl.TEXTURE_2D, colorbar.tex[this.mapView.name] );
          this.gl.pixelStorei  (this.gl.UNPACK_FLIP_Y_WEBGL  , false    );
          this.gl.texImage2D   (this.gl.TEXTURE_2D, 0 , this.gl.RGBA, 256 , 1 , 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data );
          this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
@@ -439,9 +443,9 @@ MapRenderer.prototype.renderAllColorBars = function () {
          this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T,this.gl.CLAMP_TO_EDGE);
          this.gl.bindTexture  (this.gl.TEXTURE_2D, null );
       } catch (e) { 
-         this.gl.deleteTexture ( colorbar.tex );
-         delete colorbar.tex;
-         colorbar.tex = null;
+         this.gl.deleteTexture ( colorbar.tex[this.mapView.name] );
+         delete colorbar.tex[this.mapView.name];
+         colorbar.tex[this.mapView.name] = null;
          console.log ( "Error in colorbar building : " + colorbarUID );
       }
    }

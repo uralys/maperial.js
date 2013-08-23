@@ -141,7 +141,6 @@
 			      };
 			      */
 
-
 			      //-----------------------------------------------//
  			      
 	              var cdata         = maperial.createCustomData ()
@@ -1271,7 +1270,6 @@ cdata.addPoint ([25.72,-80.2707], null, { diameter : 10000 , scale : 0.6 })
 cdata.addPoint ([34.5873,-118.245], null, { diameter : 10000 , scale : 0.6 }) 
 cdata.addPoint ([35.8278,-78.6421], null, { diameter : 10000 , scale : 0.6 }) 
                   
-                  
                   //-----------------------------------------------//
 				
                   var customTransport = { 
@@ -1310,20 +1308,58 @@ cdata.addPoint ([35.8278,-78.6421], null, { diameter : 10000 , scale : 0.6 })
                   mainConfig.layers.push(heatmapLayer)
 
 			      //-----------------------------------------------//
+                  
+			      lensConfig.layers       = mainConfig.layers
+			      minifierConfig.layers   = mainConfig.layers
+      
+			      //-----------------------------------------------//
 			      
                   var mainOptions = {
                      type : Maperial.MAIN,
                      name : "maperialDemo"
                   }
 
+                  var lensOptions = {
+                     type       : Maperial.LENS,
+                     width      : "200",
+                     height     : "200",
+                     position   : { 
+                        left    : "50%", 
+                        bottom  : "27%" 
+                     },
+                     padding    : 2,
+                     deltaZoom  : 1,
+                     borderRadius: 150,
+                     draggable  : true
+                  }
+                  
+                  var minifierOptions = {
+                     type       : Maperial.MINIFIER,
+                     width      : "200",
+                     height     : "200",
+                     position   : { 
+                        right   : "10%", 
+                        bottom  : "18%" 
+                     },
+                     padding    : 2,
+                     deltaZoom  : -2,
+                     draggable  : true
+                  }
+
 					//-----------------------------------------------//
 
 			      var map = {
-			         views : [{
-			            config  : mainConfig,
-			            options : mainOptions,
-			         }]
-			      }
+                     views : [{
+                        config  : mainConfig,
+                        options : mainOptions,
+                     },{
+                        config  : lensConfig,
+                        options : lensOptions,
+                     },{
+                        config  : minifierConfig,
+                        options : minifierOptions,
+                     }]
+                  }
 			         
 
                   //-----------------------------------------------//

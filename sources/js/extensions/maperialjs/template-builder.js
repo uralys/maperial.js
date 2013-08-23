@@ -64,10 +64,6 @@ TemplateBuilder.prototype.buildMap = function(){
    html += "<canvas id=\"Map_"+this.name+"\" class=\"maperial-map canvas-"+this.mapView.type+"\"></canvas>";
    html += "<canvas id=\"fakeCanvas\" class=\"hide\"></canvas>";
 
-   if(this.config.useLeaflet){
-      html += "<div id=\"MapLeaflet_"+this.mapView.name+"\"></div>";
-   }
-
    if(this.config.map.requireBoundingBoxDrawer){
       html += "<div id=\"drawBoardContainer"+this.name+"\" class=\"hide\">";
       html += "   <canvas id=\"drawBoard"+this.name+"\"></canvas>";
