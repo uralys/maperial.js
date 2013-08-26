@@ -25,7 +25,7 @@
 			translateEn    : function(){ App.translator.setLang('en') },
 			translateFr    : function(){ App.translator.setLang('fr') },
 
-			openTryscreen  : function(){ App.finishLoadings("tryscreen") },
+			openTryscreen  : function(){ console.log("-------------> openTryscreen  "); App.finishLoadings("tryscreen") },
 			signin         : function(){
 
 			   $("#loginWindow").reveal({
@@ -96,6 +96,7 @@
 	{
 	   var webappPage = Router.isWebappPage(page);
 	   
+	   console.log("-------------> ") 
       console.log("openPage " + page);
 		if(webappPage
 	   && (page != "mapCreation" && page != "styleEditor" && !App.Globals.isTryscreen) 

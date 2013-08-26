@@ -129,8 +129,8 @@
       var scripts = [];
       var maperialJSScripts = "";
       
+      scripts.push("https://maps.googleapis.com/maps/api/js?key=AIzaSyATwlkawyHykpfJF24jcPgL_b8kK8zO2Bc&sensor=false&libraries=places,panoramio&callback=initialize");
       scripts.push("http://fabricjs.com/lib/fabric.js");
-      scripts.push("https://maps.googleapis.com/maps/api/js?key=AIzaSyATwlkawyHykpfJF24jcPgL_b8kK8zO2Bc&sensor=false&libraries=places,panoramio");
 
       //-------------------------------------------//
 
