@@ -405,6 +405,13 @@ MapView.prototype.loadColorbars = function(next){
 
 //==================================================================//
 
+/**
+ * OSMSets : les groupes de subLayerIds (Roads, Buildings...) 
+ * ils ont un layerPosition pour placer le groupe dans le bon layer
+ * 
+ * OSMVisibilities : map de chaque subLayerId avec un layerPosition
+ * utilisé par le renderer.applyStyle pour afficher le subLayerId ou non selon le layer
+ */
 MapView.prototype.checkOSMSets = function(){
 
    if(this.stylesManager.styleCacheEmpty())

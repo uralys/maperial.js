@@ -74,13 +74,15 @@ LayersManager.prototype.addLayer = function(sourceType, params) {
    //-----------------------//
 
    var me = this
+   this.mapView.config.layers.push(layerConfig)
+
    var refresh = function() { 
-      me.mapView.config.layers.push(layerConfig)
+      me.mapView.checkOSMSets();
       me.refreshMaperialForLayerAdded(layerConfig) 
    }
 
    if(sourceType == Source.MaperialOSM)
-      this.mapView.stylesManager.fetchStyles([layerConfig.params.styles[layerConfig.params.selectedStyle]], refresh)
+      this.mapView.loadStyles(refresh)
    else
       refresh()
    
@@ -277,6 +279,7 @@ LayersManager.prototype.defaultOSMSets = function(style) {
       this.mapView.config.map.osmSets[i].layerPosition = this.firstOSMPosition;
    }
 
+   console.log("defaultOSMSets done", this.mapView.config.map.osmSets)
 }
 
 //=======================================================================================//
