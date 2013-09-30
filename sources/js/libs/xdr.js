@@ -1,5 +1,4 @@
 if ( window.XDomainRequest ) {
-   console.log("init xdr ")
    jQuery.ajaxTransport(function( s ) {
       if ( s.crossDomain && s.async ) {
          if ( s.timeout ) {
