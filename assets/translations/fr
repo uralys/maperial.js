@@ -205,9 +205,13 @@
     "MapKeys"			: "Légende",
     "PublicPrivate"		: "Cartes publiques ou privées",
     
+    "BuildYourOwnDynamicMaps" : "Construisez vos propres cartes dynamiques",
+    "BuildWeb"			: "Construisez des cartes dynamiques pour vos applications web",
+    "BuildMobile"		: "Construisez des cartes dynamiques ou offline pour vos applications mobiles",
     "Publish"			: "Publication",
     "TagJS"				: "Tag javascript pour domaine externe",
     "ExportPNG"			: "Export PNG haute définition",
+    "APIMobile"			: "API mobile native",
     "APIJS"				: "API Javascript",
     "APIRest"			: "API Rest",
     "APIRestDetails"	: "Mise à jour automatisée des cartographies",
