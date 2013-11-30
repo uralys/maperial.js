@@ -26,6 +26,8 @@ public class Obfuscator {
 		Map<String, String> varsTag = new LinkedHashMap<String, String>();
 		Map<String, String> varsMaperialJS = new LinkedHashMap<String, String>();
 
+		//=================================================================================//
+
 		varsTag.put("ScriptLoader", "_a_");
 		varsTag.put("MaperialBuilder", "_x_");
 
@@ -42,6 +44,18 @@ public class Obfuscator {
 		varsTag.put("scriptLoader", "_ert");
 		varsTag.put("maperialBuilder", "_uyt");
 
+		varsTag.put("Maperial", "__n_");
+		varsTag.put("__Maperial", "Maperial");
+		
+		//=================================================================================//
+		// MaperialJS 1.2
+		
+		varsMaperialJS.put("MaperialAPI.createView", "_._");
+		varsMaperialJS.put("MaperialAPI.prototype.createView", "_.prototype._");
+
+		//=================================================================================//
+		// oldies
+		
 		varsMaperialJS.put("MapRenderer", "__a__");
 		varsMaperialJS.put("MaperialEvents", "__b_");
 		varsMaperialJS.put("MapParameters", "__c_");
@@ -58,9 +72,7 @@ public class Obfuscator {
 		varsMaperialJS.put("StyleMenu", "_l_");
 		
 		varsMaperialJS.put("Maperial", "__n_");
-		varsTag.put("Maperial", "__n_");
 		varsMaperialJS.put("__Maperial", "Maperial");
-		varsTag.put("__Maperial", "Maperial");
 
 		varsMaperialJS.put("ExtensionColorbar", "__m_");
 //		varsMaperialJS.put("Symbolizer", "___o_"); ->> marche pas..?

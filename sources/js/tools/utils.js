@@ -299,7 +299,31 @@ Utils.randomRotate = function (element) {
 
 //----------------------------------------------------------------------------------------//
 
-Utils.cloneJsonObject = function (jsonObject) {
+Utils.prepareOptions = function (options, mainParam) {
+
+   if(options === undefined){
+      return null
+   }
+   
+   else if(typeof options == "string"){
+      var value = options
+      var newOptions = {}
+      newOptions[mainParam] = value
+      return newOptions
+   }
+      
+   else if(options[mainParam] === undefined){
+      console.log("Could not find " + mainParam + ". Check your options.")
+      return null
+   }
+   
+   else
+      return options
+}
+   
+//----------------------------------------------------------------------------------------//
+   
+   Utils.cloneJsonObject = function (jsonObject) {
    return $.parseJSON(JSON.stringify(jsonObject));
 }
 
