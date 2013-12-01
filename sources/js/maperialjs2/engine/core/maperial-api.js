@@ -115,13 +115,26 @@ MaperialAPI.prototype.addImageLayer = function (views, options) {
  *    Each view in the array will have an OSM layer with the provided options
  * 
  * options :
- *    style : styleUID (can be used as only param)
- *    
- * # old --------------- 
- *       mainConfig.layers.push(LayersManager.getOSMLayerConfig([Maperial.DEFAULT_STYLE_UID]))
+ *    id
+ *    type 
+ *       Maperial.OSM
+ *       Maperial.VECTORIAL_DATA
+ *       
+ *    style
+ *       uid
+ *       
+ *       symbol
+ *       horizontalAlign
+ *       verticalAlign
+ *       
+ *       colorbar
+ *       diameter
+ *       diameterUnit
+ *       scale
+ *       fill
  *    
  */
-MaperialAPI.prototype.addOSMLayer = function (views, options) {
+MaperialAPI.prototype.addVectorialLayer = function (views, options) {
 
    //-------------------------------------------
    // Checking options
@@ -137,7 +150,7 @@ MaperialAPI.prototype.addOSMLayer = function (views, options) {
    //-------------------------------------------
 
    for(var i = 0; i < views.length; i++){
-      console.log("Building OSMLayer " + options.style + " on " + views[i])
+      console.log("Building Vectorial Layer " + options.id + " (type "+options.type+") on " + views[i])
    }
    
 }
@@ -146,8 +159,10 @@ MaperialAPI.prototype.addOSMLayer = function (views, options) {
 
 //=====================================================================================================//
 
-MaperialAPI.prototype.createCustomData = function () {
-   return new CustomData ()
+/**
+ * 
+ * 
+ */
+MaperialAPI.prototype.addVectorialData = function (layerId, data) {
+   
 }
-
-//=====================================================================================================//

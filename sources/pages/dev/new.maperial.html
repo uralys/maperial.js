@@ -34,8 +34,8 @@
                 //"/js/maperialjs2/libs/gl-matrix-min.js",
 
                 // core ------------------------------
-               	"/js/maperialjs2/engine/core/maperial.js",
                	"/js/maperialjs2/engine/core/maperial-api.js",
+               	"/js/maperialjs2/engine/core/maperial.js",
 
                 // models ----------------------------
                 "/js/maperialjs2/engine/models/source.js",
@@ -54,6 +54,7 @@
 
                   //-----------------------------------------------//
 				  // Define your ids
+                  //-----------------------------------------------//
 				  
                   // view
 			      var map 			= "map"
@@ -65,11 +66,14 @@
 			      var osmLayer 		= "osm"
 
                   //-----------------------------------------------//
-				  // Build your Maperial
+				  // Define your data
+                  //-----------------------------------------------//
 
-			      var maperial 		= new Maperial()
-			      
-			      //-----------------------------------------------//
+                  var beers = {}
+                  
+                  //-----------------------------------------------//
+				  // Build your Maperial
+                  //-----------------------------------------------//
 
 			      maperial.createView({
 			        view			: map,
@@ -90,7 +94,7 @@
 			      	type : Maperial.VECTORIAL_DATA,
 			      	
 			      	style : {
-			      	   symbol				: "symbols/blue.pointer.png"
+			      	   symbol				: "symbols/blue.pointer.png",
 			      	   horizontalAlign		: "center",	
 			      	   verticalAlign		: "bottom",	
 			      	}
@@ -118,10 +122,24 @@
 			      
 			      //-----------------------------------------------//
 			      
-			      //mainConfig.hud.elements[HUD.LATLON]        = {show : true,  type : HUD.PANEL,    label : "Lat/Lon",	 position : { left:"50%", top: "0"} } ;
-					
+			      var control = {
+                     type : HUD.LATLON,
+			         position : { 
+			            left:"50%", 
+			            top: "0"
+			         }
+                  }
+			      
+			      maperial.addControl(map, control)
+			      
+                  //-----------------------------------------------//
+ 			      // oldies : 
 			      //-----------------------------------------------//
+ 			      //	- data a recup
+ 			      //	- creation du style + symbolizer a recup
  			      
+ 			      
+					/* 
 					var cdata         = maperial.createCustomData ();
 					
 			        var cstyle        = maperial.createStyle ();
@@ -131,7 +149,7 @@
 					//var ps            = new PointSymbolizer("symbols/airfield.svg") 
 					var pSymbId       = cstyle.AddSymbolizer ( ps , 18 , 0  );
 			      
-			      // http://thenounproject.com/noun/beer/?dwn=CCBY&dwn_icon=634#icon-No634
+			     	// http://thenounproject.com/noun/beer/?dwn=CCBY&dwn_icon=634#icon-No634
 			            
 					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Angelus ") 
 					cdata.addPoint ([50.485569,2.8307250000000295], pSymbId, "Abbaye de Lille ") 
@@ -177,29 +195,8 @@
 					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Tequieros ") 
 					cdata.addPoint ([50.103942,3.544234999999958], pSymbId, "Vivat ") 
 					cdata.addPoint ([50.510693,2.785233000000062], pSymbId, "Weed ")
-					                  
+					                   */
 	              //-----------------------------------------------//
-
-	            //  mainConfig.layers.push(LayersManager.getImagesLayerConfig(Source.Images, Source.IMAGES_OCM_TRANSPORT))
-	            //  mainConfig.layers.push( LayersManager.getCustomLayerConfig( cdata,cstyle ) )  
-
-	              //-----------------------------------------------//
-
-	              var mainOptions = {
-			         type       : Maperial.MAIN,
-			         name       : "maperialDemo"
-			      }
-			      
-			      var map = {
-			         views : [{
-			            config  : mainConfig,
-			            options : mainOptions,
-			         }]
-			      }
-
-	              //-----------------------------------------------//
-			         
-            	  maperial.build([map])
                });
 </script>
 

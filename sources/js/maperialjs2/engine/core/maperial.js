@@ -1,13 +1,7 @@
 //------------------------------------------------------------------//
 
 function Maperial(){
-   console.log("--------------")
-   console.log("NEW Maperial ")
-   console.log("--------------")
-   
    this.api = new MaperialAPI();
-
-   window.maperial = this
 };
 
 //------------------------------------------------------------------//
@@ -16,14 +10,14 @@ function Maperial(){
 
 Maperial.prototype.createView          = function (options)          { this.api.createView (options) }
 
-Maperial.prototype.addOSMLayer         = function (views, options)   { this.api.addOSMLayer     (views, options) }
-Maperial.prototype.addCustomLayer      = function (views, options)   { this.api.addCustomLayer  (views, options) }
-Maperial.prototype.addRasterLayer      = function (views, options)   { this.api.addRasterLayer  (views, options) }
-Maperial.prototype.addImageLayer       = function (views, options)   { this.api.addImageLayer   (views, options) }
-Maperial.prototype.addWMSLayer         = function (views, options)   { this.api.addWMSLayer     (views, options) }
-Maperial.prototype.addSRTMLayer        = function (views, options)   { this.api.addSRTMLayer    (views, options) }
+Maperial.prototype.addOSMLayer         = function (views, options)   { this.api.addOSMLayer        (views, options) }
+Maperial.prototype.addVectorialLayer   = function (views, options)   { this.api.addVectorialLayer  (views, options) }
+Maperial.prototype.addRasterLayer      = function (views, options)   { this.api.addRasterLayer     (views, options) }
+Maperial.prototype.addImageLayer       = function (views, options)   { this.api.addImageLayer      (views, options) }
+Maperial.prototype.addWMSLayer         = function (views, options)   { this.api.addWMSLayer        (views, options) }
+Maperial.prototype.addSRTMLayer        = function (views, options)   { this.api.addSRTMLayer       (views, options) }
 
-Maperial.prototype.createCustomData    = function ()                 { this.api.createCustomData (views, options) }
+Maperial.prototype.addVectorialData    = function (layerId, data)    { this.api.addVectorialData (layerId, data) }
 
 //------------------------------------------------------------------//
 //Views types
@@ -38,8 +32,8 @@ Maperial.MAGNIFIER               = "maperial-magnifier"  // camera centered on w
  //------------------------------------------------------------------//
 //Vectorial layers types
 
-Maperial.OSM                     = "Maperial.OSM"   
-Maperial.VECTORIAL_DATA          = "Maperial.VECTORIAL_DATA"
+Maperial.OSM                     = "tiles"   
+Maperial.VECTORIAL_DATA          = "data"
 
 
 //------------------------------------------------------------------//
@@ -81,3 +75,9 @@ Maperial.AlphaBlend             = "AlphaBlend";
 Maperial.MulBlend               = "MulBlend";
 
 Maperial.globalDataCpt          = 0;
+
+//------------------------------------------------------------------//
+
+(function() {
+   window.maperial = new Maperial()
+})();
