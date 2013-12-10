@@ -142,6 +142,16 @@ Utils.generateGuid = function()
 
 //----------------------------------------------------------------------------------------//
 
+Utils.generateUID = function() 
+{
+   var timestamp = new Date().getTime().toString(16);
+   var random    = (Math.random() * Math.pow(2, 32)).toString(16);
+   
+   return timestamp + random;
+}
+
+//----------------------------------------------------------------------------------------//
+
 Utils.popup = function(url, title, width, height) 
 {
    var left = (screen.width/2)-(width/2);

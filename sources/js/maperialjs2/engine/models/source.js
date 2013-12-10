@@ -1,15 +1,4 @@
 //-----------------------------------------------------------------------------------//
-// Source.type
-
-Source.Vectorial                    = "vectorial";
-Source.Raster                       = "raster";
-
-Source.Images                       = "images";
-Source.WMS                          = "wms";
-
-Source.SRTM                         = "srtm";
-
-//-----------------------------------------------------------------------------------//
 // MaperialOSM public default styles
 
 Source.MAPERIAL_BROWNIE             = "maperial.brownie";

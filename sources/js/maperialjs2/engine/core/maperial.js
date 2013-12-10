@@ -1,23 +1,13 @@
 //------------------------------------------------------------------//
 
-function Maperial(){
-   this.api = new MaperialAPI();
+function Maperial(options){
+   console.log("-----------------------")
+   console.log("Creating a Maperial")
+   this.options   = options
+   this.views     = {}
+   
+   window.sourceManager = window.sourceManager || new SourceManager()
 };
-
-//------------------------------------------------------------------//
-// API
-//------------------------------------------------------------------//
-
-Maperial.prototype.createView          = function (options)          { this.api.createView (options) }
-
-Maperial.prototype.addOSMLayer         = function (views, options)   { this.api.addOSMLayer        (views, options) }
-Maperial.prototype.addVectorialLayer   = function (views, options)   { this.api.addVectorialLayer  (views, options) }
-Maperial.prototype.addRasterLayer      = function (views, options)   { this.api.addRasterLayer     (views, options) }
-Maperial.prototype.addImageLayer       = function (views, options)   { this.api.addImageLayer      (views, options) }
-Maperial.prototype.addWMSLayer         = function (views, options)   { this.api.addWMSLayer        (views, options) }
-Maperial.prototype.addSRTMLayer        = function (views, options)   { this.api.addSRTMLayer       (views, options) }
-
-Maperial.prototype.addVectorialData    = function (layerId, data)    { this.api.addVectorialData (layerId, data) }
 
 //------------------------------------------------------------------//
 //Views types
@@ -34,7 +24,6 @@ Maperial.MAGNIFIER               = "maperial-magnifier"  // camera centered on w
 
 Maperial.OSM                     = "tiles"   
 Maperial.VECTORIAL_DATA          = "data"
-
 
 //------------------------------------------------------------------//
 
@@ -77,7 +66,78 @@ Maperial.MulBlend               = "MulBlend";
 Maperial.globalDataCpt          = 0;
 
 //------------------------------------------------------------------//
+// API
+//------------------------------------------------------------------//
 
-(function() {
-   window.maperial = new Maperial()
-})();
+/**
+ * options:
+ * 
+ *    # mandatory ----------
+ *       
+ *       view : "div.id"  (can be used as only param)
+ *       
+ *    # others -------------
+ *    
+ *       type
+ *          Maperial.MAIN (default)
+ *          Maperial.ANCHOR
+ *          Maperial.LENS
+ *          Maperial.MINIFIER
+ *          Maperial.MAGNIFIER
+ *       
+ *       defaultZoom
+ *          default Maperial.DEFAULT_ZOOM
+ *       
+ *       latitude 
+ *          default Maperial.DEFAULT_LATITUDE
+ *
+ *       longitude
+ *          default Maperial.DEFAULT_LONGITUDE
+ *       
+ */
+Maperial.prototype.addView = function (options) {
+
+   //-------------------------------------------
+   // Checking options
+   
+   var options = Utils.prepareOptions(options, "container")
+   if(!options){
+      console.log("Wrong call to createView. Check the options")
+   }
+
+   //-------------------------------------------
+   // Checking view 
+
+   console.log("Adding view " + options.container  + "...")
+   
+   if($("#" + options.container )[0] == null){
+      console.log("View " + options.container  + " could not be found")
+      return
+   }
+
+   //-------------------------------------------
+   // Set defaults
+
+   if(options.type === undefined){
+      options.type = Maperial.MAIN
+   }
+   
+   if(options.latitude === undefined){
+      options.latitude = Maperial.DEFAULT_LATITUDE
+   }
+   
+   if(options.longitude === undefined){
+      options.longitude = Maperial.DEFAULT_LONGITUDE
+   }
+
+   //-------------------------------------------
+   // Proceed
+   
+   var view =  new MapView(this, options)
+   this.views[view.id] = view
+   
+   return view
+}
+
+
+//------------------------------------------------------------------//

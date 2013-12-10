@@ -11,6 +11,13 @@
 	<div id="map"></div>
 </body>
 
+<style type="text/css">
+  #map {
+    width: 100%;
+   	height: 100%;
+  }
+</style>
+  
 <script type="text/javascript" src="/js/tools/script-loader.js"></script>
 <script type="text/javascript">
    window.scriptLoader
@@ -31,17 +38,43 @@
                 // MaperialJS
                 
                 // libs ------------------------------
-                //"/js/maperialjs2/libs/gl-matrix-min.js",
+                "/js/maperialjs2/libs/gl-matrix-min.js",
+                "/js/maperialjs2/libs/proj4js-compressed.js",
+
+                "/js/maperialjs2/libs/tools/coordinate-system.js",
 
                 // core ------------------------------
-               	"/js/maperialjs2/engine/core/maperial-api.js",
                	"/js/maperialjs2/engine/core/maperial.js",
+               	"/js/maperialjs2/engine/core/maperial-api.js",
+                "/js/maperialjs2/engine/core/map-view.js",
+                "/js/maperialjs2/engine/core/tile.js",
 
+                // managers ------------------------------
+               	"/js/maperialjs2/engine/managers/source-manager.js",
+               	"/js/maperialjs2/engine/managers/layer-manager.js",
+               	
                 // models ----------------------------
+                "/js/maperialjs2/engine/models/map-context.js",
+                "/js/maperialjs2/engine/models/dynamical-data.js",
+                "/js/maperialjs2/engine/models/heatmap-data.js",
                 "/js/maperialjs2/engine/models/source.js",
+                "/js/maperialjs2/engine/models/map-style.js",
+                "/js/maperialjs2/engine/models/colorbar.js",
+
+                "/js/maperialjs2/engine/models/layers/image-layer.js",
+
+                "/js/maperialjs2/engine/models/data/image-data.js",
 
                 // rendering -------------------------
-                //"/js/maperialjs2/engine/rendering/",
+                "/js/maperialjs2/engine/rendering/gl-tools.js",
+                "/js/maperialjs2/engine/rendering/map-renderer.js",
+                "/js/maperialjs2/engine/rendering/tile-renderer.js",
+
+                "/js/maperialjs2/engine/rendering/layerparts/image-layer-part.js",
+                "/js/maperialjs2/engine/rendering/layerparts/raster-layer-part.js",
+                "/js/maperialjs2/engine/rendering/layerparts/shade-layer-part.js",
+                "/js/maperialjs2/engine/rendering/layerparts/vectorial-layer-part.js",
+                "/js/maperialjs2/engine/rendering/layerparts/dynamical-layer-part.js",
 
                 // extensions ------------------------
                 //"/js/maperialjs2/engine/extensions/",
@@ -53,75 +86,50 @@
                	], function() {
 
                   //-----------------------------------------------//
-				  // Define your ids
-                  //-----------------------------------------------//
-				  
-                  // view
-			      var map 			= "map"
-
-			      // vectorial data layer
-			      var beersLayer 	= "beers"
-
-			      // maperialOSM tiles
-			      var osmLayer 		= "osm"
-
-                  //-----------------------------------------------//
-				  // Define your data
-                  //-----------------------------------------------//
-
-                  var beers = {}
-                  
-                  //-----------------------------------------------//
 				  // Build your Maperial
                   //-----------------------------------------------//
-
-			      maperial.createView({
-			        view			: map,
+				  
+                  var maperial = maperialAPI.createMaperial()
+                  
+			      //-----------------------------------------------//
+			      
+			      var map = maperial.addView({
+			        container		: "map",
 			     	defaultZoom    	: 9,
 				    latitude       	: 50.516584,
 				    longitude      	: 3.186998
 			      })
 			      
 			      //-----------------------------------------------//
+			      // Layer Images
 			      
-			      maperial.addImageLayer(map, Source.IMAGES_OCM_TRANSPORT)
+			      map.addImageLayer(Source.IMAGES_OCM_TRANSPORT)
 			      
 			      //-----------------------------------------------//
 			      // Layer Vectorial Data 
-			      
-			      var options = {
-			      	id : beersLayer,
-			      	type : Maperial.VECTORIAL_DATA,
-			      	
-			      	style : {
-			      	   symbol				: "symbols/blue.pointer.png",
-			      	   horizontalAlign		: "center",	
-			      	   verticalAlign		: "bottom",	
-			      	}
-			      }
-			      
-			      maperial.addVectorialLayer(map, options)
-			      maperial.addVectorialData(beersLayer, beers)
-			      
+			      /*    
+			      var style = maperialAPI.createStyle({
+			      	   symbol : "symbols/blue.pointer.png"
+			      })
+
+                  var brasseries = maperialAPI.createDynamicalData()
+                  brasseries.addPoint(	50.367874, 3.080601999999999, 				{ brasserie : "Abbaye de St Landelin"} )
+                  brasseries.addPoint(	44.85579000000001, -0.6157699999999977, 	{ brasserie : "Abbatiale St Amand"} )
+                  brasseries.addPoint(	50.529722, 2.931556999999998, 				{ brasserie : "Bière Lepers 8"} )
+                  brasseries.addPoint(	50.69285499999999,2.4138020000000324, 		{ brasserie : "Bracine"} )
+                  
+                  var options = {
+                     style : style
+                  }
+                  
+			      map.addDynamicalLayer(brasseries, options)
+			       */
 			      //-----------------------------------------------//
 			      // Layer OSM
-			      
-			      var options = {
-			      	id : osmLayer,
-			      	type : Maperial.OSM,
-			      	
-			      	style : {
-			      	   uid : Maperial.DEFAULT_STYLE_UID
-			      	}
-			      }
-			      
-			      maperial.addVectorialLayer(map, options)
-
-			      // doit etre fait par le SourceManager lorsquil recoit les sources de type OSM
-			      //maperial.addVectorialData(osmLayer, dataReceived)
+			      // map.addOSMLayer()
 			      
 			      //-----------------------------------------------//
-			      
+			      /* 
 			      var control = {
                      type : HUD.LATLON,
 			         position : { 
@@ -131,6 +139,7 @@
                   }
 			      
 			      maperial.addControl(map, control)
+                  */
 			      
                   //-----------------------------------------------//
  			      // oldies : 
@@ -145,57 +154,10 @@
 			        var cstyle        = maperial.createStyle ();
 					var ps            = new PointSymbolizer("symbols/blue.pointer.png") 
 			      	ps.Alignement("center", "bottom")
-					//var ps            = new PointSymbolizer("symbols/beer.svg") 
 					//var ps            = new PointSymbolizer("symbols/airfield.svg") 
 					var pSymbId       = cstyle.AddSymbolizer ( ps , 18 , 0  );
-			      
-			     	// http://thenounproject.com/noun/beer/?dwn=CCBY&dwn_icon=634#icon-No634
-			            
-					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Angelus ") 
-					cdata.addPoint ([50.485569,2.8307250000000295], pSymbId, "Abbaye de Lille ") 
-					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Abbaye de St Landelin ") 
-					cdata.addPoint ([44.85579000000001,-0.6157699999999977], pSymbId, "Abbatiale St Amand ") 
-					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Bière Lepers 8 ") 
-					cdata.addPoint ([50.69285499999999,2.4138020000000324], pSymbId, "Bracine ") 
-					cdata.addPoint ([50.866145,1.6313259999999445], pSymbId, "Belle dale ") 
-					cdata.addPoint ([50.750115,2.252207999999996], pSymbId, "Bière des ruchettes ") 
-					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Bière du désert ") 
-					cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Belzébuth ") 
-					cdata.addPoint ([44.85579000000001,-0.6157699999999977], pSymbId, "Braderie de Lille ") 
-					cdata.addPoint ([44.397248,0.8049350000000004], pSymbId, "Bière Nouvelle ") 
-					cdata.addPoint ([50.298389,3.7941940000000614], pSymbId, "Bière de luxe ") 
-					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Bière des Flandres ") 
-					cdata.addPoint ([50.33858499999999,3.7523610000000645], pSymbId, "Cuvée des Jonquilles ") 
-					cdata.addPoint ([50.281524,3.3199749999999995], pSymbId, "Choulette ") 
-					cdata.addPoint ([50.281524,3.3199749999999995], pSymbId, "D'Artagnan ") 
-					cdata.addPoint ([50.724993,3.1620699999999715], pSymbId, "Duc d'Havré ") 
-					cdata.addPoint ([50.2279399,3.6767340000000104], pSymbId, "Ecume des jours ") 
-					cdata.addPoint ([50.750115,2.252207999999996], pSymbId, "Epi de Facon ") 
-					cdata.addPoint ([50.816405,2.5752219999999397], pSymbId, "Fromulus ") 
-					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Goudale ") 
-					cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Gold Triumph ") 
-					cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Grain d'Orge ") 
-					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Harengus ") 
-					cdata.addPoint ([50.42672100000001,2.7106039999999894], pSymbId, "Hildegarde ") 
-					cdata.addPoint ([50.26655299999999,3.1663929000000053], pSymbId, "Iris Beer ") 
-					cdata.addPoint ([50.312073,3.6277169999999614], pSymbId, "Jenlain ") 
-					cdata.addPoint ([50.642989,2.6392740000000003], pSymbId, "Kaou'ët ") 
-					cdata.addPoint ([50.485569,2.8307250000000295], pSymbId, "Maltesse ") 
-					cdata.addPoint ([50.891315,2.4271360000000186], pSymbId, "Maline ") 
-					cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Orpal ") 
-					cdata.addPoint ([50.42672100000001,2.7106039999999894], pSymbId, "Page24 ") 
-					cdata.addPoint ([50.529722,2.931556999999998], pSymbId, "Rijsel ") 
-					cdata.addPoint ([50.891315,2.4271360000000186], pSymbId, "Rouge Flamande ") 
-					cdata.addPoint ([50.510693,2.785233000000062], pSymbId, "Saint Glinglin Triple ") 
-					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Saaz ") 
-					cdata.addPoint ([50.605934,3.0786829999999554], pSymbId, "Septante 5 ") 
-					cdata.addPoint ([45.138896,4.643035000000054], pSymbId, "Mythique ") 
-					cdata.addPoint ([-20.963728,55.647265999999945], pSymbId, "St Leu ") 
-					cdata.addPoint ([50.281524,3.3199749999999995], pSymbId, "Tour d'Ostrevant ") 
-					cdata.addPoint ([50.367874,3.080601999999999], pSymbId, "Tequieros ") 
-					cdata.addPoint ([50.103942,3.544234999999958], pSymbId, "Vivat ") 
-					cdata.addPoint ([50.510693,2.785233000000062], pSymbId, "Weed ")
-					                   */
+					*/
+			       
 	              //-----------------------------------------------//
                });
 </script>
