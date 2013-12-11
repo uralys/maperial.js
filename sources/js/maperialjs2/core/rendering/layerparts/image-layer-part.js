@@ -14,7 +14,7 @@ function ImageLayerPart (layer, tile, gl, inZoom) {
 
 //-----------------------------------------------------------------------------------//
 
-ImageLayerPart.prototype.checkDataContent = function(){
+ImageLayerPart.prototype.DataReady = function(){
 
    if(this.data.content){
       return true

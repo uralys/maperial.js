@@ -37,15 +37,15 @@ Tile.prototype.IsUpToDate = function ( ) {
 }
 
 
-Tile.prototype.IsLoaded = function () {
-   var loaded = true
-
-   for (var i = 0; i < this.layerParts.length; i++) {
-      loaded = this.layerParts[i].checkDataContent()
-   }
-
-   return loaded
-}
+//Tile.prototype.IsLoaded = function () {
+//   var loaded = true
+//
+//   for (var i = 0; i < this.layerParts.length; i++) {
+//      loaded = this.layerParts[i].checkDataContent()
+//   }
+//
+//   return loaded
+//}
 
 //----------------------------------------------------------------------------------------------------------------------//
 
@@ -254,22 +254,17 @@ Tile.prototype.prepareBuffering = function () {
 
 Tile.prototype.Update = function ( maxTime ) {
 
-   if (this.IsUpToDate() || !this.IsLoaded() )
+   if (this.IsUpToDate())
       return maxTime - 1 ;
 
    var date    = (new Date)
    var startT  = date.getTime()
    var diffT   = 0
-   //var timeRemaining = maxTime;
 
    for(var i = 0; i< this.layerParts.length; i++){
-      if (! this.layerParts[i].IsUpToDate ( ) ) {
-         /*timeRemaining -= this.layerParts[i].Update( this.layerParts[i].params, i );
-         if ( timeRemaining <= 0 )
-            break;
-          */
-
+      if (! this.layerParts[i].IsUpToDate () && this.layerParts[i].DataReady() ) {
          this.layerParts[i].Update( this.layerParts[i].params, i );
+
          diffT   = date.getTime() - startT;
          if ( maxTime - diffT <= 0 )
             break;
@@ -289,6 +284,7 @@ Tile.prototype.Update = function ( maxTime ) {
          diffT   = date.getTime() - startT;
       }
    }
+   
    return maxTime - diffT; 
 }
 
