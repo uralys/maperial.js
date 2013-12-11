@@ -42,9 +42,23 @@ MapView.prototype.prepareContainer = function ()   {
    var html = "<canvas id=\"Map_"+this.id+"\" class=\"maperial-map canvas-"+this.type+"\"></canvas>";
 
    $("#"+this.options.container).append(html)
-   this.canvas  = $("#"+canvasId);
-   this.canvas.css("width", $("#"+this.options.container).width())
-   this.canvas.css("height", $("#"+this.options.container).height())
+   this.canvas    = $("#"+canvasId);
+   this.width     = $("#"+this.options.container).width()
+   this.height     = $("#"+this.options.container).height()
+   
+   this.setCanvasSize();
+}
+
+MapView.prototype.setCanvasSize = function() {
+
+   var w = this.width;
+   var h = this.height;
+   
+   this.canvas.css("width", w);
+   this.canvas.css("height", h);
+   this.canvas[0].width = w;
+   this.canvas[0].height = h;
+   
 }
 
 //------------------------------------------------------------------//

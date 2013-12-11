@@ -16,10 +16,7 @@ function ImageLayerPart (layer, tile, gl, inZoom) {
 
 ImageLayerPart.prototype.checkDataContent = function(){
 
-   console.log("checkDataContent")
-   
    if(this.data.content){
-      console.log("ImageLayerPart data ready !")
       return true
    }
    else{
@@ -43,7 +40,6 @@ ImageLayerPart.prototype.GetType = function ( ) {
 //-----------------------------------------------------------------------------------//
 
 ImageLayerPart.prototype.prepare = function () {
-   console.log("preparing tile",this.tile.x,this.tile.y,this.tile.z)
    this.w = this.data.content.width;      
    this.h = this.data.content.height; 
 }
