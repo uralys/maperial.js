@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------------//
 
-function MapStyle (options) {
+function VectorialStyle (options) {
    
    this.id                 = Utils.generateUID();
    

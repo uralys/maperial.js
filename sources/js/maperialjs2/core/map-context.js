@@ -2,7 +2,7 @@
 
 function MapContext (mapView) {
    
-   this.mapView             = mapView
+   this.mapView            = mapView
    
    this.assets             = null
    this.coordS             = new CoordinateSystem ( Maperial.tileSize );
