@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------------//
 
-function ImageData (sourceId, x, y, z) {
+function VectorialData (sourceId, x, y, z) {
    
    this.sourceId  = sourceId;
    this.x         = x;
@@ -9,15 +9,11 @@ function ImageData (sourceId, x, y, z) {
 
    this.content   = null;
 
-   sourceManager.LoadImage(sourceId, x, y, z)
+   sourceManager.LoadVectorial(sourceId, x, y, z)
 }
 
 //-----------------------------------------------------------------------------------//
 
-ImageData.prototype.tryToFillContent = function(){
+VectorialData.prototype.tryToFillContent = function(){
    this.content = sourceManager.getData(this.sourceId, this.x, this.y, this.z);
-}
-
-ImageData.prototype.release = function(){
-   sourceManager.release(this.sourceId, this.x, this.y, this.z);
 }

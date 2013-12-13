@@ -9,8 +9,6 @@ function SourceManager(){
    this.complete  = {};
    this.errors    = {};
 
-   this.sources   = [];
-
    this.requestsCounter = {};
 }
 
@@ -37,17 +35,15 @@ SourceManager.prototype.releaseNetwork = function () {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourceManager.prototype.requestId = function (source, x, y, z) {
-   return source.id + "_" + x + "_" + y + "_" + z;
+SourceManager.prototype.requestId = function (sourceId, x, y, z) {
+   return sourceId + "_" + x + "_" + y + "_" + z;
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourceManager.prototype.release = function (x, y, z) {
+SourceManager.prototype.release = function (sourceId, x, y, z) {
 
-   for(var i = 0; i< this.sources.length; i++){
-
-      var requestId = this.requestId(this.sources[i], x, y, z);
+      var requestId = this.requestId(sourceId, x, y, z);
       var nbRequests = this.requestsCounter[requestId] || 0
       
       if(nbRequests > 1){
@@ -73,13 +69,28 @@ SourceManager.prototype.release = function (x, y, z) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-SourceManager.prototype.LoadVectorial = function ( source, x, y, z ) {
+SourceManager.prototype.LoadVectorial = function ( sourceId, x, y, z ) {
+   var url = "/api/tile?x="+tx+"&y="+ty+"&z="+z;
+   var requestId = this.requestId(sourceId, x, y, z);
+   this.LoadAPISource(url, requestId)
+   
+}
+
+SourceManager.prototype.LoadSRTM = function ( sourceId, x, y, z ) {
+   var url = "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+   var requestId = this.requestId(sourceId, x, y, z);
+   this.LoadAPISource(url, requestId)
+   
+}
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+SourceManager.prototype.LoadAPISource = function ( url, requestId ) {
    var me = this;
-   var requestId = this.requestId(source, x, y, z);
    
    this.requests[requestId] = $.ajax({
       type     : "GET",
-      url      : this.getURL(source, x, y, z),
+      url      : url,
       dataType : "json",  
       timeout  : Maperial.tileDLTimeOut,
       success  : function(data) {
@@ -88,7 +99,6 @@ SourceManager.prototype.LoadVectorial = function ( source, x, y, z ) {
          }
          else {
             me.data[requestId] = data;
-            $(window).trigger(MaperialEvents.SOURCE_READY, [source, data, x, y, z])
          }
 
          me.complete[requestId] = true;
@@ -103,8 +113,6 @@ SourceManager.prototype.LoadVectorial = function ( source, x, y, z ) {
 //----------------------------------------------------------------------------------------------------------------------//
 
 SourceManager.prototype.LoadImage = function ( sourceId, x, y, z ) {
-   
-   console.log("LoadImage : ", sourceId, x, y, z)
    
    var me         = this;   
    var url        = this.getImageURL(sourceId, x, y, z);
