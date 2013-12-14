@@ -35,7 +35,7 @@ MaperialAPI.prototype.createHeatmapData = function () {
  * 
  */
 MaperialAPI.prototype.createStyle = function (options) {
-   return new MapStyle(options)
+   return new VectorialStyle(options)
 }
 
 //------------------------------------------------------------------//

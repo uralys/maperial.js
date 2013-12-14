@@ -7,7 +7,7 @@ function LayerManager(mapView){
 }
 
 //-------------------------------------------//
-// Layer Types
+//Layer Types
 function Layer(){}
 
 Layer.Vectorial   = "Layer.Vectorial";
@@ -25,17 +25,25 @@ LayerManager.prototype.addLayer = function(layerType, params) {
 
    console.log("  adding layer " + layerType)
    var layer = null
-   
+
    switch(layerType){
 
       // ------------------------------------------//
 
+      case Layer.Dynamical :
+         layer = new DynamicalLayer(params)
+         break;
+
+         // ------------------------------------------//
+         
       case Layer.Vectorial :
          break;
 
          // ------------------------------------------//
+
       case Layer.Raster :
          break;
+
          // ------------------------------------------//
 
       case Layer.Images :
@@ -55,18 +63,18 @@ LayerManager.prototype.addLayer = function(layerType, params) {
 
    }
 
-   
+
    for (var key in this.mapView.tiles) {
       this.mapView.tiles[key].createLayerPart(layer, this.mapView.layers.length)
    }  
 
    this.mapView.layers.push(layer)
-   
+
    return layer
 }
 
 LayerManager.prototype.refreshMaperialForLayerAdded = function(layerConfig) {
-   
+
    if(this.mapView.config.layers.length == 1){
       this.mapView.restart()      
    }
@@ -82,7 +90,7 @@ LayerManager.prototype.refreshMaperialForLayerAdded = function(layerConfig) {
 //-------------------------------------------//
 
 LayerManager.prototype.deleteLayer = function(layerRemovedPosition) {
-   
+
    var layerRemoved = this.mapView.config.layers.splice(layerRemovedPosition, 1)[0];
 
    for(i in this.mapView.config.map.osmSets){
@@ -92,9 +100,9 @@ LayerManager.prototype.deleteLayer = function(layerRemovedPosition) {
 
 
    console.log("------------ deleteLayer ", this.mapView.config.map.osmSets)
-   
+
    //-----------------------//
-   
+
    if(this.mapView.config.layers.length == 0){
       this.mapView.maperial.restart()
    }
@@ -103,12 +111,12 @@ LayerManager.prototype.deleteLayer = function(layerRemovedPosition) {
       this.mapView.mapRenderer.removeLayer(layerRemovedPosition)
       this.mapView.hud.refresh()
    }
-   
+
 }
 
 //=======================================================================================//
 
-// TODO
+//TODO
 LayerManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 
    if(this.mapView.config.layers[layerIndex].type == Source.Raster
@@ -125,7 +133,7 @@ LayerManager.prototype.changeRaster = function(layerIndex, rasterUID) {
 LayerManager.prototype.changeImages = function(layerIndex, imagesSrc) {
 
    if(this.mapView.config.layers[layerIndex].type == Source.Images
-   && this.mapView.config.layers[layerIndex].source.params.src != imagesSrc){
+         && this.mapView.config.layers[layerIndex].source.params.src != imagesSrc){
 
       sourceManager.detachSource(this.mapView.id, this.mapView.config.layers[layerIndex].source.id)
 
@@ -136,7 +144,7 @@ LayerManager.prototype.changeImages = function(layerIndex, imagesSrc) {
       this.mapView.mapRenderer.changeLayer(this.mapView.config.layers[layerIndex], layerIndex)
       this.mapView.hud.refresh()
    }
-   
+
    console.log(sourceManager.sources)
 }
 
@@ -164,7 +172,7 @@ LayerManager.prototype.switchImagesTo = function(imagesSrc) {
 LayerManager.prototype.exchangeLayers = function(exchangedIds) {
 
    var newLayers = [];
-   
+
    for(id in exchangedIds){
       newLayers[exchangedIds[id]] = this.mapView.config.layers[id];
    }
@@ -173,7 +181,7 @@ LayerManager.prototype.exchangeLayers = function(exchangedIds) {
       if(this.mapView.config.map.osmSets[i].layerPosition >= 0)
          this.mapView.config.map.osmSets[i].layerPosition = exchangedIds[this.mapView.config.map.osmSets[i].layerPosition];
    }
-   
+
    this.mapView.config.layers = newLayers;
 
    this.mapView.mapRenderer.exchangeLayers(exchangedIds)

@@ -43,27 +43,27 @@ SourceManager.prototype.requestId = function (sourceId, x, y, z) {
 
 SourceManager.prototype.release = function (sourceId, x, y, z) {
 
-      var requestId = this.requestId(sourceId, x, y, z);
-      var nbRequests = this.requestsCounter[requestId] || 0
-      
-      if(nbRequests > 1){
-         this.requestsCounter[requestId] = nbRequests - 1
-      }
-      else{
-         if(!this.complete[requestId]){
-            
-            try{
-               this.requests[requestId].abort();
-            }
-            catch(e){}
-         }
+   var requestId = this.requestId(sourceId, x, y, z);
+   var nbRequests = this.requestsCounter[requestId] || 0
 
-         delete this.data[requestId];
-         delete this.errors[requestId];
-         delete this.complete[requestId];
-         delete this.requests[requestId];
-      }
+   if(nbRequests > 1){
+      this.requestsCounter[requestId] = nbRequests - 1
    }
+   else{
+      if(!this.complete[requestId]){
+
+         try{
+            this.requests[requestId].abort();
+         }
+         catch(e){}
+      }
+
+      delete this.data[requestId];
+      delete this.errors[requestId];
+      delete this.complete[requestId];
+      delete this.requests[requestId];
+   }
+
 
 }
 

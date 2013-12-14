@@ -11,41 +11,40 @@ function Tile (mapView, x, y, z) {
    this.z            = z;
 
    this.layerParts   = [];
+   this.nbLayerPartsReady = 0;  // peut etre inutile, autant faire un loop pour compter les layerparts.isuptodate ?
 
    // preparing double buffering to render as texture !
    this.frameBufferL = [];
    this.texL         = [];
-   this.tex          = null;
    this.nbErrors     = 0;
 
+   this.Refresh();
    this.buildLayerParts();
    this.prepareBuffering();
 }
 
 
 //-----------------------------------------------------------------------------------------------------------------------//
-// STATUS MANAGEMENT
+//STATUS MANAGEMENT
 //-----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.Refresh = function () {
    this.tex = null;
 }
 
-Tile.prototype.IsUpToDate = function ( ) {
-   var upToDate = this.tex != null || this.layerParts.length == 0
-   return upToDate;
+Tile.prototype.IsUpToDate = function () {
+   return this.textureReady() && this.allLayerPartsAreReady();
 }
 
+//-----------------------------------------------------------------------------------------------------------------------//
 
-//Tile.prototype.IsLoaded = function () {
-//   var loaded = true
-//
-//   for (var i = 0; i < this.layerParts.length; i++) {
-//      loaded = this.layerParts[i].checkDataContent()
-//   }
-//
-//   return loaded
-//}
+Tile.prototype.textureReady = function ( ) {
+   return this.tex != null || this.layerParts.length == 0;
+}
+
+Tile.prototype.allLayerPartsAreReady = function ( ) {
+   return this.layerParts.length == this.nbLayerPartsReady;
+}
 
 //----------------------------------------------------------------------------------------------------------------------//
 
@@ -105,7 +104,7 @@ Tile.prototype.Reset = function (onlyFuse) {
 
 
 //-----------------------------------------------------------------------------------------------------------------------//
-// LAYER PARTS MANAGEMENT
+//LAYER PARTS MANAGEMENT
 //-----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.buildLayerParts = function () {
@@ -141,8 +140,11 @@ Tile.prototype.createLayerPart = function (layer, index) {
          break;
 
       case Layer.Heat:
+         this.layerParts.splice(index, 0, new HeatLayerPart    ( layer, this.mapView , this.x, this.y , this.z));
+         break;
+
       case Layer.Dynamical:
-         this.layerParts.splice(index, 0, new CustomLayerPart    ( layer, this.mapView , this.x, this.y , this.z));
+         this.layerParts.splice(index, 0, new DynamicalLayerPart  ( layer, this.mapView , this.x, this.y , this.z));
          break;
    }
 }
@@ -194,7 +196,7 @@ Tile.prototype.exchangeLayers = function(exchangedIds) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-//TODO v2 : A mettre dans chaque layerpart.prepare
+//TODO v2 : A mettre dans chaque layerpart.prepare (layerParts[i].Init -> layerParts[i].prepare)
 
 //Tile.prototype.sourceReady = function ( source, data , li) { /* li is for customRenderer => HEAT/Vector can use the same source (same source gid)!!!*/
 
@@ -234,9 +236,6 @@ Tile.prototype.RenderVectorialLayers = function ( context, wx, wy ) {
    }
 }
 
-
-
-
 //-----------------------------------------------------------------------------------------------------------------------//
 //RENDERING
 //-----------------------------------------------------------------------------------------------------------------------//
@@ -254,40 +253,141 @@ Tile.prototype.prepareBuffering = function () {
 
 Tile.prototype.Update = function ( maxTime ) {
 
-   if (this.IsUpToDate())
-      return maxTime - 1 ;
-
+   //--------------------------------------//
+   
    var date    = (new Date)
    var startT  = date.getTime()
    var diffT   = 0
 
-   for(var i = 0; i< this.layerParts.length; i++){
-      if (! this.layerParts[i].IsUpToDate () && this.layerParts[i].DataReady() ) {
-         this.layerParts[i].Update( this.layerParts[i].params, i );
-
-         diffT   = date.getTime() - startT;
-         if ( maxTime - diffT <= 0 )
-            break;
+   //--------------------------------------//
+   // layerParts update
+   
+   if (!this.allLayerPartsAreReady()){
+      
+      this.nbLayerPartsReady  = 0
+      var noLayerPartUpdate   = true
+      
+      for(var i = 0; i< this.layerParts.length; i++){
+         if (! this.layerParts[i].IsUpToDate ()){
+            if(this.layerParts[i].DataReady() ) {
+               this.layerParts[i].Update( this.layerParts[i].params, i );
+               noLayerPartUpdate = false
+               
+               diffT   = date.getTime() - startT;
+               if ( maxTime - diffT <= 0 )
+                  break;
+            }
+         }
+         else{
+            this.nbLayerPartsReady ++
+         }
       }
    }
 
-   if ( maxTime - diffT > 0 ) {
-      var ready = true;
-      for (var i = 0; i < this.layerParts.length; i++) {
-         if (! this.layerParts[i].IsUpToDate ( ) )
-            ready = false;
-      }
+   //--------------------------------------//
+   // tile.tex update
 
-      // Get elapsed time !!
-      if ( ready ) {
+   if (noLayerPartUpdate && this.textureReady()){
+      return maxTime - 1 ;
+   }
+   else{
+      if ( (this.nbLayerPartsReady > 0) && (maxTime - diffT > 0) ) {
+         this.Refresh();
          this.Compose();
          diffT   = date.getTime() - startT;
       }
+
+      return maxTime - diffT; 
    }
-   
-   return maxTime - diffT; 
+
 }
 
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+Tile.prototype.Compose = function () {
+   
+   //-------------------------//
+   
+   var layerPartsToCompose = []
+   for(var i = 0; i < this.layerParts.length; i++){
+      if(this.layerParts[i].IsUpToDate())
+         layerPartsToCompose.push(this.layerParts[i]);
+   }
+
+   //-------------------------//
+
+   var backTex = layerPartsToCompose[0].tex
+   var destFb  = this.frameBufferL[ 0 ]
+   var tmpI    = 0;
+
+   if ( layerPartsToCompose.length > 1 ) {
+
+      for( var i = 1 ; i < layerPartsToCompose.length ; i++ ) {
+         var frontTex   = layerPartsToCompose[i].tex;
+         if (frontTex) {
+            var prog       = this.assets.prog[ layerPartsToCompose[i].composition.shader ]
+            var params     = layerPartsToCompose[i].composition.params;
+
+            this.Fuse      ( backTex,frontTex,destFb, prog , params);
+         }
+         else {
+            this.Copy (backTex, destFb);
+         }
+         backTex        = this.texL[tmpI];
+         this.tex       = backTex;
+
+         tmpI           = ( tmpI + 1 ) % 2;
+         destFb         = this.frameBufferL[ tmpI ];
+      }
+   }
+   else {
+      this.Copy (backTex, destFb);
+      this.tex = this.texL[0];
+   }
+}
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+Tile.prototype.Copy = function ( backTex , destFB ) {
+
+   var gl                           = this.gl;
+
+   gl.bindFramebuffer               ( gl.FRAMEBUFFER, destFB );
+
+   this.gl.clearColor               ( 1.0, 1.0, 1.0, 1.0  );
+   this.gl.disable                  ( this.gl.DEPTH_TEST  );
+   gl.viewport                      ( 0, 0, destFB.width, destFB.height);
+   gl.clear                         ( gl.COLOR_BUFFER_BIT );
+
+   var mvMatrix                     = mat4.create();
+   var pMatrix                      = mat4.create();
+   mat4.identity                    ( pMatrix );
+   mat4.identity                    ( mvMatrix );
+   mat4.ortho                       ( 0, destFB.width , 0, destFB.height, 0, 1, pMatrix ); // Y swap !
+
+   var prog = this.assets.prog["Tex"];
+
+   this.gl.useProgram               (prog);
+   this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform.name, false, pMatrix);
+   this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform.name, false, mvMatrix);
+   this.gl.bindBuffer               (this.gl.ARRAY_BUFFER, this.assets.squareVertexPositionBuffer);
+   this.gl.enableVertexAttribArray  (prog.attr.vertexPositionAttribute);
+   this.gl.vertexAttribPointer      (prog.attr.vertexPositionAttribute, this.assets.squareVertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
+
+   this.gl.bindBuffer               (this.gl.ARRAY_BUFFER, this.assets.squareVertexTextureBuffer);
+   this.gl.enableVertexAttribArray  (prog.attr.textureCoordAttribute);
+   this.gl.vertexAttribPointer      (prog.attr.textureCoordAttribute, this.assets.squareVertexTextureBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
+
+   this.gl.activeTexture            (this.gl.TEXTURE0);
+   this.gl.bindTexture              (this.gl.TEXTURE_2D, backTex );
+   this.gl.uniform1i                (prog.params.uSamplerTex1.name, 0);
+   this.gl.drawArrays               (this.gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
+
+   gl.bindFramebuffer               ( gl.FRAMEBUFFER, null );
+   this.gl.activeTexture            (this.gl.TEXTURE0);
+   this.gl.bindTexture              (this.gl.TEXTURE_2D, null );
+}
 //----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.Fuse = function ( backTex,frontTex,destFB, prog, params ) {
@@ -344,86 +444,9 @@ Tile.prototype.Fuse = function ( backTex,frontTex,destFB, prog, params ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.Copy = function ( backTex , destFB ) {
-
-   var gl                           = this.gl;
-
-   gl.bindFramebuffer               ( gl.FRAMEBUFFER, destFB );
-
-   this.gl.clearColor               ( 1.0, 1.0, 1.0, 1.0  );
-   this.gl.disable                  ( this.gl.DEPTH_TEST  );
-   gl.viewport                      ( 0, 0, destFB.width, destFB.height);
-   gl.clear                         ( gl.COLOR_BUFFER_BIT );
-
-   var mvMatrix                     = mat4.create();
-   var pMatrix                      = mat4.create();
-   mat4.identity                    ( pMatrix );
-   mat4.identity                    ( mvMatrix );
-   mat4.ortho                       ( 0, destFB.width , 0, destFB.height, 0, 1, pMatrix ); // Y swap !
-
-   var prog = this.assets.prog["Tex"];
-
-   this.gl.useProgram               (prog);
-   this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform.name, false, pMatrix);
-   this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform.name, false, mvMatrix);
-   this.gl.bindBuffer               (this.gl.ARRAY_BUFFER, this.assets.squareVertexPositionBuffer);
-   this.gl.enableVertexAttribArray  (prog.attr.vertexPositionAttribute);
-   this.gl.vertexAttribPointer      (prog.attr.vertexPositionAttribute, this.assets.squareVertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
-
-   this.gl.bindBuffer               (this.gl.ARRAY_BUFFER, this.assets.squareVertexTextureBuffer);
-   this.gl.enableVertexAttribArray  (prog.attr.textureCoordAttribute);
-   this.gl.vertexAttribPointer      (prog.attr.textureCoordAttribute, this.assets.squareVertexTextureBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
-
-   this.gl.activeTexture            (this.gl.TEXTURE0);
-   this.gl.bindTexture              (this.gl.TEXTURE_2D, backTex );
-   this.gl.uniform1i                (prog.params.uSamplerTex1.name, 0);
-   this.gl.drawArrays               (this.gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
-
-   gl.bindFramebuffer               ( gl.FRAMEBUFFER, null );
-   this.gl.activeTexture            (this.gl.TEXTURE0);
-   this.gl.bindTexture              (this.gl.TEXTURE_2D, null );
-}
-
-//----------------------------------------------------------------------------------------------------------------------//
-
-Tile.prototype.Compose = function () {
-
-   var backTex = this.layerParts[0].tex
-   var destFb  = this.frameBufferL[ 0 ]
-   var tmpI    = 0;
-
-   if ( this.layerParts.length > 1 ) {
-
-      for( var i = 1 ; i < this.layerParts.length ; i++ ) {
-         var frontTex   = this.layerParts[i].tex;
-         if (frontTex) {
-            var prog       = this.assets.prog[ this.layerParts[i].composition.shader ]
-            var params     = this.layerParts[i].composition.params;
-
-            this.Fuse      ( backTex,frontTex,destFb, prog , params);
-         }
-         else {
-            this.Copy (backTex, destFb);
-         }
-         backTex        = this.texL[tmpI];
-         this.tex       = backTex;
-
-         tmpI           = ( tmpI + 1 ) % 2;
-         destFb         = this.frameBufferL[ tmpI ];
-      }
-   }
-   else {
-      this.Copy (backTex, destFb);
-      this.tex = this.texL[0];
-   }
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------//
-
 Tile.prototype.Render = function (pMatrix, mvMatrix) {
-
-   if ( this.IsUpToDate() ) {
+   
+   if ( this.textureReady() ) {
       var prog                         = this.assets.prog["Tex"];
       this.gl.useProgram               (prog);
       this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform.name, false, pMatrix);

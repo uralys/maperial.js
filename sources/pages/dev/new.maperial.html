@@ -58,6 +58,7 @@
                 "/js/maperialjs2/core/models/colorbar.js",
 
                 "/js/maperialjs2/core/models/layers/image-layer.js",
+                "/js/maperialjs2/core/models/layers/dynamical-layer.js",
 
                 "/js/maperialjs2/core/models/data/image-data.js",
                 "/js/maperialjs2/core/models/data/dynamical-data.js",
@@ -87,7 +88,7 @@
 				  // Build your Maperial
                   //-----------------------------------------------//
 				  
-                  var maperial = maperialAPI.createMaperial()
+                  var maperial = new Maperial () 
                   
 			      //-----------------------------------------------//
 			      
@@ -105,23 +106,21 @@
 			      
 			      //-----------------------------------------------//
 			      // Layer Vectorial Data 
-			      /*    
-			      var style = maperialAPI.createStyle({
-			      	   symbol : "symbols/blue.pointer.png"
-			      })
 
-                  var brasseries = maperialAPI.createDynamicalData()
+                  var brasseries = new DynamicalData()
                   brasseries.addPoint(	50.367874, 3.080601999999999, 				{ brasserie : "Abbaye de St Landelin"} )
                   brasseries.addPoint(	44.85579000000001, -0.6157699999999977, 	{ brasserie : "Abbatiale St Amand"} )
                   brasseries.addPoint(	50.529722, 2.931556999999998, 				{ brasserie : "Bière Lepers 8"} )
                   brasseries.addPoint(	50.69285499999999,2.4138020000000324, 		{ brasserie : "Bracine"} )
                   
                   var options = {
-                     style : style
+                     style : new VectorialStyle({
+   			      	   symbol : "symbols/blue.pointer.png"
+      			     })
                   }
                   
 			      map.addDynamicalLayer(brasseries, options)
-			       */
+
 			      //-----------------------------------------------//
 			      // Layer OSM
 			      // map.addOSMLayer()

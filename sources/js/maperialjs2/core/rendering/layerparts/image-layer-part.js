@@ -83,8 +83,6 @@ ImageLayerPart.prototype.Update = function () {
 
    if (this.data.content != null && this.data.content.width > 0) {
 
-      console.log("updating layerPart ",this.tile.x,this.tile.y,this.tile.z)
-      
       this.tex             = gl.createTexture();
       gl.bindTexture       ( gl.TEXTURE_2D           , this.tex     );
       gl.pixelStorei       ( gl.UNPACK_FLIP_Y_WEBGL  , false        );
@@ -109,4 +107,5 @@ ImageLayerPart.prototype.Update = function () {
 
    var diffT   = date.getTime() - startT;   
    return diffT
+   
 }

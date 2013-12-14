@@ -92,9 +92,12 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options)   {
    
    //-------------------------------------------
    // Proceed
-   
-   console.log("Building DynamicalLayer on " + this.id)
-   
+
+   this.layerManager.addLayer(Layer.Dynamical, {
+      dynamicalData     : dynamicalData, 
+      style             : options.style
+   })
+
 }
 
 //------------------------------------------------------------------//

@@ -1,25 +1,56 @@
 
-function DynamicalLayerPart ( mapView, x , y , inZoom ) {
+function DynamicalLayerPart ( layer, tile ) {
+   
+   this.layer     = layer;
+   this.tile      = tile;
+   this.x         = tile.x;
+   this.y         = tile.y;
+   this.z         = tile.z;
+
    this.tex       = null;
-   this.data      = null;
-   this.z         = inZoom;
-   this.x         = x;
-   this.y         = y;
+//   this.data      = new ImageData(layer.sourceId, tile.x, tile.y, tile.z);
 }
+
+//-----------------------------------------------------------------------------------//
+
+DynamicalLayerPart.prototype.DataReady = function(){
+
+   return false
+   
+   if(this.data.content){
+      return true
+   }
+   else{
+      this.data.tryToFillContent()
+
+      if(this.data.content){
+         this.prepare()
+         return true
+      }
+   }
+
+   return false;
+}
+
+//-----------------------------------------------------------------------------------//
 
 DynamicalLayerPart.prototype.GetType = function ( ) {
-   return LayerManager.Custom;
+   return this.layer.type;
 }
 
-DynamicalLayerPart.prototype.Init = function ( data ) {
-   if (this.tex)
-      return;
-   this.data   = data;
+//-----------------------------------------------------------------------------------//
+
+DynamicalLayerPart.prototype.prepare = function () {
+
 }
+
+//-----------------------------------------------------------------------------------//
 
 DynamicalLayerPart.prototype.Reset = function (  ) {
    this.tex = null;
 }
+
+//-----------------------------------------------------------------------------------//
 
 DynamicalLayerPart.prototype.Release = function (  ) {
    this.tex = null;
@@ -28,6 +59,8 @@ DynamicalLayerPart.prototype.Release = function (  ) {
 DynamicalLayerPart.prototype.IsUpToDate = function ( ) {
    return this.tex != null;
 }
+
+//-----------------------------------------------------------------------------------//
 
 DynamicalLayerPart.prototype.Update = function ( params, layerPosition ) {
    if (this.tex == null ) {   
