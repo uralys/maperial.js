@@ -3,17 +3,16 @@
 function DynamicalData  () {
    
    this.points             = {}
+   this.id                 = Utils.generateUID();
+   this.version            = 0;
    
-   this.gid                = Maperial.globalDataCpt;
-   Maperial.globalDataCpt  = Maperial.globalDataCpt + 1;
-   this.content            = {"h":256 , "w":256 , "l" : [] }
+   this.content            = {"h":Maperial.tileSize , "w":Maperial.tileSize , "l" : [] }
    this.minx               = 100000000000;
    this.maxx               = -100000000000;
    this.miny               = 100000000000;
    this.maxy               = -100000000000;
    this.srcPrj             = new Proj4js.Proj('EPSG:4326'  );      //source coordinates will be in Longitude/Latitude
    this.dstPrj             = new Proj4js.Proj('EPSG:900913');     //destination coordinates google
-   
 }
 
 //----------------------------------------------------------------------------------//
@@ -39,6 +38,7 @@ DynamicalData.prototype.addPoint = function ( latitude, longitude, data) {
    }
 
    this.points[id] = point;
+   this.version ++
    
    return point
 }

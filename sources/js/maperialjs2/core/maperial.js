@@ -6,7 +6,8 @@ function Maperial(options){
    this.options   = options
    this.views     = {}
    
-   window.sourceManager = window.sourceManager || new SourceManager()
+   window.sourceManager = window.sourceManager  || new SourceManager()
+   window.dataManager   = window.dataManager    || new DataManager()
 };
 
 //------------------------------------------------------------------//

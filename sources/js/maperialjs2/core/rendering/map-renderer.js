@@ -36,22 +36,6 @@ MapRenderer.prototype.start = function () {
    this.gltools = new GLTools ()
    this.InitGL()
 
-// for(var i = 0; i< this.mapView.layers.length; i++){
-// if ( this.mapView.layers[i].type == LayerManager.Custom ) {
-// var cstR = new CustomRenderer ( this.mapView );
-// cstR.Init ( this.mapView.layers[i].source.data )
-// this.customLayersRenderer.push ( cstR )
-// }
-// else if ( this.mapView.layers[i].type == LayerManager.Heat ) {
-// var cstR = new HeatRenderer ( this.mapView );
-// cstR.Init ( this.mapView.layers[i].source.data )
-// this.customLayersRenderer.push ( cstR )
-// }
-// else {
-// this.customLayersRenderer.push ( null )
-// }
-// }
-
    this.drawSceneInterval = setInterval( Utils.apply ( this, "DrawScene" ) , Maperial.refreshRate);
    return true;
 
@@ -237,10 +221,15 @@ MapRenderer.prototype.DrawScene = function ( ) {
    var nbTileX = Math.floor ( w  / Maperial.tileSize + 1 );
    var nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
 
-   for ( var i = 0 ; i < this.customLayersRenderer.length ; ++i) {
-      if (this.customLayersRenderer[i])
-         this.customLayersRenderer [i].SetContext ( this.mapView.context.zoom , tileC.x , tileC.y - nbTileY , nbTileX + 1 , nbTileY + 1 ) ;
+   //-----------------------------------------------------------------//
+   
+   for( var rendererId in dataManager.dynamicalRenderers) {
+      var renderer = dataManager.dynamicalRenderers[rendererId];
+      if(renderer.mapView.id == this.mapView.id)
+         renderer.Refresh ( this.mapView.context.zoom , tileC.x , tileC.y - nbTileY , nbTileX + 1 , nbTileY + 1 ) ;
    }
+
+   //-----------------------------------------------------------------//
    
    if ( this.UpdateTiles ( tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {
 
@@ -261,6 +250,8 @@ MapRenderer.prototype.DrawScene = function ( ) {
          }
       }
    }
+   
+   //-----------------------------------------------------------------//
    
    this.forceGlobalRedraw = true;
    this.forceTileRedraw = false;

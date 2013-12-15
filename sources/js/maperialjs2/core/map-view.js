@@ -20,6 +20,7 @@ function MapView(maperial, options){
 
    this.layers             = [] // array to use push and splice : index is useful here
    this.tiles              = {} // hashmap : tiles[key] = tile
+   this.dynamicalRenderers = {} // hashmap : dynamicalRenderers[dynamicalData.id] = dynamicalRenderer
    
    this.context            = new MapContext(this);
    
@@ -61,6 +62,7 @@ MapView.prototype.setCanvasSize = function() {
    
 }
 
+
 //------------------------------------------------------------------//
 // API
 //------------------------------------------------------------------//
@@ -94,6 +96,7 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options)   {
    // Proceed
 
    this.layerManager.addLayer(Layer.Dynamical, {
+      mapView           : this, 
       dynamicalData     : dynamicalData, 
       style             : options.style
    })
