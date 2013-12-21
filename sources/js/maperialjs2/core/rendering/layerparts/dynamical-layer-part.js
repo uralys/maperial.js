@@ -7,18 +7,18 @@ function DynamicalLayerPart ( layer, tile ) {
    this.y         = tile.y;
    this.z         = tile.z;
 
+   this.version   = null;
    this.tex       = null;
-//   this.data      = new ImageData(layer.sourceId, tile.x, tile.y, tile.z);
+   
+   this.dynamicalRenderer = layer.dynamicalRenderer;
 }
 
 //-----------------------------------------------------------------------------------//
 
 DynamicalLayerPart.prototype.DataReady = function(){
 
-   return false
-   
-   if(this.data.content){
-      return true
+   if(this.dynamicalRenderer.version == this.version){
+      return true;
    }
    else{
       this.data.tryToFillContent()

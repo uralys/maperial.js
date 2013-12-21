@@ -11,7 +11,6 @@ function Tile (mapView, x, y, z) {
    this.z            = z;
 
    this.layerParts   = [];
-   this.nbLayerPartsReady = 0;  // peut etre inutile, autant faire un loop pour compter les layerparts.isuptodate ?
 
    // preparing double buffering to render as texture !
    this.frameBufferL = [];
@@ -33,17 +32,23 @@ Tile.prototype.Refresh = function () {
 }
 
 Tile.prototype.IsUpToDate = function () {
-   return this.textureReady() && this.allLayerPartsAreReady();
+    var textureReady            = this.textureReady(),
+        allLayerPartsAreReady   = true;
+    
+    for(var i = 0; i< this.layerParts.length; i++){
+        if (! this.layerParts[i].IsUpToDate ()){
+            allLayerPartsAreReady = false;
+            break;
+        }
+    }
+    
+   return textureReady && allLayerPartsAreReady;
 }
 
 //-----------------------------------------------------------------------------------------------------------------------//
 
 Tile.prototype.textureReady = function ( ) {
    return this.tex != null || this.layerParts.length == 0;
-}
-
-Tile.prototype.allLayerPartsAreReady = function ( ) {
-   return this.layerParts.length == this.nbLayerPartsReady;
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
@@ -255,34 +260,26 @@ Tile.prototype.Update = function ( maxTime ) {
 
    //--------------------------------------//
    
-   var date    = (new Date)
-   var startT  = date.getTime()
-   var diffT   = 0
+   var date                 = (new Date)
+   var startT               = date.getTime()
+   var diffT                = 0
+   var noLayerPartUpdate    = true;
 
    //--------------------------------------//
    // layerParts update
    
-   if (!this.allLayerPartsAreReady()){
-      
-      this.nbLayerPartsReady  = 0
-      var noLayerPartUpdate   = true
-      
-      for(var i = 0; i< this.layerParts.length; i++){
-         if (! this.layerParts[i].IsUpToDate ()){
-            if(this.layerParts[i].DataReady() ) {
-               this.layerParts[i].Update( this.layerParts[i].params, i );
-               noLayerPartUpdate = false
-               
-               diffT   = date.getTime() - startT;
-               if ( maxTime - diffT <= 0 )
-                  break;
-            }
-         }
-         else{
-            this.nbLayerPartsReady ++
-         }
-      }
-   }
+  for(var i = 0; i< this.layerParts.length; i++){
+     if (! this.layerParts[i].IsUpToDate ()){
+        if(this.layerParts[i].DataReady() ) {
+           this.layerParts[i].Update( this.layerParts[i].params, i );
+           noLayerPartUpdate = false
+           
+           diffT   = date.getTime() - startT;
+           if ( maxTime - diffT <= 0 )
+              break;
+        }
+     }
+  }
 
    //--------------------------------------//
    // tile.tex update
@@ -291,7 +288,7 @@ Tile.prototype.Update = function ( maxTime ) {
       return maxTime - 1 ;
    }
    else{
-      if ( (this.nbLayerPartsReady > 0) && (maxTime - diffT > 0) ) {
+      if ( !noLayerPartUpdate && (maxTime - diffT > 0) ) {
          this.Refresh();
          this.Compose();
          diffT   = date.getTime() - startT;

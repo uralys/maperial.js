@@ -7,7 +7,7 @@ function DynamicalLayer (params) {
    this.dynamicalData      = params.dynamicalData;
    this.style              = params.style;
    
-   this.renderer           = dataManager.addDynamicalRenderer(this.mapView, this.dynamicalData)
+   this.dynamicalRenderer  = dataManager.addDynamicalRenderer(this.mapView, this.dynamicalData)
 }
 
 //-----------------------------------------------------------------------------------//

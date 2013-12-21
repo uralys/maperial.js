@@ -38,8 +38,6 @@ MapRenderer.prototype.start = function () {
 
    this.drawSceneInterval = setInterval( Utils.apply ( this, "DrawScene" ) , Maperial.refreshRate);
    return true;
-
-   console.log("  rendering started");
 } 
 
 //----------------------------------------------------------------------//

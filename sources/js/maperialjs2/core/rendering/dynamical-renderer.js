@@ -6,6 +6,7 @@ function DynamicalRenderer ( mapView, dynamicalData ) {
    this.id              = Utils.generateUID();
    this.mapView         = mapView;
    this.dynamicalData   = dynamicalData;
+   this.dataVersion     = 0;
    
    this.gl              = mapView.context.assets.ctx;
    this.cnv             = null;
@@ -27,26 +28,12 @@ function DynamicalRenderer ( mapView, dynamicalData ) {
    this.originShift         = 2 * Math.PI * 6378137 / 2.0 ;
 }
 
-DynamicalRenderer.prototype.AllocCanvas = function ( sizeX, sizeY) {
-   this.cnv             = document.createElement("canvas");
-   this.cnv.height      = sizeY ;
-   this.cnv.width       = sizeX ;
-   this.ctx             = this.cnv.getContext("2d");
-   ExtendCanvasContext  ( this.ctx );
-   this.ctx.globalCompositeOperation="source-over";
-
-   // Clear ...
-   this.ctx.beginPath   (  );
-   this.ctx.rect        ( 0,0,this.cnv.width,this.cnv.height );
-   this.ctx.closePath   (  );
-   this.ctx.fillStyle    = 'rgba(255,255,255,0.0)';
-   this.ctx.fill        (  );
-   
-   this.ctx.setTexViewBox(-1,-1,sizeX+1,sizeY+1)
-}
-
 DynamicalRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY ) {
-   if ( this.z != z || this.tx == null || tileX < this.tx || tileY < this.ty || tileX + nbTX > this.tx + this.nbtx || tileY + nbTY > this.ty + this.nbty ) {
+    
+   var cameraMoved = this.z != z || this.tx == null || tileX < this.tx || tileY < this.ty || tileX + nbTX > this.tx + this.nbtx || tileY + nbTY > this.ty + this.nbty,
+       dataChanged = this.dataVersion != this.dynamicalData.version;
+   
+   if (cameraMoved || dataChanged) {
       this.Reset();
       var nbTX2 = 1;
       while ( nbTX2 < nbTX ) nbTX2 = nbTX2 * 2;
@@ -83,7 +70,27 @@ DynamicalRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY )
       this.scaleY = - (1 / res);
       this.trX    = (this.originShift / res) - this.tx * 256;
       this.trY    = this.h - ((this.originShift / res) - this.ty * 256);
+      
+      this.version ++
    }
+}
+
+DynamicalRenderer.prototype.AllocCanvas = function ( sizeX, sizeY) {
+   this.cnv             = document.createElement("canvas");
+   this.cnv.height      = sizeY ;
+   this.cnv.width       = sizeX ;
+   this.ctx             = this.cnv.getContext("2d");
+   ExtendCanvasContext  ( this.ctx );
+   this.ctx.globalCompositeOperation="source-over";
+
+   // Clear ...
+   this.ctx.beginPath   (  );
+   this.ctx.rect        ( 0,0,this.cnv.width,this.cnv.height );
+   this.ctx.closePath   (  );
+   this.ctx.fillStyle    = 'rgba(255,255,255,0.0)';
+   this.ctx.fill        (  );
+   
+   this.ctx.setTexViewBox(-1,-1,sizeX+1,sizeY+1)
 }
 
 DynamicalRenderer.prototype.Reset = function (  ) {
