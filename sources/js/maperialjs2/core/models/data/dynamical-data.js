@@ -5,8 +5,9 @@ function DynamicalData  () {
    this.points             = {}
    this.id                 = Utils.generateUID();
    this.version            = 0;
+   this.width              = Maperial.tileSize;
+   this.height             = Maperial.tileSize;
    
-   this.content            = {"h":Maperial.tileSize , "w":Maperial.tileSize , "l" : [] }
    this.minx               = 100000000000;
    this.maxx               = -100000000000;
    this.miny               = 100000000000;

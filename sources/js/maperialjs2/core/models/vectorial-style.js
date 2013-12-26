@@ -14,7 +14,7 @@ function VectorialStyle (options) {
    var ps = new PointSymbolizer(this.symbol);
    ps.Alignement(this.horizontalAlign, this.verticalAlign);
 
-   var pSymbId = this.AddSymbolizer ( ps , 18 , 0  );
+   this.symbId = this.AddSymbolizer ( ps , 18 , 0  );
    
    // register 
    window.maperialStyles[this.uid] = this

@@ -47,7 +47,7 @@ TileRenderer.maxRenderTime = 0
 TileRenderer.RenderLayers = function (osmVisibilities, layerPosition , ctx , data , zoom , style , cursor  ) {
 
    //-------------------------------------------------//
-   
+
    if(!data)
       return cursor;
    
@@ -69,10 +69,8 @@ TileRenderer.RenderLayers = function (osmVisibilities, layerPosition , ctx , dat
    var date    = new Date();
    var startT  = date.getTime();
 
-   //ctx.scale(1,1);
-
    //-------------------------------------------------//
-   
+
    for (var i = beginAt ; i < data["l"].length ; ++i ) {
       
       var layer = data["l"][i]; // layerGroup
@@ -113,6 +111,66 @@ TileRenderer.RenderLayers = function (osmVisibilities, layerPosition , ctx , dat
       return [ i+1 , diffT ];
    else 
       return [ null , diffT ] ;
+}
+
+//------------------------------------------------------------------------------------------------//
+
+/**
+ * 
+ */
+TileRenderer.RenderDynamicalLayer = function (ctx , data , zoom , style , cursor) {
+    
+    //-------------------------------------------------//
+    
+    if(!data)
+        return cursor;
+    
+    //-------------------------------------------------//
+    
+    var beginAt;
+    var limitTime = false;
+    
+    if(typeof(cursor)==='undefined' || cursor == null) {
+        beginAt = 0;
+    }
+    else {
+        beginAt = cursor;
+        limitTime = true;
+    }
+    
+    //-------------------------------------------------//
+    
+    var date    = new Date();
+    var startT  = date.getTime();
+    
+    //-------------------------------------------------//
+    // rendering points only
+    // todo : render lines
+    
+    var i = beginAt;
+    for (var id in data.points ) {
+        
+        var point   = data.points[id];
+        
+        TileRenderer.ApplyStyle ( ctx, [point.x, point.y], point.data, style.symbId, zoom, style.content );
+        
+        if (limitTime) {
+            var diffT   = (new Date).getTime() - startT;
+            TileRenderer.maxRenderTime = Math.max(TileRenderer.maxRenderTime, diffT);
+            if ( diffT > 10 )
+                break;
+        }
+        
+        i++;
+    }
+    
+    //-------------------------------------------------//
+    
+    var diffT   = (new Date).getTime() - startT;
+    if ( i < data.points.length )
+        return [ i+1 , diffT ];
+    else 
+        return [ null , diffT ] ;
 }
 
 //------------------------------------------------------------------------------------------------//

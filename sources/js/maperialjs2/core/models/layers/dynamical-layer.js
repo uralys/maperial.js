@@ -6,9 +6,9 @@ function DynamicalLayer (params) {
    this.mapView            = params.mapView;
    this.dynamicalData      = params.dynamicalData;
    
-   this.styleUID           = styleManager.createCustomStyle(params.style);
+   this.style              = styleManager.createCustomStyle(params.style);
    
-   this.dynamicalRenderer  = dataManager.addDynamicalRenderer(this.mapView, this.dynamicalData, this.styleUID);
+   this.dynamicalRenderer  = dataManager.addDynamicalRenderer(this.mapView, this.dynamicalData, this.style);
 }
 
 //-----------------------------------------------------------------------------------//

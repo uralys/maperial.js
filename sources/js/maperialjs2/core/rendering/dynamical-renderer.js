@@ -1,13 +1,13 @@
 //------------------------------------------------------------------------------------------//
 
-function DynamicalRenderer ( mapView, dynamicalData, styleUID ) {
+function DynamicalRenderer ( mapView, dynamicalData, style ) {
    // They don't realy need mapView ... And it's the same for all gl XX layers no ?
    // upgrade : One GL canvas for every GL renderers : views +  DynamicalRenderers
 
    this.id              = Utils.generateUID();
    this.mapView         = mapView;
    this.dynamicalData   = dynamicalData;
-   this.styleUID        = styleUID;
+   this.style           = style;
    
    this.gl              = mapView.context.assets.ctx;
    this.cnv             = null;
@@ -134,29 +134,24 @@ DynamicalRenderer.prototype.IsUpToDate = function ( ) {
 
 DynamicalRenderer.prototype.Update = function () {
 
-   console.log("DynamicalRenderer.Update", this.cnv, this.layerCount);
    if (this.cnv == null || this.layerCount == null)
       return 0;
 
    var gl         = this.gl;
-   var style      = styleManager.getStyle(this.styleUID);
 
-   if ( ! style ) {
-      console.log ( "Invalid style");
-      this.layerCount = null;
-      this._BuildTexture();
-      return 2;
-   }
-
-   style = style.content;
-   console.log(style);
+//   if ( ! style ) {
+//      console.log ( "Invalid style");
+//      this.layerCount = null;
+//      this._BuildTexture();
+//      return 2;
+//   }
    
    this.ctx._sx = this.scaleX;
    this.ctx._sy = this.scaleY;
    this.ctx._tx = this.trX;
    this.ctx._ty = this.trY;
-   console.log("TileRenderer.RenderLayers");
-   var rendererStatus   = TileRenderer.RenderLayers (null, null, this.ctx , this.dynamicalData.content , this.z , style , this.layerCount ) ;
+   console.log("RenderDynamicalLayer");
+   var rendererStatus   = TileRenderer.RenderDynamicalLayer (this.ctx , this.dynamicalData , this.z , this.style , this.layerCount ) ;
    this.layerCount      = rendererStatus[0];
 
    var diffT = 0;

@@ -32,7 +32,7 @@ StyleManager.prototype.createCustomStyle = function ( params ) {
       });
 
    this.addStyle(style);
-   return style.uid;
+   return style;
 }
 
 //---------------------------------------------------------------------------//
