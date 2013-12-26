@@ -150,7 +150,7 @@ TileRenderer.RenderDynamicalLayer = function (ctx , data , zoom , style , cursor
     var i = beginAt;
     for (var id in data.points ) {
         
-        var point   = data.points[id];
+        var point = data.points[id];
         
         TileRenderer.ApplyStyle ( ctx, [point.x, point.y], point.data, style.symbId, zoom, style.content );
         
@@ -167,7 +167,7 @@ TileRenderer.RenderDynamicalLayer = function (ctx , data , zoom , style , cursor
     //-------------------------------------------------//
     
     var diffT   = (new Date).getTime() - startT;
-    if ( i < data.points.length )
+    if ( i < Object.keys(data.points).length )
         return [ i+1 , diffT ];
     else 
         return [ null , diffT ] ;

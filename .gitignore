@@ -4,3 +4,4 @@
 bin/
 static/
 .DS_Store
+/build

@@ -107,7 +107,6 @@ StyleManager.prototype.LoadSymbList = function(symbList,next) {
          //http://blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html
          req.crossOrigin = ''; // no credentials flag. Same as img.crossOrigin='anonymous'
          req.onload = function (oEvent) {    
-            console.log("------------------- received symb", oEvent)
             window.maperialSymb[this._key].data = this;
             loaded = loaded + 1
             if ( loaded == nbToLoad ) next();

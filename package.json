@@ -1,0 +1,26 @@
+{
+    "name"					:	"Maperial",
+    "description"			:	"Maperial JS to craft awesome maps on the Cloud",
+    "version"				:	"0.1.0",
+    "author"				:	"Maperial <contact@maperial.com>",
+    "contributor"			:	[
+        {
+            "name":"Julien Bost",
+            "email":"julien.bost@maperial.com"
+        },
+        {
+            "name":"Vivien Clauzon",
+            "email":"vivien.clauzon@maperial.com"
+        },
+        {
+            "name":"Christophe Dugne-Esquevin",
+            "email":"chris.dugne@maperial.com"
+        }
+    ],
+    "dependencies":{
+    
+    },
+    "engines":{
+        "node"					:	">= 0.8"
+    }
+}
