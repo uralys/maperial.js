@@ -38,15 +38,15 @@ DynamicalData.prototype.addPoint = function ( latitude, longitude, data) {
    }
 
    this.points[id] = point;
-   this.version ++
+   this.version ++;
    
-   return point
+   return point;
 }
 
 //----------------------------------------------------------------------------------//
 
 DynamicalData.prototype.removePoint = function (point) {
-   delete this.points[point.id]
+   delete this.points[point.id];
 }
 
 //----------------------------------------------------------------------------------//

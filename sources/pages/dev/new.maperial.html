@@ -44,7 +44,6 @@
 
                 // core ------------------------------
                	"/js/maperialjs2/core/maperial.js",
-               	"/js/maperialjs2/core/maperial-api.js",
                 "/js/maperialjs2/core/map-view.js",
                 "/js/maperialjs2/core/map-context.js",
 
@@ -52,11 +51,13 @@
                	"/js/maperialjs2/core/managers/data-manager.js",
                	"/js/maperialjs2/core/managers/source-manager.js",
                	"/js/maperialjs2/core/managers/layer-manager.js",
+               	"/js/maperialjs2/core/managers/style-manager.js",
                	
                 // models ----------------------------
                 "/js/maperialjs2/core/models/source.js",
                 "/js/maperialjs2/core/models/vectorial-style.js",
                 "/js/maperialjs2/core/models/colorbar.js",
+                "/js/maperialjs2/core/models/vectorial-style.js",
 
                 "/js/maperialjs2/core/models/layers/image-layer.js",
                 "/js/maperialjs2/core/models/layers/dynamical-layer.js",
@@ -69,10 +70,13 @@
                 "/js/maperialjs2/core/rendering/tile.js",
                 "/js/maperialjs2/core/rendering/map-renderer.js",
                 "/js/maperialjs2/core/rendering/dynamical-renderer.js",
+                "/js/maperialjs2/core/rendering/tile-renderer.js",
 
                 "/js/maperialjs2/core/rendering/tools/gl-tools.js",
                 "/js/maperialjs2/core/rendering/tools/render-line.js",
                 "/js/maperialjs2/core/rendering/tools/render-text.js",
+
+                "/js/maperialjs2/core/rendering/symbolizers/symbolizers.js",
 
                 "/js/maperialjs2/core/rendering/layerparts/image-layer-part.js",
                 "/js/maperialjs2/core/rendering/layerparts/raster-layer-part.js",
@@ -107,7 +111,7 @@
 			      //-----------------------------------------------//
 			      // Layer Images
 			      
-			      map.addImageLayer(Source.IMAGES_OCM_TRANSPORT)
+			      //map.addImageLayer(Source.IMAGES_OCM_TRANSPORT)
 			      
 			      //-----------------------------------------------//
 			      // Layer Vectorial Data 
@@ -119,9 +123,9 @@
                   brasseries.addPoint(	50.69285499999999,2.4138020000000324, 		{ brasserie : "Bracine"} )
                   
                   var options = {
-                     style : new VectorialStyle({
+                     style : {
    			      	   symbol : "symbols/blue.pointer.png"
-      			     })
+      			     }
                   }
                   
 			      map.addDynamicalLayer(brasseries, options)
@@ -144,23 +148,6 @@
                   */
 			      
                   //-----------------------------------------------//
- 			      // oldies : 
-			      //-----------------------------------------------//
- 			      //	- data a recup
- 			      //	- creation du style + symbolizer a recup
- 			      
- 			      
-					/* 
-					var cdata         = maperial.createCustomData ();
-					
-			        var cstyle        = maperial.createStyle ();
-					var ps            = new PointSymbolizer("symbols/blue.pointer.png") 
-			      	ps.Alignement("center", "bottom")
-					//var ps            = new PointSymbolizer("symbols/airfield.svg") 
-					var pSymbId       = cstyle.AddSymbolizer ( ps , 18 , 0  );
-					*/
-			       
-	              //-----------------------------------------------//
                });
 </script>
 

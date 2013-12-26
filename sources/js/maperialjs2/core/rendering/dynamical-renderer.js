@@ -1,3 +1,4 @@
+//------------------------------------------------------------------------------------------//
 
 function DynamicalRenderer ( mapView, dynamicalData ) {
    // They don't realy need mapView ... And it's the same for all gl XX layers no ?
@@ -6,7 +7,6 @@ function DynamicalRenderer ( mapView, dynamicalData ) {
    this.id              = Utils.generateUID();
    this.mapView         = mapView;
    this.dynamicalData   = dynamicalData;
-   this.dataVersion     = 0;
    
    this.gl              = mapView.context.assets.ctx;
    this.cnv             = null;
@@ -28,11 +28,25 @@ function DynamicalRenderer ( mapView, dynamicalData ) {
    this.originShift         = 2 * Math.PI * 6378137 / 2.0 ;
 }
 
+//------------------------------------------------------------------------------------------//
+
+DynamicalRenderer.prototype.isSync = function () {
+    if(this.version == this.dynamicalData.version){
+        return true;
+    }
+    else{
+        this.Reset();
+        this.version = this.dynamicalData.version;
+    }
+}
+
+//------------------------------------------------------------------------------------------//
+
 DynamicalRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY ) {
     
    var cameraMoved = this.z != z || this.tx == null || tileX < this.tx || tileY < this.ty || tileX + nbTX > this.tx + this.nbtx || tileY + nbTY > this.ty + this.nbty,
-       dataChanged = this.dataVersion != this.dynamicalData.version;
-   
+       dataChanged = this.version != this.dynamicalData.version;
+
    if (cameraMoved || dataChanged) {
       this.Reset();
       var nbTX2 = 1;
@@ -43,12 +57,9 @@ DynamicalRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY )
       var sizeX   = nbTX2 * 256;
       var sizeY   = nbTY2 * 256;
 
-      //console.log ( "SetContext : " + tileX + ", " + tileY + ", " + nbTX + ", " + nbTY)
-      //console.log ( "SetContext : " + nbTX2 + ", " + nbTY2 + ", " + sizeX + ", " + sizeY)
-      
       this.w = sizeX;
       this.h = sizeY;
-   
+
       this.AllocCanvas (sizeX,sizeY) ;
       
       var dx = nbTX2 - (nbTX);
@@ -70,8 +81,6 @@ DynamicalRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY )
       this.scaleY = - (1 / res);
       this.trX    = (this.originShift / res) - this.tx * 256;
       this.trY    = this.h - ((this.originShift / res) - this.ty * 256);
-      
-      this.version ++
    }
 }
 
@@ -109,20 +118,20 @@ DynamicalRenderer.prototype.Reset = function (  ) {
 }
 
 DynamicalRenderer.prototype.Release = function (  ) {
-   this.Reset()
+   this.Reset();
 }
 
 DynamicalRenderer.prototype.IsUpToDate = function ( ) {
    return this.layerCount == null;
 }
 
-DynamicalRenderer.prototype.Update = function ( params ) {
+DynamicalRenderer.prototype.Update = function () {
+
    if (this.cnv == null || this.layerCount == null)
       return 0;
 
    var gl         = this.gl;
-   var styleUID   = params.styles[params.selectedStyle];
-   var style      = this.mapView.stylesManager.getStyle(styleUID);
+   var style      = styleManager.getStyle(this.styleUID);
 
    if ( ! style ) {
       console.log ( "Invalid style");
@@ -130,13 +139,14 @@ DynamicalRenderer.prototype.Update = function ( params ) {
       this._BuildTexture();
       return 2;
    }
+   
    style = style.content;
    
    this.ctx._sx = this.scaleX;
    this.ctx._sy = this.scaleY;
    this.ctx._tx = this.trX;
    this.ctx._ty = this.trY;
-   var rendererStatus   = TileRenderer.RenderLayers (null, null, this.ctx , this.data.content , this.z , style , this.layerCount ) ;
+   var rendererStatus   = TileRenderer.RenderLayers (null, null, this.ctx , this.dynamicalData.content , this.z , style , this.layerCount ) ;
    this.layerCount      = rendererStatus[0];
 
    var diffT = 0;

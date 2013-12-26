@@ -127,6 +127,14 @@ Tile.prototype.createLayerPart = function (layer, index) {
       case Layer.Images:
          this.layerParts.splice(index, 0, new ImageLayerPart     ( layer, this, this.mapView.context.assets.ctx , this.z));
          break;
+         
+      case Layer.Dynamical:
+         this.layerParts.splice(index, 0, new DynamicalLayerPart  ( layer, this ));
+         break;
+      
+      case Layer.Heat:
+         this.layerParts.splice(index, 0, new HeatLayerPart    ( layer, this ));
+         break;
 
       case Layer.Vector:
          this.layerParts.splice(index, 0, new VectorialLayerPart ( layer, this.mapView , this.z));
@@ -142,14 +150,6 @@ Tile.prototype.createLayerPart = function (layer, index) {
 
       case Layer.Shade:
          this.layerParts.splice(index, 0, new ShadeLayerPart    ( layer, this.mapView , this.z));
-         break;
-
-      case Layer.Heat:
-         this.layerParts.splice(index, 0, new HeatLayerPart    ( layer, this.mapView , this.x, this.y , this.z));
-         break;
-
-      case Layer.Dynamical:
-         this.layerParts.splice(index, 0, new DynamicalLayerPart  ( layer, this.mapView , this.x, this.y , this.z));
          break;
    }
 }

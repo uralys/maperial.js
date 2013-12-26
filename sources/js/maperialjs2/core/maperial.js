@@ -1,30 +1,31 @@
 //------------------------------------------------------------------//
 
 function Maperial(options){
-   console.log("-----------------------")
-   console.log("Creating a Maperial")
-   this.options   = options
-   this.views     = {}
+   console.log("-----------------------");
+   console.log("Creating a Maperial");
+   this.options   = options;
+   this.views     = {};
    
-   window.sourceManager = window.sourceManager  || new SourceManager()
-   window.dataManager   = window.dataManager    || new DataManager()
+   window.sourceManager = window.sourceManager  || new SourceManager();
+   window.dataManager   = window.dataManager    || new DataManager();
+   window.styleManager  = window.styleManager   || new StyleManager();
 };
 
 //------------------------------------------------------------------//
 //Views types
 //TYPE = css class
 
-Maperial.MAIN                    = "maperial-main"
-Maperial.ANCHOR                  = "maperial-anchor"
-Maperial.LENS                    = "maperial-lens"       // camera centered on what is under it
-Maperial.MINIFIER                = "maperial-minifier"   // camera centered on the parent's center
-Maperial.MAGNIFIER               = "maperial-magnifier"  // camera centered on what is under the mouse
+Maperial.MAIN                    = "maperial-main";
+Maperial.ANCHOR                  = "maperial-anchor";
+Maperial.LENS                    = "maperial-lens";      // camera centered on what is under it
+Maperial.MINIFIER                = "maperial-minifier";   // camera centered on the parent's center
+Maperial.MAGNIFIER               = "maperial-magnifier";  // camera centered on what is under the mouse
 
- //------------------------------------------------------------------//
+//------------------------------------------------------------------//
 //Vectorial layers types
 
-Maperial.OSM                     = "tiles"   
-Maperial.VECTORIAL_DATA          = "data"
+Maperial.OSM                     = "tiles";   
+Maperial.VECTORIAL_DATA          = "data";
 
 //------------------------------------------------------------------//
 
@@ -101,43 +102,43 @@ Maperial.prototype.addView = function (options) {
    //-------------------------------------------
    // Checking options
    
-   var options = Utils.prepareOptions(options, "container")
+   var options = Utils.prepareOptions(options, "container");
    if(!options){
-      console.log("Wrong call to createView. Check the options")
+      console.log("Wrong call to createView. Check the options");
    }
 
    //-------------------------------------------
    // Checking view 
 
-   console.log("Adding view " + options.container  + "...")
+   console.log("Adding view " + options.container  + "...");
    
    if($("#" + options.container )[0] == null){
-      console.log("View " + options.container  + " could not be found")
-      return
+      console.log("View " + options.container  + " could not be found");
+      return;
    }
 
    //-------------------------------------------
    // Set defaults
 
    if(options.type === undefined){
-      options.type = Maperial.MAIN
+      options.type = Maperial.MAIN;
    }
    
    if(options.latitude === undefined){
-      options.latitude = Maperial.DEFAULT_LATITUDE
+      options.latitude = Maperial.DEFAULT_LATITUDE;
    }
    
    if(options.longitude === undefined){
-      options.longitude = Maperial.DEFAULT_LONGITUDE
+      options.longitude = Maperial.DEFAULT_LONGITUDE;
    }
 
    //-------------------------------------------
    // Proceed
    
-   var view =  new MapView(this, options)
-   this.views[view.id] = view
+   var view =  new MapView(this, options);
+   this.views[view.id] = view;
    
-   return view
+   return view;
 }
 
 
