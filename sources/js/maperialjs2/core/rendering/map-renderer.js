@@ -221,14 +221,6 @@ MapRenderer.prototype.DrawScene = function ( ) {
 
    //-----------------------------------------------------------------//
    
-   for( var rendererId in dataManager.dynamicalRenderers) {
-      var renderer = dataManager.dynamicalRenderers[rendererId];
-      if(renderer.mapView.id == this.mapView.id)
-         renderer.Refresh ( this.mapView.context.zoom , tileC.x , tileC.y - nbTileY , nbTileX + 1 , nbTileY + 1 ) ;
-   }
-
-   //-----------------------------------------------------------------//
-   
    if ( this.UpdateTiles ( tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {
 
       var mvMatrix      = mat4.create();
@@ -247,6 +239,14 @@ MapRenderer.prototype.DrawScene = function ( ) {
             tile.Render ( pMatrix, mvMatrix );
          }
       }
+   }
+   
+   //-----------------------------------------------------------------//
+   
+   for( var rendererId in dataManager.dynamicalRenderers) {
+      var renderer = dataManager.dynamicalRenderers[rendererId];
+      if(renderer.mapView.id == this.mapView.id)
+         renderer.Refresh ( this.mapView.context.zoom , tileC.x , tileC.y - nbTileY , nbTileX + 1 , nbTileY + 1 ) ;
    }
    
    //-----------------------------------------------------------------//

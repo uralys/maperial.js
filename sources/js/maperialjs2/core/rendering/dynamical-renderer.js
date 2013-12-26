@@ -1,12 +1,13 @@
 //------------------------------------------------------------------------------------------//
 
-function DynamicalRenderer ( mapView, dynamicalData ) {
+function DynamicalRenderer ( mapView, dynamicalData, styleUID ) {
    // They don't realy need mapView ... And it's the same for all gl XX layers no ?
    // upgrade : One GL canvas for every GL renderers : views +  DynamicalRenderers
 
    this.id              = Utils.generateUID();
    this.mapView         = mapView;
    this.dynamicalData   = dynamicalData;
+   this.styleUID        = styleUID;
    
    this.gl              = mapView.context.assets.ctx;
    this.cnv             = null;
@@ -24,7 +25,7 @@ function DynamicalRenderer ( mapView, dynamicalData ) {
    this.version         = 0;
    this.tex             = [];
    
-   this.initialResolution   = 2 * Math.PI * 6378137 / 256;
+   this.initialResolution   = 2 * Math.PI * 6378137 / Maperial.tileSize;
    this.originShift         = 2 * Math.PI * 6378137 / 2.0 ;
 }
 
@@ -35,27 +36,32 @@ DynamicalRenderer.prototype.isSync = function () {
         return true;
     }
     else{
-        this.Reset();
-        this.version = this.dynamicalData.version;
+       if(this.cnv)
+          this.Reset();
+       
+       return false;
     }
 }
 
 //------------------------------------------------------------------------------------------//
 
 DynamicalRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY ) {
-    
+
    var cameraMoved = this.z != z || this.tx == null || tileX < this.tx || tileY < this.ty || tileX + nbTX > this.tx + this.nbtx || tileY + nbTY > this.ty + this.nbty,
        dataChanged = this.version != this.dynamicalData.version;
 
    if (cameraMoved || dataChanged) {
+
       this.Reset();
+      this.version = this.dynamicalData.version;
+
       var nbTX2 = 1;
       while ( nbTX2 < nbTX ) nbTX2 = nbTX2 * 2;
       var nbTY2 = 1;
       while ( nbTY2 < nbTY ) nbTY2 = nbTY2 * 2;
       
-      var sizeX   = nbTX2 * 256;
-      var sizeY   = nbTY2 * 256;
+      var sizeX   = nbTX2 * Maperial.tileSize;
+      var sizeY   = nbTY2 * Maperial.tileSize;
 
       this.w = sizeX;
       this.h = sizeY;
@@ -76,11 +82,11 @@ DynamicalRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY )
       
       var tmpP    = Math.pow ( 2 , this.z);
       var res     = this.initialResolution / tmpP;
-      var mapSize = 256 * tmpP;
+      var mapSize = Maperial.tileSize * tmpP;
       this.scaleX = (1 / res);
       this.scaleY = - (1 / res);
-      this.trX    = (this.originShift / res) - this.tx * 256;
-      this.trY    = this.h - ((this.originShift / res) - this.ty * 256);
+      this.trX    = (this.originShift / res) - this.tx * Maperial.tileSize;
+      this.trY    = this.h - ((this.originShift / res) - this.ty * Maperial.tileSize);
    }
 }
 
@@ -103,6 +109,7 @@ DynamicalRenderer.prototype.AllocCanvas = function ( sizeX, sizeY) {
 }
 
 DynamicalRenderer.prototype.Reset = function (  ) {
+   console.log("Reset");
    var gl            = this.gl;
    this.layerCount   = 0
    if (this.cnv) {
@@ -127,6 +134,7 @@ DynamicalRenderer.prototype.IsUpToDate = function ( ) {
 
 DynamicalRenderer.prototype.Update = function () {
 
+   console.log("DynamicalRenderer.Update", this.cnv, this.layerCount);
    if (this.cnv == null || this.layerCount == null)
       return 0;
 
@@ -139,13 +147,15 @@ DynamicalRenderer.prototype.Update = function () {
       this._BuildTexture();
       return 2;
    }
-   
+
    style = style.content;
+   console.log(style);
    
    this.ctx._sx = this.scaleX;
    this.ctx._sy = this.scaleY;
    this.ctx._tx = this.trX;
    this.ctx._ty = this.trY;
+   console.log("TileRenderer.RenderLayers");
    var rendererStatus   = TileRenderer.RenderLayers (null, null, this.ctx , this.dynamicalData.content , this.z , style , this.layerCount ) ;
    this.layerCount      = rendererStatus[0];
 
@@ -172,11 +182,11 @@ DynamicalRenderer.prototype.GetTex = function ( tx , ty) {
    return this.tex [ i + j * this.nbtx ]
 }
 
-DynamicalRenderer.prototype._BuildTexture = function (  ) {
-
+DynamicalRenderer.prototype._BuildTexture = function () {
+   console.log("_BuildTexture");
    var tileCanvas    = document.createElement('canvas');
-   tileCanvas.width  = 256;
-   tileCanvas.height = 256;
+   tileCanvas.width  = Maperial.tileSize;
+   tileCanvas.height = Maperial.tileSize;
    var tileCanvasCtx = tileCanvas.getContext('2d');
    
    tileCanvasCtx.globalCompositeOperation="copy";
@@ -189,7 +199,7 @@ DynamicalRenderer.prototype._BuildTexture = function (  ) {
          var ty   = this.ty + j
          var tex  = gl.createTexture();
       
-         tileCanvasCtx.drawImage(this.cnv, i*256, j*256 , 256 , 256 , 0 , 0 , 256 , 256);
+         tileCanvasCtx.drawImage(this.cnv, i*Maperial.tileSize, j*Maperial.tileSize , Maperial.tileSize , Maperial.tileSize , 0 , 0 , Maperial.tileSize , Maperial.tileSize);
       
          gl.bindTexture  (gl.TEXTURE_2D           , tex           );
          gl.pixelStorei  (gl.UNPACK_FLIP_Y_WEBGL  , false         );

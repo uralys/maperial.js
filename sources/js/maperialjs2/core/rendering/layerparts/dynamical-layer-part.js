@@ -63,9 +63,7 @@ DynamicalLayerPart.prototype.Release = function (  ) {
 //-----------------------------------------------------------------------------------//
 
 DynamicalLayerPart.prototype.Update = function () {
-   console.log("update layerpart")
     if (this.tex == null ) {   
-       console.log("copy")
         this.tex = this.dynamicalRenderer.GetTex(this.x,this.y)
     }
     return 0;

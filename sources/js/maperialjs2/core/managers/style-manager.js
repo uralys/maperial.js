@@ -31,7 +31,7 @@ StyleManager.prototype.createCustomStyle = function ( params ) {
          verticalAlign     : params.verticalAlign,
       });
 
-   this.addStyle(style.uid);
+   this.addStyle(style);
    return style.uid;
 }
 

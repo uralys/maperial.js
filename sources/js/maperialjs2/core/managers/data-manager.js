@@ -8,8 +8,8 @@ function DataManager(){
 
 //---------------------------------------------------------------------------//
 
-DataManager.prototype.addDynamicalRenderer = function(mapView, dynamicalData){
-   var renderer = new DynamicalRenderer(mapView, dynamicalData);
+DataManager.prototype.addDynamicalRenderer = function(mapView, dynamicalData, styleUID){
+   var renderer = new DynamicalRenderer(mapView, dynamicalData, styleUID);
    this.dynamicalRenderers[renderer.id] = renderer
    return renderer;
 }
