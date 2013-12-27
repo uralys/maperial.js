@@ -1,10 +1,9 @@
 function HeatmapData  () {
    
-   this.points             = {}
+   this.points             = {},
+   this.id                 = Utils.generateUID();
+   this.version            = 0;
    
-   this.gid                = Maperial.globalDataCpt;
-   Maperial.globalDataCpt  =  Maperial.globalDataCpt + 1;
-   this.content            = {"h":256 , "w":256 , "l" : [] }
    this.minx               = 100000000000;
    this.maxx               = -100000000000;
    this.miny               = 100000000000;
@@ -17,7 +16,9 @@ function HeatmapData  () {
 
 HeatmapData.prototype.addPoint = function ( latitude, longitude, diameter, scale) {
 
-   var p = new Proj4js.Point(longitude, latitude);   
+   var id   = Utils.generateUID(),
+       p    = new Proj4js.Point(longitude, latitude);
+   
    Proj4js.transform(this.srcPrj, this.dstPrj, p);
    this.minx = Math.min (this.minx , p.x);
    this.maxx = Math.max (this.maxx , p.x);
@@ -25,18 +26,25 @@ HeatmapData.prototype.addPoint = function ( latitude, longitude, diameter, scale
    this.maxy = Math.max (this.maxy , p.y);
 
    var point = {
-         id       : Utils.generateUID(),
+         id       : id,
          lat      : latitude,
          lon      : longitude,
          x        : p.x,
          y        : p.y,
          diameter : diameter,
          scale    : scale,
-   }
+   };
 
-   this.points.push (point)
+   this.points.push (point);
+   this.version ++;
    
-   return point
+   return point;
+}
+
+//----------------------------------------------------------------------------------//
+
+HeatmapData.prototype.removePoint = function (point) {
+    delete this.points[point.id];
 }
 
 //----------------------------------------------------------------------------------//

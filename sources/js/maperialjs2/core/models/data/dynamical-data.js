@@ -2,11 +2,9 @@
 
 function DynamicalData  () {
    
-   this.points             = {}
+   this.points             = {};
    this.id                 = Utils.generateUID();
    this.version            = 0;
-   this.width              = Maperial.tileSize;
-   this.height             = Maperial.tileSize;
    
    this.minx               = 100000000000;
    this.maxx               = -100000000000;
@@ -36,7 +34,7 @@ DynamicalData.prototype.addPoint = function ( latitude, longitude, data) {
          x        : p.x,
          y        : p.y,
          data     : data,
-   }
+   };
 
    this.points[id] = point;
    this.version ++;
