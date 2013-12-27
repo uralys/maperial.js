@@ -97,38 +97,39 @@
 				  // Build your Maperial
                   //-----------------------------------------------//
 				  
-                  var maperial = new Maperial () 
+                  var maperial = new Maperial();
+                  //window.maperial = new Maperial();
                   
 			      //-----------------------------------------------//
 			      
 			      var map = maperial.addView({
 			        container		: "map",
-			     	defaultZoom    	: 7,
+			     	defaultZoom    	: 9,
 				    latitude       	: 50.516584,
 				    longitude      	: 3.186998
-			      })
+			      });
 			      
 			      //-----------------------------------------------//
 			      // Layer Images
 			      
-			      //map.addImageLayer(Source.IMAGES_OCM_TRANSPORT)
+			      map.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
 			      
 			      //-----------------------------------------------//
 			      // Layer Vectorial Data 
 
-                  var brasseries = new DynamicalData()
-                  brasseries.addPoint(	50.367874, 3.080601999999999, 				{ brasserie : "Abbaye de St Landelin"} )
-                  brasseries.addPoint(	44.85579000000001, -0.6157699999999977, 	{ brasserie : "Abbatiale St Amand"} )
-                  brasseries.addPoint(	50.529722, 2.931556999999998, 				{ brasserie : "Bière Lepers 8"} )
-                  brasseries.addPoint(	50.69285499999999,2.4138020000000324, 		{ brasserie : "Bracine"} )
+                  window.brasseries = new DynamicalData();
+                  //var brasseries = new DynamicalData();
+                  brasseries.addPoint(	50.367874, 3.080601999999999, 				{ brasserie : "Abbaye de St Landelin"} );
+                  brasseries.addPoint(	50.529722, 2.931556999999998, 				{ brasserie : "Bière Lepers 8"} );
+                  //brasseries.addPoint(	50.69285499999999,2.4138020000000324, 		{ brasserie : "Bracine"} );
                   
                   var options = {
                      style : {
    			      	   symbol : "symbols/blue.pointer.png"
       			     }
-                  }
+                  };
                   
-			      map.addDynamicalLayer(brasseries, options)
+			      map.addDynamicalLayer(brasseries, options);
 
 			      //-----------------------------------------------//
 			      // Layer OSM

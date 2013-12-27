@@ -323,8 +323,9 @@ Tile.prototype.Compose = function () {
       for( var i = 1 ; i < layerPartsToCompose.length ; i++ ) {
          var frontTex   = layerPartsToCompose[i].tex;
          if (frontTex) {
-            var prog       = this.assets.prog[ layerPartsToCompose[i].composition.shader ]
-            var params     = layerPartsToCompose[i].composition.params;
+            var composition = layerPartsToCompose[i].layer.composition,
+                prog        = this.assets.prog[ composition.shader ],
+                params      = composition.params;
 
             this.Fuse      ( backTex,frontTex,destFb, prog , params);
          }

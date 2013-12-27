@@ -109,7 +109,6 @@ DynamicalRenderer.prototype.AllocCanvas = function ( sizeX, sizeY) {
 }
 
 DynamicalRenderer.prototype.Reset = function (  ) {
-   console.log("Reset");
    var gl            = this.gl;
    this.layerCount   = 0
    if (this.cnv) {
@@ -134,23 +133,16 @@ DynamicalRenderer.prototype.IsUpToDate = function ( ) {
 
 DynamicalRenderer.prototype.Update = function () {
 
-   if (this.cnv == null || this.layerCount == null)
+   if (this.cnv == null || this.layerCount == null || this.style == null)
       return 0;
 
    var gl         = this.gl;
 
-//   if ( ! style ) {
-//      console.log ( "Invalid style");
-//      this.layerCount = null;
-//      this._BuildTexture();
-//      return 2;
-//   }
-   
    this.ctx._sx = this.scaleX;
    this.ctx._sy = this.scaleY;
    this.ctx._tx = this.trX;
    this.ctx._ty = this.trY;
-   console.log("RenderDynamicalLayer");
+
    var rendererStatus   = TileRenderer.RenderDynamicalLayer (this.ctx , this.dynamicalData , this.z , this.style , this.layerCount ) ;
    this.layerCount      = rendererStatus[0];
 
@@ -178,15 +170,16 @@ DynamicalRenderer.prototype.GetTex = function ( tx , ty) {
 }
 
 DynamicalRenderer.prototype._BuildTexture = function () {
-   console.log("_BuildTexture");
-   var tileCanvas    = document.createElement('canvas');
+
+   var gl            = this.gl,
+       tileCanvas    = document.createElement('canvas');
+   
    tileCanvas.width  = Maperial.tileSize;
    tileCanvas.height = Maperial.tileSize;
    var tileCanvasCtx = tileCanvas.getContext('2d');
    
    tileCanvasCtx.globalCompositeOperation="copy";
    
-   var gl = this.gl;
    for (var j = 0 ; j < this.nbty ; j = j + 1 ) {
       for (var i = 0 ; i < this.nbtx ; i = i + 1 ) {
       
@@ -204,7 +197,8 @@ DynamicalRenderer.prototype._BuildTexture = function () {
          this.tex.push ( tex );
       }
    }
-   gl.bindTexture  (gl.TEXTURE_2D           , null         );
+   
+   gl.bindTexture  (gl.TEXTURE_2D , null );
    delete tileCanvasCtx;
    delete tileCanvas;
 }
