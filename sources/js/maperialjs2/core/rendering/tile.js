@@ -233,6 +233,7 @@ Tile.prototype.exchangeLayers = function(exchangedIds) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
+//v2 @deprecated ? 
 Tile.prototype.RenderVectorialLayers = function ( context, wx, wy ) {
    for (var i = 0; i < this.layerParts.length; i++) {
       if (this.layerParts[i].GetType() == Layer.Vector && this.layerParts[i].IsUpToDate() && this.layerParts[i].cnv) {
@@ -259,7 +260,7 @@ Tile.prototype.prepareBuffering = function () {
 Tile.prototype.Update = function ( maxTime ) {
 
    //--------------------------------------//
-   
+
    var date                 = (new Date)
    var startT               = date.getTime()
    var diffT                = 0
@@ -267,19 +268,19 @@ Tile.prototype.Update = function ( maxTime ) {
 
    //--------------------------------------//
    // layerParts update
-   
-  for(var i = 0; i< this.layerParts.length; i++){
-     if (! this.layerParts[i].IsUpToDate ()){
-        if(this.layerParts[i].DataReady() ) {
-           this.layerParts[i].Update( this.layerParts[i].params, i );
-           noLayerPartUpdate = false
-           
-           diffT   = date.getTime() - startT;
-           if ( maxTime - diffT <= 0 )
-              break;
-        }
-     }
-  }
+
+   for(var i = 0; i< this.layerParts.length; i++){
+      if (! this.layerParts[i].IsUpToDate() ){
+         if(this.layerParts[i].DataReady() ) {
+            this.layerParts[i].Update( this.layerParts[i].params, i );
+            noLayerPartUpdate = false
+
+            diffT   = date.getTime() - startT;
+            if ( maxTime - diffT <= 0 )
+               break;
+         }
+      }
+   }
 
    //--------------------------------------//
    // tile.tex update
@@ -298,7 +299,6 @@ Tile.prototype.Update = function ( maxTime ) {
    }
 
 }
-
 
 //----------------------------------------------------------------------------------------------------------------------//
 

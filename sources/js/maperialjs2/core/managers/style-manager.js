@@ -45,6 +45,8 @@ StyleManager.prototype.getFontURL = function(name) {
    return Maperial.staticURL + "/font/" + name.replace(" ","_") + "_400.font.js";
 }
 
+//---------------------------------------------------------------------------//
+
 StyleManager.prototype.LoadFontList = function(fontList,next) {
    var loaded   = 0;
    var nbToLoad = Object.keys(fontList).length;
@@ -79,6 +81,8 @@ StyleManager.prototype.LoadFontList = function(fontList,next) {
       });
    }
 }
+
+//---------------------------------------------------------------------------//
 
 StyleManager.prototype.LoadSymbList = function(symbList,next) {
    var loaded   = 0;
