@@ -6,9 +6,10 @@ function Maperial(options){
    this.options   = options;
    this.views     = {};
    
-   window.sourceManager = window.sourceManager  || new SourceManager();
-   window.dataManager   = window.dataManager    || new DataManager();
-   window.styleManager  = window.styleManager   || new StyleManager();
+   window.sourceManager    = window.sourceManager     || new SourceManager();
+   window.dataManager      = window.dataManager       || new DataManager();
+   window.styleManager     = window.styleManager      || new StyleManager();
+   window.colorbarManager  = window.colorbarManager   || new ColorbarManager();
 };
 
 //------------------------------------------------------------------//
