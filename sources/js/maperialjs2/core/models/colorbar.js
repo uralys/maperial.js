@@ -2,8 +2,8 @@
 
 function Colorbar (options) {
    this.uid                = Utils.generateUID();
-   this.data               = options.data;
-   this.beginAlphaAtZero   = options.beginAlphaAtZero || false;
+   this.data               = options.data               ||  {};
+   this.beginAlphaAtZero   = options.beginAlphaAtZero   || false;
 }
 
 //-----------------------------------------------------------------------------------//

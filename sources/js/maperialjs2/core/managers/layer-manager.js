@@ -10,14 +10,14 @@ function LayerManager(mapView){
 //Layer Types
 function Layer(){}
 
+Layer.Dynamical   = "Layer.Dynamical";
+Layer.Heat        = "Layer.Heat";
 Layer.Vectorial   = "Layer.Vectorial";
 Layer.Raster      = "Layer.Raster";
-Layer.Shade       = "Layer.Shade";
 Layer.Images      = "Layer.Images";
 Layer.WMS         = "Layer.WMS";
 Layer.SRTM        = "Layer.SRTM";
-Layer.Dynamical   = "Layer.Dynamical";
-Layer.Heat        = "Layer.Heat";
+Layer.Shade       = "Layer.Shade";
 
 //-------------------------------------------//
 
@@ -35,6 +35,12 @@ LayerManager.prototype.addLayer = function(layerType, params) {
          break;
 
          // ------------------------------------------//
+         
+      case Layer.Heat :
+          layer = new HeatmapLayer(params, this.defaultComposition());
+          break;
+
+          // ------------------------------------------//
 
       case Layer.Vectorial :
          break;

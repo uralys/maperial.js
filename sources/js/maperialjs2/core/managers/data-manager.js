@@ -3,13 +3,21 @@
 //-------------------------------------------//
 
 function DataManager(){
-   this.dynamicalRenderers  = {};
+   this.renderers  = {};
 }
 
 //---------------------------------------------------------------------------//
 
-DataManager.prototype.addDynamicalRenderer = function(mapView, dynamicalData, styleUID){
-   var renderer = new DynamicalRenderer(mapView, dynamicalData, styleUID);
-   this.dynamicalRenderers[renderer.id] = renderer
+DataManager.prototype.addDynamicalRenderer = function(mapView, dynamicalData, style){
+   var renderer = new DynamicalRenderer(mapView, dynamicalData, style);
+   this.renderers[renderer.id] = renderer;
    return renderer;
+}
+
+//---------------------------------------------------------------------------//
+
+DataManager.prototype.addHeatmapRenderer = function(mapView, heatmapData, colorbar){
+    var renderer = new HeatmapRenderer(mapView, heatmapData, colorbar);
+    this.renderers[renderer.id] = renderer;
+    return renderer;
 }

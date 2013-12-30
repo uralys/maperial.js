@@ -154,7 +154,6 @@ DynamicalRenderer.prototype.Update = function () {
       diffT   = date.getTime() - startT;
    }
    
-   
    return rendererStatus[1] + diffT
 }
 

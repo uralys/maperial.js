@@ -129,13 +129,10 @@ Tile.prototype.createLayerPart = function (layer, index) {
          break;
          
       case Layer.Dynamical:
+      case Layer.Heat:
          this.layerParts.splice(index, 0, new DynamicalLayerPart  ( layer, this ));
          break;
       
-      case Layer.Heat:
-         this.layerParts.splice(index, 0, new HeatLayerPart    ( layer, this ));
-         break;
-
       case Layer.Vector:
          this.layerParts.splice(index, 0, new VectorialLayerPart ( layer, this.mapView , this.z));
          break;

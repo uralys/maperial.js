@@ -17,10 +17,10 @@ function DynamicalData  () {
 //----------------------------------------------------------------------------------//
 
 DynamicalData.prototype.addPoint = function ( latitude, longitude, data) {
-   
-   var id = Utils.generateUID();
-   
-   var p = new Proj4js.Point(longitude, latitude);   
+
+    var id   = Utils.generateUID(),
+        p    = new Proj4js.Point(longitude, latitude);
+    
    Proj4js.transform(this.srcPrj, this.dstPrj, p);
    this.minx = Math.min (this.minx , p.x);
    this.maxx = Math.max (this.maxx , p.x);
@@ -46,6 +46,7 @@ DynamicalData.prototype.addPoint = function ( latitude, longitude, data) {
 
 DynamicalData.prototype.removePoint = function (point) {
    delete this.points[point.id];
+   this.version ++;
 }
 
 //----------------------------------------------------------------------------------//

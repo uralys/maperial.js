@@ -40,7 +40,7 @@ ColorbarManager.prototype.createColorbar = function(options) {
    }
    
    var steps    = options.steps || ColorbarManager.defaultSteps,
-       colorbar = new ColorBar({
+       colorbar = new Colorbar({
           beginAlphaAtZero : options.beginAlphaAtZero
        });
    

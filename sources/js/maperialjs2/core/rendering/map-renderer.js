@@ -243,8 +243,8 @@ MapRenderer.prototype.DrawScene = function ( ) {
    
    //-----------------------------------------------------------------//
    
-   for( var rendererId in dataManager.dynamicalRenderers) {
-      var renderer = dataManager.dynamicalRenderers[rendererId];
+   for( var rendererId in dataManager.renderers) {
+      var renderer = dataManager.renderers[rendererId];
       if(renderer.mapView.id == this.mapView.id)
          renderer.Refresh ( this.mapView.context.zoom , tileC.x , tileC.y - nbTileY , nbTileX + 1 , nbTileY + 1 ) ;
    }

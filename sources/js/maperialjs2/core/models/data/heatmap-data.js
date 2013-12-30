@@ -35,7 +35,7 @@ HeatmapData.prototype.addPoint = function ( latitude, longitude, diameter, scale
          scale    : scale,
    };
 
-   this.points.push (point);
+   this.points[id] = point;
    this.version ++;
    
    return point;
@@ -45,6 +45,7 @@ HeatmapData.prototype.addPoint = function ( latitude, longitude, diameter, scale
 
 HeatmapData.prototype.removePoint = function (point) {
     delete this.points[point.id];
+    this.version ++;
 }
 
 //----------------------------------------------------------------------------------//

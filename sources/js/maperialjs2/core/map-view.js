@@ -105,7 +105,29 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options)   {
 
 //------------------------------------------------------------------//
 
-MapView.prototype.addHeatmapLayer     = function (options)   {}
+MapView.prototype.addHeatmapLayer = function (heatmapData, options)   {
+    
+    //-------------------------------------------
+    // Checking options
+    
+    var options = Utils.prepareOptions(options, "colorbar")
+    if(!options){
+        console.log("Wrong call to addHeatmapLayer. Check the options")
+    }
+    
+    //-------------------------------------------
+    // Proceed
+    
+    this.layerManager.addLayer(Layer.Dynamical, {
+        mapView           : this, 
+        dynamicalData     : dynamicalData, 
+        options           : options
+    })
+    
+}
+
+//------------------------------------------------------------------//
+
 MapView.prototype.addRasterLayer      = function (options)   {}
 MapView.prototype.addShadeLayer       = function (options)   {}
 MapView.prototype.addWMSLayer         = function (options)   {}

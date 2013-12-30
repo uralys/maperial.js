@@ -41,6 +41,7 @@
                 "/js/maperialjs2/libs/gl-matrix-min.js",
                 "/js/maperialjs2/libs/proj4js-compressed.js",
                 "/js/maperialjs2/libs/coordinate-system.js",
+                "/js/maperialjs2/libs/color.js",
 
                 // core ------------------------------
                	"/js/maperialjs2/core/maperial.js",
@@ -104,7 +105,7 @@
 			      //-----------------------------------------------//
 			      // Layer Images
 			      
-			      map.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
+			      //map.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
 			      
 			      //-----------------------------------------------//
 			      // Layer Vectorial Data 
@@ -128,7 +129,7 @@
                });
    
 
-   function fillDummyHeatmap(window.data){
+   function fillDummyHeatmap(){
       window.data.addPoint (33.5363,-117.044, 10000 , 0.6 ); 
       window.data.addPoint (33.5608,-117.24, 10000 , 0.6 ); 
       window.data.addPoint (38,-97, 10000 , 0.6 ); 
