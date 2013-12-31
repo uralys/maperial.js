@@ -87,9 +87,9 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options)   {
    //-------------------------------------------
    // Checking options
    
-   var options = Utils.prepareOptions(options, "style")
+   var options = Utils.prepareOptions(options, "style");
    if(!options){
-      console.log("Wrong call to addDynamicalLayer. Check the options")
+      console.log("Wrong call to addDynamicalLayer. Check the options");
    }
    
    //-------------------------------------------
@@ -99,7 +99,7 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options)   {
       mapView           : this, 
       dynamicalData     : dynamicalData, 
       style             : options.style
-   })
+   });
 
 }
 
@@ -110,19 +110,19 @@ MapView.prototype.addHeatmapLayer = function (heatmapData, options)   {
     //-------------------------------------------
     // Checking options
     
-    var options = Utils.prepareOptions(options, "colorbar")
+    var options = Utils.prepareOptions(options, "colorbar");
     if(!options){
-        console.log("Wrong call to addHeatmapLayer. Check the options")
+        console.log("Wrong call to addHeatmapLayer. Check the options");
     }
     
     //-------------------------------------------
     // Proceed
     
-    this.layerManager.addLayer(Layer.Dynamical, {
-        mapView           : this, 
-        dynamicalData     : dynamicalData, 
-        options           : options
-    })
+    this.layerManager.addLayer(Layer.Heat, {
+        mapView        : this, 
+        heatmapData    : heatmapData, 
+        options        : options
+    });
     
 }
 

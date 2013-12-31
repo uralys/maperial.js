@@ -3,6 +3,7 @@ function HeatmapData  () {
    this.points             = {},
    this.id                 = Utils.generateUID();
    this.version            = 0;
+   this.nbPoints           = 0;
    
    this.minx               = 100000000000;
    this.maxx               = -100000000000;
@@ -37,6 +38,7 @@ HeatmapData.prototype.addPoint = function ( latitude, longitude, diameter, scale
 
    this.points[id] = point;
    this.version ++;
+   this.nbPoints ++;
    
    return point;
 }
@@ -46,6 +48,7 @@ HeatmapData.prototype.addPoint = function ( latitude, longitude, diameter, scale
 HeatmapData.prototype.removePoint = function (point) {
     delete this.points[point.id];
     this.version ++;
+    this.nbPoints --;
 }
 
 //----------------------------------------------------------------------------------//

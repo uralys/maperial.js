@@ -119,6 +119,7 @@ HeatmapRenderer.prototype.Update = function ( params ) {
       return 0;
       
    var gl       = this.gl;
+   var data     = this.heatmapData;
 //   this.scaleX;
 //   this.scaleY;
 //   this.trX;
@@ -177,71 +178,54 @@ HeatmapRenderer.prototype.Update = function ( params ) {
          defaultDiameter = defaultDiameter / res
       }
    }
-   
-   for (var i = this.layerCount ; i < this.data.content["l"].length ; ++i ) {
-      var layer   = this.data.content["l"][i];
-      var ll      = layer["g"]; // liste de listes de lignes
-      var al      = null; // attributlist
-      if ("a" in layer) al = layer["a"];
-      if (ll == null)   continue;
+       
+   var currentPoint = 0;
+   for (var id in data.points ) {
+      if(currentPoint < this.layerCount)
+         continue;
       
-      for ( var l = 0 ; l < ll.length ; ++l ) {
-         var   lines = ll[l]; // liste de lignes
-         var   attr  = null; // attribut
-         if (al) attr = al[l] // attributlist
+      var point      = data.points[id];
+      var scale      = point.scale     || defaultScale;
+      var diameter   = point.diameter  || defaultDiameter;
 
-         var scale      = defaultScale
-         var diameter   = defaultDiameter
-
-         if ( attr && typeof (attr) == typeof ({}) ) {
-            scale     = typeof attr.scale !== 'undefined' ? attr.scale : scale;
-            if ( typeof attr.diameter !== 'undefined' ) {
-               diameter = attr.diameter;
-               if ( unit == 2 ) {
-                  defaultDiameter = defaultDiameter / res
-               }
-            }
-         }
-         
-         for ( var li = 0 ; li < lines.length ; ++li ) {
-            var line = lines[li];
-            if (line.length == 2) {
-               var localScale = defaultScale
-               var localDiam  = defaultDiameter 
-               if (unit == 1) {
-                  var tmp1 = this.cs.MetersToPixelsAccurate(line[0]   ,line[1],this.z )
-                  var tmp2 = this.cs.MetersToPixelsAccurate(line[0] + diameter ,line[1],this.z )
-                  diameter = tmp2.x - tmp1.x
-               }
-               
-               mat4.identity              ( mvMatrix );
-               var tmpx = line[0] * this.scaleX + this.trX;
-               var tmpy = line[1] * this.scaleY + this.trY;
-               mat4.translate         ( mvMatrix, [ tmpx , tmpy , 0] );
-               mat4.scale             ( mvMatrix, [ diameter , diameter , 1.0] );               
-               gl.uniformMatrix4fv    ( prog.params.mvMatrixUniform.name, false, mvMatrix );
-               gl.uniform1f           ( prog.params.uParams.name , scale ); 
-               gl.drawArrays          ( gl.TRIANGLE_FAN, 0, this.assets.circleVertexPositionBuffer.numItems );
-            }
-         }
+      if ( unit == 2 ) {
+         diameter = diameter / res;
       }
+
+      if ( unit == 1 ) {
+         var tmp1 = this.cs.MetersToPixelsAccurate(line[0], line[1], this.z );
+         var tmp2 = this.cs.MetersToPixelsAccurate(line[0] + diameter, line[1], this.z );
+         diameter = tmp2.x - tmp1.x;
+      }
+      
+      mat4.identity              ( mvMatrix );
+      var tmpx = line[0] * this.scaleX + this.trX;
+      var tmpy = line[1] * this.scaleY + this.trY;
+      mat4.translate         ( mvMatrix, [ tmpx , tmpy , 0] );
+      mat4.scale             ( mvMatrix, [ diameter , diameter , 1.0] );               
+      gl.uniformMatrix4fv    ( prog.params.mvMatrixUniform.name, false, mvMatrix );
+      gl.uniform1f           ( prog.params.uParams.name , scale ); 
+      gl.drawArrays          ( gl.TRIANGLE_FAN, 0, this.assets.circleVertexPositionBuffer.numItems );
+      
       diffT   = date.getTime() - startT;
       if ( diffT > 10 )
          break;
+      
    }
    
    this.gl.disable(this.gl.BLEND);
-   this.layerCount = i + 1
+   this.layerCount = currentPoint + 1;
    gl.bindFramebuffer ( gl.FRAMEBUFFER, null );
    
-   if ( this.layerCount >= this.data.content["l"].length ) {
+   if ( this.layerCount >= this.data.nbPoints ) {
       this._BuildTexture( params );
       gl.deleteFramebuffer       ( this.frmB );
       delete this.frmB;
       this.frmB = null;
       this.layerCount = null;
    }
-   return diffT
+   
+   return diffT;
 }
 
 HeatmapRenderer.prototype.GetTex = function ( tx , ty ) {
@@ -257,26 +241,18 @@ HeatmapRenderer.prototype.GetTex = function ( tx , ty ) {
 }
 
 HeatmapRenderer.prototype._BuildTexture = function ( params ) {
-   var gltools       = new GLTools ()
-   var gl            = this.gl;
-   
-   var colorbarUID   = params.colorbars[params.selectedColorbar];
-   var colorbar      = this.mapView.colorbarsManager.getColorbar(colorbarUID);
-   
-   if (!colorbar) {
-      console.log("Invalid color bar : setting default") ;
-      return;
-   }
+   var gltools                = new GLTools ()
+   var gl                     = this.gl;
 
-   var mvMatrix                   = mat4.create();
-   var pMatrix                    = mat4.create();
-   mat4.identity                 ( pMatrix );
-   mat4.ortho                    ( 0, 256 , 0, 256, 0, 1, pMatrix ); // Y swap !
+   var mvMatrix               = mat4.create();
+   var pMatrix                = mat4.create();
+   mat4.identity              ( pMatrix );
+   mat4.ortho                 ( 0, 256 , 0, 256, 0, 1, pMatrix ); // Y swap !
 
    var prog                   = this.assets.prog[ "Clut" ]
    gl.useProgram              (prog);
-         
-   var colorBbounds = colorbar.data.GetBounds ()
+
+   var colorBbounds           = this.colorbar.data.GetBounds ()
 
    gl.uniform4fv              (prog.params.uParams.name ,[0.0,1.0,colorBbounds[0],colorBbounds[1]] ); 
    

@@ -9,7 +9,7 @@ function HeatmapLayer (params, composition) {
    
    this.composition        = composition;
    
-   this.heatmapRenderer    = dataManager.addHeatmapRenderer(this.mapView, this.dynamicalData, this.options);
+   this.renderer           = dataManager.addHeatmapRenderer(this.mapView, this.heatmapData, this.options);
 }
 
 //-----------------------------------------------------------------------------------//

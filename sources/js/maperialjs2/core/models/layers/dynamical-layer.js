@@ -9,7 +9,7 @@ function DynamicalLayer (params, composition) {
    this.style              = styleManager.createCustomStyle(params.style);
    this.composition        = composition;
    
-   this.dynamicalRenderer  = dataManager.addDynamicalRenderer(this.mapView, this.dynamicalData, this.style);
+   this.renderer           = dataManager.addDynamicalRenderer(this.mapView, this.dynamicalData, this.style);
 }
 
 //-----------------------------------------------------------------------------------//

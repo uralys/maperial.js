@@ -10,13 +10,13 @@ function DynamicalLayerPart ( layer, tile ) {
    this.version   = null;
    this.tex       = null;
    
-   this.dynamicalRenderer = layer.dynamicalRenderer;
+   this.renderer  = layer.renderer;
 }
 
 //-----------------------------------------------------------------------------------//
 
 DynamicalLayerPart.prototype.IsUpToDate = function ( ) {
-   var isUpTodate = this.dynamicalRenderer.isSync() && this.tex != null;
+   var isUpTodate = this.renderer.isSync() && this.tex != null;
    
    if(!isUpTodate)
        this.Reset();
@@ -28,11 +28,11 @@ DynamicalLayerPart.prototype.IsUpToDate = function ( ) {
 
 DynamicalLayerPart.prototype.DataReady = function(){
 
-   if(this.dynamicalRenderer.IsUpToDate()){
+   if(this.renderer.IsUpToDate()){
       return true;
    }
    else{
-       this.dynamicalRenderer.Update();
+       this.renderer.Update();
    }
 }
 
@@ -64,7 +64,7 @@ DynamicalLayerPart.prototype.Release = function (  ) {
 
 DynamicalLayerPart.prototype.Update = function () {
     if (this.tex == null ) {   
-        this.tex = this.dynamicalRenderer.GetTex(this.x,this.y)
+        this.tex = this.renderer.GetTex(this.x,this.y)
     }
     return 0;
 }
