@@ -119,7 +119,6 @@ HeatmapRenderer.prototype.Update = function ( params ) {
       return 0;
       
    var gl       = this.gl;
-   var data     = this.heatmapData;
 //   this.scaleX;
 //   this.scaleY;
 //   this.trX;
@@ -165,7 +164,7 @@ HeatmapRenderer.prototype.Update = function ( params ) {
    
    var defaultScale     = typeof params.scale !== 'undefined' ? params.scale : 1.0;
    var defaultDiameter  = typeof params.diameter !== 'undefined' ? params.diameter : 100;
-   var unit             = typeof params.diameterUnit !== 'undefined' ? params.diameterUnit : "pixel";
+   var unit      = typeof params.diameterUnit !== 'undefined' ? params.diameterUnit : "pixel";
    var res              = this.cs.Resolution ( this.z )
    
    if  ( typeof params.diameterUnit !== 'undefined' ) {
@@ -178,54 +177,71 @@ HeatmapRenderer.prototype.Update = function ( params ) {
          defaultDiameter = defaultDiameter / res
       }
    }
-       
-   var currentPoint = 0;
-   for (var id in data.points ) {
-      if(currentPoint < this.layerCount)
-         continue;
+   
+   for (var i = this.layerCount ; i < this.data.content["l"].length ; ++i ) {
+      var layer   = this.data.content["l"][i];
+      var ll      = layer["g"]; // liste de listes de lignes
+      var al      = null; // attributlist
+      if ("a" in layer) al = layer["a"];
+      if (ll == null)   continue;
       
-      var point      = data.points[id];
-      var scale      = point.scale     || defaultScale;
-      var diameter   = point.diameter  || defaultDiameter;
+      for ( var l = 0 ; l < ll.length ; ++l ) {
+         var   lines = ll[l]; // liste de lignes
+         var   attr  = null; // attribut
+         if (al) attr = al[l] // attributlist
 
-      if ( unit == 2 ) {
-         diameter = diameter / res;
-      }
+         var scale      = defaultScale
+         var diameter   = defaultDiameter
 
-      if ( unit == 1 ) {
-         var tmp1 = this.cs.MetersToPixelsAccurate(line[0], line[1], this.z );
-         var tmp2 = this.cs.MetersToPixelsAccurate(line[0] + diameter, line[1], this.z );
-         diameter = tmp2.x - tmp1.x;
+         if ( attr && typeof (attr) == typeof ({}) ) {
+            scale     = typeof attr.scale !== 'undefined' ? attr.scale : scale;
+            if ( typeof attr.diameter !== 'undefined' ) {
+               diameter = attr.diameter;
+               if ( unit == 2 ) {
+                  defaultDiameter = defaultDiameter / res
+               }
+            }
+         }
+         
+         for ( var li = 0 ; li < lines.length ; ++li ) {
+            var line = lines[li];
+            if (line.length == 2) {
+               var localScale = defaultScale
+               var localDiam  = defaultDiameter 
+               if (unit == 1) {
+                  var tmp1 = this.cs.MetersToPixelsAccurate(line[0]   ,line[1],this.z )
+                  var tmp2 = this.cs.MetersToPixelsAccurate(line[0] + diameter ,line[1],this.z )
+                  diameter = tmp2.x - tmp1.x
+               }
+               
+               mat4.identity              ( mvMatrix );
+               var tmpx = line[0] * this.scaleX + this.trX;
+               var tmpy = line[1] * this.scaleY + this.trY;
+               mat4.translate         ( mvMatrix, [ tmpx , tmpy , 0] );
+               mat4.scale             ( mvMatrix, [ diameter , diameter , 1.0] );               
+               gl.uniformMatrix4fv    ( prog.params.mvMatrixUniform.name, false, mvMatrix );
+               gl.uniform1f           ( prog.params.uParams.name , scale ); 
+               gl.drawArrays          ( gl.TRIANGLE_FAN, 0, this.assets.circleVertexPositionBuffer.numItems );
+            }
+         }
       }
-      
-      mat4.identity              ( mvMatrix );
-      var tmpx = line[0] * this.scaleX + this.trX;
-      var tmpy = line[1] * this.scaleY + this.trY;
-      mat4.translate         ( mvMatrix, [ tmpx , tmpy , 0] );
-      mat4.scale             ( mvMatrix, [ diameter , diameter , 1.0] );               
-      gl.uniformMatrix4fv    ( prog.params.mvMatrixUniform.name, false, mvMatrix );
-      gl.uniform1f           ( prog.params.uParams.name , scale ); 
-      gl.drawArrays          ( gl.TRIANGLE_FAN, 0, this.assets.circleVertexPositionBuffer.numItems );
-      
       diffT   = date.getTime() - startT;
       if ( diffT > 10 )
          break;
-      
    }
    
    this.gl.disable(this.gl.BLEND);
-   this.layerCount = currentPoint + 1;
+   this.layerCount = i + 1
    gl.bindFramebuffer ( gl.FRAMEBUFFER, null );
    
-   if ( this.layerCount >= this.data.nbPoints ) {
+   if ( this.layerCount >= this.data.content["l"].length ) {
       this._BuildTexture( params );
       gl.deleteFramebuffer       ( this.frmB );
       delete this.frmB;
       this.frmB = null;
       this.layerCount = null;
    }
-   
-   return diffT;
+   return diffT
 }
 
 HeatmapRenderer.prototype.GetTex = function ( tx , ty ) {

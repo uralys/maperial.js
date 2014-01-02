@@ -1,6 +1,7 @@
 function HeatmapData  () {
    
    this.points             = {},
+   this.content            = {"h":256 , "w":256 , "l" : [] }
    this.id                 = Utils.generateUID();
    this.version            = 0;
    this.nbPoints           = 0;
@@ -18,24 +19,31 @@ function HeatmapData  () {
 HeatmapData.prototype.addPoint = function ( latitude, longitude, diameter, scale) {
 
    var id   = Utils.generateUID(),
-       p    = new Proj4js.Point(longitude, latitude);
+       p    = new Proj4js.Point(longitude, latitude),
+       attr = {
+         diameter : diameter, 
+         scale    : scale
+       };
    
    Proj4js.transform(this.srcPrj, this.dstPrj, p);
    this.minx = Math.min (this.minx , p.x);
    this.maxx = Math.max (this.maxx , p.x);
    this.miny = Math.min (this.miny , p.y);
    this.maxy = Math.max (this.maxy , p.y);
+//
+//   var point = {
+//         id       : id,
+//         lat      : latitude,
+//         lon      : longitude,
+//         x        : p.x,
+//         y        : p.y,
+//         diameter : diameter,
+//         scale    : scale,
+//   };
 
-   var point = {
-         id       : id,
-         lat      : latitude,
-         lon      : longitude,
-         x        : p.x,
-         y        : p.y,
-         diameter : diameter,
-         scale    : scale,
-   };
+   var point = {'c':null,'g':[[[p.x,p.y]]],'a':[attr]}  ;
 
+   this.content.l.push (point) ;
    this.points[id] = point;
    this.version ++;
    this.nbPoints ++;
