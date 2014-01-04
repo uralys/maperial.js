@@ -21,12 +21,17 @@ ColorbarManager.prototype.getColorbar = function(uid){
 
 //----------------------------//
 
-ColorbarManager.prototype.addColorbar = function( colorbar ) {
-   window.maperialColorbars[colorbar.uid] = {
-      uid      : colorbar.uid, 
-      name     : colorbar.uid, 
-      data     : colorbar
+ColorbarManager.prototype.addColorbar = function( colorbarData ) {
+   
+   var uid = Utils.generateUID();
+   
+   window.maperialColorbars[uid] = {
+      uid      : uid, 
+      name     : uid, 
+      data     : colorbarData
    };
+   
+   return window.maperialColorbars[uid];
 }
 
 //-------------------------------------------//
@@ -39,16 +44,16 @@ ColorbarManager.prototype.createColorbar = function(options) {
       };
    }
    
-   var steps    = options.steps || ColorbarManager.defaultSteps,
-       colorbar = new Colorbar({
+   var steps         = options.steps || ColorbarManager.defaultSteps,
+       colorbarData  = new ColorbarData({
           beginAlphaAtZero : options.beginAlphaAtZero
        });
    
    for(var step in steps){
-      colorbar.Set(step, new GradiantColor(steps[step].r, steps[step].g, steps[step].b, steps[step].a));
+      colorbarData.Set(step, new GradiantColor(steps[step].r, steps[step].g, steps[step].b, steps[step].a));
    }
    
-   this.addColorbar(colorbar);
+   var colorbar = this.addColorbar(colorbarData);
    return colorbar;
 }
 

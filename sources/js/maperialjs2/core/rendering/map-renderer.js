@@ -144,60 +144,62 @@ MapRenderer.prototype.InitGL = function () {
 }
 
 
-//MapRenderer.prototype.renderAllColorBars = function () {
+MapRenderer.prototype.renderAllColorBars = function () {
 
-//var colorbarUIDs = this.mapView.colorbarsManager.allColorbars();
+   var colorbars = maperialColorbars;
 
-//this.gl.flush ()
-//this.gl.finish()
+   this.gl.flush ()
+   this.gl.finish()
 
-//for ( var colorbarUID in colorbarUIDs ) {
-//var colorbar = colorbarUIDs[ colorbarUID ];
+   for ( var colorbarUID in colorbars ) {
+      var colorbar = colorbars[ colorbarUID ];
 
-//if ( colorbar == null  || ! colorbar.data.IsValid () ) {
-//console.log ( "Invalid colorbar data : " + colorbarUID )
-//break;
-//}
+      if ( colorbar == null  || ! colorbar.data.IsValid () ) {
+         console.log ( "Invalid colorbar data : " + colorbarUID );
+         break;
+      }
 
-//if(!colorbar.tex)
-//colorbar.tex = []
+      if(!colorbar.tex)
+         colorbar.tex = [];
 
-//// Raster it !
-//var data = []
-//for (var i = 0.0 ; i < 1.0 ; i+= 1.0/256) {
-//var c = colorbar.data.Get ( i ) 
-//data.push ( c.Ri() )
-//data.push ( c.Gi() )
-//data.push ( c.Bi() )
-//data.push ( c.Ai() )
-//}
-//data = new Uint8Array(data)
+      // Raster it !
+      var data = [];
+      for (var i = 0.0 ; i < 1.0 ; i+= 1.0/256) {
+         var c = colorbar.data.Get ( i ) ;
+         data.push ( c.Ri() );
+         data.push ( c.Gi() );
+         data.push ( c.Bi() );
+         data.push ( c.Ai() );
+      }
+      
+      data = new Uint8Array(data);
 
-//if ( colorbar.tex[this.mapView.id] ) {
-//this.gl.deleteTexture ( colorbar.tex[this.mapView.id] )
-//delete colorbar.tex[this.mapView.id] // good ??
-//colorbar.tex[this.mapView.id] = null;
-//}
+      if ( colorbar.tex[this.mapView.id] ) {
+         this.gl.deleteTexture ( colorbar.tex[this.mapView.id] );
+         delete colorbar.tex[this.mapView.id]; // good ??
+         colorbar.tex[this.mapView.id] = null;
+      }
 
-//try {
-//colorbar.tex[this.mapView.id] = this.gl.createTexture();
-//this.gl.bindTexture  (this.gl.TEXTURE_2D, colorbar.tex[this.mapView.id] );
-//this.gl.pixelStorei  (this.gl.UNPACK_FLIP_Y_WEBGL  , false    );
-//this.gl.texImage2D   (this.gl.TEXTURE_2D, 0 , this.gl.RGBA, 256 , 1 , 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data );
-//this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
-//this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
-//this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S,this.gl.CLAMP_TO_EDGE);
-//this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T,this.gl.CLAMP_TO_EDGE);
-//this.gl.bindTexture  (this.gl.TEXTURE_2D, null );
-//} catch (e) { 
-//this.gl.deleteTexture ( colorbar.tex[this.mapView.id] );
-//delete colorbar.tex[this.mapView.id];
-//colorbar.tex[this.mapView.id] = null;
-//console.log ( "Error in colorbar building : " + colorbarUID );
-//}
-//}
-//return true;
-//}
+      try {
+         colorbar.tex[this.mapView.id] = this.gl.createTexture();
+         this.gl.bindTexture  (this.gl.TEXTURE_2D, colorbar.tex[this.mapView.id] );
+         this.gl.pixelStorei  (this.gl.UNPACK_FLIP_Y_WEBGL  , false    );
+         this.gl.texImage2D   (this.gl.TEXTURE_2D, 0 , this.gl.RGBA, 256 , 1 , 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data );
+         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S,this.gl.CLAMP_TO_EDGE);
+         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T,this.gl.CLAMP_TO_EDGE);
+         this.gl.bindTexture  (this.gl.TEXTURE_2D, null );
+      } catch (e) { 
+         this.gl.deleteTexture ( colorbar.tex[this.mapView.id] );
+         delete colorbar.tex[this.mapView.id];
+         colorbar.tex[this.mapView.id] = null;
+         console.log ( "Error in colorbar building : " + colorbarUID );
+      }
+   }
+   
+   return true;
+}
 
 //----------------------------------------------------------------------//
 
@@ -219,6 +221,11 @@ MapRenderer.prototype.DrawScene = function ( ) {
    var nbTileX = Math.floor ( w  / Maperial.tileSize + 1 );
    var nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
 
+   //-----------------------------------------------------------------//
+   
+   // TODO : utiliser le principe de version des colorbars ici aussi
+   this.renderAllColorBars();
+   
    //-----------------------------------------------------------------//
    
    if ( this.UpdateTiles ( tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {

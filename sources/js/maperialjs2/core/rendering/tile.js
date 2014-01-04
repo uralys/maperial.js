@@ -287,6 +287,7 @@ Tile.prototype.Update = function ( maxTime ) {
    }
    else{
       if ( !noLayerPartUpdate && (maxTime - diffT > 0) ) {
+         console.log("tile refresh + compose");
          this.Refresh();
          this.Compose();
          diffT   = date.getTime() - startT;

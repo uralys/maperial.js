@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------------//
 
-function Colorbar (options) {
+function ColorbarData (options) {
    this.uid                = Utils.generateUID();
    this.data               = options.data               ||  {};
    this.beginAlphaAtZero   = options.beginAlphaAtZero   || false;
@@ -8,12 +8,12 @@ function Colorbar (options) {
 
 //-----------------------------------------------------------------------------------//
 
-Colorbar.prototype.IsValid = function (  ) {
+ColorbarData.prototype.IsValid = function (  ) {
    var rTmp = Object.keys(this.data);
    return rTmp.length >= 2
 }
 
-Colorbar.prototype.FromJson = function ( inJson ) {
+ColorbarData.prototype.FromJson = function ( inJson ) {
    this.data = {} // reset ...
    for (var i in inJson) {
       // Constant or GradiantColor ???
@@ -21,7 +21,7 @@ Colorbar.prototype.FromJson = function ( inJson ) {
    }
 }
 
-Colorbar.prototype.ToJson = function  (  ) {
+ColorbarData.prototype.ToJson = function  (  ) {
    var r = {}
    for (var i in this.data){
       // Constant or GradiantColor ???
@@ -30,7 +30,7 @@ Colorbar.prototype.ToJson = function  (  ) {
    return r;
 }
 
-Colorbar.prototype.SetMin  = function( inV , inC ){
+ColorbarData.prototype.SetMin  = function( inV , inC ){
    if (typeof (inV) == "undefined")
       return 
    if (typeof (inC) == "undefined")
@@ -49,7 +49,7 @@ Colorbar.prototype.SetMin  = function( inV , inC ){
    this.data[inV] = inC
 }
 
-Colorbar.prototype.SetMax  = function( inV , inC ){
+ColorbarData.prototype.SetMax  = function( inV , inC ){
    if (typeof (inV) == "undefined")
       return 
    if (typeof (inC) == "undefined")
@@ -65,7 +65,7 @@ Colorbar.prototype.SetMax  = function( inV , inC ){
    this.data[inV] = inC
 }
 
-Colorbar.prototype.Set     = function( inV , inC ){
+ColorbarData.prototype.Set     = function( inV , inC ){
    if (typeof (inV) == "undefined")
       return 
    if (typeof (inC) == "undefined")
@@ -73,7 +73,7 @@ Colorbar.prototype.Set     = function( inV , inC ){
    this.data[inV] = inC
 }
 
-Colorbar.prototype.Indexes = function(  ){
+ColorbarData.prototype.Indexes = function(  ){
    var rTmp = Object.keys(this.data);
    var r    = []
    for (var i = 0 ; i < rTmp.length ; ++i) {
@@ -82,13 +82,13 @@ Colorbar.prototype.Indexes = function(  ){
    return r
 }
 
-Colorbar.prototype.Remove  = function( inV ){
+ColorbarData.prototype.Remove  = function( inV ){
    if ( inV in this.data)
       delete this.data[inV]
       
 }
 
-Colorbar.prototype.Move    = function( inVOld, inVNew ){
+ColorbarData.prototype.Move    = function( inVOld, inVNew ){
    if ( inV in this.data) {
       var c = this.data[inVOld]
       delete this.data[inVOld]
@@ -96,13 +96,13 @@ Colorbar.prototype.Move    = function( inVOld, inVNew ){
    }
 }
 
-Colorbar.prototype.GetByKey    = function( inV ){ 
+ColorbarData.prototype.GetByKey    = function( inV ){ 
    if ( inV in this.data )
       return this.data[inV]
    return null
 }
 
-Colorbar.prototype.GetBounds     = function(  ){
+ColorbarData.prototype.GetBounds     = function(  ){
    var k = Object.keys(this.data); 
    
    if (k.length < 2)
@@ -118,47 +118,58 @@ Colorbar.prototype.GetBounds     = function(  ){
    return [min,max];
 }
 
-Colorbar.prototype.Get     = function( inT ){ //[0.0,1.0]
+ColorbarData.prototype.Get     = function( inT ){ //[0.0,1.0]
+
    var k = Object.keys(this.data); 
 
    if (k.length < 2)
-      return null //Invalid
-
-   for (var i = 0 ; i < k.length ; ++ i ){
-      k[i] = parseFloat(k[i]);
-   }
-   k.sort()
+      return null; //Invalid
    
-   var min = k[0];
-   var max = k[k.length-1];
+   var min = parseFloat(k[0]);
+   var max = parseFloat(k[k.length-1]);
    var v   = (max - min) * inT + min;
-   if (v < min) v = min
-   if (v > max) v = max
-   if ( v in this.data )
-      if ( v == min && this.beginAlphaAtZero ){
+   if (v < min) v = min;
+   if (v > max) v = max;
+   
+   var isStep = false;
+   for(var key in this.data){
+      if(parseFloat(key) == v){
+         isStep   = true;
+         v        = key;
+         break;
+      }
+   }
+   
+   if ( isStep ){
+      if ( parseFloat(v) == min && this.beginAlphaAtZero ){
          return new RGBAColor ( this.data[v].r ,  this.data[v].g , this.data[v].b , 0 )
       }
       else {
          return new RGBAColor ( this.data[v].r ,  this.data[v].g , this.data[v].b , this.data[v].a )
       }
-   
-   var supI = 0
-   for ( var i = 1 ; i < k.length ; i++ ) {
-      if ( v < k[i] ) {
-         supI = i
-         break;
-      }
-   }   
-   if ( supI == 0) 
-      return null //Error
+   }
+   else{
+      var keyUp, keyDown;
       
-   var v0 =  k[supI -1] 
-   var v1 =  k[supI   ] 
+      for ( var i = 1 ; i < k.length ; i++ ) {
+         if ( v < k[i] ) {
+            keyUp    = k[i] 
+            keyDown  = k[i-1] 
+            break;
+         }
+      }   
+      if (!keyUp) 
+         return null //Error
+         
+      var c0 = this.data[keyDown];
+      var c1 = this.data[keyUp];
+      
+      var v0 = parseFloat(keyDown);
+      var v1 = parseFloat(keyUp);
+      
+      var t = (v - v0) / (v1 - v0);
+      
+      return c1.GetWith(c0,t);
+   }
    
-   var c0 = this.data[v0]
-   var c1 = this.data[v1]
-   
-   var t = (v - v0) / (v1 - v0);
-   
-   return c1.GetWith(c0,t);
 }

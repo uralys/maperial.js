@@ -5,7 +5,7 @@ function HeatmapRenderer ( mapView, heatmapData, options ) {
    this.id              = Utils.generateUID();
    this.mapView         = mapView;
    this.heatmapData     = heatmapData;
-   this.colorbar        = options.colorbar;
+   this.options         = options;
    
    this.gl              = mapView.context.assets.ctx;
    this.assets          = mapView.context.assets;
@@ -31,18 +31,28 @@ HeatmapRenderer.prototype.isSync = function () {
       return true;
   }
   else{
-     if(this.texB)
+     if(this.texB){
+        console.log("not sync : reset");
         this.Reset();
+     }
      
      return false;
   }
 }
 
 //------------------------------------------------------------------------------------------//
-   
+
 HeatmapRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY ) {
-   if ( this.z != z || this.tx == null || tileX < this.tx || tileY < this.ty || tileX + nbTX > this.tx + this.nbtx || tileY + nbTY > this.ty + this.nbty ) {
+   
+   var cameraMoved = this.z != z || this.tx == null || tileX < this.tx || tileY < this.ty || tileX + nbTX > this.tx + this.nbtx || tileY + nbTY > this.ty + this.nbty,
+       dataChanged = this.version != this.heatmapData.version;
+
+   if (cameraMoved || dataChanged) {
+      
+      console.log("refesh : reset");
       this.Reset();
+      this.version = this.heatmapData.version;
+      
       var nbTX2 = 1;
       while ( nbTX2 < nbTX ) nbTX2 = nbTX2 * 2;
       var nbTY2 = 1;
@@ -54,6 +64,7 @@ HeatmapRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY ) {
       this.w = sizeX;
       this.h = sizeY;
    
+      console.log("AllocBuffer");
       this.AllocBuffer (sizeX,sizeY) ;
       
       var dx = nbTX2 - (nbTX);
@@ -114,9 +125,10 @@ HeatmapRenderer.prototype.IsUpToDate = function ( ) {
    return this.layerCount == null;
 }
 
-HeatmapRenderer.prototype.Update = function ( params ) {
+HeatmapRenderer.prototype.Update = function () {
    if (this.frmB == null || this.layerCount == null)
       return 0;
+   console.log("heat Update");
       
    var gl       = this.gl;
 //   this.scaleX;
@@ -137,7 +149,7 @@ HeatmapRenderer.prototype.Update = function ( params ) {
    mat4.ortho                 ( 0, this.frmB.width , 0, this.frmB.height, 0, 1, pMatrix ); // Y swap !
 
    var prog = null;
-   if ( typeof params.fill !== 'undefined' && params.fill == "linear" ) {
+   if ( typeof this.options.fill !== 'undefined' && this.options.fill == "linear" ) {
       prog                   = this.assets.prog[ "HeatLinear" ]
    }
    else { // default gaussian   
@@ -162,24 +174,24 @@ HeatmapRenderer.prototype.Update = function ( params ) {
    this.gl.enable(this.gl.BLEND);
    this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
    
-   var defaultScale     = typeof params.scale !== 'undefined' ? params.scale : 1.0;
-   var defaultDiameter  = typeof params.diameter !== 'undefined' ? params.diameter : 100;
-   var unit      = typeof params.diameterUnit !== 'undefined' ? params.diameterUnit : "pixel";
+   var defaultScale     = typeof this.options.scale !== 'undefined'             ? this.options.scale        : 1.0;
+   var defaultDiameter  = typeof this.options.diameter !== 'undefined'          ? this.options.diameter     : 100;
+   var unit             = typeof this.options.diameterUnit !== 'undefined'      ? this.options.diameterUnit : "pixel";
    var res              = this.cs.Resolution ( this.z )
    
-   if  ( typeof params.diameterUnit !== 'undefined' ) {
-      if ( params.diameterUnit == "meter" ) {
+   if  ( typeof this.options.diameterUnit !== 'undefined' ) {
+      if ( this.options.diameterUnit == "meter" ) {
          unit             = 1 // meter
          // Need to be compute with all point !
       }
-      else if ( params.diameterUnit == "metereq" ) {
+      else if ( this.options.diameterUnit == "metereq" ) {
          unit             = 2 // metereq
          defaultDiameter = defaultDiameter / res
       }
    }
    
-   for (var i = this.layerCount ; i < this.data.content["l"].length ; ++i ) {
-      var layer   = this.data.content["l"][i];
+   for (var i = this.layerCount ; i < this.heatmapData.content["l"].length ; ++i ) {
+      var layer   = this.heatmapData.content["l"][i];
       var ll      = layer["g"]; // liste de listes de lignes
       var al      = null; // attributlist
       if ("a" in layer) al = layer["a"];
@@ -234,8 +246,8 @@ HeatmapRenderer.prototype.Update = function ( params ) {
    this.layerCount = i + 1
    gl.bindFramebuffer ( gl.FRAMEBUFFER, null );
    
-   if ( this.layerCount >= this.data.content["l"].length ) {
-      this._BuildTexture( params );
+   if ( this.layerCount >= this.heatmapData.content["l"].length ) {
+      this._BuildTexture();
       gl.deleteFramebuffer       ( this.frmB );
       delete this.frmB;
       this.frmB = null;
@@ -256,7 +268,9 @@ HeatmapRenderer.prototype.GetTex = function ( tx , ty ) {
    //return this.texB;
 }
 
-HeatmapRenderer.prototype._BuildTexture = function ( params ) {
+HeatmapRenderer.prototype._BuildTexture = function () {
+   console.log("heat _BuildTexture");
+   
    var gltools                = new GLTools ()
    var gl                     = this.gl;
 
@@ -268,7 +282,7 @@ HeatmapRenderer.prototype._BuildTexture = function ( params ) {
    var prog                   = this.assets.prog[ "Clut" ]
    gl.useProgram              (prog);
 
-   var colorBbounds           = this.colorbar.data.GetBounds ()
+   var colorBbounds           = this.options.colorbar.data.GetBounds ()
 
    gl.uniform4fv              (prog.params.uParams.name ,[0.0,1.0,colorBbounds[0],colorBbounds[1]] ); 
    
@@ -286,7 +300,7 @@ HeatmapRenderer.prototype._BuildTexture = function ( params ) {
          
    for (var j = 0 ; j < this.nbty ; j = j + 1 ) {
       for (var i = 0 ; i < this.nbtx ; i = i + 1 ) {
-         var fbtx         = gltools.CreateFrameBufferTex(gl,256,256)
+         var fbtx         = gltools.CreateFrameBufferTex(gl,256,256);
          var frmB         = fbtx[0];
          var tex          = fbtx[1];
       
@@ -295,11 +309,12 @@ HeatmapRenderer.prototype._BuildTexture = function ( params ) {
          gl.viewport                ( 0, 0, 256, 256 );
 
          gl.activeTexture           (gl.TEXTURE0);
-         gl.bindTexture             (gl.TEXTURE_2D, this.texB);
+//         gl.bindTexture             (gl.TEXTURE_2D, this.texB);
+         gl.bindTexture             (gl.TEXTURE_2D, tex);
          gl.uniform1i               (prog.params.uSamplerTex1.name, 0);
          
          gl.activeTexture           (gl.TEXTURE1);
-         gl.bindTexture             (gl.TEXTURE_2D, colorbar.tex[this.mapView.name] );
+         gl.bindTexture             (gl.TEXTURE_2D, this.options.colorbar.tex[this.mapView.name] );
          gl.uniform1i               (prog.params.uSamplerTex2.name, 1);      
                
          mat4.identity              ( mvMatrix );

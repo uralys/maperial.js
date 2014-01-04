@@ -32,7 +32,8 @@ DynamicalLayerPart.prototype.DataReady = function(){
       return true;
    }
    else{
-       this.renderer.Update();
+      this.renderer.Update();
+      return false;
    }
 }
 
