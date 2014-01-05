@@ -5,11 +5,12 @@ function HeatmapLayer (params, composition) {
    this.type               = Layer.Heat;
    this.mapView            = params.mapView;
    this.heatmapData        = params.heatmapData;
+   this.colorbar           = params.colorbar;
    this.options            = params.options;
    
    this.composition        = composition;
    
-   this.renderer           = dataManager.addHeatmapRenderer(this.mapView, this.heatmapData, this.options);
+   this.renderer           = this.mapView.mapRenderer.addHeatmapRenderer(this.heatmapData, this.colorbar, this.options);
 }
 
 //-----------------------------------------------------------------------------------//

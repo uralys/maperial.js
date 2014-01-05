@@ -121,6 +121,7 @@ MapView.prototype.addHeatmapLayer = function (heatmapData, options)   {
     this.layerManager.addLayer(Layer.Heat, {
         mapView        : this, 
         heatmapData    : heatmapData, 
+        colorbar       : options.colorbar,
         options        : options
     });
     

@@ -2,6 +2,8 @@
 
 function ColorbarData (options) {
    this.uid                = Utils.generateUID();
+   this.version            = 0;
+   
    this.data               = options.data               ||  {};
    this.beginAlphaAtZero   = options.beginAlphaAtZero   || false;
 }
@@ -32,45 +34,56 @@ ColorbarData.prototype.ToJson = function  (  ) {
 
 ColorbarData.prototype.SetMin  = function( inV , inC ){
    if (typeof (inV) == "undefined")
-      return 
+      return;
    if (typeof (inC) == "undefined")
-      return 
+      return;
    //var k = Object.keys(this.data)
-   toRemove = []
+   toRemove = [];
    for ( var i in this.data ) {
       if ( parseFloat(i) <= parseFloat(inV) ) {
-         toRemove.push(i)
+         toRemove.push(i);
       }
    }
    for (var i = 0 ; i < toRemove.lenght ; i++) {
-      delete this.data[toRemove[i]]
+      delete this.data[toRemove[i]];
    }
    
-   this.data[inV] = inC
+   this.data[inV] = inC;
+
+   this.version ++;
 }
 
 ColorbarData.prototype.SetMax  = function( inV , inC ){
+
    if (typeof (inV) == "undefined")
-      return 
+      return ;
+
    if (typeof (inC) == "undefined")
-      return 
+      return; 
+
    for ( var i in this.data ) {
       if ( parseFloat(i) >= parseFloat(inV) ) {
          toRemove.push(i)
       }
    }
+
    for (var i = 0 ; i < toRemove.lenght ; i++) {
       delete this.data[toRemove[i]]
    }
-   this.data[inV] = inC
+
+   this.data[inV] = inC;
+
+   this.version ++;
 }
 
 ColorbarData.prototype.Set     = function( inV , inC ){
    if (typeof (inV) == "undefined")
-      return 
+      return;
    if (typeof (inC) == "undefined")
-      return 
-   this.data[inV] = inC
+      return;
+   this.data[inV] = inC;
+
+   this.version ++;
 }
 
 ColorbarData.prototype.Indexes = function(  ){
@@ -79,13 +92,15 @@ ColorbarData.prototype.Indexes = function(  ){
    for (var i = 0 ; i < rTmp.length ; ++i) {
       r.push ( parseFloat( rTmp[i] ) ) 
    }
-   return r
+   return r;
 }
 
 ColorbarData.prototype.Remove  = function( inV ){
-   if ( inV in this.data)
+   if ( inV in this.data){
       delete this.data[inV]
-      
+      this.version ++;
+   }
+
 }
 
 ColorbarData.prototype.Move    = function( inVOld, inVNew ){

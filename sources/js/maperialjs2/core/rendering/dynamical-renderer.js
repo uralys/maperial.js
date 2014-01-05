@@ -1,15 +1,14 @@
 //------------------------------------------------------------------------------------------//
 
-function DynamicalRenderer ( mapView, dynamicalData, style ) {
+function DynamicalRenderer ( gl, dynamicalData, style ) {
    // They don't realy need mapView ... And it's the same for all gl XX layers no ?
    // upgrade : One GL canvas for every GL renderers : views +  DynamicalRenderers
 
    this.id              = Utils.generateUID();
-   this.mapView         = mapView;
    this.dynamicalData   = dynamicalData;
    this.style           = style;
    
-   this.gl              = mapView.context.assets.ctx;
+   this.gl              = gl;
    this.cnv             = null;
    this.ctx             = null;
    this.layerCount      = 0;

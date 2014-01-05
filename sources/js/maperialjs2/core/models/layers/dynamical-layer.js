@@ -5,11 +5,11 @@ function DynamicalLayer (params, composition) {
    this.type               = Layer.Dynamical;
    this.mapView            = params.mapView;
    this.dynamicalData      = params.dynamicalData;
-   
+
    this.style              = styleManager.createCustomStyle(params.style);
    this.composition        = composition;
-   
-   this.renderer           = dataManager.addDynamicalRenderer(this.mapView, this.dynamicalData, this.style);
+
+   this.renderer           = this.mapView.mapRenderer.addDynamicalRenderer(this.dynamicalData, this.style);
 }
 
 //-----------------------------------------------------------------------------------//

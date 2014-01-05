@@ -9,6 +9,46 @@ function ColorbarManager(){
 
 //-------------------------------------------//
 
+ColorbarManager.prototype.createColorbar = function(options) {
+
+   if(!options){
+      options = { 
+            beginAlphaAtZero : true 
+      };
+   }
+
+   var steps         = options.steps || ColorbarManager.defaultSteps,
+   colorbarData  = new ColorbarData({
+      beginAlphaAtZero : options.beginAlphaAtZero
+   });
+
+   for(var step in steps){
+      colorbarData.Set(step, new GradiantColor(steps[step].r, steps[step].g, steps[step].b, steps[step].a));
+   }
+
+   var colorbar = this.addColorbar(colorbarData);
+   return colorbar;
+}
+
+//----------------------------//
+
+ColorbarManager.prototype.addColorbar = function( colorbarData ) {
+
+   var uid = Utils.generateUID();
+
+   window.maperialColorbars[uid] = {
+         uid      : uid, 
+         name     : uid, 
+         data     : colorbarData,   /**  1 common data for every mapview      **/
+         tex      : {},             /**  1 tex/mapview                        **/
+         version  : -1              /**  force not to be sync to build tex    **/
+   };
+
+   return window.maperialColorbars[uid];
+}
+
+//-------------------------------------------//
+
 ColorbarManager.prototype.noColorbar = function() {
    return $.isEmptyObject(window.maperialColorbars);   
 }
@@ -17,44 +57,6 @@ ColorbarManager.prototype.noColorbar = function() {
 
 ColorbarManager.prototype.getColorbar = function(uid){
    return window.maperialColorbars[uid];
-}
-
-//----------------------------//
-
-ColorbarManager.prototype.addColorbar = function( colorbarData ) {
-   
-   var uid = Utils.generateUID();
-   
-   window.maperialColorbars[uid] = {
-      uid      : uid, 
-      name     : uid, 
-      data     : colorbarData
-   };
-   
-   return window.maperialColorbars[uid];
-}
-
-//-------------------------------------------//
-
-ColorbarManager.prototype.createColorbar = function(options) {
-   
-   if(!options){
-      options = { 
-         beginAlphaAtZero : true 
-      };
-   }
-   
-   var steps         = options.steps || ColorbarManager.defaultSteps,
-       colorbarData  = new ColorbarData({
-          beginAlphaAtZero : options.beginAlphaAtZero
-       });
-   
-   for(var step in steps){
-      colorbarData.Set(step, new GradiantColor(steps[step].r, steps[step].g, steps[step].b, steps[step].a));
-   }
-   
-   var colorbar = this.addColorbar(colorbarData);
-   return colorbar;
 }
 
 //-------------------------------------------//

@@ -1,10 +1,11 @@
 
-function HeatmapRenderer ( mapView, heatmapData, options ) {
+function HeatmapRenderer ( mapView, heatmapData, colorbar, options ) {
    // They don't realy need mapView ... And it's the same for all gl XX layers no ?
 
    this.id              = Utils.generateUID();
    this.mapView         = mapView;
    this.heatmapData     = heatmapData;
+   this.colorbar        = colorbar;
    this.options         = options;
    
    this.gl              = mapView.context.assets.ctx;
@@ -282,7 +283,7 @@ HeatmapRenderer.prototype._BuildTexture = function () {
    var prog                   = this.assets.prog[ "Clut" ]
    gl.useProgram              (prog);
 
-   var colorBbounds           = this.options.colorbar.data.GetBounds ()
+   var colorBbounds           = this.colorbar.data.GetBounds ()
 
    gl.uniform4fv              (prog.params.uParams.name ,[0.0,1.0,colorBbounds[0],colorBbounds[1]] ); 
    
@@ -314,7 +315,7 @@ HeatmapRenderer.prototype._BuildTexture = function () {
          gl.uniform1i               (prog.params.uSamplerTex1.name, 0);
          
          gl.activeTexture           (gl.TEXTURE1);
-         gl.bindTexture             (gl.TEXTURE_2D, this.options.colorbar.tex[this.mapView.name] );
+         gl.bindTexture             (gl.TEXTURE_2D, this.colorbar.tex[this.mapView.id] );
          gl.uniform1i               (prog.params.uSamplerTex2.name, 1);      
                
          mat4.identity              ( mvMatrix );

@@ -6,13 +6,31 @@ function MapRenderer(mapView) {
    console.log("  starting MapRenderer for view " + mapView.id + "...");
 
    this.mapView               = mapView;
-   this.dataCache             = {};
-   this.customLayersRenderer  = [];
-
-   this.start()
+   
+   /** init GL **/
+   this.start();
 
    this.assets                = mapView.context.assets;
    this.gl                    = mapView.context.assets.ctx
+
+   this.dynamicalRenderers    = {};
+   this.colorbarRenderer      = new ColorbarRenderer(this.mapView);
+}
+
+//---------------------------------------------------------------------------//
+
+MapRenderer.prototype.addDynamicalRenderer = function(dynamicalData, style){
+   var renderer = new DynamicalRenderer(this.gl, dynamicalData, style);
+   this.dynamicalRenderers[renderer.id] = renderer;
+   return renderer;
+}
+
+//---------------------------------------------------------------------------//
+
+MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, options){
+    var renderer = new HeatmapRenderer(this.mapView, heatmapData, colorbar, options);
+    this.dynamicalRenderers[renderer.id] = renderer;
+    return renderer;
 }
 
 //----------------------------------------------------------------------//
@@ -143,64 +161,6 @@ MapRenderer.prototype.InitGL = function () {
 
 }
 
-
-MapRenderer.prototype.renderAllColorBars = function () {
-
-   var colorbars = maperialColorbars;
-
-   this.gl.flush ()
-   this.gl.finish()
-
-   for ( var colorbarUID in colorbars ) {
-      var colorbar = colorbars[ colorbarUID ];
-
-      if ( colorbar == null  || ! colorbar.data.IsValid () ) {
-         console.log ( "Invalid colorbar data : " + colorbarUID );
-         break;
-      }
-
-      if(!colorbar.tex)
-         colorbar.tex = [];
-
-      // Raster it !
-      var data = [];
-      for (var i = 0.0 ; i < 1.0 ; i+= 1.0/256) {
-         var c = colorbar.data.Get ( i ) ;
-         data.push ( c.Ri() );
-         data.push ( c.Gi() );
-         data.push ( c.Bi() );
-         data.push ( c.Ai() );
-      }
-      
-      data = new Uint8Array(data);
-
-      if ( colorbar.tex[this.mapView.id] ) {
-         this.gl.deleteTexture ( colorbar.tex[this.mapView.id] );
-         delete colorbar.tex[this.mapView.id]; // good ??
-         colorbar.tex[this.mapView.id] = null;
-      }
-
-      try {
-         colorbar.tex[this.mapView.id] = this.gl.createTexture();
-         this.gl.bindTexture  (this.gl.TEXTURE_2D, colorbar.tex[this.mapView.id] );
-         this.gl.pixelStorei  (this.gl.UNPACK_FLIP_Y_WEBGL  , false    );
-         this.gl.texImage2D   (this.gl.TEXTURE_2D, 0 , this.gl.RGBA, 256 , 1 , 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data );
-         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
-         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
-         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S,this.gl.CLAMP_TO_EDGE);
-         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T,this.gl.CLAMP_TO_EDGE);
-         this.gl.bindTexture  (this.gl.TEXTURE_2D, null );
-      } catch (e) { 
-         this.gl.deleteTexture ( colorbar.tex[this.mapView.id] );
-         delete colorbar.tex[this.mapView.id];
-         colorbar.tex[this.mapView.id] = null;
-         console.log ( "Error in colorbar building : " + colorbarUID );
-      }
-   }
-   
-   return true;
-}
-
 //----------------------------------------------------------------------//
 
 MapRenderer.prototype.DrawScene = function ( ) {
@@ -224,8 +184,12 @@ MapRenderer.prototype.DrawScene = function ( ) {
    //-----------------------------------------------------------------//
    
    // TODO : utiliser le principe de version des colorbars ici aussi
-   this.renderAllColorBars();
+//   this.renderAllColorBars();
    
+   //-----------------------------------------------------------------//
+
+   this.colorbarRenderer.refreshAllColorBars();
+
    //-----------------------------------------------------------------//
    
    if ( this.UpdateTiles ( tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {
@@ -250,10 +214,9 @@ MapRenderer.prototype.DrawScene = function ( ) {
    
    //-----------------------------------------------------------------//
    
-   for( var rendererId in dataManager.renderers) {
-      var renderer = dataManager.renderers[rendererId];
-      if(renderer.mapView.id == this.mapView.id)
-         renderer.Refresh ( this.mapView.context.zoom , tileC.x , tileC.y - nbTileY , nbTileX + 1 , nbTileY + 1 ) ;
+   for( var rendererId in this.dynamicalRenderers) {
+      var renderer = this.dynamicalRenderers[rendererId];
+      renderer.Refresh ( this.mapView.context.zoom , tileC.x , tileC.y - nbTileY , nbTileX + 1 , nbTileY + 1 ) ;
    }
    
    //-----------------------------------------------------------------//
