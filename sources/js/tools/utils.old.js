@@ -1,10 +1,12 @@
 //----------------------------//
+//Utils
+//----------------------------//
 
-function Utils(){};
+this.Utils = {};
 
 //----------------------------//
 
-//Utils.prototype.blackScrollTrack = function(){
+//Utils.blackScrollTrack = function(){
 //var rules = document.styleSheets[0].cssRules;
 //for(var i=0; i < rules.length; i++) {
 //if(rules[i].type != 1)
@@ -18,7 +20,7 @@ function Utils(){};
  * zeroPad(5, 2) 	--> "05"
    zeroPad(1234, 2) --> "1234"
  */
-Utils.prototype.zeroPad = function(num, places) 
+Utils.zeroPad = function(num, places) 
 {
    var zero = places - num.toString().length + 1;
    return Array(+(zero > 0 && zero)).join("0") + num;
@@ -27,17 +29,17 @@ Utils.prototype.zeroPad = function(num, places)
 /*
  * now as YYYY-MM-DD
  */
-Utils.prototype.dateTime = function()
+Utils.dateTime = function()
 {
    var now = new Date();
    return now.getFullYear() + "-" 
-   + this.zeroPad(now.getMonth()+1, 2) + "-" 
-   + this.zeroPad(now.getDate(), 2);
+   + Utils.zeroPad(now.getMonth()+1, 2) + "-" 
+   + Utils.zeroPad(now.getDate(), 2);
 }
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.alert = function (area, type, title, message) {
+Utils.alert = function (area, type, title, message) {
    $("#" + area).append($("<div class='alert-message alert-" + type + " fade in' data-alert><a class=\"btn btn-rounded btn-icon-only btn-dark closer\" data-dismiss=\"alert\"> <i class=\"icon icon-ex-white-outline\"></i></a><h4 class=\"alert-heading\">"+title+"</h4> " + message + " </div>"));
    //$(".alert-message").delay(2000).fadeOut("slow", function () { $(this).remove(); });
 }
@@ -47,11 +49,11 @@ Utils.prototype.alert = function (area, type, title, message) {
 /*
  * helpers for html encoding and decoding
  */
-Utils.prototype.htmlEncode = function (value){
+Utils.htmlEncode = function (value){
    return $('<div/>').text(value).html();
 }
 
-Utils.prototype.htmlDecode = function(value){
+Utils.htmlDecode = function(value){
    return $('<div/>').html(value).text();
 }
 
@@ -59,14 +61,14 @@ Utils.prototype.htmlDecode = function(value){
 
 /*
  */
-Utils.prototype.replaceAll = function(chain, value, replacement)
+Utils.replaceAll = function(chain, value, replacement)
 {
    return chain.replace(new RegExp(value, 'g'), replacement);
 }
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.rgbToHex = function (r, g, b) {
+Utils.rgbToHex = function (r, g, b) {
    if (r > 255 || g > 255 || b > 255)
       throw "Invalid color component";
    return ((r << 16) | (g << 8) | b).toString(16);
@@ -78,7 +80,7 @@ Utils.prototype.rgbToHex = function (r, g, b) {
  * bytes = 36550
  * return 36.55 KB
  */
-Utils.prototype.formatFileSize = function (bytes) 
+Utils.formatFileSize = function (bytes) 
 {
    if (typeof bytes !== 'number') {
       return '';
@@ -101,11 +103,11 @@ Utils.prototype.formatFileSize = function (bytes)
  * 
  * @Improve #MAP-12
  */
-Utils.prototype.formatDate = function(timestamp) 
+Utils.formatDate = function(timestamp) 
 {
    var now = timestamp == undefined ? new Date() : new Date(timestamp);
-   var day = this.zeroPad(now.getDate(), 2);
-   var month = this.zeroPad(now.getMonth() + 1, 2); //Months are zero based
+   var day = Utils.zeroPad(now.getDate(), 2);
+   var month = Utils.zeroPad(now.getMonth() + 1, 2); //Months are zero based
    var year = now.getFullYear();
 
    return day + "/" + month + "/" + year;
@@ -114,25 +116,25 @@ Utils.prototype.formatDate = function(timestamp)
 //----------------------------------------------------------------------------------------//
 
 //return 1->i
-Utils.prototype.random1 = function(i){
+Utils.random1 = function(i){
    return Math.floor(Math.random()*i) + 1;
 }
 
 //return 0->i
-Utils.prototype.random0 = function(i){
+Utils.random0 = function(i){
    return Math.floor(Math.random()*(i+1));
 }
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.generateGuid = function() 
+Utils.generateGuid = function() 
 {
    var result, i, j;
    result = '';
    for(j=0; j<32; j++) {
       if( j == 8 || j == 12|| j == 16|| j == 20)
          result = result + '_';
-      i = this.random0(15).toString(16).toUpperCase();
+      i = Utils.random0(15).toString(16).toUpperCase();
       result = result + i;
    }
    return result;
@@ -140,7 +142,7 @@ Utils.prototype.generateGuid = function()
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.generateUID = function() 
+Utils.generateUID = function() 
 {
    var timestamp = new Date().getTime().toString(16);
    var random    = (Math.random() * Math.pow(2, 32)).toString(16);
@@ -150,7 +152,7 @@ Utils.prototype.generateUID = function()
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.popup = function(url, title, width, height) 
+Utils.popup = function(url, title, width, height) 
 {
    var left = (screen.width/2)-(width/2);
    var top = (screen.height/2)-(height/2);
@@ -165,7 +167,7 @@ Utils.prototype.popup = function(url, title, width, height)
  * 
  * http://map.x-ray.fr/wiki/display/IDEES/Custom+Mustaches
  */
-Utils.prototype.toHtml = function(template)
+Utils.toHtml = function(template)
 {
    while(template.indexOf("{") != -1)
    {
@@ -180,7 +182,7 @@ Utils.prototype.toHtml = function(template)
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.isObject = function(stuff) 
+Utils.isObject = function(stuff) 
 {
    return Object.prototype.toString.call( stuff ) === '[object Object]' ;
 }
@@ -188,7 +190,7 @@ Utils.prototype.isObject = function(stuff)
 /**
  * Ember : edition + binding of objects contained in an array : thanks to ObjectProxy
  */
-Utils.prototype.editObjectInArray = function(object, property, value)
+Utils.editObjectInArray = function(object, property, value)
 {
    var proxy = Ember.ObjectProxy.create({
       content: object
@@ -199,19 +201,19 @@ Utils.prototype.editObjectInArray = function(object, property, value)
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.styleThumbURL = function(styleUID, size) 
+Utils.styleThumbURL = function(styleUID, size) 
 {
-   return this.thumbURL(styleUID, "style", size)
+   return Utils.thumbURL(styleUID, "style", size)
 }
 
-Utils.prototype.colorbarThumbURL = function(colorbarUID) 
+Utils.colorbarThumbURL = function(colorbarUID) 
 {
-   return this.thumbURL(colorbarUID, "colorbar")
+   return Utils.thumbURL(colorbarUID, "colorbar")
 }
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.thumbURL = function(uid, type, size) 
+Utils.thumbURL = function(uid, type, size) 
 {
    if(uid == undefined || uid == null)
       return "";
@@ -234,11 +236,11 @@ Utils.prototype.thumbURL = function(uid, type, size)
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.getSourceThumb = function(layer) {
+Utils.getSourceThumb = function(layer) {
    
    switch(layer.source.type){
       case Source.MaperialOSM:
-         return " src=\""+this.styleThumbURL(layer.params.styles[layer.params.selectedStyle], "l")+"\"";
+         return " src=\""+Utils.styleThumbURL(layer.params.styles[layer.params.selectedStyle], "l")+"\"";
    
       case Source.Vector:
       case Source.Images:
@@ -263,7 +265,7 @@ Utils.prototype.getSourceThumb = function(layer) {
 //----------------------------------------------------------------------------------------//
 
 //ui-slider-handle ui-state-default ui-corner-all
-Utils.prototype.buildSliderStyle = function (id){
+Utils.buildSliderStyle = function (id){
 
    $("#" + id + " a").css({color:"#000"});
    $("#" + id + " a").css({textDecoration:"none"});
@@ -282,22 +284,22 @@ Utils.prototype.buildSliderStyle = function (id){
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.apply = function (toObject, methodName){
+Utils.apply = function (toObject, methodName){
    return (function(param1, param2, param3, param4, param5, param6){toObject[methodName](param1, param2, param3, param4, param5, param6)});
 }
 
-Utils.prototype.getPoint = function (event) {
+Utils.getPoint = function (event) {
    var x = event.clientX - $(event.target).offset().left;
    var y = event.clientY - $(event.target).offset().top;
 
    return new Point(x,y);
 }
 
-Utils.prototype.randomRotate = function (element) {
+Utils.randomRotate = function (element) {
 
-   var rotation = this.random0(15) - 8
+   var rotation = Utils.random0(15) - 8
    if(Math.abs(rotation) < 2)
-      this.randomRotate(element)
+      Utils.randomRotate(element)
    else{
       $("#"+element).css("-webkit-transform", "rotate("+rotation+"deg)")
       $("#"+element).css("-moz-transform", "rotate("+rotation+"deg)")
@@ -307,7 +309,7 @@ Utils.prototype.randomRotate = function (element) {
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.prepareOptions = function (options, mainParam) {
+Utils.prepareOptions = function (options, mainParam) {
 
    if(options === undefined){
       return null
@@ -331,15 +333,10 @@ Utils.prototype.prepareOptions = function (options, mainParam) {
    
 //----------------------------------------------------------------------------------------//
    
-Utils.prototype.cloneJsonObject = function (jsonObject) {
+Utils.cloneJsonObject = function (jsonObject) {
    return $.parseJSON(JSON.stringify(jsonObject));
 }
 
-Utils.prototype.odump = function(o){
-   console.log(this.cloneJsonObject(o));
+function odump(o){
+   console.log(Utils.cloneJsonObject(o));
 }
-
-
-//------------------------------------------------------------------//
-
-module.exports = new Utils();
