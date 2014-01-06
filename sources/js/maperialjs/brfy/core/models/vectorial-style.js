@@ -1,3 +1,8 @@
+//------------------------------------------------------------------//
+
+var Style               = require('./style.js'),
+    PointSymbolizer     = require('./style.js'),;
+
 //-----------------------------------------------------------------------------------//
 
 function VectorialStyle (options) {   
@@ -99,3 +104,7 @@ VectorialStyle.prototype.SetVisible = function( inId , visible) {
       return false;
    this.content[inId].visible = visible;
 }
+
+//------------------------------------------------------------------//
+
+module.exports = VectorialStyle;
