@@ -23,7 +23,7 @@ LayerManager.prototype.addLayer = function(layerType, params) {
       // ------------------------------------------//
 
       case Layer.Dynamical :
-         layer = new DynamicalLayer(params, this.defaultComposition());
+         layer = new DynamicalLayer(params, this.defaultDynamicalComposition());
          break;
 
          // ------------------------------------------//
@@ -85,6 +85,15 @@ LayerManager.prototype.defaultComposition = function() {
       shader : Maperial.AlphaBlend,
       params : LayerManager.defaultAlphaBlendParams
    };
+}
+
+LayerManager.prototype.defaultDynamicalComposition = function() {
+    return {
+        shader : Maperial.AlphaBlend,
+        params : {
+            uParams : 1
+        }
+    };
 }
 
 //-------------------------------------------//
