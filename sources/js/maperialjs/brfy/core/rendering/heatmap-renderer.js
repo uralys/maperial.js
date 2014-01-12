@@ -1,8 +1,14 @@
 
+var utils                   = require('../../../../tools/utils.js'),
+    GLTools                 = require("./tools/gl-tools.js"),
+    CoordinateSystem        = require('../../libs/coordinate-system.js');
+    
+//------------------------------------------------------------------------------------------//
+
 function HeatmapRenderer ( mapView, heatmapData, colorbar, options ) {
    // They don't realy need mapView ... And it's the same for all gl XX layers no ?
 
-   this.id              = Utils.generateUID();
+   this.id              = utils.generateUID();
    this.mapView         = mapView;
    this.heatmapData     = heatmapData;
    this.colorbar        = colorbar;
@@ -335,3 +341,7 @@ HeatmapRenderer.prototype._BuildTexture = function () {
    gl.activeTexture           (gl.TEXTURE1);
    gl.bindTexture             (gl.TEXTURE_2D, null );
 }
+
+//------------------------------------------------------------------//
+
+module.exports = HeatmapRenderer;

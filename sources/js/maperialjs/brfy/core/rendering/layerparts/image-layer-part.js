@@ -1,4 +1,8 @@
 
+var ImageData       = require("../../models/data/image-data.js");
+
+//-----------------------------------------------------------------------------------//
+
 function ImageLayerPart (layer, tile, gl, inZoom) {
    this.tile      = tile;
    this.gl        = gl;
@@ -109,3 +113,7 @@ ImageLayerPart.prototype.Update = function () {
    return diffT
    
 }
+
+//------------------------------------------------------------------//
+
+module.exports = ImageLayerPart;

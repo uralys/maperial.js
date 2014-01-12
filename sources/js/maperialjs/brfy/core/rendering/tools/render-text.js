@@ -986,3 +986,7 @@ function ExtendCanvasContext ( ctx ) {
    
 }
 
+
+//------------------------------------------------------------------//
+
+module.exports = ExtendCanvasContext;

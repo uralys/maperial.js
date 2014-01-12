@@ -1,7 +1,11 @@
+
+var utils       = require('../../../../../tools/utils.js'),
+    Layer       = require('../layer.js');
+
 //-----------------------------------------------------------------------------------//
 
 function DynamicalLayer (params, composition) {
-   this.id                 = Utils.generateUID();
+   this.id                 = utils.generateUID();
    this.type               = Layer.Dynamical;
    this.mapView            = params.mapView;
    this.dynamicalData      = params.dynamicalData;
@@ -13,3 +17,5 @@ function DynamicalLayer (params, composition) {
 }
 
 //-----------------------------------------------------------------------------------//
+
+module.exports = DynamicalLayer;

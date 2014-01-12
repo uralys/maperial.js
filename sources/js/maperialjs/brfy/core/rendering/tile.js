@@ -1,3 +1,13 @@
+
+var GLTools                 = require("./tools/gl-tools.js"),
+    Layer                   = require("../models/layer.js"),
+    DynamicalLayerPart      = require('./layerparts/dynamical-layer-part.js'),
+    ImageLayerPart          = require('./layerparts/image-layer-part.js'),
+    RasterLayer8            = require('./layerparts/raster-layer-part.js').RasterLayer8,
+    RasterLayer16           = require('./layerparts/raster-layer-part.js').RasterLayer16,
+    ShadeLayerPart          = require('./layerparts/shade-layer-part.js'),
+    VectorialLayerPart      = require('./layerparts/vectorial-layer-part.js');
+    
 //----------------------------------------------------------------------------------------------------------------------//
 
 function Tile (mapView, x, y, z) {
@@ -473,4 +483,8 @@ Tile.prototype.Render = function (pMatrix, mvMatrix) {
          console.log ( err );
    }
 }
+
+//------------------------------------------------------------------//
+
+module.exports = Tile;
 

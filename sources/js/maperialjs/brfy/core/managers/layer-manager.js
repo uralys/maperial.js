@@ -83,7 +83,7 @@ LayerManager.prototype.defaultMulBlend = function() {
 LayerManager.prototype.defaultComposition = function() {
    return {
       shader : Maperial.AlphaBlend,
-      params : { uParams : 1.0 }
+      params : LayerManager.defaultAlphaBlendParams
    };
 }
 

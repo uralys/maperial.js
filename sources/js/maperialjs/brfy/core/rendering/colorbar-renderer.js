@@ -75,3 +75,7 @@ ColorbarRenderer.prototype.deleteTexture = function (tex) {
    delete tex;
    tex = null;
 }
+
+//------------------------------------------------------------------//
+
+module.exports = ColorbarRenderer;

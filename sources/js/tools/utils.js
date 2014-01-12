@@ -287,10 +287,10 @@ Utils.prototype.apply = function (toObject, methodName){
 }
 
 Utils.prototype.getPoint = function (event) {
-   var x = event.clientX - $(event.target).offset().left;
-   var y = event.clientY - $(event.target).offset().top;
-
-   return new Point(x,y);
+   return {
+       x : event.clientX - $(event.target).offset().left,
+       y : event.clientY - $(event.target).offset().top
+   };
 }
 
 Utils.prototype.randomRotate = function (element) {

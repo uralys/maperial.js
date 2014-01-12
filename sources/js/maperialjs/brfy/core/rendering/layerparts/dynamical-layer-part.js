@@ -69,3 +69,7 @@ DynamicalLayerPart.prototype.Update = function () {
     }
     return 0;
 }
+
+//------------------------------------------------------------------//
+
+module.exports = DynamicalLayerPart;

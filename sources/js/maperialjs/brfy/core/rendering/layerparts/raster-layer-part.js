@@ -183,3 +183,10 @@ RasterLayer16.prototype.Init = function ( data ) {
       */
    }
 }
+
+//------------------------------------------------------------------//
+
+module.exports = {
+        RasterLayer8    : RasterLayer8,
+        RasterLayer16   : RasterLayer16
+};

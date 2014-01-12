@@ -1,3 +1,8 @@
+//------------------------------------------------------------------//
+
+var VectorialStyle     = require('../models/vectorial-style.js'),
+    Style              = require('../models/style.js');
+
 //---------------------------------------------------------------------------//
 
 function StyleManager(){

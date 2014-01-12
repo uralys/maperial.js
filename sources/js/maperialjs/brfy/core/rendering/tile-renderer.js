@@ -590,3 +590,7 @@ TileRenderer.GlyphSymbolizer = function ( ctx , line , attr , params ) {
    console.log ("Not yet implemented : GlyphSymbolizer")
    // ctx.restore()
 }
+
+//------------------------------------------------------------------//
+
+module.exports = TileRenderer;

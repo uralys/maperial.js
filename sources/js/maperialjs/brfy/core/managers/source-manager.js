@@ -1,3 +1,6 @@
+
+var utils       = require('../../../../tools/utils.js');
+
 //------------------------------------------------------------------//
 
 function SourceManager(){
@@ -231,49 +234,49 @@ SourceManager.prototype.getImageURL = function (sourceId, tx, ty, z) {
    
    switch (sourceId) {
       case Source.IMAGES_MAPQUEST : // need to check http://developer.mapquest.com/web/products/open/map
-         var r = Utils.random1(4);
+         var r = utils.random1(4);
          return "http://otile"+r+".mqcdn.com/tiles/1.0.0/osm/"+z+"/"+tx+"/"+gty+".png";
          break;
    
        case Source.IMAGES_MAPQUEST_SATELLITE : // need to check http://developer.mapquest.com/web/products/open/map
-          var r = Utils.random1(4);
+          var r = utils.random1(4);
           return "http://otile"+r+".mqcdn.com/tiles/1.0.0/sat/"+z+"/"+tx+"/"+gty+".png";
    
 
        case Source.IMAGES_OCM_CYCLE :
-          var s = Utils.random0(2);
+          var s = utils.random0(2);
           return "http://"+server[s]+".tile.opencyclemap.org/cycle/"+z+"/"+tx+"/"+gty+".png";
 
        case Source.IMAGES_OCM_TRANSPORT :
-          var s = Utils.random0(2);
+          var s = utils.random0(2);
           return "http://"+server[s]+".tile2.opencyclemap.org/transport/"+z+"/"+tx+"/"+gty+".png";
        
        case Source.IMAGES_OCM_LANDSCAPE :
-          var s = Utils.random0(2);
+          var s = utils.random0(2);
           return "http://"+server[s]+".tile3.opencyclemap.org/landscape/"+z+"/"+tx+"/"+gty+".png";
 
 
 
        case Source.IMAGES_STAMEN_WATERCOLOR :
-          var s = Utils.random0(3);
+          var s = utils.random0(3);
           return "http://"+server[s]+".tile.stamen.com/watercolor/"+z+"/"+tx+"/"+gty+".jpg"    
        
        case Source.IMAGES_STAMEN_TERRAIN : // US only
-          var s = Utils.random0(3);
+          var s = utils.random0(3);
           return "http://"+server[s]+".tile.stamen.com/terrain/"+z+"/"+tx+"/"+gty+".jpg"
        
        case Source.IMAGES_STAMEN_TONER :
-          var s = Utils.random0(3);
+          var s = utils.random0(3);
           return "http://"+server[s]+".tile.stamen.com/toner/"+z+"/"+tx+"/"+gty+".png"
   
        case Source.IMAGES_STAMEN_TONER_BG :
-          var s = Utils.random0(3);
+          var s = utils.random0(3);
           return "http://"+server[s]+".tile.stamen.com/toner-background/"+z+"/"+tx+"/"+gty+".png"
    
          
       case Source.IMAGES_OSM:  // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
       default :
-         var s = Utils.random0(2);
+         var s = utils.random0(2);
          return "http://"+server[s]+".tile.openstreetmap.org/"+z+"/"+tx+"/"+gty+".png"
          break;
 

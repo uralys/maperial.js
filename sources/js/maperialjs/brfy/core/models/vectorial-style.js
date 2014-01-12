@@ -1,12 +1,13 @@
 //------------------------------------------------------------------//
 
 var Style               = require('./style.js'),
-    PointSymbolizer     = require('./style.js'),;
+    PointSymbolizer     = require('../rendering/symbolizers/point-symbolizer.js'),
+    utils               = require('../../../../tools/utils.js');
 
 //-----------------------------------------------------------------------------------//
 
 function VectorialStyle (options) {   
-   this.uid                = Utils.generateUID();
+   this.uid                = utils.generateUID();
    
    this.type               = options.type;
    this.symbol             = options.symbol;

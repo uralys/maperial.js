@@ -4,6 +4,9 @@ var MapView                 = require('./map-view.js'),
     SourceManager           = require('./managers/source-manager.js'),
     StyleManager            = require('./managers/style-manager.js'),
     ColorbarManager         = require('./managers/colorbar-manager.js'),
+    DynamicalData           = require('./models/data/dynamical-data.js'),
+    HeatmapData             = require('./models/data/heatmap-data.js'),
+    Source                  = require('./models/source.js'),
     utils                   = require('../../../tools/utils.js');
 
 //------------------------------------------------------------------//
@@ -14,9 +17,15 @@ function Maperial(options){
    this.options   = options;
    this.views     = {};
    
+   /* global content */
    window.sourceManager    = window.sourceManager     || new SourceManager();
    window.styleManager     = window.styleManager      || new StyleManager();
    window.colorbarManager  = window.colorbarManager   || new ColorbarManager();
+   
+   /* global entities for API*/
+   window.DynamicalData = DynamicalData;
+   window.HeatmapData   = HeatmapData;
+   window.Source        = Source;
 };
 
 //------------------------------------------------------------------//

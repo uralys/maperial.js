@@ -1,7 +1,11 @@
+
+var utils       = require('../../../../../tools/utils.js'),
+    RGBAColor   = require('../../../libs/rgba-color.js');
+    
 //-----------------------------------------------------------------------------------//
 
 function ColorbarData (options) {
-   this.uid                = Utils.generateUID();
+   this.uid                = utils.generateUID();
    this.version            = 0;
    
    this.data               = options.data               ||  {};
@@ -188,3 +192,7 @@ ColorbarData.prototype.Get     = function( inT ){ //[0.0,1.0]
    }
    
 }
+
+//------------------------------------------------------------------//
+
+module.exports = ColorbarData;

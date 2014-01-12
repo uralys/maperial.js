@@ -1,10 +1,15 @@
+
+var utils                   = require('../../../../tools/utils.js'),
+    ExtendCanvasContext     = require('./tools/render-text.js'),
+    TileRenderer            = require('./tile-renderer.js');
+    
 //------------------------------------------------------------------------------------------//
 
 function DynamicalRenderer ( gl, dynamicalData, style ) {
    // They don't realy need mapView ... And it's the same for all gl XX layers no ?
    // upgrade : One GL canvas for every GL renderers : views +  DynamicalRenderers
 
-   this.id              = Utils.generateUID();
+   this.id              = utils.generateUID();
    this.dynamicalData   = dynamicalData;
    this.style           = style;
    
@@ -200,3 +205,7 @@ DynamicalRenderer.prototype._BuildTexture = function () {
    delete tileCanvasCtx;
    delete tileCanvas;
 }
+
+//------------------------------------------------------------------//
+
+module.exports = DynamicalRenderer;

@@ -21,3 +21,7 @@ ImageData.prototype.tryToFillContent = function(){
 ImageData.prototype.release = function(){
    sourceManager.release(this.sourceId, this.x, this.y, this.z);
 }
+
+//------------------------------------------------------------------//
+
+module.exports = ImageData;

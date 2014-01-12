@@ -180,3 +180,7 @@ ShadeLayerPart.prototype.Update = function ( params ) {
    var diffT   = date.getTime() - startT;   
    return diffT
 }
+
+//------------------------------------------------------------------//
+
+module.exports = ShadeLayerPart;

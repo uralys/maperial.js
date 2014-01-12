@@ -3,6 +3,7 @@
 var MapContext              = require('./map-context.js'),
     MapRenderer             = require('./rendering/map-renderer.js'),
     LayerManager            = require('./managers/layer-manager.js'),
+    Layer                   = require('./models/layer.js'),
     utils                   = require('../../../tools/utils.js');
 
 //------------------------------------------------------------------//
