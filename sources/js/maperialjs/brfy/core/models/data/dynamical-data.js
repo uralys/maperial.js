@@ -55,6 +55,13 @@ DynamicalData.prototype.removePoint = function (point) {
    }
 }
 
+//----------------------------------------------------------------------------------//
+
+DynamicalData.prototype.removeAll = function () {
+    this.points = {};
+    this.version ++;
+}
+
 //------------------------------------------------------------------//
 
 module.exports = DynamicalData;
