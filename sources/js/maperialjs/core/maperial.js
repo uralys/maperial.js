@@ -7,7 +7,7 @@ var MapView                 = require('./map-view.js'),
     DynamicalData           = require('./models/data/dynamical-data.js'),
     HeatmapData             = require('./models/data/heatmap-data.js'),
     Source                  = require('./models/source.js'),
-    utils                   = require('../../../tools/utils.js');
+    utils                   = require('../../tools/utils.js');
 
 //------------------------------------------------------------------//
 
@@ -127,10 +127,10 @@ Maperial.prototype.addView = function (options) {
    //-------------------------------------------
    // Checking view 
 
-   console.log("Adding view " + options.container  + "...");
+   console.log("Adding view in container " + options.container  + "...");
    
-   if($("#" + options.container )[0] == null){
-      console.log("View " + options.container  + " could not be found");
+   if($(options.container)[0] == null){
+      console.log("Container " + options.container  + " could not be found");
       return;
    }
 

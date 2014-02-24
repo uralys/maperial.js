@@ -4,7 +4,7 @@ var MapContext              = require('./map-context.js'),
     MapRenderer             = require('./rendering/map-renderer.js'),
     LayerManager            = require('./managers/layer-manager.js'),
     Layer                   = require('./models/layer.js'),
-    utils                   = require('../../../tools/utils.js');
+    utils                   = require('../../tools/utils.js');
 
 //------------------------------------------------------------------//
 
@@ -48,13 +48,13 @@ function MapView(maperial, options){
 
 MapView.prototype.prepareContainer = function ()   {
    
-   var canvasId = "Map_"+this.id; 
-   var html = "<canvas id=\"Map_"+this.id+"\" class=\"maperial-map canvas-"+this.type+"\"></canvas>";
+   var html = "<canvas class=\"maperial-map canvas-"+this.type+"\"></canvas>";
+   this.canvas = $(html);
+   
+   $(this.options.container).append(this.canvas);
 
-   $("#"+this.options.container).append(html)
-   this.canvas    = $("#"+canvasId);
-   this.width     = $("#"+this.options.container).width()
-   this.height     = $("#"+this.options.container).height()
+   this.width       = $(this.options.container).width();
+   this.height      = $(this.options.container).height();
    
    this.setCanvasSize();
 }
@@ -70,7 +70,6 @@ MapView.prototype.setCanvasSize = function() {
    this.canvas[0].height = h;
    
 }
-
 
 //------------------------------------------------------------------//
 // API

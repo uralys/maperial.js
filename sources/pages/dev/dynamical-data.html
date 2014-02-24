@@ -8,14 +8,35 @@
 </head>
 
 <body>
-	<div id="map"></div>
-	<div id="hud"></div>
+	<div class="map"></div>
+	<div class="hud">
+	   <div class="slider"></div>
+	</div>
 </body>
 
 <style type="text/css">
-#map {
+.map {
 	width: 100%;
 	height: 100%;
+}
+
+.hud {
+	position: absolute;
+	top: 30px;
+	left: 30px;
+	width: 200px;
+	/* height: 20px; */
+	background-color: #000;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 20px;
+	opacity: 0.8;
+	background: -webkit-linear-gradient(top, rgb(68, 68, 68), rgb(0, 0, 0)) rgb(0, 0, 0);
+	border-bottom-right-radius: 6px;
+	border-top-right-radius: 6px;
+	border-bottom-left-radius: 6px;
+	border-top-left-radius: 6px;
 }
 </style>
 
@@ -29,37 +50,32 @@
 	    //-------------------------------------------------------//
         // data demo
 	    //-------------------------------------------------------//
-	
-	    var batch1 = [
-	        { 
-	            lat     : 50.367874, 
-	            lon     : 3.080601999999999, 
-	            data    : { 
-	                brasserie : "Abbaye de St Landelin" 
-	            }
-	        },
-	        { 
-	            lat     : 50.529722,
-	            lon     : 2.931556999999998, 
-	            data    : { 
-	                brasserie : "Bière Lepers 8" 
-	            }
-	        }
-	    ];
-        
-	    var batches = [
-	        batch1,
-	        batch1,
-	        batch1,
-	        batch1,
-	        batch1,
-	        batch1,
-	        batch1,
-	        batch1,
-	        batch1,
-	        batch1,
-	    ];
+	    
+        var generateBatch = function () {
 	        
+	        var batch = [];
+            
+	        for(var i =  0; i < 1000; i++){
+                var point = {
+	                lat     : 50.007874            + (Math.floor(Math.random()*(1000)))/1000, 
+	                lon     : 2.080601999999999    + (Math.floor(Math.random()*(1200)))/600, 
+	                data    : { 
+	                    brasserie : "Abbaye de St Landelin" 
+	                }    
+                };
+                
+                batch.push(point);
+            }
+	         
+	        return batch;
+        }
+	        
+	    //-------------------------------------------------------//
+        
+	    var batches = [];
+        for(var i =  0; i < 1000; i++)
+            batches.push (generateBatch());
+        
 	    //-------------------------------------------------------//
 	    
         var loadBatch = function (batch, dynamicalData) {
@@ -68,7 +84,7 @@
                 dynamicalData.addPoint(point.lat, point.lon, point.data);
             })
         }
-	    
+	        
 	    //-------------------------------------------------------//
         // Maperial
 	    //-------------------------------------------------------//
@@ -78,16 +94,16 @@
         //-----------------------------------------------//
 
         var map = maperial.addView({
-            container : "map",
-            defaultZoom : 9,
-            latitude : 50.516584,
-            longitude : 3.186998
+            container       : ".map",
+            defaultZoom     : 9,
+            latitude        : 50.516584,
+            longitude       : 3.186998
         });
 
         //-----------------------------------------------//
         //Layer Images
 
-        //map.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
+        map.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
 
         //-----------------------------------------------//
         //Layer Vectorial Data 
@@ -101,32 +117,26 @@
         };
 
         map.addDynamicalLayer(brasseries, options);
-        loadBatch(batches[0], brasseries);
 
 	    //-------------------------------------------------------//
         // demo hud
 	    //-------------------------------------------------------//
 
-        var div = "<div>"
-                + "<div id=\"slider\"></div>"
-                + "</div>";
-
-        $("#hud").append(div);
-        
-        $("#slider").slider({
+        $(".slider").slider({
            orientation  : "horizontal",
            min          : 0,
-           max          : 10,
+           max          : 1000,
            step         : 1,
-           value        : 3,
+           value        : 0,
            slide        : function(){
               return function( event, ui ) {
                   var batchNum = ui.value - 1 
-                  console.log("batch : " + batchNum)
                   loadBatch(batches[batchNum], brasseries);
               }
            }()
         });
+
+        loadBatch(batches[0], brasseries);
 	    
     })();
 

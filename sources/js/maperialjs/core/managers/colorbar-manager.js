@@ -2,7 +2,7 @@
 
 var GradiantColor           = require('../../libs/gradient-color.js'),
     ColorbarData            = require('../models/data/colorbar-data.js'),
-    utils                   = require('../../../../tools/utils.js');
+    utils                   = require('../../../tools/utils.js');
 
 //------------------------------------------------------------------//
 

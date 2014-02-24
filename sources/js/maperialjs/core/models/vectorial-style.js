@@ -2,7 +2,7 @@
 
 var Style               = require('./style.js'),
     PointSymbolizer     = require('../rendering/symbolizers/point-symbolizer.js'),
-    utils               = require('../../../../tools/utils.js');
+    utils               = require('../../../tools/utils.js');
 
 //-----------------------------------------------------------------------------------//
 
