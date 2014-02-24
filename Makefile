@@ -4,7 +4,7 @@ BDIRJS		=	$(BDIR)/js
 ASSETS		=	$(BPATH)/assets
 SOURCES		=	$(BPATH)/sources
 JSPATH		=	$(SOURCES)/js
-MAPERIALJS	=	$(JSPATH)/maperialjs/brfy
+MAPERIALJS	=	$(JSPATH)/maperialjs
 CSSPATH		=	$(SOURCES)/css
 
 clean:
