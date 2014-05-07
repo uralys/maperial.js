@@ -129,8 +129,10 @@
            step         : 1,
            value        : 0,
            slide        : function(){
+               console.log("slide")
               return function( event, ui ) {
                   var batchNum = ui.value - 1 
+	               console.log("batchNum")
                   loadBatch(batches[batchNum], brasseries);
               }
            }()

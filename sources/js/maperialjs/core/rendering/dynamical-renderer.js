@@ -57,6 +57,7 @@ DynamicalRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY )
    if (cameraMoved || dataChanged) {
 
       this.Reset();
+      //TODO track cette version, et check si le slider l'update plus vite que le rendering : swap de 2 etats : uptodate/yetupdating  
       this.version = this.dynamicalData.version;
 
       var nbTX2 = 1;
