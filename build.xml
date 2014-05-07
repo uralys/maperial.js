@@ -7,6 +7,9 @@
 	<target name="hello">
 		<echo>------------------------------------------------------</echo>
 		<echo>-----              Maperial 2013                  ----</echo>
+		<echo>-----           THIS BUILD IS DEPRECTATED         ----</echo>
+		<echo>-----               USE GRUNT + SASS              ----</echo>
+		<echo>------------------------------------------------------</echo>
 		<echo>Choose a target :</echo>
 		<echo>	build-prod</echo>
 		<echo>	build-all</echo>
