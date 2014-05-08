@@ -1,103 +1,78 @@
 <html>
 
 <head>
-<title>Maperial 1.2 - Dynamical data</title>
+<title>Maperial 2.0 - Dynamical data</title>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<link href="http://static.maperial.localhost/css/maperial-js.min.css" rel="stylesheet" type="text/css" />
+<link href="http://static.maperial.localhost/css/maperial.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-	<div class="map"></div>
+	<div class="fullscreen-map"></div>
 	<div class="hud">
-	   <div class="slider"></div>
+		<div class="slider"></div>
 	</div>
 </body>
 
-<style type="text/css">
-.map {
-	width: 100%;
-	height: 100%;
-}
-
-.hud {
-	position: absolute;
-	top: 30px;
-	left: 30px;
-	width: 200px;
-	/* height: 20px; */
-	background-color: #000;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	padding: 20px;
-	opacity: 0.8;
-	background: -webkit-linear-gradient(top, rgb(68, 68, 68), rgb(0, 0, 0)) rgb(0, 0, 0);
-	border-bottom-right-radius: 6px;
-	border-top-right-radius: 6px;
-	border-bottom-left-radius: 6px;
-	border-top-left-radius: 6px;
-}
-</style>
-
-<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script type="text/javascript" src="//static.maperial.localhost/js/maperial.dev.js"></script>
+<script type="text/javascript" src="//static.maperial.localhost/js/maperial.js"></script>
 
 <script type="text/javascript">
     (function() {
 
-	    //-------------------------------------------------------//
+        //-------------------------------------------------------//
         // data demo
-	    //-------------------------------------------------------//
-	    
-        var generateBatch = function () {
-	        
-	        var batch = [];
-            
-	        for(var i =  0; i < 1000; i++){
+        //-------------------------------------------------------//
+
+        var generateBatch = function() {
+
+            var batch = [];
+
+            for (var i = 0; i < 1000; i++) {
                 var point = {
-	                lat     : 50.007874            + (Math.floor(Math.random()*(1000)))/1000, 
-	                lon     : 2.080601999999999    + (Math.floor(Math.random()*(1200)))/600, 
-	                data    : { 
-	                    brasserie : "Abbaye de St Landelin" 
-	                }    
+                    lat : 50.007874 + (Math.floor(Math.random() * (1000))) / 1000,
+                    lon : 2.080601999999999 + (Math
+                            .floor(Math.random() * (1200))) / 600,
+                    data : {
+                        brasserie : "Abbaye de St Landelin"
+                    }
                 };
-                
+
                 batch.push(point);
             }
-	         
-	        return batch;
+
+            return batch;
         }
-	        
-	    //-------------------------------------------------------//
-        
-	    var batches = [];
-        for(var i =  0; i < 1000; i++)
-            batches.push (generateBatch());
-        
-	    //-------------------------------------------------------//
-	    
-        var loadBatch = function (batch, dynamicalData) {
+
+        //-------------------------------------------------------//
+
+        var batches = [];
+        for (var i = 0; i < 1000; i++)
+            batches.push(generateBatch());
+
+        //-------------------------------------------------------//
+
+        var loadBatch = function(batch, dynamicalData) {
             dynamicalData.removeAll();
-            batch.forEach(function(point){
+            batch.forEach(function(point) {
                 dynamicalData.addPoint(point.lat, point.lon, point.data);
             })
         }
-	        
-	    //-------------------------------------------------------//
+
+        //-------------------------------------------------------//
         // Maperial
-	    //-------------------------------------------------------//
+        //-------------------------------------------------------//
 
         var maperial = new Maperial();
 
         //-----------------------------------------------//
 
         var map = maperial.addView({
-            container       : ".map",
-            defaultZoom     : 9,
-            latitude        : 50.516584,
-            longitude       : 3.186998
+            container : ".fullscreen-map",
+            defaultZoom : 9,
+            latitude : 50.516584,
+            longitude : 3.186998
         });
 
         //-----------------------------------------------//
@@ -118,31 +93,29 @@
 
         map.addDynamicalLayer(brasseries, options);
 
-	    //-------------------------------------------------------//
+        //-------------------------------------------------------//
         // demo hud
-	    //-------------------------------------------------------//
+        //-------------------------------------------------------//
 
         $(".slider").slider({
-           orientation  : "horizontal",
-           min          : 0,
-           max          : 1000,
-           step         : 1,
-           value        : 0,
-           slide        : function(){
-               console.log("slide")
-              return function( event, ui ) {
-                  var batchNum = ui.value - 1 
-	               console.log("batchNum")
-                  loadBatch(batches[batchNum], brasseries);
-              }
-           }()
+            orientation : "horizontal",
+            min : 0,
+            max : 1000,
+            step : 1,
+            value : 0,
+            slide : function() {
+                console.log("slide")
+                return function(event, ui) {
+                    var batchNum = ui.value - 1
+                    console.log("batchNum")
+                    loadBatch(batches[batchNum], brasseries);
+                }
+            }()
         });
 
         loadBatch(batches[0], brasseries);
-	    
-    })();
 
-    
+    })();
 </script>
 
 

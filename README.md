@@ -1,23 +1,15 @@
-# Build Requirement :
 
-    - nodejs
-    - make
-    - browserify
-    - uglifyjs
+## Build Requirement :
 
+    nodejs
+
+## Installing project :
+
+    npm install -g browserify uglify-js grunt-cli
     npm install .
-    npm install -g browserify uglify-js
 
-# Make target
+## Developement build    (js uncompressed)
+    grunt dev 
 
-### developement build 		(js uncompressed)
-    $ make dev 
-
-### production build 		(uglyfied)
-    $ make min
-
-### rebuild javascript only (uncompressed)
-    $ make jsdev
-
-### rebuild javascript only (uglyfied)
-    $ make jsmin
+## Production build      (uglyfied)
+    grunt min

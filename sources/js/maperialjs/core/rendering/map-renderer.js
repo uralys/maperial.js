@@ -224,7 +224,7 @@ function GlobalInitGL( glAsset , gl , glTools) {
 
     glAsset.ShaderReq  = $.ajax({
         type     : "GET",
-        url      : Maperial.shaderURL + "/all.json",
+        url      : Maperial.staticURL + "/shaders/all.json",
         dataType : "json",
         async    : false,
         success  : function(data, textStatus, jqXHR) {
@@ -235,7 +235,7 @@ function GlobalInitGL( glAsset , gl , glTools) {
         },
         error : function(jqXHR, textStatus, errorThrown) {
             me.shaderError = true
-            console.log ( Maperial.staticURL + "/all.json" + " : loading failed : " + textStatus );
+            console.log ( Maperial.staticURL + "/shaders/all.json" + " : loading failed : " + textStatus );
         }
     });
 
