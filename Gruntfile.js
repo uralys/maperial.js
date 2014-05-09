@@ -28,20 +28,28 @@ module.exports = function(grunt) {
                 }
             },
 
-            compass : {
-                options : {
-                    basePath : 'sources/css/'
+
+            sass: {
+                options: {
+                   compass   : true,
+                   sourcemap : true,
+                   quiet     : true,
+                   style     : 'compressed'
                 },
-                build : {},
-                watch : {
-                    options : {watch: true}
+                dist: {
+                    files: [{
+                        expand: true,
+                        cwd: 'sources/css/sass/',
+                        src: ['maperial.scss'],
+                        dest: 'static/css/',
+                        ext: '.css'
+                    }],
                 }
             },
 
             exec : {
                 clean    : "rm -rf static/",
                 tmp      : "mkdir -p static; mkdir -p static/js; mkdir -p static/css; mkdir -p static/shaders",
-                cleanCss : "mv static/build-css/maperial.css static/css/maperial.css; rm -rf static/build-css/",
                 assets   : "cp -r assets/symbols static/symbols; cp sources/shaders/all.json static/shaders/all.json",
                 stage    : "mv static/js/maperial.dev.js static/js/maperial.js",
                 prod     : "rm static/js/maperial.dev.js; mv static/js/maperial.min.js static/js/maperial.js"
@@ -57,11 +65,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-renderer');
     grunt.loadNpmTasks('grunt-exec');
-    grunt.loadNpmTasks('grunt-contrib-compass');
+    grunt.loadNpmTasks('grunt-contrib-sass');
 
     /** define custom tasks */
-    grunt.registerTask('css',       ['compass:build', 'exec:cleanCss']);
-    grunt.registerTask('csswatch',  ['compass:watch']);
+    grunt.registerTask('css',       ['sass:dist']);
     grunt.registerTask('build',     ['browserify:standalone']);
     grunt.registerTask('clean',     ['exec:clean']);
     grunt.registerTask('jsdev',     ['build','exec:stage']);
