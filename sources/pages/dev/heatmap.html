@@ -1,24 +1,18 @@
 <html>
 
 <head>
-<title>Maperial 1.2 - Heatmap</title>
+<title>Maperial 2.0 - Heatmap</title>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
-<link href="http://static.maperial.localhost/css/maperial-js.min.css" rel="stylesheet" type="text/css" />
+<link href="http://static.maperial.localhost/css/maperial.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-	<div id="map"></div>
+    <div id="heatmap" class="fullscreen-map"></div>
 </body>
 
-<style type="text/css">
-  #map {
-    width: 100%;
-   	height: 100%;
-  }
-</style>
-  
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" src="//static.maperial.localhost/js/maperial.dev.js"></script>
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="//static.maperial.localhost/js/maperial.js"></script>
+
 <script type="text/javascript">
 
 	(function() {
@@ -28,7 +22,7 @@
 		//-----------------------------------------------//
 	
 		var map = maperial.addView({
-		    container       : "map",
+            container       : "heatmap",
 		    defaultZoom     : 7,
 		    latitude        : 51.516584,
 		    longitude       : 2.2186998
@@ -37,7 +31,7 @@
 		//-----------------------------------------------//
 		//Layer Images
 	
-		map.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
+		//map.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
 	
 		//-----------------------------------------------//
 		//Layer Vectorial Data 
@@ -57,7 +51,10 @@
 	
 		map.addHeatmapLayer(data, options);
 	})();
-   
+
+    //-------------------------------------------------------//
+    // data demo
+    //-------------------------------------------------------//
 
    function fillDummyHeatmap(){
       window.data.addPoint (33.5363,-117.044, 10000 , 0.6 ); 

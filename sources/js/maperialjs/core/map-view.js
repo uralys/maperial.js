@@ -1,6 +1,7 @@
 //------------------------------------------------------------------//
 
 var MapContext              = require('./map-context.js'),
+    MouseListener           = require('./mouse-listener.js'),
     MapRenderer             = require('./rendering/map-renderer.js'),
     LayerManager            = require('./managers/layer-manager.js'),
     Layer                   = require('./models/layer.js'),
@@ -12,18 +13,19 @@ function MapView(maperial, options){
 
    //--------------------------------------------------------------//
    
-   console.log("  prepare MapView : " + options.container);
+   console.log("  prepare MapView : " + options.container.id);
    
    //--------------------------------------------------------------//
 
    this.maperial           = maperial;
    this.options            = options;
-   this.id                 = utils.generateUID() + "_" + this.options.container;
+   this.id                 = utils.generateUID() + "_" + this.options.container.id;
    this.type               = options.type;
    
    //--------------------------------------------------------------//
 
    this.prepareContainer();
+   new MouseListener(this);
    
    //--------------------------------------------------------------//
 
@@ -48,27 +50,19 @@ function MapView(maperial, options){
 
 MapView.prototype.prepareContainer = function ()   {
    
-   var html = "<canvas class=\"maperial-map canvas-"+this.type+"\"></canvas>";
-   this.canvas = $(html);
-   
-   $(this.options.container).append(this.canvas);
+   this.canvas = document.createElement('canvas');
+   this.canvas.className = this.type;
+   this.options.container.appendChild(this.canvas); 
 
-   this.width       = $(this.options.container).width();
-   this.height      = $(this.options.container).height();
+   this.width       = this.options.container.clientWidth;
+   this.height      = this.options.container.clientHeight;
    
    this.setCanvasSize();
 }
 
 MapView.prototype.setCanvasSize = function() {
-
-   var w = this.width;
-   var h = this.height;
-   
-   this.canvas.css("width", w);
-   this.canvas.css("height", h);
-   this.canvas[0].width = w;
-   this.canvas[0].height = h;
-   
+    this.canvas.width = this.width;   
+    this.canvas.height = this.height;   
 }
 
 //------------------------------------------------------------------//

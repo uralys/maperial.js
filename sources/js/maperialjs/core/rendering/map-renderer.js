@@ -1,12 +1,12 @@
 
 var GLTools                 = require("./tools/gl-tools.js"),
-    Point                   = require('../../libs/point.js'),
-    Tile                    = require('./tile.js'),
-    ColorbarRenderer        = require('./colorbar-renderer.js'),
-    DynamicalRenderer       = require('./dynamical-renderer.js'),
-    HeatmapRenderer         = require('./heatmap-renderer.js'),
-    utils                   = require('../../../tools/utils.js'),
-    mat4                    = require('../../libs/gl-matrix-min.js').mat4;
+Point                   = require('../../libs/point.js'),
+Tile                    = require('./tile.js'),
+ColorbarRenderer        = require('./colorbar-renderer.js'),
+DynamicalRenderer       = require('./dynamical-renderer.js'),
+HeatmapRenderer         = require('./heatmap-renderer.js'),
+utils                   = require('../../../tools/utils.js'),
+mat4                    = require('../../libs/gl-matrix-min.js').mat4;
 
 //=====================================================================================//
 
@@ -26,22 +26,6 @@ function MapRenderer(mapView) {
     this.colorbarRenderer      = new ColorbarRenderer(this.mapView);
 }
 
-//---------------------------------------------------------------------------//
-
-MapRenderer.prototype.addDynamicalRenderer = function(dynamicalData, style){
-    var renderer = new DynamicalRenderer(this.gl, dynamicalData, style);
-    this.dynamicalRenderers[renderer.id] = renderer;
-    return renderer;
-}
-
-//---------------------------------------------------------------------------//
-
-MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, options){
-    var renderer = new HeatmapRenderer(this.mapView, heatmapData, colorbar, options);
-    this.dynamicalRenderers[renderer.id] = renderer;
-    return renderer;
-}
-
 //----------------------------------------------------------------------//
 
 MapRenderer.prototype.start = function () {
@@ -51,7 +35,7 @@ MapRenderer.prototype.start = function () {
 
     try {
         // Try to grab the standard context. If it fails, fallback to experimental.
-        this.gl = this.mapView.canvas[0].getContext("webgl") || this.mapView.canvas[0].getContext("experimental-webgl");
+        this.gl = this.mapView.canvas.getContext("webgl") || this.mapView.canvas.getContext("experimental-webgl");
         this.fitToSize();
     } catch (e) {}
 
@@ -93,23 +77,39 @@ MapRenderer.prototype.InitGL = function () {
 
 //----------------------------------------------------------------------//
 
+MapRenderer.prototype.addDynamicalRenderer = function(dynamicalData, style){
+    var renderer = new DynamicalRenderer(this.gl, dynamicalData, style);
+    this.dynamicalRenderers[renderer.id] = renderer;
+    return renderer;
+}
+
+//---------------------------------------------------------------------------//
+
+MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, options){
+    var renderer = new HeatmapRenderer(this.mapView, heatmapData, colorbar, options);
+    this.dynamicalRenderers[renderer.id] = renderer;
+    return renderer;
+}
+
+//----------------------------------------------------------------------//
+
 MapRenderer.prototype.DrawScene = function ( ) {
 
-    var w = this.mapView.canvas.width();
-    var h = this.mapView.canvas.height();
+    var w = this.mapView.canvas.clientWidth,
+        h = this.mapView.canvas.clientHeight,
 
-    var w2 = Math.floor ( w / 2 );
-    var h2 = Math.floor ( h / 2 );
+        w2 = Math.floor ( w / 2 ),
+        h2 = Math.floor ( h / 2 ),
 
-    var r       = this.mapView.context.coordS.Resolution ( this.mapView.context.zoom );
-    var originM = new Point( this.mapView.context.centerM.x - w2 * r , this.mapView.context.centerM.y + h2 * r );
-    var tileC   = this.mapView.context.coordS.MetersToTile ( originM.x, originM.y , this.mapView.context.zoom );
+        r       = this.mapView.context.coordS.Resolution ( this.mapView.context.zoom ),
+        originM = new Point( this.mapView.context.centerM.x - w2 * r , this.mapView.context.centerM.y + h2 * r ),
+        tileC   = this.mapView.context.coordS.MetersToTile ( originM.x, originM.y , this.mapView.context.zoom ),
 
-    var originP = this.mapView.context.coordS.MetersToPixels ( originM.x, originM.y, this.mapView.context.zoom );
-    var shift   = new Point ( Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) );
+        originP = this.mapView.context.coordS.MetersToPixels ( originM.x, originM.y, this.mapView.context.zoom ),
+        shift   = new Point ( Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) ),
 
-    var nbTileX = Math.floor ( w  / Maperial.tileSize + 1 );
-    var nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
+        nbTileX = Math.floor ( w  / Maperial.tileSize + 1 ),
+        nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
 
     //-----------------------------------------------------------------//
 
@@ -124,10 +124,12 @@ MapRenderer.prototype.DrawScene = function ( ) {
 
     if ( this.UpdateTiles ( tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {
 
-        var mvMatrix      = mat4.create();
-        var pMatrix       = mat4.create();
+        var mvMatrix      = mat4.create(),
+            pMatrix       = mat4.create();
+        
         mat4.identity    ( pMatrix );
         mat4.ortho       ( 0, w , h, 0 , 0, 1, pMatrix ); // Y swap !
+        
         this.gl.viewport ( 0, 0, w , h);
         this.gl.clear    ( this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT );
 
@@ -151,8 +153,8 @@ MapRenderer.prototype.DrawScene = function ( ) {
 
     //-----------------------------------------------------------------//
 
-    this.forceGlobalRedraw = true;
-    this.forceTileRedraw = false;
+    this.forceGlobalRedraw  = true;
+    this.forceTileRedraw    = false;
 }
 
 //----------------------------------------------------------------------//
@@ -213,7 +215,7 @@ MapRenderer.prototype.createTile = function ( x,y,z ) {
 }
 
 //------------------------------------------------------------------//
-//  PRIVATE
+//PRIVATE
 //----------------------------------------------------------------------//
 
 function GlobalInitGL( glAsset , gl , glTools) {

@@ -6,6 +6,8 @@ module.exports = function(grunt) {
             pkg : grunt.file.readJSON('package.json'),
 
             browserify: {
+
+                /* the real browserify build */
                 standalone: {
                     src: [ 'sources/js/maperialjs/core/maperial.js' ],
                     dest: 'static/js/maperial.dev.js',
@@ -13,6 +15,12 @@ module.exports = function(grunt) {
                         debug: true,
                         standalone: '<%= pkg.name %>'
                     }
+                },
+
+                /* just for quick compile testing */
+                compile: {
+                    src: [ 'sources/js/maperialjs/core/maperial.js' ],
+                    dest: 'static/js/maperial.dev.js'
                 },
             },
 
@@ -69,10 +77,11 @@ module.exports = function(grunt) {
 
     /** define custom tasks */
     grunt.registerTask('css',       ['sass:dist']);
-    grunt.registerTask('build',     ['browserify:standalone']);
+    grunt.registerTask('compile',   ['browserify:compile']);
+    grunt.registerTask('standalone',['browserify:standalone']);
     grunt.registerTask('clean',     ['exec:clean']);
-    grunt.registerTask('jsdev',     ['build','exec:stage']);
-    grunt.registerTask('jsmin',     ['build', 'uglify','exec:prod']);
+    grunt.registerTask('jsdev',     ['standalone','exec:stage']);
+    grunt.registerTask('jsmin',     ['standalone', 'uglify','exec:prod']);
 
     /** register custom 'deps' task */
     grunt.registerTask('dev',       ['exec:clean','exec:tmp','jsdev', 'css', 'exec:assets']);

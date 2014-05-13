@@ -128,10 +128,12 @@ Maperial.prototype.addView = function (options) {
 
    console.log("Adding view in container " + options.container  + "...");
    
-   if($(options.container)[0] == null){
+   if(document.getElementById(options.container) == null){
       console.log("Container " + options.container  + " could not be found");
       return;
    }
+   
+   options.container = document.getElementById(options.container);
 
    //-------------------------------------------
    // Set defaults
