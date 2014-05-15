@@ -20,7 +20,7 @@ module.exports = function(grunt) {
                 /* just for quick compile testing */
                 compile: {
                     src: [ 'sources/js/maperialjs/core/maperial.js' ],
-                    dest: 'static/js/maperial.dev.js'
+                    dest: 'static/js/maperial.js'
                 },
             },
 

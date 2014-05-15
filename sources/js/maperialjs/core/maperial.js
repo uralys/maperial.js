@@ -161,4 +161,5 @@ Maperial.prototype.addView = function (options) {
 
 //------------------------------------------------------------------//
 
+window.Maperial = Maperial
 module.exports = Maperial;
