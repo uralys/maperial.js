@@ -41,13 +41,13 @@ MouseListener.prototype.initListeners = function () {
 //          .bind('mousewheel', Utils.apply ( this , "wheel"))   
             break;
 
-        case Maperial.LENS:
-        case Maperial.MINIFIER:
-        case Maperial.MAGNIFIER:
-            this.context.mapCanvas
-            .dblclick   ( Utils.apply ( this , "doubleClick" ))
-            .bind('mousewheel', Utils.apply ( this , "wheelOnZoomer"))   
-            break;
+//        case Maperial.LENS:
+//        case Maperial.MINIFIER:
+//        case Maperial.MAGNIFIER:
+//            this.context.mapCanvas
+//            .dblclick   ( Utils.apply ( this , "doubleClick" ))
+//            .bind('mousewheel', Utils.apply ( this , "wheelOnZoomer"))   
+//            break;
     }
 
 }
