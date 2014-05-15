@@ -160,6 +160,9 @@ Maperial.prototype.addView = function (options) {
 }
 
 //------------------------------------------------------------------//
-
+// quicker than standalone...
 window.Maperial = Maperial
+
+//------------------------------------------------------------------//
+
 module.exports = Maperial;

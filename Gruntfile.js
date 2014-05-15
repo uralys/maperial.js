@@ -10,9 +10,8 @@ module.exports = function(grunt) {
                 /* the real browserify build */
                 standalone: {
                     src: [ 'sources/js/maperialjs/core/maperial.js' ],
-                    dest: 'static/js/maperial.dev.js',
+                    dest: 'static/js/maperial.js',
                     options: {
-                        debug: true,
                         standalone: '<%= pkg.name %>'
                     }
                 },
@@ -20,7 +19,7 @@ module.exports = function(grunt) {
                 /* just for quick compile testing */
                 compile: {
                     src: [ 'sources/js/maperialjs/core/maperial.js' ],
-                    dest: 'static/js/maperial.js'
+                    dest: 'static/js/maperial.js',
                 },
             },
 
@@ -31,11 +30,11 @@ module.exports = function(grunt) {
                 },
                 build : {
                     files : {
-                        'static/js/maperial.min.js' : ['static/js/maperial.dev.js']
+                        /* 'override.same.dest' : [source] */
+                        'static/js/maperial.js' : ['static/js/maperial.js']
                     }
                 }
             },
-
 
             sass: {
                 options: {
@@ -59,8 +58,6 @@ module.exports = function(grunt) {
                 clean    : "rm -rf static/",
                 tmp      : "mkdir -p static; mkdir -p static/js; mkdir -p static/css; mkdir -p static/shaders",
                 assets   : "cp -r assets/symbols static/symbols; cp sources/shaders/all.json static/shaders/all.json",
-                stage    : "mv static/js/maperial.dev.js static/js/maperial.js",
-                prod     : "rm static/js/maperial.dev.js; mv static/js/maperial.min.js static/js/maperial.js"
             },
 
     };
@@ -76,15 +73,16 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
 
     /** define custom tasks */
-    grunt.registerTask('css',       ['sass:dist']);
-    grunt.registerTask('compile',   ['browserify:compile']);
-    grunt.registerTask('standalone',['browserify:standalone']);
     grunt.registerTask('clean',     ['exec:clean']);
-    grunt.registerTask('jsdev',     ['standalone','exec:stage']);
-    grunt.registerTask('jsmin',     ['standalone', 'uglify','exec:prod']);
+    grunt.registerTask('css',       ['sass:dist']);
+    grunt.registerTask('js',        ['browserify:compile']);
+    grunt.registerTask('jsmin',     ['js', 'uglify']);
+
+    /** not used as of today : directly put on window.Maperial */
+    //grunt.registerTask('standalone',['browserify:standalone']);
 
     /** register custom 'deps' task */
-    grunt.registerTask('dev',       ['exec:clean','exec:tmp','jsdev', 'css', 'exec:assets']);
+    grunt.registerTask('dev',       ['exec:clean','exec:tmp','js', 'css', 'exec:assets']);
     grunt.registerTask('min',       ['exec:clean','exec:tmp','jsmin', 'css', 'exec:assets']);
 
     /** default is min */
