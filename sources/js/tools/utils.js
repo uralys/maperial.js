@@ -115,21 +115,6 @@ Utils.prototype.random0 = function(i){
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.generateGuid = function() 
-{
-   var result, i, j;
-   result = '';
-   for(j=0; j<32; j++) {
-      if( j == 8 || j == 12|| j == 16|| j == 20)
-         result = result + '_';
-      i = this.random0(15).toString(16).toUpperCase();
-      result = result + i;
-   }
-   return result;
-}
-
-//----------------------------------------------------------------------------------------//
-
 Utils.prototype.generateUID = function() 
 {
    var timestamp = new Date().getTime().toString(16);
@@ -149,42 +134,9 @@ Utils.prototype.popup = function(url, title, width, height)
 
 //----------------------------------------------------------------------------------------//
 
-/**
- * custom mustache evaluation : )
- * data is used for the functions-in-customMustache parameters 
- * 
- * http://map.x-ray.fr/wiki/display/IDEES/Custom+Mustaches
- */
-Utils.prototype.toHtml = function(template)
-{
-   while(template.indexOf("{") != -1)
-   {
-      var customMustache = template.substring(template.indexOf("{"), template.indexOf("}")+1);
-
-      var html = eval(customMustache);
-      template = template.replace(customMustache, html);
-   }
-
-   return template;
-}
-
-//----------------------------------------------------------------------------------------//
-
 Utils.prototype.isObject = function(stuff) 
 {
    return Object.prototype.toString.call( stuff ) === '[object Object]' ;
-}
-
-/**
- * Ember : edition + binding of objects contained in an array : thanks to ObjectProxy
- */
-Utils.prototype.editObjectInArray = function(object, property, value)
-{
-   var proxy = Ember.ObjectProxy.create({
-      content: object
-   });
-
-   proxy.set(property, value);
 }
 
 //----------------------------------------------------------------------------------------//
@@ -271,10 +223,6 @@ Utils.prototype.buildSliderStyle = function (id){
 }
 
 //----------------------------------------------------------------------------------------//
-
-Utils.prototype.apply = function (toObject, methodName){
-   return (function(param1, param2, param3, param4, param5, param6){toObject[methodName](param1, param2, param3, param4, param5, param6)});
-}
 
 Utils.prototype.getPoint = function (event) {
    return {
