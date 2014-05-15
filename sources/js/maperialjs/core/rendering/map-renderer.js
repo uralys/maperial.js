@@ -45,9 +45,9 @@ MapRenderer.prototype.start = function () {
     }
 
     this.gltools = new GLTools ()
-    this.InitGL()
+    this.initGL()
 
-    this.drawSceneInterval = setInterval( utils.apply ( this, "DrawScene" ) , Maperial.refreshRate);
+    this.drawSceneInterval = setInterval( this.drawScene.bind(this) );
     return true;
 } 
 
@@ -65,13 +65,13 @@ MapRenderer.prototype.fitToSize = function () {
 
 }
 
-MapRenderer.prototype.InitGL = function () {
+MapRenderer.prototype.initGL = function () {
 
     this.glAsset         = new Object();
     this.glAsset.ctx     = this.gl;
     this.mapView.context.assets  = this.glAsset;
 
-    GlobalInitGL( this.glAsset , this.gl , this.gltools);
+    prepareGL( this.glAsset , this.gl , this.gltools );
 
 }
 
@@ -93,7 +93,7 @@ MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, optio
 
 //----------------------------------------------------------------------//
 
-MapRenderer.prototype.DrawScene = function ( ) {
+MapRenderer.prototype.drawScene = function ( ) {
 
     var w = this.mapView.canvas.clientWidth,
         h = this.mapView.canvas.clientHeight,
@@ -122,7 +122,7 @@ MapRenderer.prototype.DrawScene = function ( ) {
 
     //-----------------------------------------------------------------//
 
-    if ( this.UpdateTiles ( tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {
+    if ( this.updateTiles ( tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {
 
         var mvMatrix      = mat4.create(),
             pMatrix       = mat4.create();
@@ -159,7 +159,7 @@ MapRenderer.prototype.DrawScene = function ( ) {
 
 //----------------------------------------------------------------------//
 
-MapRenderer.prototype.UpdateTiles = function ( txB , txE , tyB , tyE, forceTileRedraw ) {
+MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileRedraw ) {
 
     var keyList = [];
     var zoom = this.mapView.context.zoom;
@@ -218,11 +218,10 @@ MapRenderer.prototype.createTile = function ( x,y,z ) {
 //PRIVATE
 //----------------------------------------------------------------------//
 
-function GlobalInitGL( glAsset , gl , glTools) {
+function prepareGL( glAsset , gl , glTools) {
 
     glAsset.shaderData                = null;
     glAsset.shaderError               = false;
-    var me                            = glAsset;
 
     glAsset.ShaderReq  = $.ajax({
         type     : "GET",
@@ -230,13 +229,13 @@ function GlobalInitGL( glAsset , gl , glTools) {
         dataType : "json",
         async    : false,
         success  : function(data, textStatus, jqXHR) {
-            me.shaderData = data;
-            for (k in me.shaderData) {
-                me.shaderData[k].code = me.shaderData[k].code.replace (/---/g,"\n") 
+            glAsset.shaderData = data;
+            for (k in glAsset.shaderData) {
+                glAsset.shaderData[k].code = glAsset.shaderData[k].code.replace (/---/g,"\n") 
             }
         },
         error : function(jqXHR, textStatus, errorThrown) {
-            me.shaderError = true
+            glAsset.shaderError = true
             console.log ( Maperial.staticURL + "/shaders/all.json" + " : loading failed : " + textStatus );
         }
     });

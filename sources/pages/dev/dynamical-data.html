@@ -8,7 +8,7 @@
 </head>
 
 <body>
-	<div class="fullscreen-map"></div>
+    <div id="heatmap" class="fullscreen-map"></div>
 	<div class="hud">
 		<div class="slider"></div>
 	</div>
@@ -69,10 +69,10 @@
         //-----------------------------------------------//
 
         var map = maperial.addView({
-            container : ".fullscreen-map",
-            defaultZoom : 9,
-            latitude : 50.516584,
-            longitude : 3.186998
+            container       : "heatmap",
+            defaultZoom     : 9,
+            latitude        : 50.516584,
+            longitude       : 3.186998
         });
 
         //-----------------------------------------------//
