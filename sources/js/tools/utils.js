@@ -4,16 +4,6 @@ function Utils(){};
 
 //----------------------------//
 
-//Utils.prototype.blackScrollTrack = function(){
-//var rules = document.styleSheets[0].cssRules;
-//for(var i=0; i < rules.length; i++) {
-//if(rules[i].type != 1)
-//console.log(rules[i]);
-//}
-
-//document.styleSheets[0].addRule("::-webkit-scrollbar-track", "background: rgba(0,0,0,0);");
-//} 
-
 /*
  * zeroPad(5, 2) 	--> "05"
    zeroPad(1234, 2) --> "1234"
