@@ -7,7 +7,7 @@ var MapView                 = require('./map-view.js'),
     DynamicalData           = require('./models/data/dynamical-data.js'),
     HeatmapData             = require('./models/data/heatmap-data.js'),
     Source                  = require('./models/source.js'),
-    utils                   = require('../../tools/utils.js');
+    utils                   = require('../../libs/utils.js');
 
 //------------------------------------------------------------------//
 

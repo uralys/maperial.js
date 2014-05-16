@@ -5,7 +5,8 @@ var MapContext              = require('./map-context.js'),
     MapRenderer             = require('./rendering/map-renderer.js'),
     LayerManager            = require('./managers/layer-manager.js'),
     Layer                   = require('./models/layer.js'),
-    utils                   = require('../../tools/utils.js');
+    Hint                    = require('../libs/hint.js'),
+    utils                   = require('../../libs/utils.js');
 
 //------------------------------------------------------------------//
 
@@ -26,6 +27,8 @@ function MapView(maperial, options){
 
    this.prepareContainer();
    new MouseListener(this);
+   
+   Hint.call(this);
    
    //--------------------------------------------------------------//
 
