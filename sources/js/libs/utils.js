@@ -231,6 +231,38 @@ Utils.prototype.getPoint = function (event) {
    };
 }
 
+
+/**
+ * param  mouseP : Point with coordinates in pixels, in the Canvas coordinates system
+ * return mouseM : Point with coordinates in meters, in the Meters coordinates system
+ */
+Utils.prototype.converToMeters = function(mapView, canvasPoint){
+
+    var w = mapView.canvas.width,
+        h = mapView.canvas.height,
+
+        centerP = mapView.context.coordS.MetersToPixels(
+            mapView.context.centerM.x, 
+            mapView.context.centerM.y, 
+            mapView.context.zoom
+        ),
+        
+        shiftX = w/2 - canvasPoint.x,
+        shiftY = h/2 - canvasPoint.y,
+        
+        meters = mapView.context.coordS.PixelsToMeters(
+            centerP.x - shiftX, 
+            centerP.y + shiftY, 
+            mapView.context.zoom
+        );
+    
+    console.log(meters);
+    return meters;
+
+}
+
+//----------------------------------------------------------------------------------------//
+
 Utils.prototype.randomRotate = function (element) {
 
    var rotation = this.random0(15) - 8
@@ -276,7 +308,6 @@ Utils.prototype.cloneJsonObject = function (jsonObject) {
 Utils.prototype.odump = function(o){
    console.log(this.cloneJsonObject(o));
 }
-
 
 //------------------------------------------------------------------//
 

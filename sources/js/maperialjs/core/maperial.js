@@ -34,9 +34,15 @@ function Maperial(options){
 
 Maperial.MAIN                    = "maperial-main";
 Maperial.ANCHOR                  = "maperial-anchor";
-Maperial.LENS                    = "maperial-lens";      // camera centered on what is under it
-Maperial.MINIFIER                = "maperial-minifier";   // camera centered on the parent's center
-Maperial.MAGNIFIER               = "maperial-magnifier";  // camera centered on what is under the mouse
+
+//camera centered on what is under it
+Maperial.LENS                    = "maperial-lens";      
+
+//camera centered on the parent's center
+Maperial.MINIFIER                = "maperial-minifier";   
+
+//camera centered on what is under the mouse
+Maperial.MAGNIFIER               = "maperial-magnifier";  
 
 //------------------------------------------------------------------//
 //Vectorial layers types

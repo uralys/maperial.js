@@ -1,9 +1,8 @@
-//---------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------------//
 
-var Hammer      = require('../libs/hammer.js'),
-utils       = require('../../libs/utils.js');
+var Hammer      = require('../libs/hammer.js');
 
-//---------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------------//
 
 function MouseListener(mapView){
 
@@ -14,7 +13,7 @@ function MouseListener(mapView){
     this.initListeners();
 }
 
-//---------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------------//
 
 MouseListener.prototype.initListeners = function () {
 
@@ -25,12 +24,15 @@ MouseListener.prototype.initListeners = function () {
         case Maperial.MAIN:
         case Maperial.ANCHOR:
 
+            /* prepare the hammer listening on the canvas */
             this.hammer             = new Hammer(this.mapView.canvas);
+
+            /* link every function on the listener to be able to call 'off' on them*/
             this.hammer.drag        = this.drag.bind(this);
 
+            /* turn the hammer listening on */
             this.hammer.on("drag", this.hammer.drag);
 
-            //this.mapView.canvas.addEventListener("click", this.down        .bind(this));
             //this.mapView.canvas.addEventListener("click", this.down        .bind(this));
 
 //          .mousedown  (  )
@@ -67,7 +69,7 @@ MouseListener.prototype.removeListeners = function () {
 //  this.context.mapCanvas.unbind('wheelOnZoomer');  
 }
 
-//---------------------------------------------------------------------------------------//
+//----------------------------------------------------------------------------//
 
 MouseListener.prototype.down = function (event) {
 
@@ -92,8 +94,10 @@ MouseListener.prototype.drag = function (event) {
 
 //  event.preventDefault();
 
-    this.mapView.context.mouseP = utils.getPoint(event);
-    this.mapView.context.mouseM = this.convertCanvasPointToMeters ( this.mapView.context.mouseP );
+//    this.mapView.context.mouseP = utils.getPoint(event);
+//    this.mapView.context.mouseM = this.convertCanvasPointToMeters ( this.mapView.context.mouseP );
+    
+    this.mapView.trigger("drag", event);
 
 //  if (!this.mouseDown){
 //  this.context.mapCanvas.trigger(MaperialEvents.UPDATE_LATLON);
@@ -111,7 +115,7 @@ MouseListener.prototype.doubleClick = function (event) {
     if(!this.mapView.zoomable)
         return
 
-        this.context.zoom = Math.min(18, this.context.zoom + 1);
+    this.context.zoom = Math.min(18, this.context.zoom + 1);
     this.context.centerM = this.convertCanvasPointToMeters(this.context.mouseP);
 
     // refresh mouse
@@ -204,34 +208,6 @@ MouseListener.prototype.hasJustWheeled = function () {
     this.lastWheelMillis = new Date().getTime();
 
     return hasJustWheeled;
-}
-
-/**
- * param  mouseP : Point with coordinates in pixels, in the Canvas coordinates system
- * return mouseM : Point with coordinates in meters, in the Meters coordinates system
- */
-MouseListener.prototype.convertCanvasPointToMeters = function (canvasPoint) {
-
-    var w = this.mapView.canvas.width,
-        h = this.mapView.canvas.height,
-
-        centerP = this.mapView.context.coordS.MetersToPixels(
-            this.mapView.context.centerM.x, 
-            this.mapView.context.centerM.y, 
-            this.mapView.context.zoom
-        ),
-        
-        shiftX = w/2 - canvasPoint.x,
-        shiftY = h/2 - canvasPoint.y,
-        
-        meters = this.mapView.context.coordS.PixelsToMeters(
-            centerP.x - shiftX, 
-            centerP.y + shiftY, 
-            this.mapView.context.zoom
-        );
-    
-    console.log(meters);
-    return meters;
 }
 
 //------------------------------------------------------------------//
