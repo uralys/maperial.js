@@ -1,3 +1,4 @@
+var _ = require("../../libs/underscore.js");
 
 /**
  * Mixins for an object to let it trigger hints or receive hints.
