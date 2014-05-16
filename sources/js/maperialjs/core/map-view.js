@@ -154,11 +154,8 @@ MapView.prototype.addWMSLayer         = function (options)   {}
 //---------------------------------------------------------------------------//
 
 MapView.prototype.refreshCoordinates = function (event)   {
-
   this.context.mouseP = utils.getPoint(event);
   this.context.mouseM = utils.converToMeters ( this, this.context.mouseP );
-
-  console.log(this.context.mouseP);
 }
 
 //---------------------------------------------------------------------------//

@@ -226,8 +226,8 @@ Utils.prototype.buildSliderStyle = function (id){
 
 Utils.prototype.getPoint = function (event) {
    return {
-       x : event.clientX - $(event.target).offset().left,
-       y : event.clientY - $(event.target).offset().top
+       x : event.gesture.center.clientX,
+       y : event.gesture.center.clientY
    };
 }
 
@@ -256,9 +256,7 @@ Utils.prototype.converToMeters = function(mapView, canvasPoint){
             mapView.context.zoom
         );
     
-    console.log(meters);
     return meters;
-
 }
 
 //----------------------------------------------------------------------------------------//
