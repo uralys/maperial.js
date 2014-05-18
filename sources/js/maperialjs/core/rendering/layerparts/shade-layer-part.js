@@ -70,7 +70,7 @@ ShadeLayerPart.prototype.Init = function ( data ) {
    }
 }
 
-ShadeLayerPart.prototype.Reset = function (  ) {
+ShadeLayerPart.prototype.reset = function (  ) {
    var gl = this.gl;
    if (this.tex) {
       gl.deleteTexture ( this.tex );
@@ -79,7 +79,7 @@ ShadeLayerPart.prototype.Reset = function (  ) {
    }
 }
 
-ShadeLayerPart.prototype.Release = function (  ) {
+ShadeLayerPart.prototype.release = function (  ) {
    var gl = this.gl;
    if (this.tex) {
       gl.deleteTexture ( this.tex );
@@ -96,7 +96,7 @@ ShadeLayerPart.prototype.IsUpToDate = function ( ) {
    return this.tex != null;
 }
 
-ShadeLayerPart.prototype.Update = function ( params ) {
+ShadeLayerPart.prototype.update = function ( params ) {
    if (this.tex)
       return 0;
 

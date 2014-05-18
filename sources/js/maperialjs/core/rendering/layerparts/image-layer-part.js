@@ -50,7 +50,7 @@ ImageLayerPart.prototype.prepare = function () {
 
 //-----------------------------------------------------------------------------------//
 
-ImageLayerPart.prototype.Reset = function (  ) {
+ImageLayerPart.prototype.reset = function (  ) {
    if (this.tex) {
       this.gl.deleteTexture ( this.tex );
       delete this.tex;
@@ -58,8 +58,8 @@ ImageLayerPart.prototype.Reset = function (  ) {
    }
 }
 
-ImageLayerPart.prototype.Release = function (  ) {
-   this.Reset()
+ImageLayerPart.prototype.release = function (  ) {
+   this.reset()
 
    if (this.data.content) {
       delete this.data.content;
@@ -75,7 +75,7 @@ ImageLayerPart.prototype.IsUpToDate = function ( ) {
 
 //-----------------------------------------------------------------------------------//
 
-ImageLayerPart.prototype.Update = function () {
+ImageLayerPart.prototype.update = function () {
 
    if (this.tex)
       return 0;

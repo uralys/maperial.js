@@ -40,7 +40,7 @@ HeatmapRenderer.prototype.isSync = function () {
   else{
      if(this.texB){
         console.log("not sync : reset");
-        this.Reset();
+        this.reset();
      }
      
      return false;
@@ -57,7 +57,7 @@ HeatmapRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY ) {
    if (cameraMoved || dataChanged) {
       
       console.log("refesh : reset");
-      this.Reset();
+      this.reset();
       this.version = this.heatmapData.version;
       
       var nbTX2 = 1;
@@ -103,7 +103,7 @@ HeatmapRenderer.prototype.AllocBuffer = function ( sizeX , sizeY ) {
    this.texB         = fbtx[1];
 }
 
-HeatmapRenderer.prototype.Reset = function (  ) {
+HeatmapRenderer.prototype.reset = function (  ) {
    var gl            = this.gl;
    this.layerCount   = 0
    if ( this.texB ) {
@@ -124,18 +124,18 @@ HeatmapRenderer.prototype.Reset = function (  ) {
    }
 }
 
-HeatmapRenderer.prototype.Release = function (  ) {
-   this.Reset()
+HeatmapRenderer.prototype.release = function (  ) {
+   this.reset()
 }
 
 HeatmapRenderer.prototype.IsUpToDate = function ( ) {
    return this.layerCount == null;
 }
 
-HeatmapRenderer.prototype.Update = function () {
+HeatmapRenderer.prototype.update = function () {
    if (this.frmB == null || this.layerCount == null)
       return 0;
-   console.log("heat Update");
+   console.log("heat update");
       
    var gl       = this.gl;
 //   this.scaleX;

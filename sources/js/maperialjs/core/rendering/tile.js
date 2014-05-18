@@ -63,20 +63,21 @@ Tile.prototype.textureReady = function ( ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.Release = function() {
+Tile.prototype.release = function() {
 
-   sourceManager.release(this.x, this.y, this.z, this.mapView.id);
+   sourceManager.release(this.mapView.id, this.x, this.y, this.z);
 
-   for(var i = 0; i < this.config.layers.length; i++){
-      try{
-         this.layerParts[i].Release();
-      }
-      catch(e){
-         console.log("------------> tile.Release")
-         console.log(e, this.layerParts[i])
-      } 
-   }
-
+   this.layerParts.forEach(function(layerPart){
+       try{
+           layerPart.release();
+       }
+       catch(e){
+           console.log("------------> tile.release")
+           console.log(e, layerPart)
+       } 
+       
+   });
+   
    var gl = this.gl;
    for ( var i = 0 ; i < 2 ; i = i + 1 ) {
       gl.deleteFramebuffer ( this.frameBufferL[i] );
@@ -86,31 +87,31 @@ Tile.prototype.Release = function() {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.ReleaseLayer = function (id) {
+Tile.prototype.releaseLayer = function (id) {
 
    if(this.layerParts[id]){
-      this.layerParts[id].Release();
-      this.layerParts[id].Reset();
+      this.layerParts[id].release();
+      this.layerParts[id].reset();
    }
 
    this.Refresh();
 }
 
-Tile.prototype.ResetLayer = function (id) {
+Tile.prototype.resetLayer = function (id) {
 
    if(this.layerParts[id])
-      this.layerParts[id].Reset();
+      this.layerParts[id].reset();
 
    this.Refresh();
 }
 
-Tile.prototype.Reset = function (onlyFuse) {
+Tile.prototype.reset = function (onlyfuse) {
 
-   onlyFuse = (typeof(onlyFuse)==='undefined')?false:onlyFuse;
+   onlyfuse = (typeof(onlyfuse)==='undefined')?false:onlyfuse;
 
-   if (!onlyFuse) {
+   if (!onlyfuse) {
       for (var i = 0; i < this.layerParts.length; i++) {      
-         this.layerParts[i].Reset();
+         this.layerParts[i].reset();
       }
    }
 
@@ -178,7 +179,7 @@ Tile.prototype.changeLayer = function (layerConfig, index) {
 
 Tile.prototype.removeLayer = function (position) {
    if(this.layerParts.length > 0){
-      this.layerParts[position].Release()
+      this.layerParts[position].release()
       this.layerParts.splice(position, 1)
       this.Refresh()
    }
@@ -214,8 +215,8 @@ Tile.prototype.exchangeLayers = function(exchangedIds) {
 
 //if(!data){
 //console.log("-------> tile.sourceReady : DATA NULL !")
-//this.Release();
-//this.Reset();
+//this.release();
+//this.reset();
 //return
 //}
 //if  ( (typeof(li) ==='undefined') || li < 0 || li >= this.config.layers.length) {
@@ -264,7 +265,7 @@ Tile.prototype.prepareBuffering = function () {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.Update = function ( maxTime ) {
+Tile.prototype.update = function ( maxTime ) {
 
    //--------------------------------------//
 
@@ -279,7 +280,7 @@ Tile.prototype.Update = function ( maxTime ) {
    for(var i = 0; i< this.layerParts.length; i++){
       if (! this.layerParts[i].IsUpToDate() ){
          if(this.layerParts[i].DataReady() ) {
-            this.layerParts[i].Update( this.layerParts[i].params, i );
+            this.layerParts[i].update( this.layerParts[i].params, i );
             noLayerPartUpdate = false
 
             diffT   = date.getTime() - startT;
@@ -299,7 +300,7 @@ Tile.prototype.Update = function ( maxTime ) {
       if ( !noLayerPartUpdate && (maxTime - diffT > 0) ) {
          console.log("tile refresh + compose");
          this.Refresh();
-         this.Compose();
+         this.compose();
          diffT   = date.getTime() - startT;
       }
 
@@ -310,35 +311,38 @@ Tile.prototype.Update = function ( maxTime ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.Compose = function () {
+Tile.prototype.compose = function () {
    
    //-------------------------//
    
-   var layerPartsToCompose = []
+   var layerPartsTocompose = []
    for(var i = 0; i < this.layerParts.length; i++){
       if(this.layerParts[i].IsUpToDate())
-         layerPartsToCompose.push(this.layerParts[i]);
+         layerPartsTocompose.push(this.layerParts[i]);
    }
-
+   
+   if( layerPartsTocompose.length == 0 )
+       return;
+   
    //-------------------------//
 
-   var backTex = layerPartsToCompose[0].tex
+   var backTex = layerPartsTocompose[0].tex
    var destFb  = this.frameBufferL[ 0 ]
    var tmpI    = 0;
 
-   if ( layerPartsToCompose.length > 1 ) {
+   if ( layerPartsTocompose.length > 1 ) {
 
-      for( var i = 1 ; i < layerPartsToCompose.length ; i++ ) {
-         var frontTex   = layerPartsToCompose[i].tex;
+      for( var i = 1 ; i < layerPartsTocompose.length ; i++ ) {
+         var frontTex   = layerPartsTocompose[i].tex;
          if (frontTex) {
-            var composition = layerPartsToCompose[i].layer.composition,
+            var composition = layerPartsTocompose[i].layer.composition,
                 prog        = this.assets.prog[ composition.shader ],
                 params      = composition.params;
 
-            this.Fuse      ( backTex,frontTex,destFb, prog , params);
+            this.fuse      ( backTex,frontTex,destFb, prog , params);
          }
          else {
-            this.Copy (backTex, destFb);
+            this.copy (backTex, destFb);
          }
          backTex        = this.texL[tmpI];
          this.tex       = backTex;
@@ -348,14 +352,14 @@ Tile.prototype.Compose = function () {
       }
    }
    else {
-      this.Copy (backTex, destFb);
+      this.copy (backTex, destFb);
       this.tex = this.texL[0];
    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.Copy = function ( backTex , destFB ) {
+Tile.prototype.copy = function ( backTex , destFB ) {
 
    var gl                           = this.gl;
 
@@ -396,7 +400,7 @@ Tile.prototype.Copy = function ( backTex , destFB ) {
 }
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.Fuse = function ( backTex,frontTex,destFB, prog, params ) {
+Tile.prototype.fuse = function ( backTex,frontTex,destFB, prog, params ) {
 
    var gl                           = this.gl;
    gl.bindFramebuffer               ( gl.FRAMEBUFFER, destFB );
@@ -450,7 +454,7 @@ Tile.prototype.Fuse = function ( backTex,frontTex,destFB, prog, params ) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-Tile.prototype.Render = function (pMatrix, mvMatrix) {
+Tile.prototype.render = function (pMatrix, mvMatrix) {
    
    if ( this.textureReady() ) {
       var prog                         = this.assets.prog["Tex"];

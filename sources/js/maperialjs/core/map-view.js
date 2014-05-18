@@ -51,10 +51,10 @@ function MapView(maperial, options){
     //--------------------------------------------------------------//
 
     this.shaders            = [
-        Maperial.AlphaClip, 
-        Maperial.AlphaBlend, 
-        Maperial.MulBlend
-    ];
+                               Maperial.AlphaClip, 
+                               Maperial.AlphaBlend, 
+                               Maperial.MulBlend
+                               ];
 
 };
 
@@ -154,8 +154,62 @@ MapView.prototype.addWMSLayer         = function (options)   {}
 //---------------------------------------------------------------------------//
 
 MapView.prototype.refreshCoordinates = function (event)   {
-  this.context.mouseP = utils.getPoint(event);
-  this.context.mouseM = utils.converToMeters ( this, this.context.mouseP );
+
+    var previousMouseP = this.context.mouseP;
+    this.context.mouseP = utils.getPoint(event);
+    var deltaPx = this.context.mouseP.x - previousMouseP.x,
+        deltaPy = this.context.mouseP.y - previousMouseP.y,
+        delta = {
+            x : deltaPx,
+            y : deltaPy
+    };
+
+    
+    var deltaM = utils.converToMeters ( this.canvas, this.context, delta );
+    this.context.centerM.x -= deltaM.x;
+    this.context.centerM.y -= deltaM.y;
+    
+    console.log(this.context.centerM);
+
+//    this.context.mouseM = utils.converToMeters ( this.canvas, this.context, this.context.mouseP );
+
+    switch(this.type){
+
+        case Maperial.MINIFIER : 
+//          this.context.centerM = this.maperial.getMainView(this.map).context.centerM
+            break;
+
+        case Maperial.MAGNIFIER :
+//          this.context.centerM = this.maperial.getView(viewTriggering).context.mouseM
+            break;
+
+        case Maperial.LENS :
+//            var panel = $("#panel"+this.name)
+//            var panelTriggering = $("#panel"+viewTriggering)
+//            
+//            var panelTriggeringPosition = panelTriggering.position();
+//            var viewPosition = panel.position();
+//            
+//            var viewCenterX = viewPosition.left + panel.width()/2
+//            var viewCenterY = viewPosition.top + panel.height()/2
+//            
+//            var panelTriggeringCenterX = panelTriggeringPosition.left + panelTriggering.width()/2
+//            var panelTriggeringCenterY = panelTriggeringPosition.top + panelTriggering.height()/2
+//            
+//            var viewTriggeringCenterP = this.maperial.getCenterP(viewTriggering)
+//            var lensCenterP = new Point( viewTriggeringCenterP.x - panelTriggeringCenterX + viewCenterX , viewTriggeringCenterP.y + panelTriggeringCenterY - viewCenterY);
+//            
+//            this.context.centerM = this.context.coordS.PixelsToMeters ( lensCenterP.x, lensCenterP.y, this.maperial.getZoom(this.map) );
+            
+        case Maperial.MAIN : 
+        case Maperial.ANCHOR :
+            
+//            this.context.centerM = this.context.mouseM;
+
+            break;
+    }
+
+    console.log("refreshCoordinates");
 }
 
 //---------------------------------------------------------------------------//

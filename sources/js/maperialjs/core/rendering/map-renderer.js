@@ -1,12 +1,12 @@
 
 var GLTools                 = require("./tools/gl-tools.js"),
-Point                   = require('../../libs/point.js'),
-Tile                    = require('./tile.js'),
-ColorbarRenderer        = require('./colorbar-renderer.js'),
-DynamicalRenderer       = require('./dynamical-renderer.js'),
-HeatmapRenderer         = require('./heatmap-renderer.js'),
-utils                   = require('../../../libs/utils.js'),
-mat4                    = require('../../libs/gl-matrix-min.js').mat4;
+    Point                   = require('../../libs/point.js'),
+    Tile                    = require('./tile.js'),
+    ColorbarRenderer        = require('./colorbar-renderer.js'),
+    DynamicalRenderer       = require('./dynamical-renderer.js'),
+    HeatmapRenderer         = require('./heatmap-renderer.js'),
+    utils                   = require('../../../libs/utils.js'),
+    mat4                    = require('../../libs/gl-matrix-min.js').mat4;
 
 //=====================================================================================//
 
@@ -139,7 +139,7 @@ MapRenderer.prototype.drawScene = function ( ) {
                 mat4.translate(mvMatrix, [wx, wy , 0]);
                 var key  = tx + "," + ty + "," + this.mapView.context.zoom;
                 var tile = this.mapView.tiles[key]
-                tile.Render ( pMatrix, mvMatrix );
+                tile.render ( pMatrix, mvMatrix );
             }
         }
     }
@@ -182,14 +182,14 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
             if (keyList[ki] === key) isInKeyList = true
         }
         if ( ! isInKeyList ) {
-            this.mapView.tiles[key].Release();
+            this.mapView.tiles[key].release();
             delete this.mapView.tiles[key];
         }
     }
 
     if ( forceTileRedraw ) {
         for (var key in this.mapView.tiles) {
-            var tile = this.mapView.tiles[key].Reset ( );
+            var tile = this.mapView.tiles[key].reset ( );
         }
     }
 
@@ -200,7 +200,7 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
         var tile = this.mapView.tiles[keyList[ki]];
         if (tile && !tile.IsUpToDate () )  {
             tileModified = true
-            timeRemaining = tile.Update( timeRemaining )
+            timeRemaining = tile.update( timeRemaining )
             if ( timeRemaining <= 0 )
                 break;
         }

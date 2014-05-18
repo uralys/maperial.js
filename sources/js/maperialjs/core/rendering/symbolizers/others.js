@@ -8,12 +8,12 @@ function MarkersSymbolizer () {
 
 }
 
-function SymbolizerComposer (inZMin, inZMax) {
+function Symbolizercomposer (inZMin, inZMax) {
    this.zmin = inZMin;
    this.zmax = inZMax;
    this.symbs= [];
 }
 
-SymbolizerComposer.prototype.Add = function( inSymb ) {
+Symbolizercomposer.prototype.Add = function( inSymb ) {
    this.symbs.push ( inSymb );
 }

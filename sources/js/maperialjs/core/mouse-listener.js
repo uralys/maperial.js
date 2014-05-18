@@ -113,7 +113,7 @@ MouseListener.prototype.drag = function (event) {
 MouseListener.prototype.doubleClick = function (event) {
 
     if(!this.mapView.zoomable)
-        return
+        return;
 
     this.context.zoom = Math.min(18, this.context.zoom + 1);
     this.context.centerM = this.convertCanvasPointToMeters(this.context.mouseP);

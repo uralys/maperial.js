@@ -19,7 +19,7 @@ DynamicalLayerPart.prototype.IsUpToDate = function ( ) {
    var isUpTodate = this.renderer.isSync() && this.tex != null;
    
    if(!isUpTodate)
-       this.Reset();
+       this.reset();
    
    return isUpTodate;
 }
@@ -32,7 +32,7 @@ DynamicalLayerPart.prototype.DataReady = function(){
       return true;
    }
    else{
-      this.renderer.Update();
+      this.renderer.update();
       return false;
    }
 }
@@ -51,19 +51,19 @@ DynamicalLayerPart.prototype.prepare = function () {
 
 //-----------------------------------------------------------------------------------//
 
-DynamicalLayerPart.prototype.Reset = function (  ) {
+DynamicalLayerPart.prototype.reset = function (  ) {
    this.tex = null;
 }
 
 //-----------------------------------------------------------------------------------//
 
-DynamicalLayerPart.prototype.Release = function (  ) {
+DynamicalLayerPart.prototype.release = function (  ) {
    this.tex = null;
 }
 
 //-----------------------------------------------------------------------------------//
 
-DynamicalLayerPart.prototype.Update = function () {
+DynamicalLayerPart.prototype.update = function () {
     if (this.tex == null ) {   
         this.tex = this.renderer.GetTex(this.x,this.y)
     }

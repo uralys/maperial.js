@@ -57,7 +57,7 @@ VectorialLayerPart.prototype.Init = function ( data ) {
    }
 }
 
-VectorialLayerPart.prototype.Reset = function (  ) {
+VectorialLayerPart.prototype.reset = function (  ) {
    var gl            = this.gl;
    this.layerCount   = 0
    if (this.cnv) {
@@ -72,7 +72,7 @@ VectorialLayerPart.prototype.Reset = function (  ) {
    }
 }
 
-VectorialLayerPart.prototype.Release = function (  ) {
+VectorialLayerPart.prototype.release = function (  ) {
    var gl = this.gl;
    if (this.tex) {
       gl.deleteTexture ( this.tex );
@@ -89,7 +89,7 @@ VectorialLayerPart.prototype.IsUpToDate = function ( ) {
    return this.layerCount == null;
 }
 
-VectorialLayerPart.prototype.Update = function ( params, layerPosition ) {
+VectorialLayerPart.prototype.update = function ( params, layerPosition ) {
    var gl = this.gl;
    if (this.tex == null ) {
       if (this.data) {
@@ -124,7 +124,7 @@ VectorialLayerPart.prototype.Update = function ( params, layerPosition ) {
    this.layerCount      = rendererStatus[0];
    
    var diffT = 0;
-   if (this.IsUpToDate()) { // Render is finished, build GL Texture
+   if (this.IsUpToDate()) { // render is finished, build GL Texture
       var date    = (new Date)
       var startT  = date.getTime()
       this._BuildTexture();

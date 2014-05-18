@@ -65,7 +65,7 @@ VectorialStyle.prototype.AddSymbolizer = function( inSymb , inZMin, inZMax , inI
    }
 }
 
-VectorialStyle.prototype.AddSymbsComposer = function( inSymbComp,inId) {
+VectorialStyle.prototype.AddSymbscomposer = function( inSymbComp,inId) {
    // only apply on custom style !
    if ( this.type != Style.Custom )
       return null;

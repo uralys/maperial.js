@@ -77,7 +77,7 @@ function FromPoint ( p ) {
    this.acc   = 0;
 }
 
-FromPoint.prototype.Reset = function (  ) {
+FromPoint.prototype.reset = function (  ) {
    this.acc   = 0;
 }
 
@@ -101,7 +101,7 @@ function FollowLine (l) {
    this.pi    = 0;
 }
 
-FollowLine.prototype.Reset = function (  ) {
+FollowLine.prototype.reset = function (  ) {
    this.acc   = 0;
    this.pi    = 0;
 }
@@ -370,7 +370,7 @@ function RenderTextCufon (text,font, size, ctx ,l ,fill) {
    if ( ! fl.IsValid())
       return
       
-   // Shift ==> Render at middle line and not at baseline !
+   // Shift ==> render at middle line and not at baseline !
    var shift      = parseInt(font.face["x-height"]) /100 * size.value 
    var viewBox    = font.viewBox;
    var expandTop  = 0, expandRight = 0, expandBottom = 0, expandLeft = 0;
@@ -954,7 +954,7 @@ function ExtendCanvasContext ( ctx ) {
             RenderTextCufon ( txtCtx , _font , this  , false);
             this.restore()
             for ( var i = 0 ; i < txtCtx.fl.length ; i=i+1 )
-               txtCtx.fl[i].Reset()
+               txtCtx.fl[i].reset()
             this.save()
             RenderTextCufon ( txtCtx , _font , this  , true);
             

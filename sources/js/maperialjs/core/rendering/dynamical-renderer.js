@@ -41,7 +41,7 @@ DynamicalRenderer.prototype.isSync = function () {
     }
     else{
        if(this.cnv)
-          this.Reset();
+          this.reset();
        
        return false;
     }
@@ -56,7 +56,7 @@ DynamicalRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY )
 
    if (cameraMoved || dataChanged) {
 
-      this.Reset();
+      this.reset();
       //TODO track cette version, et check si le slider l'update plus vite que le rendering : swap de 2 etats : uptodate/yetupdating  
       this.version = this.dynamicalData.version;
 
@@ -113,7 +113,7 @@ DynamicalRenderer.prototype.AllocCanvas = function ( sizeX, sizeY) {
    this.ctx.setTexViewBox(-1,-1,sizeX+1,sizeY+1)
 }
 
-DynamicalRenderer.prototype.Reset = function (  ) {
+DynamicalRenderer.prototype.reset = function (  ) {
    var gl            = this.gl;
    this.layerCount   = 0
    if (this.cnv) {
@@ -128,15 +128,15 @@ DynamicalRenderer.prototype.Reset = function (  ) {
    }
 }
 
-DynamicalRenderer.prototype.Release = function (  ) {
-   this.Reset();
+DynamicalRenderer.prototype.release = function (  ) {
+   this.reset();
 }
 
 DynamicalRenderer.prototype.IsUpToDate = function ( ) {
    return this.layerCount == null;
 }
 
-DynamicalRenderer.prototype.Update = function () {
+DynamicalRenderer.prototype.update = function () {
 
    if (this.cnv == null || this.layerCount == null || this.style == null)
       return 0;
@@ -152,7 +152,7 @@ DynamicalRenderer.prototype.Update = function () {
    this.layerCount      = rendererStatus[0];
 
    var diffT = 0;
-   if (this.IsUpToDate()) { // Render is finished, build GL Texture
+   if (this.IsUpToDate()) { // render is finished, build GL Texture
       var date    = (new Date)
       var startT  = date.getTime()
       this._BuildTexture();

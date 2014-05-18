@@ -15,7 +15,7 @@ RasterLayerPart.prototype.GetType = function ( ) {
    return LayerManager.Raster;
 }
 
-RasterLayerPart.prototype.Reset = function (  ) {
+RasterLayerPart.prototype.reset = function (  ) {
    var gl = this.gl;
    if (this.tex) {
       gl.deleteTexture ( this.tex );
@@ -24,7 +24,7 @@ RasterLayerPart.prototype.Reset = function (  ) {
    }
 }
 
-RasterLayerPart.prototype.Release = function (  ) {
+RasterLayerPart.prototype.release = function (  ) {
    var gl = this.gl;
    if (this.tex) {
       gl.deleteTexture ( this.tex );
@@ -41,7 +41,7 @@ RasterLayerPart.prototype.IsUpToDate = function ( ) {
    return this.tex != null;
 }
 
-RasterLayerPart.prototype.Update = function ( params ) {
+RasterLayerPart.prototype.update = function ( params ) {
    if (this.tex)
       return 0;
 

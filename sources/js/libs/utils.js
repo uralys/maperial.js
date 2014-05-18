@@ -233,27 +233,27 @@ Utils.prototype.getPoint = function (event) {
 
 
 /**
- * param  mouseP : Point with coordinates in pixels, in the Canvas coordinates system
+ * param  point : Point with coordinates in pixels, in the Canvas coordinates system
  * return mouseM : Point with coordinates in meters, in the Meters coordinates system
  */
-Utils.prototype.converToMeters = function(mapView, canvasPoint){
+Utils.prototype.converToMeters = function(canvas, context, point){
 
-    var w = mapView.canvas.width,
-        h = mapView.canvas.height,
+    var w = canvas.width,
+        h = canvas.height,
 
-        centerP = mapView.context.coordS.MetersToPixels(
-            mapView.context.centerM.x, 
-            mapView.context.centerM.y, 
-            mapView.context.zoom
+        centerP = context.coordS.MetersToPixels(
+            context.centerM.x, 
+            context.centerM.y, 
+            context.zoom
         ),
         
-        shiftX = w/2 - canvasPoint.x,
-        shiftY = h/2 - canvasPoint.y,
+        shiftX = w/2 - point.x,
+        shiftY = h/2 - point.y,
         
-        meters = mapView.context.coordS.PixelsToMeters(
+        meters = context.coordS.PixelsToMeters(
             centerP.x - shiftX, 
             centerP.y + shiftY, 
-            mapView.context.zoom
+            context.zoom
         );
     
     return meters;

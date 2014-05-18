@@ -15,7 +15,6 @@ function MapContext (mapView) {
    this.mouseM             = this.centerM;     // Mouse coordinates in meters
    this.mouseP             = null;             // Mouse coordinates inside the canvas
    this.zoom               = this.startZoom();
-
 }
 
 //-----------------------------------------------------------------------------------//
