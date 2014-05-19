@@ -1,10 +1,10 @@
 var _ = require("../../libs/underscore.js");
 
 /**
- * Mixins for an object to let it trigger hints or receive hints.
- * If this object has a parent, the hint bubbles to this parent. 
+ * Mixins for an object to let it trigger Events or receive Events.
+ * If this object has a parent, the Event bubbles to this parent. 
  */
-function Hint() {
+function Events() {
 
     /* element using this mixin */
     var me = this,
@@ -12,11 +12,15 @@ function Hint() {
         /* the registered event callbacks */
         listeners = [],
 
-        /* register a callback for the given event type
+        //-------------------------------------------------------------//
+        /* 
+         * Register a callback for the given event type
          *
          * @param type {string} the event type triggering the callback
-         * @param cb {function} the callback used when the event type is triggered
-         * @param context {any} an optional context used as "this" for the triggered callback
+         * @param cb {function} the callback used when the event type
+         *                      is triggered
+         * @param context {any} an optional context used as "this" for
+         *                      the triggered callback
          * "this" default to the event emitter if not provided
          */
         on = function (type, cb, context) {
@@ -24,7 +28,9 @@ function Hint() {
         },
 
 
-        /* unregister a previously registered callback
+        //-------------------------------------------------------------//
+        /* 
+         * Unregister a previously registered callback
          *
          * @param type {string} the type of the event listener to unregister
          * @param cb {function} the callback of the listener to unregister
@@ -35,13 +41,20 @@ function Hint() {
             })
         },
 
-        /* trigger an event of the provided type, calling all registered callbacks
-         * for this type of event
+        //-------------------------------------------------------------//
+        /* 
+         * Trigger an event of the provided type, calling all registered 
+         * callbacks for this type of event
          *
          * @param type  {string} the type of the listener to trigger
          * @param event {object} the object containg data
-         *      event.currentTarget : the element having triggered the first trigger
-         *      if no currentTarget is set, then the current element is the first on to call 'trigger'
+         *      
+         *      event.currentTarget : the element having triggered the 
+         *      first trigger.
+         *      
+         *      if no currentTarget is set, then the current element is 
+         *      the first on to call 'trigger'
+         *      
          *      -> set him as currentTarget
          *      
          */
@@ -63,17 +76,20 @@ function Hint() {
             }
         };
 
+    //-------------------------------------------------------------//
     /* public fields */
 
     this.on         = on        .bind(this);
     this.off        = off       .bind(this);
     this.trigger    = trigger   .bind(this);
 
+    //-------------------------------------------------------------//
+    
     return this;
 }
 
 //-------------------------------------------------------------//
 
-module.exports = Hint;
+module.exports = Events;
 
 

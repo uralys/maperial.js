@@ -1,19 +1,19 @@
-//----------------------------------------------------------------------------//
+//---------------------------------------------------------------------------//
+// events here : https://github.com/EightMedia/hammer.js/wiki/Getting-Started
+var Hammer      = require('../../libs/hammer.js');
 
-var Hammer      = require('../libs/hammer.js');
-
-//----------------------------------------------------------------------------//
+//---------------------------------------------------------------------------//
 
 function MouseListener(mapView){
 
-    console.log("  listening mouse...");
+    console.log("  listening mouse");
 
     this.mapView            = mapView;
     this.lastWheelMillis    = new Date().getTime();
     this.initListeners();
 }
 
-//----------------------------------------------------------------------------//
+//---------------------------------------------------------------------------//
 
 MouseListener.prototype.initListeners = function () {
 
@@ -25,17 +25,23 @@ MouseListener.prototype.initListeners = function () {
         case Maperial.ANCHOR:
 
             /* prepare the hammer listening on the canvas */
-            this.hammer             = new Hammer(this.mapView.canvas);
+            this.hammer                 = new Hammer(this.mapView.canvas);
 
-            /* link every function on the listener to be able to call 'off' on them*/
-            this.hammer.drag        = this.drag.bind(this);
+            /* link every function on the listener to be able to 
+             * call 'off' on them*/
+            this.hammer.drag            = this.drag         .bind(this);
+            this.hammer.dragstart       = this.dragstart    .bind(this);
+            this.hammer.dragend         = this.dragend      .bind(this);
+            this.hammer.tap             = this.tap          .bind(this);
 
             /* turn the hammer listening on */
-            this.hammer.on("drag", this.hammer.drag);
+            this.hammer.on("tap",       this.hammer.tap);
+            this.hammer.on("drag",      this.hammer.drag);
+            this.hammer.on("dragstart", this.hammer.dragstart);
+            this.hammer.on("dragend",   this.hammer.dragend);
 
             //this.mapView.canvas.addEventListener("click", this.down        .bind(this));
 
-//          .mousedown  (  )
 //          .mouseup    ( this.up          .bind(this) )
 //          .mouseleave ( this.leave       .bind(this))
 //          .mousemove  ( Utils.apply ( this , "move" ))
@@ -54,11 +60,14 @@ MouseListener.prototype.initListeners = function () {
 
 }
 
-//----------------------------------------------------------------------//
+//---------------------------------------------------------------------------//
 
 MouseListener.prototype.removeListeners = function () {
 
-    this.hammer.off("drag", this.hammer.drag);
+    this.hammer.off("tap",          this.hammer.tap);
+    this.hammer.off("dragstart",    this.hammer.dragstart);
+    this.hammer.off("drag",         this.hammer.drag);
+    this.hammer.off("dragend",      this.hammer.dragend);
 
 //  this.context.mapCanvas.off("mousedown");
 //  this.context.mapCanvas.off("mouseup");
@@ -69,46 +78,46 @@ MouseListener.prototype.removeListeners = function () {
 //  this.context.mapCanvas.unbind('wheelOnZoomer');  
 }
 
-//----------------------------------------------------------------------------//
-
-MouseListener.prototype.down = function (event) {
-
-    event.preventDefault();
-
-    this.mouseDown = true;
-    this.context.mapCanvas.trigger(MaperialEvents.MOUSE_DOWN);
-}
-
-MouseListener.prototype.leave = function (event) {
-    if(this.mouseDown)
-        this.up(event);
-}
-
-MouseListener.prototype.up = function (event) {
-    this.context.mapCanvas.removeClass( 'movable' )
-    this.mouseDown = false; 
-    this.context.mapCanvas.trigger(MaperialEvents.MOUSE_UP);
-}
+//---------------------------------------------------------------------------//
 
 MouseListener.prototype.drag = function (event) {
-
-//  event.preventDefault();
-
-//    this.mapView.context.mouseP = utils.getPoint(event);
-//    this.mapView.context.mouseM = this.convertCanvasPointToMeters ( this.mapView.context.mouseP );
-    
     this.mapView.trigger("drag", event);
-
-//  if (!this.mouseDown){
-//  this.context.mapCanvas.trigger(MaperialEvents.UPDATE_LATLON);
-
-//  $(window).trigger(MaperialEvents.MOUSE_MOVE, [this.mapView.map, this.mapView.name, this.mapView.type]);
-//  }
-//  else{
-//  this.context.mapCanvas.addClass( 'movable' )
-//  $(window).trigger(MaperialEvents.DRAGGING_MAP, [this.mapView.name]);
-//  }
 }
+
+MouseListener.prototype.dragstart = function (event) {
+    this.mapView.trigger("dragstart", event);
+}
+
+MouseListener.prototype.dragend = function (event) {
+    this.mapView.trigger("dragend", event);
+}
+
+MouseListener.prototype.tap = function (event) {
+    this.mapView.trigger("tap", event);
+}
+
+//---------------------------------------------------------------------------//
+// oldies
+
+//
+//MouseListener.prototype.down = function (event) {
+//
+//    event.preventDefault();
+//
+//    this.context.mapCanvas.trigger(MaperialEvents.MOUSE_DOWN);
+//}
+
+//MouseListener.prototype.leave = function (event) {
+//    if(this.mouseDown)
+//        this.up(event);
+//}
+//
+//MouseListener.prototype.up = function (event) {
+//    this.mouseDown = false; 
+//    this.context.mapCanvas.trigger(MaperialEvents.MOUSE_UP);
+//    this.mapView.trigger("drag", event);
+//}
+
 
 MouseListener.prototype.doubleClick = function (event) {
 
@@ -128,7 +137,7 @@ MouseListener.prototype.doubleClick = function (event) {
 
 }
 
-//----------------------------------------------------------------------//
+//---------------------------------------------------------------------------//
 
 MouseListener.prototype.wheel = function (event, delta) {
 
@@ -167,7 +176,7 @@ MouseListener.prototype.wheel = function (event, delta) {
     $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
 }
 
-//----------------------------------------------------------------------//
+//---------------------------------------------------------------------------//
 
 MouseListener.prototype.wheelOnZoomer = function (event, delta) {
 
@@ -200,7 +209,7 @@ MouseListener.prototype.wheelOnZoomer = function (event, delta) {
     $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
 }
 
-//----------------------------------------------------------------------//
+//---------------------------------------------------------------------------//
 //Utils
 
 MouseListener.prototype.hasJustWheeled = function () {
@@ -210,7 +219,7 @@ MouseListener.prototype.hasJustWheeled = function () {
     return hasJustWheeled;
 }
 
-//------------------------------------------------------------------//
+//---------------------------------------------------------------------------//
 
 module.exports = MouseListener;
 

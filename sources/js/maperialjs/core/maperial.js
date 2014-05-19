@@ -1,6 +1,6 @@
 //------------------------------------------------------------------//
 
-var MapView                 = require('./map-view.js'),
+var MapView                 = require('./map/view.js'),
     SourceManager           = require('./managers/source-manager.js'),
     StyleManager            = require('./managers/style-manager.js'),
     ColorbarManager         = require('./managers/colorbar-manager.js'),

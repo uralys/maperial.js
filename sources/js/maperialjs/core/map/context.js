@@ -1,10 +1,10 @@
 //------------------------------------------------------------------//
 
-var CoordinateSystem = require('../libs/coordinate-system.js');
+var CoordinateSystem = require('../../libs/coordinate-system.js');
 
 //------------------------------------------------------------------//
 
-function MapContext (mapView) {
+function Context (mapView) {
    
    this.mapView            = mapView
    
@@ -19,7 +19,7 @@ function MapContext (mapView) {
 
 //-----------------------------------------------------------------------------------//
 
-MapContext.prototype.startZoom = function() {
+Context.prototype.startZoom = function() {
    
    // Options
    if(this.mapView.options.defaultZoom)
@@ -33,7 +33,7 @@ MapContext.prototype.startZoom = function() {
 
 //------------------------------------------------------------------//
 
-MapContext.prototype.startLatitude = function() {
+Context.prototype.startLatitude = function() {
    
    // BoundingBox
    if(this.latMin)
@@ -51,7 +51,7 @@ MapContext.prototype.startLatitude = function() {
 
 //------------------------------------------------------------------//
 
-MapContext.prototype.startLongitude = function() {
+Context.prototype.startLongitude = function() {
    
    // BoundingBox
    if(this.lonMin)       
@@ -69,4 +69,4 @@ MapContext.prototype.startLongitude = function() {
 
 //------------------------------------------------------------------//
 
-module.exports = MapContext;
+module.exports = Context;
