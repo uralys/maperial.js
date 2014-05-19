@@ -7,3 +7,4 @@ static/
 /build
 /node_modules
 .sass-cache
+/.externalToolBuilders
