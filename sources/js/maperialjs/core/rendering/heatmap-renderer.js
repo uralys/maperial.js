@@ -16,7 +16,7 @@ function HeatmapRenderer ( mapView, heatmapData, colorbar, options ) {
    
    this.gl              = mapView.context.assets.ctx;
    this.assets          = mapView.context.assets;
-   this.layerCount      = 0;
+   this.renderingStep      = 0;
    this.z               = null;
    this.tx              = this.ty = this.nbtx = this.nbty = null;
    this.w               = this.h = 0;
@@ -56,7 +56,7 @@ HeatmapRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY ) {
 
    if (cameraMoved || dataChanged) {
       
-      console.log("refesh : reset");
+      console.log("refresh : reset");
       this.reset();
       this.version = this.heatmapData.version;
       
@@ -105,7 +105,7 @@ HeatmapRenderer.prototype.AllocBuffer = function ( sizeX , sizeY ) {
 
 HeatmapRenderer.prototype.reset = function (  ) {
    var gl            = this.gl;
-   this.layerCount   = 0
+   this.renderingStep   = 0
    if ( this.texB ) {
       gl.deleteTexture ( this.texB );
       delete      this.texB;
@@ -129,11 +129,11 @@ HeatmapRenderer.prototype.release = function (  ) {
 }
 
 HeatmapRenderer.prototype.IsUpToDate = function ( ) {
-   return this.layerCount == null;
+   return this.renderingStep == null;
 }
 
 HeatmapRenderer.prototype.update = function () {
-   if (this.frmB == null || this.layerCount == null)
+   if (this.frmB == null || this.renderingStep == null)
       return 0;
    console.log("heat update");
       
@@ -197,7 +197,7 @@ HeatmapRenderer.prototype.update = function () {
       }
    }
    
-   for (var i = this.layerCount ; i < this.heatmapData.content["l"].length ; ++i ) {
+   for (var i = this.renderingStep ; i < this.heatmapData.content["l"].length ; ++i ) {
       var layer   = this.heatmapData.content["l"][i];
       var ll      = layer["g"]; // liste de listes de lignes
       var al      = null; // attributlist
@@ -250,15 +250,15 @@ HeatmapRenderer.prototype.update = function () {
    }
    
    this.gl.disable(this.gl.BLEND);
-   this.layerCount = i + 1
+   this.renderingStep = i + 1
    gl.bindFramebuffer ( gl.FRAMEBUFFER, null );
    
-   if ( this.layerCount >= this.heatmapData.content["l"].length ) {
+   if ( this.renderingStep >= this.heatmapData.content["l"].length ) {
       this._BuildTexture();
       gl.deleteFramebuffer       ( this.frmB );
       delete this.frmB;
       this.frmB = null;
-      this.layerCount = null;
+      this.renderingStep = null;
    }
    return diffT
 }
@@ -266,7 +266,7 @@ HeatmapRenderer.prototype.update = function () {
 HeatmapRenderer.prototype.GetTex = function ( tx , ty ) {
    var i = tx - this.tx;
    var j = ty - this.ty;
-   if ( i >= this.nbtx || j >= this.nbty || this.layerCount != null || i < 0 || j < 0) {
+   if ( i >= this.nbtx || j >= this.nbty || this.renderingStep != null || i < 0 || j < 0) {
       console.log ( "invalid custom tile")
       return null
    }

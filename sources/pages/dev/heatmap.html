@@ -31,13 +31,14 @@
 		//-----------------------------------------------//
 		//Layer Images
 	
-		map.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
+		//map.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
 	
 		//-----------------------------------------------//
 		//Layer Vectorial Data 
 	
 		var data = new HeatmapData();
-		fillDummyHeatmap(data);
+		//fillDummyHeatmap(data);
+        data.addPoint (51.516584, 2.2186998, 1000000 , 0.6 ); 
 	
 		var colorbar = colorbarManager.createColorbar();
 	

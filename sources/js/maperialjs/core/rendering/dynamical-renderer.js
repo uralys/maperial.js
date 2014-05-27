@@ -16,7 +16,7 @@ function DynamicalRenderer ( gl, dynamicalData, style ) {
    this.gl              = gl;
    this.cnv             = null;
    this.ctx             = null;
-   this.layerCount      = 0;
+   this.renderingStep   = 0;
    this.z               = null;
    this.tx              = null;
    this.ty              = null; 
@@ -115,7 +115,7 @@ DynamicalRenderer.prototype.AllocCanvas = function ( sizeX, sizeY) {
 
 DynamicalRenderer.prototype.reset = function (  ) {
    var gl            = this.gl;
-   this.layerCount   = 0
+   this.renderingStep   = 0
    if (this.cnv) {
       delete      this.cnv;
       this.cnv    = null;
@@ -133,12 +133,12 @@ DynamicalRenderer.prototype.release = function (  ) {
 }
 
 DynamicalRenderer.prototype.IsUpToDate = function ( ) {
-   return this.layerCount == null;
+   return this.renderingStep == null;
 }
 
 DynamicalRenderer.prototype.update = function () {
 
-   if (this.cnv == null || this.layerCount == null || this.style == null)
+   if (this.cnv == null || this.renderingStep == null || this.style == null)
       return 0;
 
    var gl         = this.gl;
@@ -148,8 +148,8 @@ DynamicalRenderer.prototype.update = function () {
    this.ctx._tx = this.trX;
    this.ctx._ty = this.trY;
 
-   var rendererStatus   = TileRenderer.RenderDynamicalLayer (this.ctx , this.dynamicalData , this.z , this.style , this.layerCount ) ;
-   this.layerCount      = rendererStatus[0];
+   var rendererStatus   = TileRenderer.RenderDynamicalLayer (this.ctx , this.dynamicalData , this.z , this.style , this.renderingStep ) ;
+   this.renderingStep      = rendererStatus[0];
 
    var diffT = 0;
    if (this.IsUpToDate()) { // render is finished, build GL Texture
@@ -165,7 +165,7 @@ DynamicalRenderer.prototype.update = function () {
 DynamicalRenderer.prototype.GetTex = function ( tx , ty) {
    var i = tx - this.tx;
    var j = ty - this.ty;
-   if ( i >= this.nbtx || j >= this.nbty || this.layerCount != null || i < 0 || j < 0) {
+   if ( i >= this.nbtx || j >= this.nbty || this.renderingStep != null || i < 0 || j < 0) {
       console.log ( "invalid custom tile")
       return null
    }
