@@ -1,12 +1,12 @@
 
 var GLTools                 = require("./tools/gl-tools.js"),
-    Point                   = require('../../libs/point.js'),
-    Tile                    = require('./tile.js'),
-    ColorbarRenderer        = require('./colorbar-renderer.js'),
-    DynamicalRenderer       = require('./dynamical-renderer.js'),
-    HeatmapRenderer         = require('./heatmap-renderer.js'),
-    utils                   = require('../../../libs/utils.js'),
-    mat4                    = require('../../libs/gl-matrix-min.js').mat4;
+Point                   = require('../../libs/point.js'),
+Tile                    = require('./tile.js'),
+ColorbarRenderer        = require('./colorbar-renderer.js'),
+DynamicalRenderer       = require('./dynamical-renderer.js'),
+HeatmapRenderer         = require('./heatmap-renderer.js'),
+utils                   = require('../../../libs/utils.js'),
+mat4                    = require('../../libs/gl-matrix-min.js').mat4;
 
 //=====================================================================================//
 
@@ -47,7 +47,7 @@ MapRenderer.prototype.start = function () {
     this.gltools = new GLTools ()
     this.initGL()
 
-    this.drawSceneInterval = setInterval( this.drawScene.bind(this) );
+    this.drawSceneInterval = setInterval( this.drawScene.bind(this), Maperial.refreshRate );
     return true;
 } 
 
@@ -96,20 +96,20 @@ MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, optio
 MapRenderer.prototype.drawScene = function ( ) {
 
     var w = this.mapView.canvas.clientWidth,
-        h = this.mapView.canvas.clientHeight,
+    h = this.mapView.canvas.clientHeight,
 
-        w2 = Math.floor ( w / 2 ),
-        h2 = Math.floor ( h / 2 ),
+    w2 = Math.floor ( w / 2 ),
+    h2 = Math.floor ( h / 2 ),
 
-        r       = this.mapView.context.coordS.Resolution ( this.mapView.context.zoom ),
-        originM = new Point( this.mapView.context.centerM.x - w2 * r , this.mapView.context.centerM.y + h2 * r ),
-        tileC   = this.mapView.context.coordS.MetersToTile ( originM.x, originM.y , this.mapView.context.zoom ),
+    r       = this.mapView.context.coordS.Resolution ( this.mapView.context.zoom ),
+    originM = new Point( this.mapView.context.centerM.x - w2 * r , this.mapView.context.centerM.y + h2 * r ),
+    tileC   = this.mapView.context.coordS.MetersToTile ( originM.x, originM.y , this.mapView.context.zoom ),
 
-        originP = this.mapView.context.coordS.MetersToPixels ( originM.x, originM.y, this.mapView.context.zoom ),
-        shift   = new Point ( Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) ),
+    originP = this.mapView.context.coordS.MetersToPixels ( originM.x, originM.y, this.mapView.context.zoom ),
+    shift   = new Point ( Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) ),
 
-        nbTileX = Math.floor ( w  / Maperial.tileSize + 1 ),
-        nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
+    nbTileX = Math.floor ( w  / Maperial.tileSize + 1 ),
+    nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
 
     //-----------------------------------------------------------------//
 
@@ -125,11 +125,11 @@ MapRenderer.prototype.drawScene = function ( ) {
     if ( this.updateTiles ( tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {
 
         var mvMatrix      = mat4.create(),
-            pMatrix       = mat4.create();
-        
+        pMatrix       = mat4.create();
+
         mat4.identity    ( pMatrix );
         mat4.ortho       ( 0, w , h, 0 , 0, 1, pMatrix ); // Y swap !
-        
+
         this.gl.viewport ( 0, 0, w , h);
         this.gl.clear    ( this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT );
 
@@ -167,7 +167,7 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
     for ( tx = txB ; tx <= txE ; tx++) {
         for ( ty = tyB ; ty <= tyE ; ty++) {
             var key = tx + "," + ty + "," + zoom;
-            keyList.push(key)
+            keyList.push(key);
 
             if ( this.mapView.tiles[key] == null ) {
                 this.mapView.tiles[key] = this.createTile(tx, ty, zoom);
@@ -199,7 +199,12 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
     for (var ki = 0 ; ki < keyList.length ; ki++) {      
         var tile = this.mapView.tiles[keyList[ki]];
         if (tile && !tile.IsUpToDate () )  {
-            tileModified = true
+            tileModified = true;
+
+            if(tile.x == 64 && tile.y == 84){
+                console.log("tile 64,84 -----> require update");
+            }
+
             timeRemaining = tile.update( timeRemaining )
             if ( timeRemaining <= 0 )
                 break;

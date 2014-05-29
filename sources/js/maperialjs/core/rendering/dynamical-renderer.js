@@ -17,6 +17,7 @@ function DynamicalRenderer ( gl, dynamicalData, style ) {
    this.cnv             = null;
    this.ctx             = null;
    this.renderingStep   = 0;
+   
    this.z               = null;
    this.tx              = null;
    this.ty              = null; 

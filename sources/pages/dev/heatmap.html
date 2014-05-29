@@ -24,21 +24,20 @@
 		var map = maperial.addView({
             container       : "heatmap",
 		    defaultZoom     : 7,
-		    latitude        : 51.516584,
-		    longitude       : 2.2186998
+		    latitude        : 50.916584,
+		    longitude       : 3.136998
 		});
-	
+
 		//-----------------------------------------------//
 		//Layer Images
 	
-		//map.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
+		map.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
 	
 		//-----------------------------------------------//
 		//Layer Vectorial Data 
 	
 		var data = new HeatmapData();
-		//fillDummyHeatmap(data);
-        data.addPoint (51.516584, 2.2186998, 1000000 , 0.6 ); 
+		fillDummyHeatmap(data);
 	
 		var colorbar = colorbarManager.createColorbar();
 	
@@ -46,7 +45,7 @@
 		        colorbar      : colorbar,
 		        diameter      : 300,
 		        scale         : 0.8,
-		        fill          : "linear",
+		        fill          : "linear", // "gaussian"
 		        diameterUnit  : "meter",
 		};
 	

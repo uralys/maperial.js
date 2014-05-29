@@ -42,11 +42,24 @@ Tile.prototype.Refresh = function () {
 }
 
 Tile.prototype.IsUpToDate = function () {
+    
+        
     var textureReady            = this.textureReady(),
         allLayerPartsAreReady   = true;
+
+    if(this.x == 64 && this.y == 84){
+        console.log("tile 64,84 -----> textureReady : " + textureReady);
+    }
     
     for(var i = 0; i< this.layerParts.length; i++){
         if (! this.layerParts[i].IsUpToDate ()){
+            
+
+            if(this.x == 64 && this.y == 84){
+                console.log("tile 64,84 -----> layerParts : " + i + " is not up to date");
+            }
+            
+            
             allLayerPartsAreReady = false;
             break;
         }
@@ -269,10 +282,10 @@ Tile.prototype.update = function ( maxTime ) {
 
    //--------------------------------------//
 
-   var date                 = (new Date)
-   var startT               = date.getTime()
-   var diffT                = 0
-   var noLayerPartUpdate    = true;
+   var date                 = new Date(),
+       startT               = date.getTime(),
+       diffT                = 0,
+       noLayerPartUpdate    = true;
 
    //--------------------------------------//
    // layerParts update

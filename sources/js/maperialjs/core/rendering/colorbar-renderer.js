@@ -34,7 +34,7 @@ ColorbarRenderer.prototype.renderColorbar = function (colorbar) {
    }
 
    if(!colorbar.tex)
-      colorbar.tex = {};
+      colorbar.tex = [];
 
    // Raster it !
    var data = [];

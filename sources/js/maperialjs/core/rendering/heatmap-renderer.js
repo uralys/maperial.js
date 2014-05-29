@@ -16,9 +16,14 @@ function HeatmapRenderer ( mapView, heatmapData, colorbar, options ) {
    
    this.gl              = mapView.context.assets.ctx;
    this.assets          = mapView.context.assets;
-   this.renderingStep      = 0;
+   this.renderingStep   = 0;
+   
    this.z               = null;
-   this.tx              = this.ty = this.nbtx = this.nbty = null;
+   this.tx              = null;
+   this.ty              = null; 
+   this.nbtx            = null;
+   this.nbty            = null;
+   
    this.w               = this.h = 0;
    this.frmB            = null;
    this.texB            = null;
@@ -310,14 +315,13 @@ HeatmapRenderer.prototype._BuildTexture = function () {
          var fbtx         = gltools.CreateFrameBufferTex(gl,256,256);
          var frmB         = fbtx[0];
          var tex          = fbtx[1];
-      
+       
          gl.bindFramebuffer         ( gl.FRAMEBUFFER, frmB );
          gl.disable                 ( gl.DEPTH_TEST  );
          gl.viewport                ( 0, 0, 256, 256 );
 
          gl.activeTexture           (gl.TEXTURE0);
-//         gl.bindTexture             (gl.TEXTURE_2D, this.texB);
-         gl.bindTexture             (gl.TEXTURE_2D, tex);
+         gl.bindTexture             (gl.TEXTURE_2D, this.texB);
          gl.uniform1i               (prog.params.uSamplerTex1.name, 0);
          
          gl.activeTexture           (gl.TEXTURE1);

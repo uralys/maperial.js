@@ -26,27 +26,6 @@ Utils.prototype.dateTime = function()
 }
 
 //----------------------------------------------------------------------------------------//
-
-Utils.prototype.alert = function (area, type, title, message) {
-   $("#" + area).append($("<div class='alert-message alert-" + type + " fade in' data-alert><a class=\"btn btn-rounded btn-icon-only btn-dark closer\" data-dismiss=\"alert\"> <i class=\"icon icon-ex-white-outline\"></i></a><h4 class=\"alert-heading\">"+title+"</h4> " + message + " </div>"));
-   //$(".alert-message").delay(2000).fadeOut("slow", function () { $(this).remove(); });
-}
-
-//----------------------------------------------------------------------------------------//
-
-/*
- * helpers for html encoding and decoding
- */
-Utils.prototype.htmlEncode = function (value){
-   return $('<div/>').text(value).html();
-}
-
-Utils.prototype.htmlDecode = function(value){
-   return $('<div/>').html(value).text();
-}
-
-//----------------------------------------------------------------------------------------//
-
 /*
  */
 Utils.prototype.replaceAll = function(chain, value, replacement)
@@ -204,26 +183,6 @@ Utils.prototype.getSourceThumb = function(layer) {
 
 //----------------------------------------------------------------------------------------//
 
-//ui-slider-handle ui-state-default ui-corner-all
-Utils.prototype.buildSliderStyle = function (id){
-
-   $("#" + id + " a").css({color:"#000"});
-   $("#" + id + " a").css({textDecoration:"none"});
-   $("#" + id + " a").css({textAlign:"center"});
-   $("#" + id + " a").css({width:"20px"});
-   $("#" + id + " a").css({height:"20px"});
-   $("#" + id + " a").css({borderTopLeftRadius:"30px"});
-   $("#" + id + " a").css({borderTopRightRadius:"30px"});
-   $("#" + id + " a").css({borderBottomLeftRadius:"30px"});
-   $("#" + id + " a").css({borderBottomRightRadius:"30px"});
-   $("#" + id + " a").css({outline:"none"});
-   $("#" + id + " a").css({cursor:"pointer"});
-   $("#" + id + " a").css({cursor:"hand"});
-
-}
-
-//----------------------------------------------------------------------------------------//
-
 Utils.prototype.getPoint = function (event) {
    return {
        x : event.gesture.center.clientX,
@@ -267,8 +226,14 @@ Utils.prototype.randomRotate = function (element) {
    if(Math.abs(rotation) < 2)
       this.randomRotate(element)
    else{
-      $("#"+element).css("-webkit-transform", "rotate("+rotation+"deg)")
-      $("#"+element).css("-moz-transform", "rotate("+rotation+"deg)")
+       
+//       node.style.transform = style;
+//       node.style.webkitTransform = style;
+//       node.style.mozTransform = style;
+//       
+//       
+//      $("#"+element).css("-webkit-transform", "rotate("+rotation+"deg)")
+//      $("#"+element).css("-moz-transform", "rotate("+rotation+"deg)")
    }
       
 }
@@ -299,13 +264,13 @@ Utils.prototype.prepareOptions = function (options, mainParam) {
    
 //----------------------------------------------------------------------------------------//
    
-Utils.prototype.cloneJsonObject = function (jsonObject) {
-   return $.parseJSON(JSON.stringify(jsonObject));
-}
-
-Utils.prototype.odump = function(o){
-   console.log(this.cloneJsonObject(o));
-}
+//Utils.prototype.cloneJsonObject = function (jsonObject) {
+//   return $.parseJSON(JSON.stringify(jsonObject));
+//}
+//
+//Utils.prototype.odump = function(o){
+//   console.log(this.cloneJsonObject(o));
+//}
 
 //------------------------------------------------------------------//
 
