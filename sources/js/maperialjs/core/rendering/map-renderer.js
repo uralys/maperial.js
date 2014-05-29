@@ -177,7 +177,7 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
 
     // unload unnecessary loaded tile
     for (var key in this.mapView.tiles) {
-        var isInKeyList = false
+        var isInKeyList = false;
         for (var ki = 0 ; ki < keyList.length ; ki++) {
             if (keyList[ki] === key) isInKeyList = true
         }
@@ -189,21 +189,17 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
 
     if ( forceTileRedraw ) {
         for (var key in this.mapView.tiles) {
-            var tile = this.mapView.tiles[key].reset ( );
+            this.mapView.tiles[key].reset ( );
         }
     }
 
-    var tileModified  = false;
-    var timeRemaining = Maperial.refreshRate - 5;
+    var tileModified  = false,
+        timeRemaining = Maperial.refreshRate - 5;
 
     for (var ki = 0 ; ki < keyList.length ; ki++) {      
         var tile = this.mapView.tiles[keyList[ki]];
         if (tile && !tile.IsUpToDate () )  {
             tileModified = true;
-
-            if(tile.x == 64 && tile.y == 84){
-                console.log("tile 64,84 -----> require update");
-            }
 
             timeRemaining = tile.update( timeRemaining )
             if ( timeRemaining <= 0 )

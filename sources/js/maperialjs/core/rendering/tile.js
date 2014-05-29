@@ -47,19 +47,8 @@ Tile.prototype.IsUpToDate = function () {
     var textureReady            = this.textureReady(),
         allLayerPartsAreReady   = true;
 
-    if(this.x == 64 && this.y == 84){
-        console.log("tile 64,84 -----> textureReady : " + textureReady);
-    }
-    
     for(var i = 0; i< this.layerParts.length; i++){
         if (! this.layerParts[i].IsUpToDate ()){
-            
-
-            if(this.x == 64 && this.y == 84){
-                console.log("tile 64,84 -----> layerParts : " + i + " is not up to date");
-            }
-            
-            
             allLayerPartsAreReady = false;
             break;
         }
@@ -85,7 +74,6 @@ Tile.prototype.release = function() {
            layerPart.release();
        }
        catch(e){
-           console.log("------------> tile.release")
            console.log(e, layerPart)
        } 
        
@@ -311,7 +299,6 @@ Tile.prototype.update = function ( maxTime ) {
    }
    else{
       if ( !noLayerPartUpdate && (maxTime - diffT > 0) ) {
-         console.log("tile refresh + compose");
          this.Refresh();
          this.compose();
          diffT   = date.getTime() - startT;
@@ -415,54 +402,55 @@ Tile.prototype.copy = function ( backTex , destFB ) {
 
 Tile.prototype.fuse = function ( backTex,frontTex,destFB, prog, params ) {
 
-   var gl                           = this.gl;
+   var gl                           = this.gl,
+       mvMatrix                     = mat4.create(),
+       pMatrix                      = mat4.create();
+   
    gl.bindFramebuffer               ( gl.FRAMEBUFFER, destFB );
 
-   this.gl.clearColor               ( 1.0, 1.0, 1.0, 1.0  );
-   this.gl.disable                  ( this.gl.DEPTH_TEST  );
+   gl.clearColor                    ( 1.0, 1.0, 1.0, 1.0  );
+   gl.disable                       ( gl.DEPTH_TEST  );
    gl.viewport                      ( 0, 0, destFB.width, destFB.height);
    gl.clear                         ( gl.COLOR_BUFFER_BIT );
 
-   var mvMatrix                     = mat4.create();
-   var pMatrix                      = mat4.create();
    mat4.identity                    ( pMatrix );
    mat4.identity                    ( mvMatrix );
    mat4.ortho                       ( 0, destFB.width , 0, destFB.height, 0, 1, pMatrix ); // Y swap !
 
 
-   this.gl.useProgram               (prog);
-   this.gl.uniformMatrix4fv         (prog.params.pMatrixUniform.name , false, pMatrix);
-   this.gl.uniformMatrix4fv         (prog.params.mvMatrixUniform.name, false, mvMatrix);
-   this.gl.bindBuffer               (this.gl.ARRAY_BUFFER, this.assets.squareVertexPositionBuffer);
-   this.gl.enableVertexAttribArray  (prog.attr.vertexPositionAttribute);
-   this.gl.vertexAttribPointer      (prog.attr.vertexPositionAttribute, this.assets.squareVertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
+   gl.useProgram                    (prog);
+   gl.uniformMatrix4fv              (prog.params.pMatrixUniform.name , false, pMatrix);
+   gl.uniformMatrix4fv              (prog.params.mvMatrixUniform.name, false, mvMatrix);
+   gl.bindBuffer                    (gl.ARRAY_BUFFER, this.assets.squareVertexPositionBuffer);
+   gl.enableVertexAttribArray       (prog.attr.vertexPositionAttribute);
+   gl.vertexAttribPointer           (prog.attr.vertexPositionAttribute, this.assets.squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-   this.gl.bindBuffer               (this.gl.ARRAY_BUFFER, this.assets.squareVertexTextureBuffer);
-   this.gl.enableVertexAttribArray  (prog.attr.textureCoordAttribute);
-   this.gl.vertexAttribPointer      (prog.attr.textureCoordAttribute, this.assets.squareVertexTextureBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
+   gl.bindBuffer                    (gl.ARRAY_BUFFER, this.assets.squareVertexTextureBuffer);
+   gl.enableVertexAttribArray       (prog.attr.textureCoordAttribute);
+   gl.vertexAttribPointer           (prog.attr.textureCoordAttribute, this.assets.squareVertexTextureBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 
-   this.gl.activeTexture            (this.gl.TEXTURE0);
-   this.gl.bindTexture              (this.gl.TEXTURE_2D, backTex );
-   this.gl.uniform1i                (prog.params.uSamplerTex1.name, 0);
+   gl.activeTexture                 (gl.TEXTURE0);
+   gl.bindTexture                   (gl.TEXTURE_2D, backTex );
+   gl.uniform1i                     (prog.params.uSamplerTex1.name, 0);
 
-   this.gl.activeTexture            (this.gl.TEXTURE1);
-   this.gl.bindTexture              (this.gl.TEXTURE_2D, frontTex );
-   this.gl.uniform1i                (prog.params.uSamplerTex2.name, 1);
+   gl.activeTexture                 (gl.TEXTURE1);
+   gl.bindTexture                   (gl.TEXTURE_2D, frontTex );
+   gl.uniform1i                     (prog.params.uSamplerTex2.name, 1);
 
    for (var p in params) {
       // WRONG !!!!! always  uniform3fv ???
-      //this.gl.uniform3fv             (prog.params[p] , params[p] ); 
-      this.gl[prog.params[p].fct] (prog.params[p].name, params[p] ); 
+      //gl.uniform3fv             (prog.params[p] , params[p] ); 
+      gl[prog.params[p].fct] (prog.params[p].name, params[p] ); 
    }
 
-   this.gl.drawArrays               (this.gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
+   gl.drawArrays                    (gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
 
-   this.gl.bindFramebuffer          (this.gl.FRAMEBUFFER, null );
-   this.gl.activeTexture            (this.gl.TEXTURE0);
-   this.gl.bindTexture              (this.gl.TEXTURE_2D, null );
-   this.gl.activeTexture            (this.gl.TEXTURE1);
-   this.gl.bindTexture              (this.gl.TEXTURE_2D, null );
+   gl.bindFramebuffer               (gl.FRAMEBUFFER, null );
+   gl.activeTexture                 (gl.TEXTURE0);
+   gl.bindTexture                   (gl.TEXTURE_2D, null );
+   gl.activeTexture                 (gl.TEXTURE1);
+   gl.bindTexture                   (gl.TEXTURE_2D, null );
 }
 
 //----------------------------------------------------------------------------------------------------------------------//
