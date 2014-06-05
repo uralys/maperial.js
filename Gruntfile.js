@@ -4,6 +4,24 @@ module.exports = function(grunt) {
 
     var gruntCfg = {
             pkg : grunt.file.readJSON('package.json'),
+            env : grunt.file.readJSON('environment/env.json'),
+
+            replace: {
+                dist: {
+                    options: {
+                        patterns: [{
+                            match: 'staticURL',
+                            replacement: '<%= env.staticURL %>'
+                        }]
+                    },
+                    files: [{
+                        expand: true, 
+                        flatten: true, 
+                        src: ['environment/config.js'], 
+                        dest: 'sources/js/environment/'
+                    }]
+                }
+            },
 
             browserify: {
 
@@ -15,7 +33,7 @@ module.exports = function(grunt) {
                         debug : true
                     }
                 },
-                
+
                 /* prod : build as standalone */
                 standalone: {
                     src: [ 'sources/js/maperialjs/core/maperial.js' ],
@@ -41,10 +59,10 @@ module.exports = function(grunt) {
 
             sass: {
                 options: {
-                   compass   : true,
-                   sourcemap : true,
-                   quiet     : true,
-                   style     : 'compressed'
+                    compass   : true,
+                    sourcemap : true,
+                    quiet     : true,
+                    style     : 'compressed'
                 },
                 dist: {
                     files: [{
@@ -71,7 +89,8 @@ module.exports = function(grunt) {
     /** load plugin tasks */
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-renderer');
+    grunt.loadNpmTasks('grunt-replace');
+//  grunt.loadNpmTasks('grunt-environment');
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-contrib-sass');
 
@@ -83,9 +102,9 @@ module.exports = function(grunt) {
     grunt.registerTask('jsmin',     ['standalone', 'uglify']);
 
     /** register custom 'deps' task */
-    grunt.registerTask('dev',       ['exec:clean','exec:tmp','js', 'css', 'exec:assets']);
-    grunt.registerTask('min',       ['exec:clean','exec:tmp','jsmin', 'css', 'exec:assets']);
+    grunt.registerTask('dev',       ['exec:clean','exec:tmp', 'replace', 'js',      'css', 'exec:assets']);
+    grunt.registerTask('prod',      ['exec:clean','exec:tmp', 'replace', 'jsmin',   'css', 'exec:assets']);
 
     /** default is min */
-    grunt.registerTask('default',['min']);
+    grunt.registerTask('default', ['prod']);
 };

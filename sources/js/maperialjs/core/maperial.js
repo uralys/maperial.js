@@ -7,7 +7,8 @@ var MapView                 = require('./map/view.js'),
     DynamicalData           = require('./models/data/dynamical-data.js'),
     HeatmapData             = require('./models/data/heatmap-data.js'),
     Source                  = require('./models/source.js'),
-    utils                   = require('../../libs/utils.js');
+    utils                   = require('../../libs/utils.js'),
+    environment             = require('../../environment/config.js');
 
 //------------------------------------------------------------------//
 
@@ -52,7 +53,7 @@ Maperial.VECTORIAL_DATA          = "data";
 
 //------------------------------------------------------------------//
 
-Maperial.staticURL              = (window.location.hostname.indexOf("localhost") !== -1) ? 'http://static.maperial.localhost' : 'http://static.maperial.com';
+Maperial.staticURL              = environment.staticURL;
 
 Maperial.apiURL                 = 'http://api.maperial.com';
 Maperial.tileURL                = 'http://api.maperial.com';

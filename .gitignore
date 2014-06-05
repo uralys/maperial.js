@@ -8,3 +8,5 @@ static/
 /node_modules
 .sass-cache
 /.externalToolBuilders
+/environment/env.json
+/sources/js/environment/
