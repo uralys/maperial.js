@@ -93,7 +93,14 @@ MapRenderer.prototype.addDynamicalRenderer = function(dynamicalData, style){
 //-------------------------------------------------------------------------
 
 MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, options){
-    var renderer = new HeatmapRenderer(this.mapView, heatmapData, colorbar, options);
+    
+    var renderer = new HeatmapRenderer(
+        this.mapView, 
+        heatmapData, 
+        colorbar, 
+        options
+    );
+    
     this.dynamicalRenderers[renderer.id] = renderer;
     return renderer;
 }
@@ -103,20 +110,37 @@ MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, optio
 MapRenderer.prototype.drawScene = function ( ) {
 
     var w = this.mapView.canvas.clientWidth,
-    h = this.mapView.canvas.clientHeight,
-
-    w2 = Math.floor ( w / 2 ),
-    h2 = Math.floor ( h / 2 ),
-
-    r       = this.mapView.context.coordS.Resolution ( this.mapView.context.zoom ),
-    originM = new Point( this.mapView.context.centerM.x - w2 * r , this.mapView.context.centerM.y + h2 * r ),
-    tileC   = this.mapView.context.coordS.MetersToTile ( originM.x, originM.y , this.mapView.context.zoom ),
-
-    originP = this.mapView.context.coordS.MetersToPixels ( originM.x, originM.y, this.mapView.context.zoom ),
-    shift   = new Point ( Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) ),
-
-    nbTileX = Math.floor ( w  / Maperial.tileSize + 1 ),
-    nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
+        h = this.mapView.canvas.clientHeight,
+    
+        w2 = Math.floor ( w / 2 ),
+        h2 = Math.floor ( h / 2 ),
+    
+        r  = this.mapView.context.coordS.Resolution (this.mapView.context.zoom),
+        
+        originM = new Point( 
+            this.mapView.context.centerM.x - w2 * r , 
+            this.mapView.context.centerM.y + h2 * r 
+        ),
+        
+        tileC   = this.mapView.context.coordS.MetersToTile ( 
+            originM.x,
+            originM.y , 
+            this.mapView.context.zoom 
+        ),
+    
+        originP = this.mapView.context.coordS.MetersToPixels ( 
+            originM.x, 
+            originM.y, 
+            this.mapView.context.zoom 
+        ),
+        
+        shift   = new Point ( 
+            Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , 
+            Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) 
+        ),
+    
+        nbTileX = Math.floor ( w  / Maperial.tileSize + 1 ),
+        nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
 
     //---------------------------------------------------------------
 
@@ -129,10 +153,16 @@ MapRenderer.prototype.drawScene = function ( ) {
 
     //---------------------------------------------------------------
 
-    if ( this.updateTiles ( tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {
+    if ( this.updateTiles ( 
+            tileC.x , 
+            tileC.x + nbTileX , 
+            tileC.y - nbTileY , 
+            tileC.y , 
+            this.forceTileRedraw ) 
+    || this.forceGlobalRedraw) {
 
         var mvMatrix      = mat4.create(),
-        pMatrix       = mat4.create();
+            pMatrix       = mat4.create();
 
         mat4.identity    ( pMatrix );
         mat4.ortho       ( 0, w , h, 0 , 0, 1, pMatrix ); // Y swap !
@@ -155,7 +185,13 @@ MapRenderer.prototype.drawScene = function ( ) {
 
     for( var rendererId in this.dynamicalRenderers) {
         var renderer = this.dynamicalRenderers[rendererId];
-        renderer.Refresh ( this.mapView.context.zoom , tileC.x , tileC.y - nbTileY , nbTileX + 1 , nbTileY + 1 ) ;
+        renderer.Refresh ( 
+            this.mapView.context.zoom , 
+            tileC.x , 
+            tileC.y - nbTileY , 
+            nbTileX + 1 , 
+            nbTileY + 1 
+        ) ;
     }
 
     //---------------------------------------------------------------
@@ -252,14 +288,27 @@ function prepareGL( glAsset , gl , glTools) {
         false
     );
 
-    var vertices                                  = [ 0.0  , 0.0  , 0.0,     256.0, 0.0  , 0.0,      0.0  , 256.0, 0.0,      256.0, 256.0, 0.0 ];
+    var vertices = [ 
+                    0.0    , 0.0   , 0.0,     
+                    256.0  , 0.0   , 0.0,      
+                    0.0    , 256.0 , 0.0,      
+                    256.0  , 256.0 , 0.0 
+                    ];
+
     glAsset.squareVertexPositionBuffer            = gl.createBuffer();
     gl.bindBuffer   ( gl.ARRAY_BUFFER, glAsset.squareVertexPositionBuffer );
     gl.bufferData   ( gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW );
     glAsset.squareVertexPositionBuffer.itemSize   = 3;
     glAsset.squareVertexPositionBuffer.numItems   = 4;
 
-    var textureCoords                             = [ 0.0, 0.0,     1.0, 0.0,      0.0, 1.0,      1.0, 1.0 ]; // Y swap
+    // Y swap
+    var textureCoords = [ 
+                          0.0, 0.0,     
+                          1.0, 0.0,      
+                          0.0, 1.0,      
+                          1.0, 1.0 
+                          ];
+    
     glAsset.squareVertexTextureBuffer             = gl.createBuffer();
     gl.bindBuffer   ( gl.ARRAY_BUFFER, glAsset.squareVertexTextureBuffer );
     gl.bufferData   ( gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW );
