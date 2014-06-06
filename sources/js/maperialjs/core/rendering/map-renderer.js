@@ -1,14 +1,15 @@
 
 var GLTools                 = require("./tools/gl-tools.js"),
-Point                   = require('../../libs/point.js'),
-Tile                    = require('./tile.js'),
-ColorbarRenderer        = require('./colorbar-renderer.js'),
-DynamicalRenderer       = require('./dynamical-renderer.js'),
-HeatmapRenderer         = require('./heatmap-renderer.js'),
-utils                   = require('../../../libs/utils.js'),
-mat4                    = require('../../libs/gl-matrix-min.js').mat4;
+    Point                   = require('../../libs/point.js'),
+    Tile                    = require('./tile.js'),
+    ColorbarRenderer        = require('./colorbar-renderer.js'),
+    DynamicalRenderer       = require('./dynamical-renderer.js'),
+    HeatmapRenderer         = require('./heatmap-renderer.js'),
+    utils                   = require('../../../libs/utils.js'),
+    mat4                    = require('../../libs/gl-matrix-min.js').mat4,
+    ajax                    = require('../../../libs/ajax.js');
 
-//=====================================================================================//
+//-----------------------------------------------------------------------------
 
 function MapRenderer(mapView) {
 
@@ -26,7 +27,7 @@ function MapRenderer(mapView) {
     this.colorbarRenderer      = new ColorbarRenderer(this.mapView);
 }
 
-//----------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 MapRenderer.prototype.start = function () {
 
@@ -34,8 +35,10 @@ MapRenderer.prototype.start = function () {
     this.drawSceneInterval = null;
 
     try {
-        // Try to grab the standard context. If it fails, fallback to experimental.
-        this.gl = this.mapView.canvas.getContext("webgl") || this.mapView.canvas.getContext("experimental-webgl");
+        // Try to grab the standard context.
+        // If it fails, fallback to experimental.
+        this.gl =   this.mapView.canvas.getContext("webgl") 
+                ||  this.mapView.canvas.getContext("experimental-webgl");
         this.fitToSize();
     } catch (e) {}
 
@@ -44,14 +47,18 @@ MapRenderer.prototype.start = function () {
         return false;
     }
 
-    this.gltools = new GLTools ()
-    this.initGL()
+    this.gltools = new GLTools ();
+    this.initGL();
 
-    this.drawSceneInterval = setInterval( this.drawScene.bind(this), Maperial.refreshRate );
+    this.drawSceneInterval = setInterval( 
+        this.drawScene.bind(this), 
+        Maperial.refreshRate 
+    );
+    
     return true;
 } 
 
-//----------------------------------------------------------------------//
+//--------------------------------------------------------------------
 
 MapRenderer.prototype.fitToSize = function () {
 
@@ -75,7 +82,7 @@ MapRenderer.prototype.initGL = function () {
 
 }
 
-//----------------------------------------------------------------------//
+//--------------------------------------------------------------------
 
 MapRenderer.prototype.addDynamicalRenderer = function(dynamicalData, style){
     var renderer = new DynamicalRenderer(this.gl, dynamicalData, style);
@@ -83,7 +90,7 @@ MapRenderer.prototype.addDynamicalRenderer = function(dynamicalData, style){
     return renderer;
 }
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 
 MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, options){
     var renderer = new HeatmapRenderer(this.mapView, heatmapData, colorbar, options);
@@ -91,7 +98,7 @@ MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, optio
     return renderer;
 }
 
-//----------------------------------------------------------------------//
+//--------------------------------------------------------------------
 
 MapRenderer.prototype.drawScene = function ( ) {
 
@@ -111,16 +118,16 @@ MapRenderer.prototype.drawScene = function ( ) {
     nbTileX = Math.floor ( w  / Maperial.tileSize + 1 ),
     nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
 
-    //-----------------------------------------------------------------//
+    //---------------------------------------------------------------
 
     // TODO : utiliser le principe de version des colorbars ici aussi
 //  this.renderAllColorBars();
 
-    //-----------------------------------------------------------------//
+    //---------------------------------------------------------------
 
     this.colorbarRenderer.refreshAllColorBars();
 
-    //-----------------------------------------------------------------//
+    //---------------------------------------------------------------
 
     if ( this.updateTiles ( tileC.x , tileC.x + nbTileX , tileC.y - nbTileY , tileC.y , this.forceTileRedraw ) || this.forceGlobalRedraw) {
 
@@ -144,20 +151,20 @@ MapRenderer.prototype.drawScene = function ( ) {
         }
     }
 
-    //-----------------------------------------------------------------//
+    //---------------------------------------------------------------
 
     for( var rendererId in this.dynamicalRenderers) {
         var renderer = this.dynamicalRenderers[rendererId];
         renderer.Refresh ( this.mapView.context.zoom , tileC.x , tileC.y - nbTileY , nbTileX + 1 , nbTileY + 1 ) ;
     }
 
-    //-----------------------------------------------------------------//
+    //---------------------------------------------------------------
 
     this.forceGlobalRedraw  = true;
     this.forceTileRedraw    = false;
 }
 
-//----------------------------------------------------------------------//
+//--------------------------------------------------------------------
 
 MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileRedraw ) {
 
@@ -215,31 +222,35 @@ MapRenderer.prototype.createTile = function ( x,y,z ) {
     return new Tile (this.mapView, x,y,z);
 }
 
-//------------------------------------------------------------------//
+//----------------------------------------------------------------
 //PRIVATE
-//----------------------------------------------------------------------//
+//--------------------------------------------------------------------
 
 function prepareGL( glAsset , gl , glTools) {
 
     glAsset.shaderData                = null;
     glAsset.shaderError               = false;
 
-    glAsset.ShaderReq  = $.ajax({
-        type     : "GET",
-        url      : Maperial.staticURL + "/shaders/all.json",
-        dataType : "json",
-        async    : false,
-        success  : function(data, textStatus, jqXHR) {
-            glAsset.shaderData = data;
-            for (k in glAsset.shaderData) {
-                glAsset.shaderData[k].code = glAsset.shaderData[k].code.replace (/---/g,"\n") 
-            }
-        },
-        error : function(jqXHR, textStatus, errorThrown) {
+    var shadersReceived = function(error, result){
+        if(error){
             glAsset.shaderError = true
-            console.log ( Maperial.staticURL + "/shaders/all.json" + " : loading failed : " + textStatus );
+            console.log(Maperial.staticURL + "/shaders/all.json : failed");
         }
-    });
+        else{
+            glAsset.shaderData = result;
+            for (var k in glAsset.shaderData) {
+                var shader = glAsset.shaderData[k];
+                shader.code = shader.code.replace (/---/g,"\n"); 
+            }
+        }
+    };
+    
+    ajax.get(
+        Maperial.staticURL + "/shaders/all.json",
+        null,
+        shadersReceived,
+        false
+    );
 
     var vertices                                  = [ 0.0  , 0.0  , 0.0,     256.0, 0.0  , 0.0,      0.0  , 256.0, 0.0,      256.0, 256.0, 0.0 ];
     glAsset.squareVertexPositionBuffer            = gl.createBuffer();
@@ -295,6 +306,6 @@ function prepareGL( glAsset , gl , glTools) {
     glAsset.prog[Maperial.AlphaBlend]    = glTools.MakeProgram   ( "vertexTex" , "fragmentAlphaBlend"   , glAsset);
 }
 
-//------------------------------------------------------------------//
+//----------------------------------------------------------------
 
 module.exports = MapRenderer;

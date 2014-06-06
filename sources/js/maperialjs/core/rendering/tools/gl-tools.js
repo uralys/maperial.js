@@ -1,3 +1,4 @@
+var _ = require("../../../../libs/underscore.js");
 
 function GLTools () {}
 
@@ -231,10 +232,10 @@ GLTools.prototype.MakeProgram = function ( inVertexName , inFragmentName , inAss
     var attributes       = {};
     var parameters       = {};
 
-    jQuery.extend( attributes, vertObj.attributes );
-    jQuery.extend( parameters, vertObj.parameters );
-    jQuery.extend( attributes, fragObj.attributes );
-    jQuery.extend( parameters, fragObj.parameters );
+    _.extend( attributes, vertObj.attributes );
+    _.extend( parameters, vertObj.parameters );
+    _.extend( attributes, fragObj.attributes );
+    _.extend( parameters, fragObj.parameters );
 
     gl.attachShader( shaderProgram , vertObj.obj );
     gl.attachShader( shaderProgram , fragObj.obj);
