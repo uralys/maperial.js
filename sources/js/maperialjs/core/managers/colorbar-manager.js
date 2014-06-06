@@ -2,7 +2,9 @@
 
 var GradiantColor           = require('../../libs/gradient-color.js'),
     ColorbarData            = require('../models/data/colorbar-data.js'),
-    utils                   = require('../../../libs/utils.js');
+    utils                   = require('../../../libs/utils.js'),
+    underscore              = require('../../../libs/underscore.js'),
+    ajax                    = require('../../../libs/ajax.js');
 
 //------------------------------------------------------------------//
 
@@ -56,7 +58,7 @@ ColorbarManager.prototype.addColorbar = function( colorbarData ) {
 //-------------------------------------------//
 
 ColorbarManager.prototype.noColorbar = function() {
-   return $.isEmptyObject(window.maperialColorbars);   
+   return _.isEmpty(window.maperialColorbars);   
 }
 
 //-------------------------------------------//
@@ -85,36 +87,28 @@ ColorbarManager.prototype.fetchColorbars = function(colorbarUIDs, next) {
 
 ColorbarManager.prototype.loadColorbar = function(colorbarUID) {
 
-   var me = this;
-
    if(window.maperialColorbars[colorbarUID]){
       this.loadNextColorbar();
       return;
    }
-
    var colorbarURL = this.getURL(colorbarUID);
    console.log("  fetching : " + colorbarURL);
 
-   $.ajax({  
-      type: "GET",  
-      url: colorbarURL,
-      dataType: "json",
-      success: function (json) {
-         /*
-         window.maperialColorbars[colorbarUID] = {
-               uid : colorbarUID, 
-               name: colorbarUID, 
-               content:json, 
-               data: me.convertJsonToData(json)
-         };
-         */
-         var cb = new ColorBarData ( );
-         cb.FromJson (json) 
-         me.SetColorBar (colorbarUID,cb ) 
-         me.loadNextColorbar();
-      }
-   });
-
+   var colobarReceived = function(error, json){
+       if(!error){
+           var cb = new ColorBarData ( );
+           cb.FromJson (json) 
+           this.SetColorBar (colorbarUID,cb ) 
+           this.loadNextColorbar();
+       }
+   }.bind(this);
+   
+   ajax.get(
+       colorbarURL,
+       null,
+       colobarReceived,
+       true
+   );
 }
 
 //----------------------------//
