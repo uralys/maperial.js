@@ -150,9 +150,15 @@ MapView.prototype.addHeatmapLayer = function (heatmapData, options)   {
 
 //------------------------------------------------------------------//
 
-MapView.prototype.addRasterLayer      = function (options)   {}
-MapView.prototype.addShadeLayer       = function (options)   {}
-MapView.prototype.addWMSLayer         = function (options)   {}
+MapView.prototype.addRasterLayer = function (sourceId) {
+    this.layerManager.addLayer(Layer.Raster, sourceId)
+}
+
+//------------------------------------------------------------------//
+
+MapView.prototype.addWMSLayer = function (sourceId) {
+    
+}
 
 //---------------------------------------------------------------------------//
 //Camera

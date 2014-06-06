@@ -53,6 +53,13 @@ Source.IMAGES_STAMEN_TONER_BG       = "images.stamen.toner-background";
 //Source.IMAGES_GOOGLE_TERRAIN        = "images.google.terrain";
 
 //-----------------------------------------------------------------------------------//
+// Rasters
+
+Source.RASTER_SHADE                 = "raster.shade";
+Source.RASTER_SRTM                  = "raster.srtm";
+Source.RASTER_DATA                  = "raster.data";
+
+//-----------------------------------------------------------------------------------//
 // WMS.src
 
 Source.WMS_BRETAGNECANTONS          = "wms.bretagnecantons";
