@@ -3,6 +3,7 @@
 var Layer                   = require('../models/layer.js'),
     DynamicalLayer          = require('../models/layers/dynamical-layer.js'),
     ImageLayer              = require('../models/layers/image-layer.js'),
+    ShadeLayer              = require('../models/layers/shade-layer.js'),
     RasterLayer             = require('../models/layers/raster-layer.js'),
     HeatmapLayer            = require('../models/layers/heatmap-layer.js');
 
@@ -31,6 +32,12 @@ LayerManager.prototype.addLayer = function(layerType, params) {
 
         case Layer.Heat :
             layer = new HeatmapLayer(params, this.defaultComposition());
+            break;
+            
+        // ---------------------------------------
+            
+        case Layer.Shade :
+            layer = new ShadeLayer(this.defaultComposition());
             break;
 
         // ---------------------------------------

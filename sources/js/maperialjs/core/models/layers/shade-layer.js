@@ -4,15 +4,14 @@ var utils       = require('../../../../libs/utils.js'),
 
 //---------------------------------------------------------------------------
 
-function RasterLayer (sourceId, composition) {
+function ShadeLayer (composition) {
    
    this.id              = utils.generateUID();
    this.type            = Layer.Shade;
-   this.sourceId        = sourceId;
    this.composition     = composition;
    
 }
 
 //---------------------------------------------------------------------------
 
-module.exports = RasterLayer;
+module.exports = ShadeLayer;
