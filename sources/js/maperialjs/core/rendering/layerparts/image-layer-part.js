@@ -1,7 +1,7 @@
 
 var ImageData       = require("../../models/data/image-data.js");
 
-//-----------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------
 
 function ImageLayerPart (layer, tile, gl, inZoom) {
    this.tile      = tile;
@@ -16,7 +16,7 @@ function ImageLayerPart (layer, tile, gl, inZoom) {
    this.data      = new ImageData(layer.sourceId, tile.x, tile.y, tile.z);
 }
 
-//-----------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------
 
 ImageLayerPart.prototype.DataReady = function(){
 
@@ -35,20 +35,20 @@ ImageLayerPart.prototype.DataReady = function(){
    return false;
 }
 
-//-----------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------
 
 ImageLayerPart.prototype.GetType = function ( ) {
    return this.layer.type;
 }
 
-//-----------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------
 
 ImageLayerPart.prototype.prepare = function () {
    this.w = this.data.content.width;      
    this.h = this.data.content.height; 
 }
 
-//-----------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------
 
 ImageLayerPart.prototype.reset = function (  ) {
    if (this.tex) {
@@ -67,13 +67,13 @@ ImageLayerPart.prototype.release = function (  ) {
    }
 }
 
-//-----------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------
 
 ImageLayerPart.prototype.IsUpToDate = function ( ) {
    return this.tex != null;
 }
 
-//-----------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------
 
 ImageLayerPart.prototype.update = function () {
 
@@ -114,6 +114,6 @@ ImageLayerPart.prototype.update = function () {
    
 }
 
-//------------------------------------------------------------------//
+//---------------------------------------------------------------------------
 
 module.exports = ImageLayerPart;

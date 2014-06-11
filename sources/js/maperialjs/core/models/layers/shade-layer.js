@@ -7,7 +7,7 @@ var utils       = require('../../../../libs/utils.js'),
 function RasterLayer (sourceId, composition) {
    
    this.id              = utils.generateUID();
-   this.type            = Layer.Raster;
+   this.type            = Layer.Shade;
    this.sourceId        = sourceId;
    this.composition     = composition;
    

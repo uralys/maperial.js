@@ -13,7 +13,7 @@ function DynamicalLayerPart ( layer, tile ) {
    this.renderer  = layer.renderer;
 }
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 DynamicalLayerPart.prototype.IsUpToDate = function ( ) {
    var isUpTodate = this.renderer.isSync() && this.tex != null;
@@ -24,7 +24,7 @@ DynamicalLayerPart.prototype.IsUpToDate = function ( ) {
    return isUpTodate;
 }
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 DynamicalLayerPart.prototype.DataReady = function(){
 
@@ -37,31 +37,31 @@ DynamicalLayerPart.prototype.DataReady = function(){
    }
 }
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 DynamicalLayerPart.prototype.GetType = function ( ) {
    return this.layer.type;
 }
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 DynamicalLayerPart.prototype.prepare = function () {
 
 }
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 DynamicalLayerPart.prototype.reset = function (  ) {
    this.tex = null;
 }
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 DynamicalLayerPart.prototype.release = function (  ) {
    this.tex = null;
 }
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 DynamicalLayerPart.prototype.update = function () {
     if (this.tex == null ) {   
@@ -70,6 +70,6 @@ DynamicalLayerPart.prototype.update = function () {
     return 0;
 }
 
-//------------------------------------------------------------------//
+//------------------------------------------------------------
 
 module.exports = DynamicalLayerPart;
