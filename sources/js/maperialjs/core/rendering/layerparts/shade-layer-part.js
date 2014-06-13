@@ -1,18 +1,22 @@
 
+var ShadeData       = require("../../models/data/shade-data.js");
+
 //---------------------------------------------------------------------------
 
-function ShadeLayerPart ( context , z ) {
+function ShadeLayerPart ( tile, context ) {
 
     this.context    = context;
     this.assets     = context.assets;
     this.gl         = context.assets.ctx;
 
     this.tex        = null;
-    this.data       = null;
     this.w          = 0;
     this.h          = 0;
 
-    this.resolution = context.coordS.Resolution ( z );
+    this.resolution = context.coordS.Resolution ( tile.z );
+
+    this.data       = new ShadeData(tile.x, tile.y, tile.z);
+
 }
 
 //---------------------------------------------------------------------------
@@ -20,76 +24,48 @@ function ShadeLayerPart ( context , z ) {
 ShadeLayerPart.prototype.dataReady = function(){
 
     if(this.data.content){
-        return true
+        return true;
     }
     else{
-        this.data.tryToFillContent()
+        this.data.tryToFillContent();
 
         if(this.data.content){
-            this.prepare()
-            return true
+            this.prepare();
+            return true;
         }
     }
 
     return false;
-}
+};
 
 //---------------------------------------------------------------------------
 
-ShadeLayerPart.prototype.Init = function ( data ) {
+ShadeLayerPart.prototype.prepare = function () {
+
     if (this.tex)
         return;
 
-    console.log("init shade")
+    console.log("prepare shade");
 
-    if (data) {
-        var newV                   = []
-        /*
-      for (var y = 255 ; y >= 0 ; y-- ) {
-         for (var x = 0 ; x < 256 ; x++ ) {
-            newV.push(data[y + x * 256] & 255)
-            newV.push((data[y + x * 256] >> 8) & 255)
-            newV.push(0)
-         }
-      }
-      var byteArray              = new Uint8Array        ( newV );
-         */
-        /*
-      for (var y = 0 ; y <= 256 ; y++ ) {
-         for (var x = 0 ; x < 256 ; x++ ) {
-            newV.push(data [y * 256 + x ] & 255)
-            newV.push((data[y * 256 + x ] >> 8) & 255)
-            newV.push(0)
-         }
-      }
-      var byteArray              = new Uint8Array        ( newV );
-         */
-        /*
-      var byteArray              = new Uint8Array        ( data['s'] );
-      this.w                     = 256;      
-      this.h                     = 256; 
-      this.data                  = byteArray;
-         */
-        var byteArray              = new Uint8Array        ( data );
-        var nl = []
-        for ( var i = 0 ; i < Maperial.tileSize*Maperial.tileSize*2 ; i = i+2 ) {
+    var nl          = [],
+        byteArray   = new Uint8Array ( this.data.content );
 
-            var a = ( byteArray[i] / 255.0 ) * 2.0 - 1.0;
-            var b = ( byteArray[i+1] / 255.0 ) * 2.0 - 1.0;
-            var tmp = - (a*a) - (b*b) + 1.0
-            var c = Math.sqrt( tmp );
+    for ( var i = 0 ; i < Maperial.tileSize*Maperial.tileSize*2 ; i = i+2 ) {
 
-            var tt = (a*a) + (b*b) + (c*c);
+        var a   = ( byteArray[i] / 255.0 ) * 2.0    - 1.0,
+            b   = ( byteArray[i+1] / 255.0 ) * 2.0  - 1.0,
+            tmp = - (a*a) - (b*b) + 1.0,
+            c   = Math.sqrt( tmp );
 
-            nl.push(  Math.ceil( ((a + 1.0)/2.0) * Maperial.tileSize-1));
-            nl.push(  Math.ceil( ((b + 1.0)/2.0) * Maperial.tileSize-1));
-            nl.push(  Math.ceil( ((c + 1.0)/2.0) * Maperial.tileSize-1));
-        }
-        this.data = new Uint8Array  (nl)
-        this.w                     = Maperial.tileSize;      
-        this.h                     = Maperial.tileSize; 
+        nl.push(  Math.ceil( ((a + 1.0)/2.0) * Maperial.tileSize-1));
+        nl.push(  Math.ceil( ((b + 1.0)/2.0) * Maperial.tileSize-1));
+        nl.push(  Math.ceil( ((c + 1.0)/2.0) * Maperial.tileSize-1));
     }
-}
+
+    this.data.content       = new Uint8Array (nl);
+    this.w                  = Maperial.tileSize;
+    this.h                  = Maperial.tileSize;
+};
 
 ShadeLayerPart.prototype.reset = function (  ) {
     var gl = this.gl;
@@ -98,7 +74,7 @@ ShadeLayerPart.prototype.reset = function (  ) {
         delete this.tex;
         this.tex = null;
     }
-}
+};
 
 ShadeLayerPart.prototype.release = function (  ) {
     var gl = this.gl;
@@ -111,27 +87,29 @@ ShadeLayerPart.prototype.release = function (  ) {
         delete this.data;
         this.data = null;
     }
-}
+};
 
 ShadeLayerPart.prototype.IsUpToDate = function ( ) {
     return this.tex != null;
-}
+};
 
 ShadeLayerPart.prototype.update = function ( params ) {
+
     if (this.tex)
         return 0;
 
-    var date    = (new Date)
-    var startT  = date.getTime()
+    var date    = (new Date()),
+        startT  = date.getTime(),
+        gl      = this.gl;
 
-    var gl = this.gl;
+    if ( this.data.content ) {
 
-    if ( this.data ) {
-        var gltools                = new GLTools ()
-        var fbtx                   = gltools.CreateFrameBufferTex(gl,this.w,this.h)
-        var tmpTex                 = gl.createTexture (      );
+        var gltools                = new GLTools (),
+            fbtx                   = gltools.CreateFrameBufferTex(gl,this.w,this.h),
+            tmpTex                 = gl.createTexture ();
+
         this.tex                   = fbtx[1];
-        gl.bindTexture             (gl.TEXTURE_2D, tmpTex);      
+        gl.bindTexture             (gl.TEXTURE_2D, tmpTex);
         gl.pixelStorei             (gl.UNPACK_FLIP_Y_WEBGL  , false );
         gl.texImage2D              (gl.TEXTURE_2D, 0, gl.RGB, this.w , this.h, 0, gl.RGB, gl.UNSIGNED_BYTE, this.data)
         gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
@@ -171,10 +149,10 @@ ShadeLayerPart.prototype.update = function ( params ) {
 
         gl.uniform3fv              (prog.params.uLight.name   , [-params.uLight[0],-params.uLight[1],-params.uLight[2]]);
         gl.uniform1f               (prog.params.uScale.name   , params.scale);
-        //gl.uniform3fv              (prog.params.uLight.name   , [0.0,0.0,-50.0] ); 
-        //gl.uniform1f               (prog.params.uScale.name   , 1); 
+        //gl.uniform3fv              (prog.params.uLight.name   , [0.0,0.0,-50.0] );
+        //gl.uniform1f               (prog.params.uScale.name   , 1);
 
-        gl.uniform1f               (prog.params.uPixRes.name  , this.resolution ); 
+        gl.uniform1f               (prog.params.uPixRes.name  , this.resolution );
 
         gl.drawArrays              (gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);
 
@@ -198,9 +176,9 @@ ShadeLayerPart.prototype.update = function ( params ) {
         this.h = 2;
     }
 
-    var diffT   = date.getTime() - startT;   
+    var diffT   = date.getTime() - startT;
     return diffT
-}
+};
 
 //------------------------------------------------------------------//
 

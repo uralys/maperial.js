@@ -8,7 +8,7 @@ function Utils(){};
  * zeroPad(5, 2) 	--> "05"
    zeroPad(1234, 2) --> "1234"
  */
-Utils.prototype.zeroPad = function(num, places) 
+Utils.prototype.zeroPad = function(num, places)
 {
    var zero = places - num.toString().length + 1;
    return Array(+(zero > 0 && zero)).join("0") + num;
@@ -20,8 +20,8 @@ Utils.prototype.zeroPad = function(num, places)
 Utils.prototype.dateTime = function()
 {
    var now = new Date();
-   return now.getFullYear() + "-" 
-   + this.zeroPad(now.getMonth()+1, 2) + "-" 
+   return now.getFullYear() + "-"
+   + this.zeroPad(now.getMonth()+1, 2) + "-"
    + this.zeroPad(now.getDate(), 2);
 }
 
@@ -47,7 +47,7 @@ Utils.prototype.rgbToHex = function (r, g, b) {
  * bytes = 36550
  * return 36.55 KB
  */
-Utils.prototype.formatFileSize = function (bytes) 
+Utils.prototype.formatFileSize = function (bytes)
 {
    if (typeof bytes !== 'number') {
       return '';
@@ -65,12 +65,12 @@ Utils.prototype.formatFileSize = function (bytes)
 /***
  * timestamp = 1355342389711
  * return 12/12/2012
- * 
+ *
  * timestamp = undefined => use today.
- * 
+ *
  * @Improve #MAP-12
  */
-Utils.prototype.formatDate = function(timestamp) 
+Utils.prototype.formatDate = function(timestamp)
 {
    var now = timestamp == undefined ? new Date() : new Date(timestamp);
    var day = this.zeroPad(now.getDate(), 2);
@@ -94,17 +94,17 @@ Utils.prototype.random0 = function(i){
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.generateUID = function() 
+Utils.prototype.generateUID = function()
 {
    var timestamp = new Date().getTime().toString(16);
    var random    = (Math.random() * Math.pow(2, 32)).toString(16);
-   
+
    return timestamp + random;
 }
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.popup = function(url, title, width, height) 
+Utils.prototype.popup = function(url, title, width, height)
 {
    var left = (screen.width/2)-(width/2);
    var top = (screen.height/2)-(height/2);
@@ -113,30 +113,30 @@ Utils.prototype.popup = function(url, title, width, height)
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.isObject = function(stuff) 
+Utils.prototype.isObject = function(stuff)
 {
    return Object.prototype.toString.call( stuff ) === '[object Object]' ;
 }
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.styleThumbURL = function(styleUID, size) 
+Utils.prototype.styleThumbURL = function(styleUID, size)
 {
    return this.thumbURL(styleUID, "style", size)
 }
 
-Utils.prototype.colorbarThumbURL = function(colorbarUID) 
+Utils.prototype.colorbarThumbURL = function(colorbarUID)
 {
    return this.thumbURL(colorbarUID, "colorbar")
 }
 
 //----------------------------------------------------------------------------------------//
 
-Utils.prototype.thumbURL = function(uid, type, size) 
+Utils.prototype.thumbURL = function(uid, type, size)
 {
    if(uid == undefined || uid == null)
       return "";
-   
+
    if(size == undefined || size == null)
       size = "";
    else
@@ -144,7 +144,7 @@ Utils.prototype.thumbURL = function(uid, type, size)
 
    var end = uid.substring(uid.length-4);
    var folders = end.split("");
-   
+
    var url = "http://static.maperial.com/thumbs/" + type;
    folders.forEach(function(folder) {
       url += "/" + folder;
@@ -156,25 +156,25 @@ Utils.prototype.thumbURL = function(uid, type, size)
 //----------------------------------------------------------------------------------------//
 
 Utils.prototype.getSourceThumb = function(layer) {
-   
+
    switch(layer.source.type){
       case Source.MaperialOSM:
          return " src=\""+this.styleThumbURL(layer.params.styles[layer.params.selectedStyle], "l")+"\"";
-   
+
       case Source.Vector:
       case Source.Images:
       case Source.WMS:
          return " src=\"http://static.maperial.localhost/images/icons/layer."+layer.source.params.src+".png\"";
-         
+
       case Source.Raster:
          return " src=\"http://static.maperial.localhost/images/icons/layer.raster.png\""; // TODO : thumb du raster
    }
-   
+
 
    switch(layer.type){
       case LayersManager.SRTM:
          return " src=\"http://static.maperial.localhost/images/icons/layer.srtm.png\"";
-         
+
       case LayersManager.Shade:
       default:
          return " src=\"http://static.maperial.localhost/images/icons/layer.shade.png\"";
@@ -201,20 +201,20 @@ Utils.prototype.converToMeters = function(canvas, context, point){
         h = canvas.height,
 
         centerP = context.coordS.MetersToPixels(
-            context.centerM.x, 
-            context.centerM.y, 
+            context.centerM.x,
+            context.centerM.y,
             context.zoom
         ),
-        
+
         shiftX = w/2 - point.x,
         shiftY = h/2 - point.y,
-        
+
         meters = context.coordS.PixelsToMeters(
-            centerP.x - shiftX, 
-            centerP.y + shiftY, 
+            centerP.x - shiftX,
+            centerP.y + shiftY,
             context.zoom
         );
-    
+
     return meters;
 }
 
@@ -226,16 +226,16 @@ Utils.prototype.randomRotate = function (element) {
    if(Math.abs(rotation) < 2)
       this.randomRotate(element)
    else{
-       
+
 //       node.style.transform = style;
 //       node.style.webkitTransform = style;
 //       node.style.mozTransform = style;
-//       
-//       
+//
+//
 //      $("#"+element).css("-webkit-transform", "rotate("+rotation+"deg)")
 //      $("#"+element).css("-moz-transform", "rotate("+rotation+"deg)")
    }
-      
+
 }
 
 //----------------------------------------------------------------------------------------//
@@ -243,27 +243,28 @@ Utils.prototype.randomRotate = function (element) {
 Utils.prototype.prepareOptions = function (options, mainParam) {
 
    if(options === undefined){
-      return null
+      return null;
    }
-   
+
    else if(typeof options == "string"){
-      var value = options
-      var newOptions = {}
-      newOptions[mainParam] = value
-      return newOptions
+      var value = options,
+          newOptions = {};
+
+      newOptions[mainParam] = value;
+      return newOptions;
    }
-      
+
    else if(options[mainParam] === undefined){
-      console.log("Could not find " + mainParam + ". Check your options.")
-      return null
+      console.log("Could not find " + mainParam + ". Check your options.");
+      return null;
    }
-   
+
    else
-      return options
+      return options;
 }
-   
+
 //----------------------------------------------------------------------------------------//
-   
+
 //Utils.prototype.cloneJsonObject = function (jsonObject) {
 //   return $.parseJSON(JSON.stringify(jsonObject));
 //}

@@ -17,8 +17,8 @@ function LayerManager(mapView){
 
 LayerManager.prototype.addLayer = function(layerType, params) {
 
-    console.log("  adding layer " + layerType)
-    var layer = null
+    console.log("  adding layer " + layerType);
+    var layer = null;
 
     switch(layerType){
 
@@ -67,7 +67,7 @@ LayerManager.prototype.addLayer = function(layerType, params) {
     this.mapView.layers.push(layer);
 
     return layer;
-}
+};
 
 //===========================================================================
 //Default settings
@@ -77,14 +77,14 @@ LayerManager.prototype.defaultMulBlend = function() {
         shader : Maperial.MulBlend,
         params : LayerManager.defaultMulBlendParams
     };
-}
+};
 
 LayerManager.prototype.defaultComposition = function() {
     return {
         shader : Maperial.AlphaBlend,
         params : LayerManager.defaultAlphaBlendParams
     };
-}
+};
 
 LayerManager.prototype.defaultDynamicalComposition = function() {
     return {
@@ -93,22 +93,22 @@ LayerManager.prototype.defaultDynamicalComposition = function() {
             uParams : 1
         }
     };
-}
+};
 
 //----------------------------------------
 
 LayerManager.defaultMulBlendParams = {
-uParams : [ 0.0, 0.0, 1 ]
-}
+    uParams : [ 0.0, 0.0, 1 ]
+};
 
 
 LayerManager.defaultAlphaBlendParams = {
-uParams : 0.5
-}
+    uParams : 0.5
+};
 
 LayerManager.defaultAlphaClipParams = {
-uParams : 0.5
-}
+    uParams : 0.5
+};
 
 //---------------------------------------------------------------
 

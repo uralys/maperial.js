@@ -1,19 +1,19 @@
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------
 
 function Layer(){}
 
-//------------------------------------------------------------------//
-//Layer Types
+//-----------------------------------------------------------------
+// Layer Types
 
-Layer.Dynamical   = 1;
-Layer.Heat        = 2;
-Layer.Vectorial   = 3;
-Layer.Raster      = 4;
-Layer.Images      = 5;
-Layer.Shade       = 6;
-//Layer.WMS         = 7;
-//Layer.SRTM        = 8;
+Layer.Dynamical   = "Layer.Dynamical";
+Layer.Heat        = "Layer.Heat";
+Layer.Vectorial   = "Layer.Vectorial";
+Layer.Raster      = "Layer.Raster";
+Layer.Images      = "Layer.Images";
+Layer.Shade       = "Layer.Shade";
+//Layer.WMS         = "Layer.WMS";
+//Layer.SRTM        = "Layer.SRTM";
 
-//------------------------------------------------------------------//
+//-----------------------------------------------------------------
 
 module.exports = Layer;

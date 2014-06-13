@@ -1,20 +1,20 @@
 
 var GLTools                 = require("./tools/gl-tools.js"),
-Layer                   = require("../models/layer.js"),
-DynamicalLayerPart      = require('./layerparts/dynamical-layer-part.js'),
-ImageLayerPart          = require('./layerparts/image-layer-part.js'),
-RasterLayer8            = require('./layerparts/raster-layer-part.js').RasterLayer8,
-RasterLayer16           = require('./layerparts/raster-layer-part.js').RasterLayer16,
-ShadeLayerPart          = require('./layerparts/shade-layer-part.js'),
-VectorialLayerPart      = require('./layerparts/vectorial-layer-part.js');
+    Layer                   = require("../models/layer.js"),
+    DynamicalLayerPart      = require('./layerparts/dynamical-layer-part.js'),
+    ImageLayerPart          = require('./layerparts/image-layer-part.js'),
+    RasterLayer8            = require('./layerparts/raster-layer-part.js').RasterLayer8,
+    RasterLayer16           = require('./layerparts/raster-layer-part.js').RasterLayer16,
+    ShadeLayerPart          = require('./layerparts/shade-layer-part.js'),
+    VectorialLayerPart      = require('./layerparts/vectorial-layer-part.js');
 
 //----------------------------------------------------------------------------
 
 function Tile (mapView, x, y, z) {
 
     this.mapView      = mapView;
-    this.gl           = mapView.context.assets.ctx
-    this.assets       = mapView.context.assets
+    this.gl           = mapView.context.assets.ctx;
+    this.assets       = mapView.context.assets;
 
     this.x            = x;
     this.y            = y;
@@ -34,12 +34,12 @@ function Tile (mapView, x, y, z) {
 
 
 //-----------------------------------------------------------------------------
-//  STATUS MANAGEMENT
+//-  STATUS MANAGEMENT
 //-----------------------------------------------------------------------------
 
 Tile.prototype.Refresh = function () {
     this.tex = null;
-}
+};
 
 Tile.prototype.IsUpToDate = function () {
 
@@ -55,13 +55,13 @@ Tile.prototype.IsUpToDate = function () {
     }
 
     return textureReady && allLayerPartsAreReady;
-}
+};
 
 //-----------------------------------------------------------------------------
 
 Tile.prototype.textureReady = function ( ) {
     return this.tex != null || this.layerParts.length == 0;
-}
+};
 
 //----------------------------------------------------------------------------
 
@@ -74,8 +74,8 @@ Tile.prototype.release = function() {
             layerPart.release();
         }
         catch(e){
-            console.log(e, layerPart)
-        } 
+            console.log(e, layerPart);
+        }
 
     });
 
@@ -84,7 +84,7 @@ Tile.prototype.release = function() {
         gl.deleteFramebuffer ( this.frameBufferL[i] );
         gl.deleteTexture     ( this.texL[i] );
     }
-}
+};
 
 //----------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ Tile.prototype.releaseLayer = function (id) {
     }
 
     this.Refresh();
-}
+};
 
 Tile.prototype.resetLayer = function (id) {
 
@@ -104,20 +104,20 @@ Tile.prototype.resetLayer = function (id) {
         this.layerParts[id].reset();
 
     this.Refresh();
-}
+};
 
 Tile.prototype.reset = function (onlyfuse) {
 
     onlyfuse = (typeof(onlyfuse)==='undefined')?false:onlyfuse;
 
     if (!onlyfuse) {
-        for (var i = 0; i < this.layerParts.length; i++) {      
+        for (var i = 0; i < this.layerParts.length; i++) {
             this.layerParts[i].reset();
         }
     }
 
     this.Refresh();
-}
+};
 
 
 //-----------------------------------------------------------------------------
@@ -126,9 +126,9 @@ Tile.prototype.reset = function (onlyfuse) {
 
 Tile.prototype.buildLayerParts = function () {
     for(var i = 0; i< this.mapView.layers.length; i++){
-        this.createLayerPart(this.mapView.layers[i], i)
+        this.createLayerPart(this.mapView.layers[i], i);
     }
-}
+};
 
 //----------------------------------------------------------------------------
 
@@ -137,20 +137,36 @@ Tile.prototype.createLayerPart = function (layer, index) {
     switch(layer.type){
 
         case Layer.Images:
-            this.layerParts.splice(index, 0, new ImageLayerPart     ( layer, this, this.mapView.context.assets.ctx , this.z));
+            this.layerParts.splice(
+                index, 0,
+                new ImageLayerPart(
+                    layer.sourceId,
+                    this,
+                    this.mapView.context.assets.ctx
+                )
+            );
             break;
 
         case Layer.Dynamical:
         case Layer.Heat:
-            this.layerParts.splice(index, 0, new DynamicalLayerPart  ( layer, this ));
+            this.layerParts.splice(
+                index, 0,
+                new DynamicalLayerPart  ( layer, this )
+            );
             break;
 
         case Layer.Shade:
-            this.layerParts.splice(index, 0, new ShadeLayerPart    ( this.mapView.context , this.z));
+            this.layerParts.splice(
+                index, 0,
+                new ShadeLayerPart(
+                    this,
+                    this.mapView.context
+                )
+            );
             break;
 
         /* TODO other layers */
-            
+
 //          case Layer.Vector:
 //          this.layerParts.splice(index, 0, new VectorialLayerPart ( layer, this.mapView , this.z));
 //          break;
@@ -163,7 +179,7 @@ Tile.prototype.createLayerPart = function (layer, index) {
 //          this.layerParts.splice(index, 0, new RasterLayer16    ( layer, this.mapView , this.z));
 //          break;
     }
-}
+};
 
 //----------------------------------------------------------------------------
 
@@ -192,12 +208,12 @@ Tile.prototype.removeLayer = function (position) {
 /**
  * Exactly the same as Layer.exchangeLayers
  * exchangedIds contains a mapping between old layerIndexes and the new one, after a layer reposition
- * example, with 3 layers, after moving layer0 (ui bottom) to the top (becomes layer 2) : 
+ * example, with 3 layers, after moving layer0 (ui bottom) to the top (becomes layer 2) :
  * exchangedIds = {
    {0: 1},
    {1: 2},
    {2: 0}
- } 
+ }
  */
 Tile.prototype.exchangeLayers = function(exchangedIds) {
 
@@ -234,7 +250,7 @@ Tile.prototype.exchangeLayers = function(exchangedIds) {
 //catch(e){
 //console.log("-------> ERROR")
 //}
-//}   
+//}
 //}
 //else {
 //if ( this.config.layers[li].source.id == source.id )
@@ -244,7 +260,7 @@ Tile.prototype.exchangeLayers = function(exchangedIds) {
 
 //----------------------------------------------------------------------------
 
-//v2 @deprecated ? 
+//v2 @deprecated ?
 Tile.prototype.RenderVectorialLayers = function ( context, wx, wy ) {
     for (var i = 0; i < this.layerParts.length; i++) {
         if (this.layerParts[i].GetType() == Layer.Vector && this.layerParts[i].IsUpToDate() && this.layerParts[i].cnv) {
@@ -306,7 +322,7 @@ Tile.prototype.update = function ( maxTime ) {
             diffT   = date.getTime() - startT;
         }
 
-        return maxTime - diffT; 
+        return maxTime - diffT;
     }
 
 }
@@ -442,8 +458,8 @@ Tile.prototype.fuse = function ( backTex,frontTex,destFB, prog, params ) {
 
     for (var p in params) {
         // WRONG !!!!! always  uniform3fv ???
-        //gl.uniform3fv             (prog.params[p] , params[p] ); 
-        gl[prog.params[p].fct] (prog.params[p].name, params[p] ); 
+        //gl.uniform3fv             (prog.params[p] , params[p] );
+        gl[prog.params[p].fct] (prog.params[p].name, params[p] );
     }
 
     gl.drawArrays                    (gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);

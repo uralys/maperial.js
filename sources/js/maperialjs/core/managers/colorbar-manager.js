@@ -11,8 +11,6 @@ var GradiantColor           = require('../../libs/gradient-color.js'),
 function ColorbarManager(){
    this.colorbarsToLoad    = null;
    this.nextFunction       = null;
-
-   window.maperialColorbars = window.maperialColorbars || {};  // cache containing all previously loaded colorbars
 }
 
 //-------------------------------------------//
@@ -20,13 +18,13 @@ function ColorbarManager(){
 ColorbarManager.prototype.createColorbar = function(options) {
 
    if(!options){
-      options = { 
-            beginAlphaAtZero : true 
+      options = {
+            beginAlphaAtZero : true
       };
    }
 
    var steps         = options.steps || ColorbarManager.defaultSteps,
-   colorbarData  = new ColorbarData({
+       colorbarData  = new ColorbarData({
       beginAlphaAtZero : options.beginAlphaAtZero
    });
 
@@ -36,7 +34,7 @@ ColorbarManager.prototype.createColorbar = function(options) {
 
    var colorbar = this.addColorbar(colorbarData);
    return colorbar;
-}
+};
 
 //----------------------------//
 
@@ -45,8 +43,8 @@ ColorbarManager.prototype.addColorbar = function( colorbarData ) {
    var uid = utils.generateUID();
 
    window.maperialColorbars[uid] = {
-         uid      : uid, 
-         name     : uid, 
+         uid      : uid,
+         name     : uid,
          data     : colorbarData,   /**  1 common data for every mapview      **/
          tex      : {},             /**  1 tex/mapview                        **/
          version  : -1              /**  force not to be sync to build tex    **/
@@ -58,7 +56,7 @@ ColorbarManager.prototype.addColorbar = function( colorbarData ) {
 //-------------------------------------------//
 
 ColorbarManager.prototype.noColorbar = function() {
-   return _.isEmpty(window.maperialColorbars);   
+   return _.isEmpty(window.maperialColorbars);
 }
 
 //-------------------------------------------//
@@ -97,12 +95,12 @@ ColorbarManager.prototype.loadColorbar = function(colorbarUID) {
    var colobarReceived = function(error, json){
        if(!error){
            var cb = new ColorBarData ( );
-           cb.FromJson (json) 
-           this.SetColorBar (colorbarUID,cb ) 
+           cb.FromJson (json)
+           this.SetColorBar (colorbarUID,cb )
            this.loadNextColorbar();
        }
    }.bind(this);
-   
+
    ajax.get(
        colorbarURL,
        null,
@@ -133,35 +131,35 @@ ColorbarManager.defaultSteps = {
          "b" : 1.0,
          "a" : 0.0
       },
-      
+
       "0.10" : {
          "r" : 0.0,
          "g" : 0.0,
          "b" : 1.0,
          "a" : 1.0
       },
-      
+
       "0.15" : {
          "r" : 0.0,
          "g" : 1.0,
          "b" : 1.0,
          "a" : 1.0
       },
-      
+
       "0.45" : {
          "r" : 0.0,
          "g" : 1.0,
          "b" : 0.0,
          "a" : 1.0
       },
-      
+
       "0.75" : {
          "r" : 1.0,
          "g" : 1.0,
          "b" : 0.0,
          "a" : 1.0
       },
-      
+
       "1.0" : {
          "r" : 1.0,
          "g" : 0.0,
@@ -172,8 +170,8 @@ ColorbarManager.defaultSteps = {
 
 /*
 ColorbarManager.prototype.convertJsonToData = function(colorbarJson) {
-   
-   var data = [];   
+
+   var data = [];
    var previousStep = 0;
    for (var i in colorbarJson) {
       for ( var n = previousStep; n <= parseInt(i); n++) {
@@ -182,10 +180,10 @@ ColorbarManager.prototype.convertJsonToData = function(colorbarJson) {
          data.push ( colorbarJson[i].b );
          data.push ( colorbarJson[i].a * 255 );
       }
-      
+
       previousStep = n;
    }
-   
+
    return new Uint8Array(data);
 }
 */

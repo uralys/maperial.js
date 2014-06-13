@@ -1,3 +1,6 @@
+
+var Source      = require('../source.js');
+
 //-----------------------------------------------------------------------------
 
 function ShadeData (x, y, z) {
@@ -8,18 +11,18 @@ function ShadeData (x, y, z) {
 
    this.content   = null;
 
-   sourceManager.LoadShade(x, y, z)
+   sourceManager.loadShade(x, y, z);
 }
 
 //-----------------------------------------------------------------------------
 
 ShadeData.prototype.tryToFillContent = function(){
-   this.content = sourceManager.getData(this.sourceId, this.x, this.y, this.z);
-}
+   this.content = sourceManager.getData(Source.Shade, this.x, this.y, this.z);
+};
 
 ShadeData.prototype.release = function(){
-   sourceManager.release(this.sourceId, this.x, this.y, this.z);
-}
+   sourceManager.release(Source.Shade, this.x, this.y, this.z);
+};
 
 //-----------------------------------------------------------------------------
 

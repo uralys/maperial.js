@@ -15,20 +15,14 @@
 
 	(function() {
 	
-		var maperial = new Maperial();
+		var maperial = new Maperial(),
+		    map = maperial.addView({
+		        container : "map",
+		    });
 	
-		//-----------------------------------------------//
-	
-		var map = maperial.addView({
-		    container : "map",
-		});
-	
-		//-----------------------------------------------//
-	
-		map.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
-		map.addShadeLayer();
-	
-		//-----------------------------------------------//
+		map.addOCMTransport();
+		map.addShade();
+		
 	})();
 
 </script>
