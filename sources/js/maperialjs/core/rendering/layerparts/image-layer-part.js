@@ -18,7 +18,7 @@ function ImageLayerPart (layer, tile, gl, inZoom) {
 
 //---------------------------------------------------------------------------
 
-ImageLayerPart.prototype.DataReady = function(){
+ImageLayerPart.prototype.dataReady = function(){
 
    if(this.data.content){
       return true
@@ -33,12 +33,6 @@ ImageLayerPart.prototype.DataReady = function(){
    }
 
    return false;
-}
-
-//---------------------------------------------------------------------------
-
-ImageLayerPart.prototype.GetType = function ( ) {
-   return this.layer.type;
 }
 
 //---------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 function Source (id, type, params) {
    this.id     = id;
@@ -7,7 +7,7 @@ function Source (id, type, params) {
    this.params = params;
 }
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 // MaperialOSM public default styles
 
 Source.MAPERIAL_BROWNIE             = "maperial.brownie";
@@ -28,7 +28,7 @@ Source.MAPERIAL_LIGHT_ID            = "1_style_13dd0e7695bfc2941e7";
 Source.MAPERIAL_PINK_ID             = "1_style_13ed780ed7174481e7e";
 Source.MAPERIAL_YELLOW_ID           = "1_style_13ea3369f7dbbf63b42";
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 // Images.src
 
 Source.IMAGES_MAPQUEST              = "images.mapquest";
@@ -40,8 +40,12 @@ Source.IMAGES_OCM_CYCLE             = "images.ocm.cycle";
 Source.IMAGES_OCM_TRANSPORT         = "images.ocm.transport";
 Source.IMAGES_OCM_LANDSCAPE         = "images.ocm.landscape";
 
+/* Map tiles by <a href="http://stamen.com">Stamen Design</a>, 
+ * under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. 
+ * Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, 
+ * under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.
+ */
 // http://maps.stamen.com/
-// Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.
 Source.IMAGES_STAMEN_WATERCOLOR     = "images.stamen.watercolor";
 Source.IMAGES_STAMEN_TERRAIN        = "images.stamen.terrain";
 Source.IMAGES_STAMEN_TONER          = "images.stamen.toner";
@@ -52,14 +56,13 @@ Source.IMAGES_STAMEN_TONER_BG       = "images.stamen.toner-background";
 //Source.IMAGES_GOOGLE_SATELLITE      = "images.google.satellite";
 //Source.IMAGES_GOOGLE_TERRAIN        = "images.google.terrain";
 
-//-----------------------------------------------------------------------------------//
-// Rasters
+//-----------------------------------------------------------------------------
 
-Source.RASTER_SHADE                 = "raster.shade";
-Source.RASTER_SRTM                  = "raster.srtm";
-Source.RASTER_DATA                  = "raster.data";
+Source.SHADE                        = "source.shade";
+Source.SRTM                         = "source.srtm";
+Source.RASTER                       = "source.raster";
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 // WMS.src
 
 Source.WMS_BRETAGNECANTONS          = "wms.bretagnecantons";
@@ -67,6 +70,6 @@ Source.WMS_FRANCECOURSDEAU          = "wms.francecoursdeau";
 Source.WMS_SOLS_ILEETVILAINE        = "wms.sols_ileetvilaine";
 Source.WMS_CORINE_LAND_COVER        = "wms.corine_land_cover";
 
-//-----------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 module.exports = Source;

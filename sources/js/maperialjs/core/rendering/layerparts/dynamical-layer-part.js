@@ -26,7 +26,7 @@ DynamicalLayerPart.prototype.IsUpToDate = function ( ) {
 
 //-----------------------------------------------------------------------------
 
-DynamicalLayerPart.prototype.DataReady = function(){
+DynamicalLayerPart.prototype.dataReady = function(){
 
    if(this.renderer.IsUpToDate()){
       return true;

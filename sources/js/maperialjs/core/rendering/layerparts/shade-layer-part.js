@@ -1,4 +1,6 @@
 
+//---------------------------------------------------------------------------
+
 function ShadeLayerPart ( context , z ) {
 
     this.context    = context;
@@ -9,13 +11,30 @@ function ShadeLayerPart ( context , z ) {
     this.data       = null;
     this.w          = 0;
     this.h          = 0;
-    
+
     this.resolution = context.coordS.Resolution ( z );
 }
 
-ShadeLayerPart.prototype.GetType = function ( ) {
-    return LayerManager.Shade;
+//---------------------------------------------------------------------------
+
+ShadeLayerPart.prototype.dataReady = function(){
+
+    if(this.data.content){
+        return true
+    }
+    else{
+        this.data.tryToFillContent()
+
+        if(this.data.content){
+            this.prepare()
+            return true
+        }
+    }
+
+    return false;
 }
+
+//---------------------------------------------------------------------------
 
 ShadeLayerPart.prototype.Init = function ( data ) {
     if (this.tex)
@@ -154,7 +173,7 @@ ShadeLayerPart.prototype.update = function ( params ) {
         gl.uniform1f               (prog.params.uScale.name   , params.scale);
         //gl.uniform3fv              (prog.params.uLight.name   , [0.0,0.0,-50.0] ); 
         //gl.uniform1f               (prog.params.uScale.name   , 1); 
-        
+
         gl.uniform1f               (prog.params.uPixRes.name  , this.resolution ); 
 
         gl.drawArrays              (gl.TRIANGLE_STRIP, 0, this.assets.squareVertexPositionBuffer.numItems);

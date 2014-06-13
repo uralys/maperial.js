@@ -282,7 +282,7 @@ Tile.prototype.update = function ( maxTime ) {
 
     for(var i = 0; i< this.layerParts.length; i++){
         if (! this.layerParts[i].IsUpToDate() ){
-            if(this.layerParts[i].DataReady() ) {
+            if(this.layerParts[i].dataReady() ) {
                 this.layerParts[i].update( this.layerParts[i].params, i );
                 noLayerPartUpdate = false
 
