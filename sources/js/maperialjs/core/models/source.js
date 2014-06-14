@@ -58,9 +58,9 @@ Source.IMAGES_STAMEN_TONER_BG       = "images.stamen.toner-background";
 
 //-----------------------------------------------------------------------------
 
-Source.SHADE                        = "source.shade";
-Source.SRTM                         = "source.srtm";
-Source.RASTER                       = "source.raster";
+Source.SHADE                        = "source.shade"; // TODO fuse with ReTiler ?
+Source.RETILER                      = "source.ReTiler";
+Source.RASTER                       = "source.raster"; // TODO fuse with ReTiler ?
 
 //-----------------------------------------------------------------------------
 // WMS.src

@@ -155,11 +155,11 @@ Tile.prototype.createLayerPart = function (layer, index) {
 //          this.layerParts.splice(index, 0, new VectorialLayerPart ( layer, this.mapView , this.z));
 //          break;
 
-//          case Layer.Raster:
+//          case Layer.Raster: // TODO fuse with ReTiler
 //          this.layerParts.splice(index, 0, new RasterLayer8    ( layer, this.mapView , this.z));
 //          break;
 
-//          case Layer.SRTM:
+//          case Layer.RETILER:
 //          this.layerParts.splice(index, 0, new RasterLayer16    ( layer, this.mapView , this.z));
 //          break;
     }

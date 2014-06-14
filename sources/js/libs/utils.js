@@ -172,10 +172,10 @@ Utils.prototype.getSourceThumb = function(layer) {
    
 
    switch(layer.type){
-      case LayersManager.SRTM:
-         return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer.srtm.png\"";
+      case LayersManager.ReTiler:
+         return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer.ReTiler.png\"";
          
-      case LayersManager.Shade:
+      case LayersManager.Shade: // TODO fuse with ReTiler ???
       default:
          return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer.shade.png\"";
    }
