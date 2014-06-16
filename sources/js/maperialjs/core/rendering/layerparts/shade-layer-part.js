@@ -19,6 +19,10 @@ function ShadeLayerPart ( context , z ) {
 
 ShadeLayerPart.prototype.dataReady = function(){
 
+    if(! this.data){
+        return false
+    }
+
     if(this.data.content){
         return true
     }
