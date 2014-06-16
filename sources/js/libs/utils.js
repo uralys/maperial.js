@@ -122,12 +122,12 @@ Utils.prototype.isObject = function(stuff)
 
 Utils.prototype.styleThumbURL = function(styleUID, size)
 {
-   return this.thumbURL(styleUID, "style", size)
+   return this.thumbURL(styleUID, "style", size);
 }
 
 Utils.prototype.colorbarThumbURL = function(colorbarUID)
 {
-   return this.thumbURL(colorbarUID, "colorbar")
+   return this.thumbURL(colorbarUID, "colorbar");
 }
 
 //----------------------------------------------------------------------------------------//
@@ -164,20 +164,20 @@ Utils.prototype.getSourceThumb = function(layer) {
       case Source.Vector:
       case Source.Images:
       case Source.WMS:
-         return " src=\"http://static.maperial.localhost/images/icons/layer."+layer.source.params.src+".png\"";
+         return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer."+layer.source.params.src+".png\"";
 
       case Source.Raster:
-         return " src=\"http://static.maperial.localhost/images/icons/layer.raster.png\""; // TODO : thumb du raster
+         return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer.raster.png\""; // TODO : thumb du raster
    }
 
 
    switch(layer.type){
-      case LayersManager.SRTM:
-         return " src=\"http://static.maperial.localhost/images/icons/layer.srtm.png\"";
+      case LayersManager.ReTiler:
+         return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer.ReTiler.png\"";
 
-      case LayersManager.Shade:
+      case LayersManager.Shade: // TODO fuse with ReTiler ???
       default:
-         return " src=\"http://static.maperial.localhost/images/icons/layer.shade.png\"";
+         return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer.shade.png\"";
    }
 }
 

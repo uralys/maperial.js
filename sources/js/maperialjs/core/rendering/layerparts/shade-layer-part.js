@@ -43,6 +43,10 @@ ShadeLayerPart.prototype.IsUpToDate = function ( ) {
 
 ShadeLayerPart.prototype.dataReady = function(){
 
+    if(! this.data){
+        return false
+    }
+
     if(this.data.content){
         return true;
     }

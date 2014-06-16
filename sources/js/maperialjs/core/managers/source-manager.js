@@ -79,13 +79,14 @@ SourceManager.prototype.loadVectorial = function ( sourceId, x, y, z ) {
 
 SourceManager.prototype.loadShade = function ( x, y, z ) {
     var url         = Maperial.apiURL + "/api/srtm?x="+x+"&y="+y+"&z="+z,
+//    var url         = "/api/ReTiler?x="+tx+"&y="+ty+"&z="+z,
         requestId   = getRequestId(Source.Shade, x, y, z);
     this.loadAPISource(url, requestId);
 };
 
-// à analyser : SRTM
-//SourceManager.prototype.LoadSRTM = function ( x, y, z ) {
-//    var url         = "/api/srtm?x="+tx+"&y="+ty+"&z="+z,
+// à analyser : ReTiler (not sade but anything)
+//SourceManager.prototype.LoadReTiler = function ( x, y, z ) {
+//    var url         = "/api/ReTiler?x="+tx+"&y="+ty+"&z="+z,
 //        requestId   = getRequestId(sourceId, x, y, z);
 //    this.LoadAPISource(url, requestId)
 //}
@@ -215,13 +216,13 @@ SourceManager.prototype.loadImage = function ( sourceId, x, y, z ) {
 //case Source.MaperialOSM:
 //return Maperial.tileURL + "/api/tile?x="+tx+"&y="+ty+"&z="+z;
 
-//case Source.SRTM:
-//return Maperial.tileURL + "/api/srtm?x="+tx+"&y="+ty+"&z="+z;
+//case Source.ReTiler:
+//return Maperial.tileURL + "/api/ReTiler?x="+tx+"&y="+ty+"&z="+z; // missing an id to identify data type
 
-//case Source.Raster:
+//case Source.Raster: // fuse with ReTiler ???
 //return Maperial.tileURL + "/api/tile/"+source.params.rasterUID+"?x="+tx+"&y="+ty+"&z="+z;
 
-//case Source.Images:
+//case Source.Images: // fuse with ReTiler ???
 //return this.getImageURL(source, tx, ty, z)
 
 //case Source.WMS:
