@@ -18,7 +18,9 @@ function LayerManager(mapView){
 LayerManager.prototype.addLayer = function(layerType, params) {
 
     console.log("  adding layer " + layerType);
-    var layer = null;
+    var layer   = null,
+        tiles   = this.mapView.tiles,
+        layers  = this.mapView.layers;
 
     switch(layerType){
 
@@ -33,11 +35,14 @@ LayerManager.prototype.addLayer = function(layerType, params) {
         case Layer.Heat :
             layer = new HeatmapLayer(params, this.defaultComposition());
             break;
-            
+
         // ---------------------------------------
-            
+
         case Layer.Shade :
-            layer = new ShadeLayer(this.defaultComposition());
+            layer = new ShadeLayer(
+                LayerManager.defaultShade,
+                this.defaultComposition()
+            );
             break;
 
         // ---------------------------------------
@@ -60,11 +65,11 @@ LayerManager.prototype.addLayer = function(layerType, params) {
 
     }
 
-    for (var key in this.mapView.tiles) {
-        this.mapView.tiles[key].createLayerPart(layer, this.mapView.layers.length);
-    }  
+    for (var key in tiles) {
+        tiles[key].createLayerPart(layer, layers.length);
+    }
 
-    this.mapView.layers.push(layer);
+    layers.push(layer);
 
     return layer;
 };
@@ -93,6 +98,13 @@ LayerManager.prototype.defaultDynamicalComposition = function() {
             uParams : 1
         }
     };
+};
+
+//----------------------------------------
+
+LayerManager.defaultShade = {
+    uLight   : [ 10, 10, 20 ],
+    scale    : 10
 };
 
 //----------------------------------------

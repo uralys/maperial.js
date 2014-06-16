@@ -177,7 +177,7 @@ MapView.prototype.addHeatmapLayer = function (heatmapData, options)   {
 //-----------------------------------------------------------------
 
 MapView.prototype.addShadeLayer = function () {
-
+    this.layerManager.addLayer(Layer.Shade);
 };
 
 //-----------------------------------------------------------------

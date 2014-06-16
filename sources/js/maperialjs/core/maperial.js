@@ -63,7 +63,6 @@ Maperial.VECTORIAL_DATA          = "data";
 //-----------------------------------------------------------------
 
 Maperial.staticURL              = environment.staticURL;
-
 Maperial.apiURL                 = 'http://api.maperial.com';
 Maperial.tileURL                = 'http://api.maperial.com';
 

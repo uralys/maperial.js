@@ -1,6 +1,6 @@
 
 function DynamicalLayerPart ( layer, tile ) {
-   
+
    this.layer     = layer;
    this.tile      = tile;
    this.x         = tile.x;
@@ -9,7 +9,7 @@ function DynamicalLayerPart ( layer, tile ) {
 
    this.version   = null;
    this.tex       = null;
-   
+
    this.renderer  = layer.renderer;
 }
 
@@ -17,10 +17,10 @@ function DynamicalLayerPart ( layer, tile ) {
 
 DynamicalLayerPart.prototype.IsUpToDate = function ( ) {
    var isUpTodate = this.renderer.isSync() && this.tex != null;
-   
+
    if(!isUpTodate)
        this.reset();
-   
+
    return isUpTodate;
 }
 
@@ -35,12 +35,6 @@ DynamicalLayerPart.prototype.dataReady = function(){
       this.renderer.update();
       return false;
    }
-}
-
-//-----------------------------------------------------------------------------
-
-DynamicalLayerPart.prototype.GetType = function ( ) {
-   return this.layer.type;
 }
 
 //-----------------------------------------------------------------------------
@@ -64,7 +58,7 @@ DynamicalLayerPart.prototype.release = function (  ) {
 //-----------------------------------------------------------------------------
 
 DynamicalLayerPart.prototype.update = function () {
-    if (this.tex == null ) {   
+    if (this.tex == null ) {
         this.tex = this.renderer.GetTex(this.x,this.y)
     }
     return 0;

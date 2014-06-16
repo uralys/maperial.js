@@ -4,12 +4,11 @@ var utils       = require('../../../../libs/utils.js'),
 
 //---------------------------------------------------------------------------
 
-function ShadeLayer (composition) {
-   
+function ShadeLayer (params, composition) {
    this.id              = utils.generateUID();
    this.type            = Layer.Shade;
+   this.params          = params;
    this.composition     = composition;
-   
 }
 
 //---------------------------------------------------------------------------

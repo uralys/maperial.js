@@ -1,13 +1,18 @@
 
-var ShadeData       = require("../../models/data/shade-data.js");
+var ShadeData       = require("../../models/data/shade-data.js"),
+    GLTools         = require("../tools/gl-tools.js");
 
 //---------------------------------------------------------------------------
 
-function ShadeLayerPart ( tile, context ) {
+function ShadeLayerPart ( tile, context, layer ) {
 
     this.context    = context;
     this.assets     = context.assets;
     this.gl         = context.assets.ctx;
+
+    /* sync params with those from the layer */
+    this.layer      = layer;
+    this.params     = null;
 
     this.tex        = null;
     this.w          = 0;
@@ -18,6 +23,21 @@ function ShadeLayerPart ( tile, context ) {
     this.data       = new ShadeData(tile.x, tile.y, tile.z);
 
 }
+
+//---------------------------------------------------------------------------
+
+ShadeLayerPart.prototype.IsUpToDate = function ( ) {
+
+    if(this.params === this.layer.params
+    && this.tex != null){
+        return true;
+    }
+    else{
+        this.params = this.layer.params;
+        this.reset();
+        return false;
+    }
+};
 
 //---------------------------------------------------------------------------
 
@@ -68,32 +88,22 @@ ShadeLayerPart.prototype.prepare = function () {
 };
 
 ShadeLayerPart.prototype.reset = function (  ) {
-    var gl = this.gl;
     if (this.tex) {
-        gl.deleteTexture ( this.tex );
+        this.gl.deleteTexture ( this.tex );
         delete this.tex;
         this.tex = null;
     }
 };
 
 ShadeLayerPart.prototype.release = function (  ) {
-    var gl = this.gl;
-    if (this.tex) {
-        gl.deleteTexture ( this.tex );
-        delete this.tex;
-        this.tex = null;
-    }
-    if (this.data) {
-        delete this.data;
-        this.data = null;
+    this.reset();
+    if (this.data.content) {
+        delete this.data.content;
+        this.data.content = null;
     }
 };
 
-ShadeLayerPart.prototype.IsUpToDate = function ( ) {
-    return this.tex != null;
-};
-
-ShadeLayerPart.prototype.update = function ( params ) {
+ShadeLayerPart.prototype.update = function () {
 
     if (this.tex)
         return 0;
@@ -111,7 +121,7 @@ ShadeLayerPart.prototype.update = function ( params ) {
         this.tex                   = fbtx[1];
         gl.bindTexture             (gl.TEXTURE_2D, tmpTex);
         gl.pixelStorei             (gl.UNPACK_FLIP_Y_WEBGL  , false );
-        gl.texImage2D              (gl.TEXTURE_2D, 0, gl.RGB, this.w , this.h, 0, gl.RGB, gl.UNSIGNED_BYTE, this.data)
+        gl.texImage2D              (gl.TEXTURE_2D, 0, gl.RGB, this.w , this.h, 0, gl.RGB, gl.UNSIGNED_BYTE, this.data.content);
         gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
         gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
         gl.texParameteri           (gl.TEXTURE_2D, gl.TEXTURE_WRAP_S    , gl.CLAMP_TO_EDGE);
@@ -130,7 +140,7 @@ ShadeLayerPart.prototype.update = function ( params ) {
         mat4.identity              ( pMatrix );
         mat4.ortho                 ( 0, fbtx[0].width , 0, fbtx[0].height, 0, 1, pMatrix ); // Y swap !
 
-        var prog                   = this.assets.prog[ "Shade" ]
+        var prog                   = this.assets.prog[ "Shade" ];
 
         gl.useProgram              (prog);
         gl.uniformMatrix4fv        (prog.params.pMatrixUniform.name , false, pMatrix);
@@ -147,8 +157,8 @@ ShadeLayerPart.prototype.update = function ( params ) {
         gl.bindTexture             (gl.TEXTURE_2D, tmpTex);
         gl.uniform1i               (prog.params.uSamplerTex1.name, 0);
 
-        gl.uniform3fv              (prog.params.uLight.name   , [-params.uLight[0],-params.uLight[1],-params.uLight[2]]);
-        gl.uniform1f               (prog.params.uScale.name   , params.scale);
+        gl.uniform3fv              (prog.params.uLight.name   , [-this.params.uLight[0],-this.params.uLight[1],-this.params.uLight[2]]);
+        gl.uniform1f               (prog.params.uScale.name   , this.params.scale);
         //gl.uniform3fv              (prog.params.uLight.name   , [0.0,0.0,-50.0] );
         //gl.uniform1f               (prog.params.uScale.name   , 1);
 
@@ -168,7 +178,7 @@ ShadeLayerPart.prototype.update = function ( params ) {
         gl.bindTexture       ( gl.TEXTURE_2D           , this.tex     );
         gl.pixelStorei       ( gl.UNPACK_FLIP_Y_WEBGL  , false        );
         var byteArray        = new Uint8Array        ( [1,1,1,0 , 1,1,1,0 , 1,1,1,0 , 1,1,1,0] );
-        gl.texImage2D        ( gl.TEXTURE_2D           , 0                           , gl.RGBA, 2 , 2, 0, gl.RGBA, gl.UNSIGNED_BYTE, byteArray)
+        gl.texImage2D        ( gl.TEXTURE_2D           , 0                           , gl.RGBA, 2 , 2, 0, gl.RGBA, gl.UNSIGNED_BYTE, byteArray);
         gl.texParameteri     ( gl.TEXTURE_2D           , gl.TEXTURE_MAG_FILTER  , gl.NEAREST );
         gl.texParameteri     ( gl.TEXTURE_2D           , gl.TEXTURE_MIN_FILTER  , gl.NEAREST );
         gl.bindTexture       ( gl.TEXTURE_2D           , null         );
@@ -177,7 +187,7 @@ ShadeLayerPart.prototype.update = function ( params ) {
     }
 
     var diffT   = date.getTime() - startT;
-    return diffT
+    return diffT;
 };
 
 //------------------------------------------------------------------//

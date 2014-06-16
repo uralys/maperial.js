@@ -7,7 +7,7 @@ VectorialLayerPart.FRONT  = "front";
 
 function VectorialLayerPart ( mapView, inZoom ) {
    this.mapView = mapView;
-   
+
    this.gl     = mapView.context.assets.ctx;
 
    this.cnv    = null;
@@ -15,7 +15,7 @@ function VectorialLayerPart ( mapView, inZoom ) {
    this.ctx    = null;
    this.data   = null;
    this.z      = inZoom;
-   
+
    this.layerCount = 0;
 }
 
@@ -28,7 +28,7 @@ VectorialLayerPart.prototype.AllocCanvas = function ( ) {
    this.ctx.globalCompositeOperation="source-over";
 
    // Clear ...
-   
+
    if (Maperial.bgdimg in window.maperialSymb) {
       var symb = window.maperialSymb[Maperial.bgdimg];
       this.ctx.drawImage( symb.data, 0 , 0 );
@@ -48,10 +48,10 @@ VectorialLayerPart.prototype.GetType = function ( ) {
 VectorialLayerPart.prototype.Init = function ( data ) {
    if (this.tex)
       return;
-      
+
    this.data   = data;
    var gl      = this.gl;
-   
+
    if (data) {
       this.AllocCanvas();
    }
@@ -89,7 +89,7 @@ VectorialLayerPart.prototype.IsUpToDate = function ( ) {
    return this.layerCount == null;
 }
 
-VectorialLayerPart.prototype.update = function ( params, layerPosition ) {
+VectorialLayerPart.prototype.update = function ( layerPosition ) {
    var gl = this.gl;
    if (this.tex == null ) {
       if (this.data) {
@@ -122,7 +122,7 @@ VectorialLayerPart.prototype.update = function ( params, layerPosition ) {
    var rendererStatus   = TileRenderer.RenderLayers (osmVisibilities, layerPosition,  this.ctx , this.data , this.z , style , this.layerCount ) ;
 
    this.layerCount      = rendererStatus[0];
-   
+
    var diffT = 0;
    if (this.IsUpToDate()) { // render is finished, build GL Texture
       var date    = (new Date)
@@ -130,7 +130,7 @@ VectorialLayerPart.prototype.update = function ( params, layerPosition ) {
       this._BuildTexture();
       diffT   = date.getTime() - startT;
    }
-   
+
    return rendererStatus[1] + diffT
 }
 

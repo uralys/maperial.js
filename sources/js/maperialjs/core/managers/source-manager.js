@@ -1,7 +1,7 @@
 
 var utils           = require('../../../libs/utils.js'),
     Source          = require('../models/source.js'),
-    sourceManager   = new SourceManager();
+    ajax            = require('../../../libs/ajax.js');
 
 //----------------------------------------------------------------------------
 
@@ -72,15 +72,15 @@ SourceManager.prototype.release = function (sourceId, x, y, z) {
 //----------------------------------------------------------------------------
 
 SourceManager.prototype.loadVectorial = function ( sourceId, x, y, z ) {
-    var url         = "/api/tile?x="+tx+"&y="+ty+"&z="+z,
+    var url         = Maperial.apiURL + "/api/tile?x="+x+"&y="+y+"&z="+z,
         requestId   = getRequestId(sourceId, x, y, z);
     this.LoadAPISource(url, requestId);
 };
 
 SourceManager.prototype.loadShade = function ( x, y, z ) {
-    var url         = "/api/srtm?x="+tx+"&y="+ty+"&z="+z,
+    var url         = Maperial.apiURL + "/api/srtm?x="+x+"&y="+y+"&z="+z,
         requestId   = getRequestId(Source.Shade, x, y, z);
-    this.LoadAPISource(url, requestId);
+    this.loadAPISource(url, requestId);
 };
 
 // à analyser : SRTM
@@ -93,28 +93,31 @@ SourceManager.prototype.loadShade = function ( x, y, z ) {
 //----------------------------------------------------------------------------
 
 SourceManager.prototype.loadAPISource = function ( url, requestId ) {
-    var me = this;
 
-    this.requests[requestId] = $.ajax({
-        type     : "GET",
-        url      : url,
-        dataType : "json",
-        timeout  : Maperial.tileDLTimeOut,
-        success  : function(data) {
-            if ( ! data ) {
-                me.errors[requestId] = true;
+    var sourceReceived = function(error, content){
+        if(!error){
+            if ( ! content ) {
+                this.errors[requestId]  = true;
             }
             else {
-                me.data[requestId] = data;
+                this.data[requestId]    = content;
             }
 
-            me.complete[requestId] = true;
-        },
-        error : function() {
-            me.errors[requestId]  = true;
-            me.complete[requestId]    = true;
+            this.complete[requestId]    = true;
         }
-    });
+        else{
+            this.errors[requestId]      = true;
+            this.complete[requestId]    = true;
+        }
+    }.bind(this);
+
+    ajax.get(
+        url,
+        null,
+        sourceReceived,
+        "arraybuffer",
+        true
+    );
 };
 
 //----------------------------------------------------------------------------

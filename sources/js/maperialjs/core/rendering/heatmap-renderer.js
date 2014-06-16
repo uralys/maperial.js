@@ -1,7 +1,7 @@
 
 var utils                   = require('../../../libs/utils.js'),
-GLTools                 = require("./tools/gl-tools.js"),
-CoordinateSystem        = require('../../libs/coordinate-system.js');
+    GLTools                 = require("./tools/gl-tools.js"),
+    CoordinateSystem        = require('../../libs/coordinate-system.js');
 
 //------------------------------------------------------------------------------------------//
 
@@ -20,7 +20,7 @@ function HeatmapRenderer ( mapView, heatmapData, colorbar, options ) {
 
     this.z               = null;
     this.tx              = null;
-    this.ty              = null; 
+    this.ty              = null;
     this.nbtx            = null;
     this.nbty            = null;
 
@@ -55,11 +55,11 @@ HeatmapRenderer.prototype.isSync = function () {
 
 HeatmapRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY ) {
 
-    var cameraMoved = this.z != z 
-    || this.tx == null 
-    || tileX < this.tx 
-    || tileY < this.ty 
-    || tileX + nbTX > this.tx + this.nbtx 
+    var cameraMoved = this.z != z
+    || this.tx == null
+    || tileX < this.tx
+    || tileY < this.ty
+    || tileX + nbTX > this.tx + this.nbtx
     || tileY + nbTY > this.ty + this.nbty,
 
     dataChanged = this.version != this.heatmapData.version;
@@ -143,7 +143,7 @@ HeatmapRenderer.prototype.IsUpToDate = function ( ) {
 }
 
 HeatmapRenderer.prototype.update = function () {
-    
+
     if (!this.frmB || this.renderingStep === null)
         return 0;
 
@@ -164,7 +164,7 @@ HeatmapRenderer.prototype.update = function () {
     gl.disable                  ( gl.DEPTH_TEST  );
     gl.viewport                 ( 0, 0, this.frmB.width, this.frmB.height);
     gl.clear                    ( gl.COLOR_BUFFER_BIT );
-    
+
     mat4.identity               ( mvMatrix );
     mat4.identity               ( pMatrix );
     mat4.ortho                  ( 0, this.frmB.width , 0, this.frmB.height, 0, 1, pMatrix ); // Y swap !
@@ -172,7 +172,7 @@ HeatmapRenderer.prototype.update = function () {
     if ( this.options.fill === "linear" ) {
         prog                    = this.assets.prog[ "HeatLinear" ]
     }
-    else { // default gaussian   
+    else { // default gaussian
         prog                    = this.assets.prog[ "HeatGaussian" ]
     }
 
@@ -216,7 +216,7 @@ HeatmapRenderer.prototype.update = function () {
                 attr        = null,         // attribut
                 scale       = defaultScale,
                 diameter    = defaultDiameter;
-            
+
             if (al) attr = al[l]            // attributlist
 
             if ( attr && typeof (attr) == typeof ({}) ) {
@@ -232,14 +232,14 @@ HeatmapRenderer.prototype.update = function () {
             for ( var li = 0 ; li < lines.length ; ++li ) {
                 var line = lines[li];
                 if (line.length == 2) {
-                    
+
                     var localScale = defaultScale,
-                        localDiam  = defaultDiameter; 
-                    
+                        localDiam  = defaultDiameter;
+
                     if (unit == 1) {
                         var tmp1 = this.cs.MetersToPixelsAccurate(line[0]   ,line[1],this.z ),
                             tmp2 = this.cs.MetersToPixelsAccurate(line[0] + diameter ,line[1],this.z );
-                        
+
                         diameter = tmp2.x - tmp1.x
                     }
 
@@ -248,14 +248,14 @@ HeatmapRenderer.prototype.update = function () {
 
                     mat4.identity          ( mvMatrix );
                     mat4.translate         ( mvMatrix, [ tmpx , tmpy , 0] );
-                    mat4.scale             ( mvMatrix, [ diameter , diameter , 1.0] );               
+                    mat4.scale             ( mvMatrix, [ diameter , diameter , 1.0] );
                     gl.uniformMatrix4fv    ( prog.params.mvMatrixUniform.name, false, mvMatrix );
-                    gl.uniform1f           ( prog.params.uParams.name , scale ); 
+                    gl.uniform1f           ( prog.params.uParams.name , scale );
                     gl.drawArrays          ( gl.TRIANGLE_FAN, 0, this.assets.circleVertexPositionBuffer.numItems );
                 }
             }
         }
-        
+
         diffT   = date.getTime() - startT;
         if ( diffT > 10 )
             break;
@@ -272,7 +272,7 @@ HeatmapRenderer.prototype.update = function () {
         this.frmB = null;
         this.renderingStep = null;
     }
-    
+
     return diffT
 }
 
@@ -304,7 +304,7 @@ HeatmapRenderer.prototype._BuildTexture = function () {
     mat4.ortho                 ( 0, Maperial.tileSize, 0, Maperial.tileSize, 0, 1, pMatrix ); // Y swap !
     gl.useProgram              (prog);
 
-    gl.uniform4fv              (prog.params.uParams.name ,[0.0,1.0,colorBbounds[0],colorBbounds[1]] ); 
+    gl.uniform4fv              (prog.params.uParams.name ,[0.0,1.0,colorBbounds[0],colorBbounds[1]] );
 
     gl.uniformMatrix4fv        (prog.params.pMatrixUniform.name , false, pMatrix);
 
@@ -334,7 +334,7 @@ HeatmapRenderer.prototype._BuildTexture = function () {
 
             gl.activeTexture           (gl.TEXTURE1);
             gl.bindTexture             (gl.TEXTURE_2D, this.colorbar.tex[this.mapView.id] );
-            gl.uniform1i               (prog.params.uSamplerTex2.name, 1);      
+            gl.uniform1i               (prog.params.uSamplerTex2.name, 1);
 
             mat4.identity              ( mvMatrix );
             mat4.translate             ( mvMatrix, [- i*Maperial.tileSize, - j*Maperial.tileSize , 0.0] );

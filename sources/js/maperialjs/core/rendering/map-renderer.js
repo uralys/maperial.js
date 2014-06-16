@@ -37,7 +37,7 @@ MapRenderer.prototype.start = function () {
     try {
         // Try to grab the standard context.
         // If it fails, fallback to experimental.
-        this.gl =   this.mapView.canvas.getContext("webgl") 
+        this.gl =   this.mapView.canvas.getContext("webgl")
                 ||  this.mapView.canvas.getContext("experimental-webgl");
         this.fitToSize();
     } catch (e) {}
@@ -50,13 +50,13 @@ MapRenderer.prototype.start = function () {
     this.gltools = new GLTools ();
     this.initGL();
 
-    this.drawSceneInterval = setInterval( 
-        this.drawScene.bind(this), 
-        Maperial.refreshRate 
+    this.drawSceneInterval = setInterval(
+        this.drawScene.bind(this),
+        Maperial.refreshRate
     );
-    
+
     return true;
-} 
+}
 
 //--------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ MapRenderer.prototype.fitToSize = function () {
         this.gl.viewportHeight = this.mapView.canvas.height();
     }
     else{
-        console.log("---------> couldn't fitToSize")      
+        console.log("---------> couldn't fitToSize")
     }
 
 }
@@ -93,14 +93,14 @@ MapRenderer.prototype.addDynamicalRenderer = function(dynamicalData, style){
 //-------------------------------------------------------------------------
 
 MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, options){
-    
+
     var renderer = new HeatmapRenderer(
-        this.mapView, 
-        heatmapData, 
-        colorbar, 
+        this.mapView,
+        heatmapData,
+        colorbar,
         options
     );
-    
+
     this.dynamicalRenderers[renderer.id] = renderer;
     return renderer;
 }
@@ -111,36 +111,36 @@ MapRenderer.prototype.drawScene = function ( ) {
 
     var w = this.mapView.canvas.clientWidth,
         h = this.mapView.canvas.clientHeight,
-    
+
         w2 = Math.floor ( w / 2 ),
         h2 = Math.floor ( h / 2 ),
-    
+
         r  = this.mapView.context.coordS.Resolution (this.mapView.context.zoom),
-        
-        originM = new Point( 
-            this.mapView.context.centerM.x - w2 * r , 
-            this.mapView.context.centerM.y + h2 * r 
+
+        originM = new Point(
+            this.mapView.context.centerM.x - w2 * r ,
+            this.mapView.context.centerM.y + h2 * r
         ),
-        
-        tileC   = this.mapView.context.coordS.MetersToTile ( 
+
+        tileC   = this.mapView.context.coordS.MetersToTile (
             originM.x,
-            originM.y , 
-            this.mapView.context.zoom 
+            originM.y ,
+            this.mapView.context.zoom
         ),
-    
-        originP = this.mapView.context.coordS.MetersToPixels ( 
-            originM.x, 
-            originM.y, 
-            this.mapView.context.zoom 
+
+        originP = this.mapView.context.coordS.MetersToPixels (
+            originM.x,
+            originM.y,
+            this.mapView.context.zoom
         ),
-        
-        shift   = new Point ( 
-            Math.floor ( tileC.x * Maperial.tileSize - originP.x ) , 
-            Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) ) 
+
+        shift   = new Point (
+            Math.floor ( tileC.x * Maperial.tileSize - originP.x ) ,
+            Math.floor ( - ( (tileC.y+1) * Maperial.tileSize - originP.y ) )
         ),
-    
+
         nbTileX = Math.floor ( w  / Maperial.tileSize + 1 ),
-        nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ; 
+        nbTileY = Math.floor ( h  / Maperial.tileSize + 1 ) ;
 
     //---------------------------------------------------------------
 
@@ -153,12 +153,12 @@ MapRenderer.prototype.drawScene = function ( ) {
 
     //---------------------------------------------------------------
 
-    if ( this.updateTiles ( 
-            tileC.x , 
-            tileC.x + nbTileX , 
-            tileC.y - nbTileY , 
-            tileC.y , 
-            this.forceTileRedraw ) 
+    if ( this.updateTiles (
+            tileC.x ,
+            tileC.x + nbTileX ,
+            tileC.y - nbTileY ,
+            tileC.y ,
+            this.forceTileRedraw )
     || this.forceGlobalRedraw) {
 
         var mvMatrix      = mat4.create(),
@@ -185,12 +185,12 @@ MapRenderer.prototype.drawScene = function ( ) {
 
     for( var rendererId in this.dynamicalRenderers) {
         var renderer = this.dynamicalRenderers[rendererId];
-        renderer.Refresh ( 
-            this.mapView.context.zoom , 
-            tileC.x , 
-            tileC.y - nbTileY , 
-            nbTileX + 1 , 
-            nbTileY + 1 
+        renderer.Refresh (
+            this.mapView.context.zoom ,
+            tileC.x ,
+            tileC.y - nbTileY ,
+            nbTileX + 1 ,
+            nbTileY + 1
         ) ;
     }
 
@@ -239,7 +239,7 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
     var tileModified  = false,
         timeRemaining = Maperial.refreshRate - 5;
 
-    for (var ki = 0 ; ki < keyList.length ; ki++) {      
+    for (var ki = 0 ; ki < keyList.length ; ki++) {
         var tile = this.mapView.tiles[keyList[ki]];
         if (tile && !tile.IsUpToDate () )  {
             tileModified = true;
@@ -276,23 +276,24 @@ function prepareGL( glAsset , gl , glTools) {
             glAsset.shaderData = result;
             for (var k in glAsset.shaderData) {
                 var shader = glAsset.shaderData[k];
-                shader.code = shader.code.replace (/---/g,"\n"); 
+                shader.code = shader.code.replace (/---/g,"\n");
             }
         }
     };
-    
+
     ajax.get(
         Maperial.staticURL + "/shaders/all.json",
         null,
         shadersReceived,
+        "json",
         false
     );
 
-    var vertices = [ 
-                    0.0    , 0.0   , 0.0,     
-                    256.0  , 0.0   , 0.0,      
-                    0.0    , 256.0 , 0.0,      
-                    256.0  , 256.0 , 0.0 
+    var vertices = [
+                    0.0    , 0.0   , 0.0,
+                    256.0  , 0.0   , 0.0,
+                    0.0    , 256.0 , 0.0,
+                    256.0  , 256.0 , 0.0
                     ];
 
     glAsset.squareVertexPositionBuffer            = gl.createBuffer();
@@ -302,13 +303,13 @@ function prepareGL( glAsset , gl , glTools) {
     glAsset.squareVertexPositionBuffer.numItems   = 4;
 
     // Y swap
-    var textureCoords = [ 
-                          0.0, 0.0,     
-                          1.0, 0.0,      
-                          0.0, 1.0,      
-                          1.0, 1.0 
+    var textureCoords = [
+                          0.0, 0.0,
+                          1.0, 0.0,
+                          0.0, 1.0,
+                          1.0, 1.0
                           ];
-    
+
     glAsset.squareVertexTextureBuffer             = gl.createBuffer();
     gl.bindBuffer   ( gl.ARRAY_BUFFER, glAsset.squareVertexTextureBuffer );
     gl.bufferData   ( gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW );
@@ -317,7 +318,7 @@ function prepareGL( glAsset , gl , glTools) {
 
     var nb = 1;
     vertices                                      = [ 0.0, 0.0, 0.0 ]; // center
-    textureCoords                                 = [ 0.0, 0.0 ]; 
+    textureCoords                                 = [ 0.0, 0.0 ];
     for (var i = 0 ; i <= 360 ; i += 5 ) {
         var a = i * (2.0 * Math.PI / 360.0);
         vertices.push ( Math.sin(a) * 0.5 )
@@ -345,9 +346,9 @@ function prepareGL( glAsset , gl , glTools) {
     gl.disable      ( gl.DEPTH_TEST  );
 
     glAsset.prog = {}
-    glAsset.prog["HeatGaussian"]         = glTools.MakeProgram   ( "vertexTex" , "fragmentHeatGaussian" , glAsset); 
-    glAsset.prog["HeatLinear"]           = glTools.MakeProgram   ( "vertexTex" , "fragmentHeatLinear"   , glAsset); 
-    glAsset.prog["Tex"]                  = glTools.MakeProgram   ( "vertexTex" , "fragmentTex"          , glAsset); 
+    glAsset.prog["HeatGaussian"]         = glTools.MakeProgram   ( "vertexTex" , "fragmentHeatGaussian" , glAsset);
+    glAsset.prog["HeatLinear"]           = glTools.MakeProgram   ( "vertexTex" , "fragmentHeatLinear"   , glAsset);
+    glAsset.prog["Tex"]                  = glTools.MakeProgram   ( "vertexTex" , "fragmentTex"          , glAsset);
     glAsset.prog["Clut"]                 = glTools.MakeProgram   ( "vertexTex" , "fragmentClut"         , glAsset);
     glAsset.prog["Shade"]                = glTools.MakeProgram   ( "vertexTex" , "fragmentShade"        , glAsset);
     glAsset.prog[Maperial.MulBlend]      = glTools.MakeProgram   ( "vertexTex" , "fragmentMulBlend"     , glAsset);

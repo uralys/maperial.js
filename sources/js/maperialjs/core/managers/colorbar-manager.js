@@ -79,7 +79,7 @@ ColorbarManager.prototype.fetchColorbars = function(colorbarUIDs, next) {
    else{
       next();
    }
-}
+};
 
 //-------------------//
 
@@ -95,8 +95,8 @@ ColorbarManager.prototype.loadColorbar = function(colorbarUID) {
    var colobarReceived = function(error, json){
        if(!error){
            var cb = new ColorBarData ( );
-           cb.FromJson (json)
-           this.SetColorBar (colorbarUID,cb )
+           cb.FromJson (json);
+           this.SetColorBar (colorbarUID,cb );
            this.loadNextColorbar();
        }
    }.bind(this);
@@ -107,19 +107,19 @@ ColorbarManager.prototype.loadColorbar = function(colorbarUID) {
        colobarReceived,
        true
    );
-}
+};
 
 //----------------------------//
 
 ColorbarManager.prototype.loadNextColorbar = function() {
    this.fetchColorbars(this.colorbarsToLoad, this.nextFunction);
-}
+};
 
 //----------------------------//
 
 ColorbarManager.prototype.getURL = function(colorbarUID) {
    return Maperial.apiURL + "/api/colorbar/" + colorbarUID;
-}
+};
 
 //----------------------------//
 

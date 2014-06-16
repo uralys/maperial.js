@@ -160,7 +160,8 @@ Tile.prototype.createLayerPart = function (layer, index) {
                 index, 0,
                 new ShadeLayerPart(
                     this,
-                    this.mapView.context
+                    this.mapView.context,
+                    layer
                 )
             );
             break;
@@ -289,9 +290,9 @@ Tile.prototype.update = function ( maxTime ) {
     //--------------------------------------//
 
     var date                 = new Date(),
-    startT               = date.getTime(),
-    diffT                = 0,
-    noLayerPartUpdate    = true;
+        startT               = date.getTime(),
+        diffT                = 0,
+        noLayerPartUpdate    = true;
 
     //--------------------------------------//
     // layerParts update
@@ -299,7 +300,7 @@ Tile.prototype.update = function ( maxTime ) {
     for(var i = 0; i< this.layerParts.length; i++){
         if (! this.layerParts[i].IsUpToDate() ){
             if(this.layerParts[i].dataReady() ) {
-                this.layerParts[i].update( this.layerParts[i].params, i );
+                this.layerParts[i].update( i );
                 noLayerPartUpdate = false
 
                 diffT   = date.getTime() - startT;
@@ -354,8 +355,8 @@ Tile.prototype.compose = function () {
             var frontTex   = layerPartsTocompose[i].tex;
             if (frontTex) {
                 var composition = layerPartsTocompose[i].layer.composition,
-                prog        = this.assets.prog[ composition.shader ],
-                params      = composition.params;
+                    prog        = this.assets.prog[ composition.shader ],
+                    params      = composition.params;
 
                 this.fuse      ( backTex,frontTex,destFb, prog , params);
             }
