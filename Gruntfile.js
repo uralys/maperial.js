@@ -9,49 +9,25 @@ module.exports = function(grunt) {
             replace: {
                 dist: {
                     options: {
-                        patterns: [{
-                            match: 'staticURL',
-                            replacement: '<%= env.staticURL %>'
-                        }]
+                        patterns: [
+                            {
+                               match: 'staticURL',
+                               replacement: '<%= env.staticURL %>'
+                            },
+                            {
+                               match: 'apiURL',
+                               replacement: '<%= env.apiURL %>'
+                            },
+                            {
+                               match: 'tileURL',
+                               replacement: '<%= env.tileURL %>'
+                            }
+                        ]
                     },
                     files: [{
                         expand: true, 
                         flatten: true, 
                         src: ['environment/config.js'], 
-                        dest: 'sources/js/environment/'
-                    }]
-                }
-            },
-
-            replace: {
-                dist: {
-                    options: {
-                        patterns: [{
-                            match: 'apiURL',
-                            replacement: '<%= env.apiURL %>'
-                        }]
-                    },
-                    files: [{
-                        expand: true,
-                        flatten: true,
-                        src: ['environment/config.js'],
-                        dest: 'sources/js/environment/'
-                    }]
-                }
-            },
-
-            replace: {
-                dist: {
-                    options: {
-                        patterns: [{
-                            match: 'tileURL',
-                            replacement: '<%= env.tileURL %>'
-                        }]
-                    },
-                    files: [{
-                        expand: true,
-                        flatten: true,
-                        src: ['environment/config.js'],
                         dest: 'sources/js/environment/'
                     }]
                 }
