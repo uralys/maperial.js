@@ -23,6 +23,40 @@ module.exports = function(grunt) {
                 }
             },
 
+            replace: {
+                dist: {
+                    options: {
+                        patterns: [{
+                            match: 'apiURL',
+                            replacement: '<%= env.apiURL %>'
+                        }]
+                    },
+                    files: [{
+                        expand: true,
+                        flatten: true,
+                        src: ['environment/config.js'],
+                        dest: 'sources/js/environment/'
+                    }]
+                }
+            },
+
+            replace: {
+                dist: {
+                    options: {
+                        patterns: [{
+                            match: 'tileURL',
+                            replacement: '<%= env.tileURL %>'
+                        }]
+                    },
+                    files: [{
+                        expand: true,
+                        flatten: true,
+                        src: ['environment/config.js'],
+                        dest: 'sources/js/environment/'
+                    }]
+                }
+            },
+
             browserify: {
 
                 /* dev : simple browserify + source map */
