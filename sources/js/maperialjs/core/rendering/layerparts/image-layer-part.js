@@ -3,15 +3,16 @@ var ImageData       = require("../../models/data/image-data.js");
 
 //---------------------------------------------------------------------------
 
-function ImageLayerPart (sourceId, tile, gl) {
+function ImageLayerPart (layer, tile, gl) {
 
+    this.layer     = layer;
     this.gl        = gl;
 
     this.tex       = null;
     this.w         = 0;
     this.h         = 0;
 
-    this.data      = new ImageData(sourceId, tile.x, tile.y, tile.z);
+    this.data      = new ImageData(layer.sourceId, tile.x, tile.y, tile.z);
 }
 
 //---------------------------------------------------------------------------

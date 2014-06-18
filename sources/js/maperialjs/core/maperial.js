@@ -36,6 +36,7 @@ Maperial.prototype.refreshSharedItems = function () {
 
     window.sourceManager        = window.sourceManager  || new SourceManager();
     window.styleManager         = window.styleManager   || new StyleManager();
+    window.colorbarManager      = window.colorbarManager|| new ColorbarManager();
 };
 
 //-----------------------------------------------------------------
@@ -128,7 +129,7 @@ Maperial.globalDataCpt          = 0;
  *          default Maperial.DEFAULT_LONGITUDE
  *
  */
-Maperial.prototype.addView = function (options) {
+Maperial.prototype.createView = function (options) {
 
    //-------------------------------------------
    // Checking options

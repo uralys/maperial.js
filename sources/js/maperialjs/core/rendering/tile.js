@@ -140,7 +140,7 @@ Tile.prototype.createLayerPart = function (layer, index) {
             this.layerParts.splice(
                 index, 0,
                 new ImageLayerPart(
-                    layer.sourceId,
+                    layer,
                     this,
                     this.mapView.context.assets.ctx
                 )

@@ -5,6 +5,7 @@ VectorialLayerPart.FRONT  = "front";
 
 //=============================================================//
 
+/* TODO : il faut un this.layer pour la composition */
 function VectorialLayerPart ( mapView, inZoom ) {
    this.mapView = mapView;
 

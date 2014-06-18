@@ -23,14 +23,26 @@ function MapView(maperial, options){
 
 MapView.prototype.expose = function () {
 
+    /*********************************/
+    // Images
+
     /* TODO doc */
     this.addOCMTransport = function(){
-        this.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
+        return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
     }.bind(this);
 
     /* TODO doc */
+    this.addWatercolor = function(){
+        return this.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
+    }.bind(this);
+
+
+    /**********************************/
+    /* Maperial layers*/
+
+    /* TODO doc */
     this.addShade = function(){
-        this.addShadeLayer();
+        return this.addShadeLayer();
     }.bind(this);
 
 };
@@ -103,29 +115,20 @@ MapView.prototype.prepareView = function ()   {
     this.height      = this.options.container.clientHeight;
 
     this.setCanvasSize();
-}
+};
 
 MapView.prototype.setCanvasSize = function() {
     this.canvas.width = this.width;
     this.canvas.height = this.height;
-}
+};
 
 //--------------------------------------------------------------------------
 //-     PLUGINS for API
 //--------------------------------------------------------------------------
 
 MapView.prototype.addImageLayer = function (sourceId)   {
-    this.layerManager.addLayer(Layer.Images, sourceId)
-}
-
-//-----------------------------------------------------------------
-
-MapView.prototype.addOSMLayer = function (styleId)   {
-
-    if(!styleId)
-        styleId = Maperial.DEFAULT_STYLE_UID
-
-}
+    return this.layerManager.addLayer(Layer.Images, sourceId);
+};
 
 //-----------------------------------------------------------------
 
@@ -142,30 +145,24 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options)   {
     //-------------------------------------------
     // Proceed
 
-    this.layerManager.addLayer(Layer.Dynamical, {
+    return this.layerManager.addLayer(Layer.Dynamical, {
         mapView           : this,
         dynamicalData     : dynamicalData,
         style             : options.style
     });
 
-}
+};
 
 //-----------------------------------------------------------------
 
 MapView.prototype.addHeatmapLayer = function (heatmapData, options)   {
 
-    //-------------------------------------------
-    // Checking options
-
-    var options = utils.prepareOptions(options, "colorbar");
-    if(!options){
-        console.log("Wrong call to addHeatmapLayer. Check the options");
-    }
+    options.colorbar = options.colorbar || colorbarManager.createColorbar();
 
     //-------------------------------------------
     // Proceed
 
-    this.layerManager.addLayer(Layer.Heat, {
+    return this.layerManager.addLayer(Layer.Heat, {
         mapView        : this,
         heatmapData    : heatmapData,
         colorbar       : options.colorbar,
@@ -185,12 +182,21 @@ MapView.prototype.addShadeLayer = function () {
 //-----------------------------------------------------------------
 
 MapView.prototype.addRasterLayer = function (sourceId) {
-    this.layerManager.addLayer(Layer.Raster, sourceId);
+    return this.layerManager.addLayer(Layer.Raster, sourceId);
 };
 
 //-----------------------------------------------------------------
 
 MapView.prototype.addWMSLayer = function (sourceId) {
+
+};
+
+//-----------------------------------------------------------------
+
+MapView.prototype.addOSMLayer = function (styleId)   {
+
+  if(!styleId)
+      styleId = Maperial.DEFAULT_STYLE_UID;
 
 };
 

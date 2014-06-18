@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<title>Maperial 1.2 - Simple fusion : minified</title>
+<title>Maperial 2.0 - Shade</title>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 <link href="http://static.maperial.localhost/css/maperial.css" rel="stylesheet" type="text/css" />
 </head>
@@ -12,20 +12,17 @@
   
 <script type="text/javascript" src="//static.maperial.localhost/js/maperial.js"></script>
 <script type="text/javascript">
-
-	(function() {
 	
-		var maperial = new Maperial(),
-		    map = maperial.addView({
-		        container : "map",
-		    });
-	
-		map.addOCMTransport();
-		map.addShade();
-		
-		window.map = map;
-	})();
+	var maperial = new Maperial(),
+	    map = maperial.createView({
+	        container : "map",
+	    });
 
+	map.addOCMTransport();
+	map.addShade();
+	
+	window.map = map;
+	
 </script>
 
 
