@@ -1,18 +1,15 @@
 
 .hud {
     position: absolute;
-    top: 30px;
-    left: 30px;
+    top: 13px;
+    left: 13px;
     width: 200px;
-    /* height: 20px; */
-    background-color: #000;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 20px;
+    padding: 4px;
     opacity: 0.8;
-    background: -webkit-linear-gradient(top, rgb(68, 68, 68), rgb(0, 0, 0))
-        rgb(0, 0, 0);
+    background: -webkit-linear-gradient(top, #ddd, #fff) #fff;
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
     border-bottom-left-radius: 6px;
