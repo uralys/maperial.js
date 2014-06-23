@@ -16,12 +16,12 @@
 	var maperial = new Maperial(),
 	    map = maperial.createView({
 	        container : "map",
-	    });
+	    }),
 
-	map.addOCMTransport();
-	map.addShade();
+	    ocmTransport   = map.addOCMTransport(),
+	    shadeLayer     = map.addShade();
 	
-	window.map = map;
+    maperial.addShadeControls(shadeLayer);
 	
 </script>
 

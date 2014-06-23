@@ -21,7 +21,7 @@ function MapRenderer(mapView) {
     this.start();
 
     this.assets                = mapView.context.assets;
-    this.gl                    = mapView.context.assets.ctx
+    this.gl                    = mapView.context.assets.ctx;
 
     this.dynamicalRenderers    = {};
     this.colorbarRenderer      = new ColorbarRenderer(this.mapView);
@@ -153,13 +153,15 @@ MapRenderer.prototype.drawScene = function ( ) {
 
     //---------------------------------------------------------------
 
-    if ( this.updateTiles (
-            tileC.x ,
-            tileC.x + nbTileX ,
-            tileC.y - nbTileY ,
-            tileC.y ,
-            this.forceTileRedraw )
-    || this.forceGlobalRedraw) {
+    var tilesChanged = this.updateTiles (
+        tileC.x ,
+        tileC.x + nbTileX ,
+        tileC.y - nbTileY ,
+        tileC.y ,
+        this.forceTileRedraw
+    );
+
+    if ( tilesChanged || this.forceGlobalRedraw) {
 
         var mvMatrix      = mat4.create(),
             pMatrix       = mat4.create();
@@ -174,8 +176,8 @@ MapRenderer.prototype.drawScene = function ( ) {
             for ( var wy = shift.y, ty = tileC.y ; wy < h ; wy = wy+ Maperial.tileSize , ty = ty - 1) {
                 mat4.identity (mvMatrix);
                 mat4.translate(mvMatrix, [wx, wy , 0]);
-                var key  = tx + "," + ty + "," + this.mapView.context.zoom;
-                var tile = this.mapView.tiles[key]
+                var key  = tx + "," + ty + "," + this.mapView.context.zoom,
+                    tile = this.mapView.tiles[key];
                 tile.render ( pMatrix, mvMatrix );
             }
         }
@@ -185,7 +187,7 @@ MapRenderer.prototype.drawScene = function ( ) {
 
     for( var rendererId in this.dynamicalRenderers) {
         var renderer = this.dynamicalRenderers[rendererId];
-        renderer.Refresh (
+        renderer.synchronize (
             this.mapView.context.zoom ,
             tileC.x ,
             tileC.y - nbTileY ,
@@ -198,7 +200,7 @@ MapRenderer.prototype.drawScene = function ( ) {
 
     this.forceGlobalRedraw  = true;
     this.forceTileRedraw    = false;
-}
+};
 
 //--------------------------------------------------------------------
 
@@ -207,8 +209,8 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
     var keyList = [];
     var zoom = this.mapView.context.zoom;
 
-    for ( tx = txB ; tx <= txE ; tx++) {
-        for ( ty = tyB ; ty <= tyE ; ty++) {
+    for ( var tx = txB ; tx <= txE ; tx++) {
+        for ( var ty = tyB ; ty <= tyE ; ty++) {
             var key = tx + "," + ty + "," + zoom;
             keyList.push(key);
 
@@ -222,7 +224,7 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
     for (var key in this.mapView.tiles) {
         var isInKeyList = false;
         for (var ki = 0 ; ki < keyList.length ; ki++) {
-            if (keyList[ki] === key) isInKeyList = true
+            if (keyList[ki] === key) isInKeyList = true;
         }
         if ( ! isInKeyList ) {
             this.mapView.tiles[key].release();
@@ -244,19 +246,19 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
         if (tile && !tile.IsUpToDate () )  {
             tileModified = true;
 
-            timeRemaining = tile.update( timeRemaining )
+            timeRemaining = tile.update( timeRemaining );
             if ( timeRemaining <= 0 )
                 break;
         }
     }
 
-    return tileModified
-}
+    return tileModified;
+};
 
 
 MapRenderer.prototype.createTile = function ( x,y,z ) {
     return new Tile (this.mapView, x,y,z);
-}
+};
 
 //----------------------------------------------------------------
 //PRIVATE

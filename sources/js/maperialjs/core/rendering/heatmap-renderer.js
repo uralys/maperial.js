@@ -27,7 +27,7 @@ function HeatmapRenderer ( mapView, heatmapData, colorbar, options ) {
     this.w               = this.h = 0;
     this.frmB            = null;
     this.texB            = null;
-    this.cs              = new CoordinateSystem (Maperial.tileSize)
+    this.cs              = new CoordinateSystem (Maperial.tileSize);
 
     this.version         = 0;
     this.tex             = [];
@@ -49,11 +49,11 @@ HeatmapRenderer.prototype.isSync = function () {
 
         return false;
     }
-}
+};
 
 //------------------------------------------------------------------------------------------//
 
-HeatmapRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY ) {
+HeatmapRenderer.prototype.synchronize = function ( z , tileX, tileY, nbTX , nbTY ) {
 
     var cameraMoved = this.z != z
     || this.tx == null
@@ -70,52 +70,48 @@ HeatmapRenderer.prototype.Refresh = function ( z , tileX, tileY, nbTX , nbTY ) {
         this.version = this.heatmapData.version;
 
         var nbTX2 = 1,
-        nbTY2 = 1;
+            nbTY2 = 1;
 
         while ( nbTX2 < nbTX ) nbTX2 = nbTX2 * 2;
         while ( nbTY2 < nbTY ) nbTY2 = nbTY2 * 2;
 
-        var sizeX   = nbTX2 * Maperial.tileSize,
-        sizeY   = nbTY2 * Maperial.tileSize;
+        this.w   = nbTX2 * Maperial.tileSize;
+        this.h   = nbTY2 * Maperial.tileSize;
 
-        this.w = sizeX;
-        this.h = sizeY;
-
-        this.AllocBuffer (sizeX,sizeY) ;
+        this.AllocCanvas (this.w, this.h) ;
 
         var dx = nbTX2 - (nbTX),
-        dy = nbTY2 - (nbTY),
+            dy = nbTY2 - (nbTY),
 
-        tx = tileX - Math.floor ( dx / 2.0 ),
-        ty = tileY - Math.floor ( dy / 2.0 );
+            tx = tileX - Math.floor ( dx / 2.0 ),
+            ty = tileY - Math.floor ( dy / 2.0 );
 
         this.tx     = tx;
         this.ty     = ty;
-        this.nbtx   = nbTX2
+        this.nbtx   = nbTX2;
         this.nbty   = nbTY2;
         this.z      = z;
 
         var tmpP    = Math.pow ( 2 , this.z),
-        res     = this.initialResolution / tmpP,
-        mapSize = Maperial.tileSize * tmpP;
+            res     = this.initialResolution / tmpP;
 
         this.scaleX = (1 / res);
         this.scaleY = - (1 / res);
         this.trX    = (this.originShift / res) - this.tx * Maperial.tileSize;
         this.trY    = this.h - ((this.originShift / res) - this.ty * Maperial.tileSize);
     }
-}
+};
 
 HeatmapRenderer.prototype.AllocBuffer = function ( sizeX , sizeY ) {
     var gltools       = new GLTools();
     var fbtx          = gltools.CreateFrameBufferTex(this.gl,sizeX,sizeY);
     this.frmB         = fbtx[0];
     this.texB         = fbtx[1];
-}
+};
 
 HeatmapRenderer.prototype.reset = function (  ) {
     var gl            = this.gl;
-    this.renderingStep   = 0
+    this.renderingStep   = 0;
     if ( this.texB ) {
         gl.deleteTexture ( this.texB );
         delete      this.texB;
@@ -132,15 +128,15 @@ HeatmapRenderer.prototype.reset = function (  ) {
         }
         this.tex = [];
     }
-}
+};
 
 HeatmapRenderer.prototype.release = function (  ) {
-    this.reset()
-}
+    this.reset();
+};
 
 HeatmapRenderer.prototype.IsUpToDate = function ( ) {
     return this.renderingStep == null;
-}
+};
 
 HeatmapRenderer.prototype.update = function () {
 
@@ -170,10 +166,10 @@ HeatmapRenderer.prototype.update = function () {
     mat4.ortho                  ( 0, this.frmB.width , 0, this.frmB.height, 0, 1, pMatrix ); // Y swap !
 
     if ( this.options.fill === "linear" ) {
-        prog                    = this.assets.prog[ "HeatLinear" ]
+        prog                    = this.assets.prog[ "HeatLinear" ];
     }
     else { // default gaussian
-        prog                    = this.assets.prog[ "HeatGaussian" ]
+        prog                    = this.assets.prog[ "HeatGaussian" ];
     }
 
     gl.useProgram               (prog);
@@ -193,12 +189,12 @@ HeatmapRenderer.prototype.update = function () {
 
     if  ( typeof this.options.diameterUnit !== 'undefined' ) {
         if ( this.options.diameterUnit == "meter" ) {
-            unit             = 1 // meter
+            unit             = 1; // meter
             // Need to be compute with all point !
         }
         else if ( this.options.diameterUnit == "metereq" ) {
-            unit             = 2 // metereq
-            defaultDiameter = defaultDiameter / res
+            unit             = 2; // metereq
+            defaultDiameter = defaultDiameter / re;
         }
     }
 
@@ -217,14 +213,14 @@ HeatmapRenderer.prototype.update = function () {
                 scale       = defaultScale,
                 diameter    = defaultDiameter;
 
-            if (al) attr = al[l]            // attributlist
+            if (al) attr = al[l];            // attributlist
 
             if ( attr && typeof (attr) == typeof ({}) ) {
                 scale     = typeof attr.scale !== 'undefined' ? attr.scale : scale;
                 if ( typeof attr.diameter !== 'undefined' ) {
                     diameter = attr.diameter;
                     if ( unit == 2 ) {
-                        defaultDiameter = defaultDiameter / res
+                        defaultDiameter = defaultDiameter / res;
                     }
                 }
             }
@@ -233,14 +229,11 @@ HeatmapRenderer.prototype.update = function () {
                 var line = lines[li];
                 if (line.length == 2) {
 
-                    var localScale = defaultScale,
-                        localDiam  = defaultDiameter;
-
                     if (unit == 1) {
                         var tmp1 = this.cs.MetersToPixelsAccurate(line[0]   ,line[1],this.z ),
                             tmp2 = this.cs.MetersToPixelsAccurate(line[0] + diameter ,line[1],this.z );
 
-                        diameter = tmp2.x - tmp1.x
+                        diameter = tmp2.x - tmp1.x;
                     }
 
                     var tmpx = line[0] * this.scaleX + this.trX,
@@ -262,7 +255,7 @@ HeatmapRenderer.prototype.update = function () {
     }
 
     gl.disable(gl.BLEND);
-    this.renderingStep = i + 1
+    this.renderingStep = i + 1;
     gl.bindFramebuffer ( gl.FRAMEBUFFER, null );
 
     if ( this.renderingStep >= this.heatmapData.content["l"].length ) {
@@ -273,8 +266,8 @@ HeatmapRenderer.prototype.update = function () {
         this.renderingStep = null;
     }
 
-    return diffT
-}
+    return diffT;
+};
 
 HeatmapRenderer.prototype.GetTex = function ( tx , ty ) {
 
@@ -288,8 +281,7 @@ HeatmapRenderer.prototype.GetTex = function ( tx , ty ) {
     j = this.nbty - j - 1;
 
     return this.tex [ i + j * this.nbtx ];
-    //return this.texB;
-}
+};
 
 HeatmapRenderer.prototype._BuildTexture = function () {
 
@@ -352,7 +344,7 @@ HeatmapRenderer.prototype._BuildTexture = function () {
     gl.bindTexture             (gl.TEXTURE_2D, null );
     gl.activeTexture           (gl.TEXTURE1);
     gl.bindTexture             (gl.TEXTURE_2D, null );
-}
+};
 
 //------------------------------------------------------------------//
 

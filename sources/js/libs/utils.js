@@ -12,7 +12,7 @@ Utils.prototype.zeroPad = function(num, places)
 {
    var zero = places - num.toString().length + 1;
    return Array(+(zero > 0 && zero)).join("0") + num;
-}
+};
 
 /*
  * now as YYYY-MM-DD
@@ -23,7 +23,7 @@ Utils.prototype.dateTime = function()
    return now.getFullYear() + "-"
    + this.zeroPad(now.getMonth()+1, 2) + "-"
    + this.zeroPad(now.getDate(), 2);
-}
+};
 
 //----------------------------------------------------------------------------------------//
 /*
@@ -31,7 +31,7 @@ Utils.prototype.dateTime = function()
 Utils.prototype.replaceAll = function(chain, value, replacement)
 {
    return chain.replace(new RegExp(value, 'g'), replacement);
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
@@ -39,7 +39,7 @@ Utils.prototype.rgbToHex = function (r, g, b) {
    if (r > 255 || g > 255 || b > 255)
       throw "Invalid color component";
    return ((r << 16) | (g << 8) | b).toString(16);
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
@@ -59,7 +59,7 @@ Utils.prototype.formatFileSize = function (bytes)
       return (bytes / 1000000).toFixed(2) + ' MB';
    }
    return (bytes / 1000).toFixed(2) + ' KB';
-}
+};
 //----------------------------------------------------------------------------------------//
 
 /***
@@ -78,19 +78,19 @@ Utils.prototype.formatDate = function(timestamp)
    var year = now.getFullYear();
 
    return day + "/" + month + "/" + year;
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
 //return 1->i
 Utils.prototype.random1 = function(i){
    return Math.floor(Math.random()*i) + 1;
-}
+};
 
 //return 0->i
 Utils.prototype.random0 = function(i){
    return Math.floor(Math.random()*(i+1));
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
@@ -100,7 +100,7 @@ Utils.prototype.generateUID = function()
    var random    = (Math.random() * Math.pow(2, 32)).toString(16);
 
    return timestamp + random;
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
@@ -109,7 +109,7 @@ Utils.prototype.popup = function(url, title, width, height)
    var left = (screen.width/2)-(width/2);
    var top = (screen.height/2)-(height/2);
    return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+width+', height='+height+', top='+top+', left='+left);
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
@@ -123,12 +123,12 @@ Utils.prototype.isObject = function(stuff)
 Utils.prototype.styleThumbURL = function(styleUID, size)
 {
    return this.thumbURL(styleUID, "style", size);
-}
+};
 
 Utils.prototype.colorbarThumbURL = function(colorbarUID)
 {
    return this.thumbURL(colorbarUID, "colorbar");
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
@@ -151,7 +151,7 @@ Utils.prototype.thumbURL = function(uid, type, size)
    });
 
    return url + "/" + uid + size + ".png";
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
@@ -179,7 +179,7 @@ Utils.prototype.getSourceThumb = function(layer) {
       default:
          return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer.shade.png\"";
    }
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
@@ -188,7 +188,7 @@ Utils.prototype.getPoint = function (event) {
        x : event.gesture.center.clientX,
        y : event.gesture.center.clientY
    };
-}
+};
 
 
 /**
@@ -216,15 +216,15 @@ Utils.prototype.converToMeters = function(canvas, context, point){
         );
 
     return meters;
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
 Utils.prototype.randomRotate = function (element) {
 
-   var rotation = this.random0(15) - 8
+   var rotation = this.random0(15) - 8;
    if(Math.abs(rotation) < 2)
-      this.randomRotate(element)
+      this.randomRotate(element);
    else{
 
 //       node.style.transform = style;
@@ -236,7 +236,7 @@ Utils.prototype.randomRotate = function (element) {
 //      $("#"+element).css("-moz-transform", "rotate("+rotation+"deg)")
    }
 
-}
+};
 
 //----------------------------------------------------------------------------------------//
 
@@ -261,7 +261,7 @@ Utils.prototype.prepareOptions = function (options, mainParam) {
 
    else
       return options;
-}
+};
 
 //----------------------------------------------------------------------------------------//
 

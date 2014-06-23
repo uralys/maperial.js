@@ -21,10 +21,41 @@ function Maperial(options){
    /* global content */
    this.refreshSharedItems();
 
-   /* global entities for API*/
-   window.DynamicalData = DynamicalData;
-   window.HeatmapData   = HeatmapData;
+   /* expose maperial api */
+   this.expose();
 }
+
+//-----------------------------------------------------------------
+// API
+//-----------------------------------------------------------------
+
+Maperial.prototype.expose = function () {
+
+    /*---------------------------*/
+    /* global entities for API*/
+
+    window.DynamicalData = DynamicalData;
+    window.HeatmapData   = HeatmapData;
+
+    /*---------------------*/
+    /* Maperial views */
+
+    /* TODO doc */
+    this.createView = createView.bind(this);
+
+    /*---------------------*/
+    /* Maperial HUD */
+
+    /*
+     * TODO doc
+     * layers : array
+     */
+    this.addShadeControls = function(layers){
+        return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
+    }.bind(this);
+
+};
+
 
 //-----------------------------------------------------------------
 
@@ -102,8 +133,6 @@ Maperial.MulBlend               = "MulBlend";
 Maperial.globalDataCpt          = 0;
 
 //-----------------------------------------------------------------
-// API
-//-----------------------------------------------------------------
 
 /**
  * options:
@@ -131,7 +160,7 @@ Maperial.globalDataCpt          = 0;
  *          default Maperial.DEFAULT_LONGITUDE
  *
  */
-Maperial.prototype.createView = function (options) {
+function createView (options) {
 
    //-------------------------------------------
    // Checking options
@@ -177,6 +206,7 @@ Maperial.prototype.createView = function (options) {
 
    return view;
 };
+
 
 //-----------------------------------------------------------------
 // quicker than standalone...

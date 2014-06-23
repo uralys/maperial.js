@@ -8,7 +8,7 @@
 <body>
     <div id="heatmap" class="fullscreen-map"></div>
 	<div class="hud">
-	   <input type="range" class="slider" min="1" max="1000" step="1">
+	   <input type="range" class="slider" min="1" step="1">
 	</div>
 </body>
 
@@ -20,14 +20,15 @@
         //------------------------------------------------------
         // data demo
         //------------------------------------------------------
+        var nbBatches   = 50,
+            nbData      = 50,
+            generateBatch = function() {
 
-        var generateBatch = function() {
+            var batch       = [];
 
-            var batch = [];
-
-            for (var i = 0; i < 1000; i++) {
+            for (var i = 0; i < nbBatches; i++) {
                 var point = {
-                    lat : 50.007874 + (Math.floor(Math.random() * (1000))) / 1000,
+                    lat : 50.007874 + (Math.floor(Math.random() * (nbData))) / nbData,
                     lon : 2.080601999999999 + (Math
                             .floor(Math.random() * (1200))) / 600,
                     data : {
@@ -90,6 +91,7 @@
         //------------------------------------------------------
         
         var slider = document.querySelector(".slider");
+        slider.setAttribute("max", nbBatches);
 
         /* on slide : load another batch 
          TODO : maperial keep visual batches loaded */

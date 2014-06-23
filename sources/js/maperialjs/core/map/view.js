@@ -23,7 +23,7 @@ function MapView(maperial, options){
 
 MapView.prototype.expose = function () {
 
-    /*********************************/
+    /*---------------------*/
     // Images
 
     /* TODO doc */
@@ -37,7 +37,7 @@ MapView.prototype.expose = function () {
     }.bind(this);
 
 
-    /**********************************/
+    /*---------------------*/
     /* Maperial layers*/
 
     /* TODO doc */
