@@ -1,3 +1,5 @@
 module.exports = {
-    staticURL : "@@staticURL"
+    staticURL : "@@staticURL",
+    apiURL : "@@apiURL",
+    tileURL : "@@tileURL"
 }

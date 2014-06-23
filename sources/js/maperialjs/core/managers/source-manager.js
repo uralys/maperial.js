@@ -78,7 +78,7 @@ SourceManager.prototype.loadVectorial = function ( sourceId, x, y, z ) {
 };
 
 SourceManager.prototype.loadShade = function ( x, y, z ) {
-    var url         = Maperial.apiURL + "/api/srtm?x="+x+"&y="+y+"&z="+z,
+    var url         = Maperial.apiURL + "/api/ReTiler?x="+x+"&y="+y+"&z="+z,
 //    var url         = "/api/ReTiler?x="+tx+"&y="+ty+"&z="+z,
         requestId   = getRequestId(Source.Shade, x, y, z);
     this.loadAPISource(url, requestId);
@@ -332,7 +332,7 @@ SourceManager.prototype.getWMSURL = function (source, tx, ty, z) {
             var topLeft       = topLeftM;
             var bottomRight   = bottomRightM;
 
-            return("http://api.maperial.com/geo1?SERVICE=WMS&LAYERS=bzh%3ACANTON&FORMAT=image%2Fpng&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+            return(Maperial.apiURL + "/geo1?SERVICE=WMS&LAYERS=bzh%3ACANTON&FORMAT=image%2Fpng&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
             break;
 
         case Source.WMS_FRANCECOURSDEAU:
@@ -341,7 +341,7 @@ SourceManager.prototype.getWMSURL = function (source, tx, ty, z) {
             var topLeft       = topLeftM;
             var bottomRight   = bottomRightM;
 
-            return("http://api.maperial.com/geo2?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+            return(Maperial.apiURL + "/geo2?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
             break;
 
         case Source.WMS_SOLS_ILEETVILAINE:
@@ -350,7 +350,7 @@ SourceManager.prototype.getWMSURL = function (source, tx, ty, z) {
             var topLeft       = topLeftM;
             var bottomRight   = bottomRightM;
 
-            return("http://api.maperial.com/geo2?SERVICE=WMS&LAYERS=igcs%3Aucs35&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+            return(Maperial.apiURL + "/geo2?SERVICE=WMS&LAYERS=igcs%3Aucs35&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
             break;
 
         case Source.WMS_CORINE_LAND_COVER:
@@ -358,7 +358,7 @@ SourceManager.prototype.getWMSURL = function (source, tx, ty, z) {
             var topLeft       = topLeftM;
             var bottomRight   = bottomRightM;
 
-            return("http://api.maperial.com/geo3?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+            return(Maperial.apiURL + "/geo3?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
             break;
 
 
