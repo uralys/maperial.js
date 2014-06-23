@@ -74,7 +74,7 @@ LayerManager.prototype.addLayer = function(layerType, params) {
     return layer;
 };
 
-//===========================================================================
+//---------------------------------------------------------------
 //Default settings
 
 LayerManager.prototype.defaultMulBlend = function() {

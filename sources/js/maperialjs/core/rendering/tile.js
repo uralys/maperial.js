@@ -41,14 +41,14 @@ Tile.prototype.Refresh = function () {
     this.tex = null;
 };
 
-Tile.prototype.IsUpToDate = function () {
+Tile.prototype.isUpToDate = function () {
 
 
     var textureReady            = this.textureReady(),
     allLayerPartsAreReady   = true;
 
     for(var i = 0; i< this.layerParts.length; i++){
-        if (! this.layerParts[i].IsUpToDate ()){
+        if (! this.layerParts[i].isUpToDate ()){
             allLayerPartsAreReady = false;
             break;
         }
@@ -264,7 +264,7 @@ Tile.prototype.exchangeLayers = function(exchangedIds) {
 //v2 @deprecated ?
 Tile.prototype.RenderVectorialLayers = function ( context, wx, wy ) {
     for (var i = 0; i < this.layerParts.length; i++) {
-        if (this.layerParts[i].GetType() == Layer.Vector && this.layerParts[i].IsUpToDate() && this.layerParts[i].cnv) {
+        if (this.layerParts[i].GetType() == Layer.Vector && this.layerParts[i].isUpToDate() && this.layerParts[i].cnv) {
             context.drawImage(this.layerParts[i].cnv, wx, wy);
         }
     }
@@ -298,7 +298,7 @@ Tile.prototype.update = function ( maxTime ) {
     // layerParts update
 
     for(var i = 0; i< this.layerParts.length; i++){
-        if (! this.layerParts[i].IsUpToDate() ){
+        if (! this.layerParts[i].isUpToDate() ){
             if(this.layerParts[i].dataReady() ) {
                 this.layerParts[i].update( i );
                 noLayerPartUpdate = false
@@ -336,7 +336,7 @@ Tile.prototype.compose = function () {
 
     var layerPartsTocompose = []
     for(var i = 0; i < this.layerParts.length; i++){
-        if(this.layerParts[i].IsUpToDate())
+        if(this.layerParts[i].isUpToDate())
             layerPartsTocompose.push(this.layerParts[i]);
     }
 

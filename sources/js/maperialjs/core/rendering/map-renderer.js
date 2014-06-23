@@ -243,7 +243,7 @@ MapRenderer.prototype.updateTiles = function ( txB , txE , tyB , tyE, forceTileR
 
     for (var ki = 0 ; ki < keyList.length ; ki++) {
         var tile = this.mapView.tiles[keyList[ki]];
-        if (tile && !tile.IsUpToDate () )  {
+        if (tile && !tile.isUpToDate () )  {
             tileModified = true;
 
             timeRemaining = tile.update( timeRemaining );

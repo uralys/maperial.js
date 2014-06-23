@@ -1,4 +1,4 @@
-var _ = require("../../libs/underscore.js");
+var _ = require("../../libs/lodash.js");
 
 /**
  * Mixins for an object to let it trigger Events or receive Events.

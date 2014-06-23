@@ -3,7 +3,7 @@
 var GradiantColor           = require('../../libs/gradient-color.js'),
     ColorbarData            = require('../models/data/colorbar-data.js'),
     utils                   = require('../../../libs/utils.js'),
-    underscore              = require('../../../libs/underscore.js'),
+    lodash              = require('../../../libs/lodash.js'),
     ajax                    = require('../../../libs/ajax.js');
 
 //------------------------------------------------------------------//

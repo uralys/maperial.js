@@ -37,7 +37,7 @@ RasterLayerPart.prototype.release = function (  ) {
    }
 }
 
-RasterLayerPart.prototype.IsUpToDate = function ( ) {
+RasterLayerPart.prototype.isUpToDate = function ( ) {
    return this.tex != null;
 }
 

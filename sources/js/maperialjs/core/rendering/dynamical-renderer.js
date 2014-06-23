@@ -43,7 +43,7 @@ function DynamicalRenderer ( gl, dynamicalData, style ) {
 
 DynamicalRenderer.prototype.isSync = function () {
 
-    if(this.IsUpToDate() && this.texNeverRead){
+    if(this.isUpToDate() && this.texNeverRead){
         this.texNeverRead = false;
         return true;
     }
@@ -142,7 +142,7 @@ DynamicalRenderer.prototype.release = function (  ) {
     this.reset();
 };
 
-DynamicalRenderer.prototype.IsUpToDate = function ( ) {
+DynamicalRenderer.prototype.isUpToDate = function ( ) {
     return this.renderingStep == null;
 };
 
@@ -169,7 +169,7 @@ DynamicalRenderer.prototype.update = function () {
    this.renderingStep   = rendererStatus[0];
 
    var diffT = 0;
-   if (this.IsUpToDate()) { // render is finished, build GL Texture
+   if (this.isUpToDate()) { // render is finished, build GL Texture
       var date    = new Date(),
           startT  = date.getTime();
       this._BuildTexture();

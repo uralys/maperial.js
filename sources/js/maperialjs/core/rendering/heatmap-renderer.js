@@ -134,7 +134,7 @@ HeatmapRenderer.prototype.release = function (  ) {
     this.reset();
 };
 
-HeatmapRenderer.prototype.IsUpToDate = function ( ) {
+HeatmapRenderer.prototype.isUpToDate = function ( ) {
     return this.renderingStep == null;
 };
 

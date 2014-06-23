@@ -86,7 +86,7 @@ VectorialLayerPart.prototype.release = function (  ) {
    }
 }
 
-VectorialLayerPart.prototype.IsUpToDate = function ( ) {
+VectorialLayerPart.prototype.isUpToDate = function ( ) {
    return this.layerCount == null;
 }
 
@@ -125,7 +125,7 @@ VectorialLayerPart.prototype.update = function ( layerPosition ) {
    this.layerCount      = rendererStatus[0];
 
    var diffT = 0;
-   if (this.IsUpToDate()) { // render is finished, build GL Texture
+   if (this.isUpToDate()) { // render is finished, build GL Texture
       var date    = (new Date)
       var startT  = date.getTime()
       this._BuildTexture();

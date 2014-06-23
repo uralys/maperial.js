@@ -62,7 +62,7 @@ ImageLayerPart.prototype.release = function (  ) {
 
 //---------------------------------------------------------------------------
 
-ImageLayerPart.prototype.IsUpToDate = function ( ) {
+ImageLayerPart.prototype.isUpToDate = function ( ) {
     return this.tex != null;
 };
 

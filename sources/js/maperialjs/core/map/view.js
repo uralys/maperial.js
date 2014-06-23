@@ -176,7 +176,7 @@ MapView.prototype.addHeatmapLayer = function (heatmapData, options)   {
 // SHADE AND RASTER SHOULD JSUT BE OPTIONS IN RETILER TYPE LAYER
 
 MapView.prototype.addShadeLayer = function () {
-    this.layerManager.addLayer(Layer.Shade);
+    return this.layerManager.addLayer(Layer.Shade);
 };
 
 //-----------------------------------------------------------------

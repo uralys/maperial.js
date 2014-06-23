@@ -1,6 +1,7 @@
 
 var ShadeData       = require("../../models/data/shade-data.js"),
-    GLTools         = require("../tools/gl-tools.js");
+    GLTools         = require("../tools/gl-tools.js"),
+    _               = require("../../../../libs/lodash.js");
 
 //---------------------------------------------------------------------------
 
@@ -26,14 +27,14 @@ function ShadeLayerPart ( tile, context, layer ) {
 
 //---------------------------------------------------------------------------
 
-ShadeLayerPart.prototype.IsUpToDate = function ( ) {
+ShadeLayerPart.prototype.isUpToDate = function ( ) {
 
-    if(this.params === this.layer.params
+    if(_.isEqual(this.params, this.layer.params)
     && this.tex != null){
         return true;
     }
     else{
-        this.params = this.layer.params;
+        this.params = _.cloneDeep(this.layer.params);
         this.reset();
         return false;
     }
@@ -44,7 +45,7 @@ ShadeLayerPart.prototype.IsUpToDate = function ( ) {
 ShadeLayerPart.prototype.dataReady = function(){
 
     if(! this.data){
-        return false
+        return false;
     }
 
     if(this.data.content){

@@ -51,7 +51,25 @@ Maperial.prototype.expose = function () {
      * layers : array
      */
     this.addShadeControls = function(layers){
-        return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
+        var hud = document.createElement("div");
+        var bar = document.createElement("input");
+
+        hud.className = "hud";
+        bar.className = "scale";
+        bar.setAttribute("type", "range");
+        bar.setAttribute("min", "1");
+        bar.setAttribute("max", "100");
+        bar.setAttribute("step", "1");
+        bar.setAttribute("value", layers[0].params.scale);
+
+
+        bar.addEventListener("input", function(event) {
+            layers[0].params.scale = event.target.valueAsNumber;
+        });
+
+        hud.appendChild(bar);
+
+        document.querySelector("body").appendChild(hud);
     }.bind(this);
 
 };
@@ -95,8 +113,6 @@ Maperial.VECTORIAL_DATA          = "data";
 //-----------------------------------------------------------------
 
 Maperial.staticURL              = environment.staticURL;
-//Maperial.apiURL                 = 'http://api.maperial.com';
-//Maperial.tileURL                = 'http://api.maperial.com';
 Maperial.apiURL                 = environment.apiURL;
 Maperial.tileURL                = environment.tileURL;
 

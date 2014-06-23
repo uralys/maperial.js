@@ -15,7 +15,7 @@ function DynamicalLayerPart ( layer, tile ) {
 
 //-----------------------------------------------------------------------------
 
-DynamicalLayerPart.prototype.IsUpToDate = function ( ) {
+DynamicalLayerPart.prototype.isUpToDate = function ( ) {
    var isUpTodate = this.renderer.isSync() && this.tex != null;
 
    if(!isUpTodate)
@@ -28,7 +28,7 @@ DynamicalLayerPart.prototype.IsUpToDate = function ( ) {
 
 DynamicalLayerPart.prototype.dataReady = function(){
 
-   if(this.renderer.IsUpToDate()){
+   if(this.renderer.isUpToDate()){
       return true;
    }
    else{

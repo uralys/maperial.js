@@ -248,7 +248,7 @@ TileRenderer.ApplyLookupStyle = function ( ctx , line , attr, subLayer , zoom  )
 //v2 @deprecated ? 
 TileRenderer.DrawImages = function (tile, ctx, wx, wy ) {
 
-    if ( tile && tile.IsLoaded() && tile.IsUpToDate()) {
+    if ( tile && tile.IsLoaded() && tile.isUpToDate()) {
         ctx.beginPath();
         ctx.rect(wx, wy , Maperial.tileSize, Maperial.tileSize);
         ctx.closePath();
