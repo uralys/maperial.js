@@ -78,7 +78,7 @@ HeatmapRenderer.prototype.synchronize = function ( z , tileX, tileY, nbTX , nbTY
         this.w   = nbTX2 * Maperial.tileSize;
         this.h   = nbTY2 * Maperial.tileSize;
 
-        this.AllocCanvas (this.w, this.h) ;
+        this.AllocBuffer (this.w, this.h) ;
 
         var dx = nbTX2 - (nbTX),
             dy = nbTY2 - (nbTY),
