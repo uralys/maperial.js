@@ -1,15 +1,15 @@
 
 var utils                   = require('../../../libs/utils.js'),
-    GLTools                 = require("./tools/gl-tools.js"),
-    CoordinateSystem        = require('../../libs/coordinate-system.js');
+GLTools                 = require("./tools/gl-tools.js"),
+CoordinateSystem        = require('../../libs/coordinate-system.js');
 
-//------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 function HeatmapRenderer ( mapView, heatmapData, colorbar, options ) {
     // They don't realy need mapView ... And it's the same for all gl XX layers no ?
 
     this.id              = utils.generateUID();
-    this.mapView         = mapView;
+    this.mapView         = mapView; 
     this.heatmapData     = heatmapData;
     this.colorbar        = colorbar;
     this.options         = options;
@@ -36,7 +36,7 @@ function HeatmapRenderer ( mapView, heatmapData, colorbar, options ) {
     this.originShift         = 2 * Math.PI * 6378137 / 2.0 ;
 }
 
-//------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 HeatmapRenderer.prototype.isSync = function () {
     if(this.version == this.heatmapData.version){
@@ -51,7 +51,7 @@ HeatmapRenderer.prototype.isSync = function () {
     }
 };
 
-//------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 HeatmapRenderer.prototype.synchronize = function ( z , tileX, tileY, nbTX , nbTY ) {
 
@@ -70,7 +70,7 @@ HeatmapRenderer.prototype.synchronize = function ( z , tileX, tileY, nbTX , nbTY
         this.version = this.heatmapData.version;
 
         var nbTX2 = 1,
-            nbTY2 = 1;
+        nbTY2 = 1;
 
         while ( nbTX2 < nbTX ) nbTX2 = nbTX2 * 2;
         while ( nbTY2 < nbTY ) nbTY2 = nbTY2 * 2;
@@ -81,10 +81,10 @@ HeatmapRenderer.prototype.synchronize = function ( z , tileX, tileY, nbTX , nbTY
         this.AllocBuffer (this.w, this.h) ;
 
         var dx = nbTX2 - (nbTX),
-            dy = nbTY2 - (nbTY),
+        dy = nbTY2 - (nbTY),
 
-            tx = tileX - Math.floor ( dx / 2.0 ),
-            ty = tileY - Math.floor ( dy / 2.0 );
+        tx = tileX - Math.floor ( dx / 2.0 ),
+        ty = tileY - Math.floor ( dy / 2.0 );
 
         this.tx     = tx;
         this.ty     = ty;
@@ -93,7 +93,7 @@ HeatmapRenderer.prototype.synchronize = function ( z , tileX, tileY, nbTX , nbTY
         this.z      = z;
 
         var tmpP    = Math.pow ( 2 , this.z),
-            res     = this.initialResolution / tmpP;
+        res     = this.initialResolution / tmpP;
 
         this.scaleX = (1 / res);
         this.scaleY = - (1 / res);
@@ -144,16 +144,16 @@ HeatmapRenderer.prototype.update = function () {
         return 0;
 
     var gl                      = this.gl,
-        mvMatrix                = mat4.create(),
-        pMatrix                 = mat4.create(),
-        date                    = new Date(),
-        startT                  = date.getTime(),
-        diffT                   = 0.0,
-        defaultScale            = this.options.scale            || 1.0,
-        defaultDiameter         = this.options.diameter         || 100,
-        unit                    = this.options.diameterUnit     || "pixel",
-        res                     = this.cs.Resolution ( this.z ),
-        prog                    = null;
+    mvMatrix                = mat4.create(),
+    pMatrix                 = mat4.create(),
+    date                    = new Date(),
+    startT                  = date.getTime(),
+    diffT                   = 0.0,
+    defaultScale            = this.options.scale            || 1.0,
+    defaultDiameter         = this.options.diameter         || 100,
+    unit                    = this.options.diameterUnit     || "pixel",
+    res                     = this.cs.Resolution ( this.z ),
+    prog                    = null;
 
     gl.bindFramebuffer          ( gl.FRAMEBUFFER, this.frmB );
     gl.clearColor               ( 0.0, 0.0, 0.0, 0.0  );
@@ -204,10 +204,10 @@ HeatmapRenderer.prototype.update = function () {
             ll      = layer["g"],           // liste de listes de lignes
             al      = null;                 // attributlist
 
-        if ("a" in layer) al = layer["a"];
-        if (ll == null)   continue;
+            if ("a" in layer) al = layer["a"];
+            if (ll == null)   continue;
 
-        for ( var l = 0 ; l < ll.length ; ++l ) {
+            for ( var l = 0 ; l < ll.length ; ++l ) {
             var lines       = ll[l],        // liste de lignes
                 attr        = null,         // attribut
                 scale       = defaultScale,
@@ -231,13 +231,13 @@ HeatmapRenderer.prototype.update = function () {
 
                     if (unit == 1) {
                         var tmp1 = this.cs.MetersToPixelsAccurate(line[0]   ,line[1],this.z ),
-                            tmp2 = this.cs.MetersToPixelsAccurate(line[0] + diameter ,line[1],this.z );
+                        tmp2 = this.cs.MetersToPixelsAccurate(line[0] + diameter ,line[1],this.z );
 
                         diameter = tmp2.x - tmp1.x;
                     }
 
                     var tmpx = line[0] * this.scaleX + this.trX,
-                        tmpy = line[1] * this.scaleY + this.trY;
+                    tmpy = line[1] * this.scaleY + this.trY;
 
                     mat4.identity          ( mvMatrix );
                     mat4.translate         ( mvMatrix, [ tmpx , tmpy , 0] );
@@ -272,7 +272,7 @@ HeatmapRenderer.prototype.update = function () {
 HeatmapRenderer.prototype.GetTex = function ( tx , ty ) {
 
     var i = tx - this.tx,
-        j = ty - this.ty;
+    j = ty - this.ty;
 
     if ( i >= this.nbtx || j >= this.nbty || this.renderingStep != null || i < 0 || j < 0) {
         return null;
@@ -286,11 +286,11 @@ HeatmapRenderer.prototype.GetTex = function ( tx , ty ) {
 HeatmapRenderer.prototype._BuildTexture = function () {
 
     var gltools                = new GLTools (),
-        gl                     = this.gl,
-        mvMatrix               = mat4.create(),
-        pMatrix                = mat4.create(),
-        prog                   = this.assets.prog[ "Clut" ],
-        colorBbounds           = this.colorbar.data.GetBounds();
+    gl                     = this.gl,
+    mvMatrix               = mat4.create(),
+    pMatrix                = mat4.create(),
+    prog                   = this.assets.prog[ "Clut" ],
+    colorBbounds           = this.colorbar.data.GetBounds();
 
     mat4.identity              ( pMatrix );
     mat4.ortho                 ( 0, Maperial.tileSize, 0, Maperial.tileSize, 0, 1, pMatrix ); // Y swap !
@@ -313,8 +313,8 @@ HeatmapRenderer.prototype._BuildTexture = function () {
     for (var j = 0 ; j < this.nbty ; j = j + 1 ) {
         for (var i = 0 ; i < this.nbtx ; i = i + 1 ) {
             var fbtx         = gltools.CreateFrameBufferTex(gl, Maperial.tileSize, Maperial.tileSize ),
-                frmB         = fbtx[0],
-                tex          = fbtx[1];
+            frmB         = fbtx[0],
+            tex          = fbtx[1];
 
             gl.bindFramebuffer         ( gl.FRAMEBUFFER, frmB );
             gl.disable                 ( gl.DEPTH_TEST  );
@@ -324,6 +324,8 @@ HeatmapRenderer.prototype._BuildTexture = function () {
             gl.bindTexture             (gl.TEXTURE_2D, this.texB);
             gl.uniform1i               (prog.params.uSamplerTex1.name, 0);
 
+            console.log(this.mapView.id, this.colorbar.tex[this.mapView.id] );
+            
             gl.activeTexture           (gl.TEXTURE1);
             gl.bindTexture             (gl.TEXTURE_2D, this.colorbar.tex[this.mapView.id] );
             gl.uniform1i               (prog.params.uSamplerTex2.name, 1);
@@ -346,6 +348,6 @@ HeatmapRenderer.prototype._BuildTexture = function () {
     gl.bindTexture             (gl.TEXTURE_2D, null );
 };
 
-//------------------------------------------------------------------//
+//-----------------------------------------------------
 
 module.exports = HeatmapRenderer;

@@ -9,7 +9,7 @@ function ColorbarRenderer ( mapView ) {
 
 ColorbarRenderer.prototype.refreshAllColorBars = function () {
 
-   var colorbars = maperialColorbars;
+   var colorbars = Maperial.colorbars;
 
    this.gl.flush();
    this.gl.finish();

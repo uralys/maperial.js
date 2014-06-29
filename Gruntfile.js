@@ -25,9 +25,9 @@ module.exports = function(grunt) {
                         ]
                     },
                     files: [{
-                        expand: true, 
-                        flatten: true, 
-                        src: ['environment/config.js'], 
+                        expand: true,
+                        flatten: true,
+                        src: ['environment/config.js'],
                         dest: 'sources/js/environment/'
                     }]
                 }
@@ -100,7 +100,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-replace');
-//  grunt.loadNpmTasks('grunt-environment');
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-contrib-sass');
 

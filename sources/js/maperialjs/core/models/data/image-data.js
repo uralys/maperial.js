@@ -10,17 +10,17 @@ function ImageData (sourceId, x, y, z) {
 
    this.content   = null;
 
-   sourceManager.loadImage(sourceId, x, y, z);
+   Maperial.sourceManager.loadImage(sourceId, x, y, z);
 };
 
 //----------------------------------------------------------------------------
 
 ImageData.prototype.tryToFillContent = function(){
-   this.content = sourceManager.getData(this.sourceId, this.x, this.y, this.z);
+   this.content = Maperial.sourceManager.getData(this.sourceId, this.x, this.y, this.z);
 };
 
 ImageData.prototype.release = function(){
-   sourceManager.release(this.sourceId, this.x, this.y, this.z);
+   Maperial.sourceManager.release(this.sourceId, this.x, this.y, this.z);
 };
 
 //----------------------------------------------------------------------------

@@ -157,7 +157,7 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options)   {
 
 MapView.prototype.addHeatmapLayer = function (heatmapData, options)   {
 
-    options.colorbar = options.colorbar || colorbarManager.createColorbar();
+    options.colorbar = options.colorbar || Maperial.colorbarManager.createColorbar();
 
     //-------------------------------------------
     // Proceed

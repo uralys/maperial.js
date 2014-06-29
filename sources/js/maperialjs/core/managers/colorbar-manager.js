@@ -27,7 +27,7 @@ ColorbarManager.prototype.createColorbar = function(options) {
        colorbarData  = new ColorbarData({
       beginAlphaAtZero : options.beginAlphaAtZero
    });
-
+       
    for(var step in steps){
       colorbarData.Set(step, new GradiantColor(steps[step].r, steps[step].g, steps[step].b, steps[step].a));
    }
@@ -42,7 +42,7 @@ ColorbarManager.prototype.addColorbar = function( colorbarData ) {
 
    var uid = utils.generateUID();
 
-   window.maperialColorbars[uid] = {
+   Maperial.colorbars[uid] = {
          uid      : uid,
          name     : uid,
          data     : colorbarData,   /**  1 common data for every mapview      **/
@@ -50,19 +50,19 @@ ColorbarManager.prototype.addColorbar = function( colorbarData ) {
          version  : -1              /**  force not to be sync to build tex    **/
    };
 
-   return window.maperialColorbars[uid];
+   return Maperial.colorbars[uid];
 }
 
 //-------------------------------------------//
 
 ColorbarManager.prototype.noColorbar = function() {
-   return _.isEmpty(window.maperialColorbars);
+   return _.isEmpty(Maperial.colorbars);
 }
 
 //-------------------------------------------//
 
 ColorbarManager.prototype.getColorbar = function(uid){
-   return window.maperialColorbars[uid];
+   return Maperial.colorbars[uid];
 }
 
 //-------------------------------------------//
@@ -85,7 +85,7 @@ ColorbarManager.prototype.fetchColorbars = function(colorbarUIDs, next) {
 
 ColorbarManager.prototype.loadColorbar = function(colorbarUID) {
 
-   if(window.maperialColorbars[colorbarUID]){
+   if(Maperial.colorbars[colorbarUID]){
       this.loadNextColorbar();
       return;
    }

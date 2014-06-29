@@ -34,8 +34,8 @@ Maperial.prototype.expose = function () {
     /*---------------------------*/
     /* global entities for API*/
 
-    window.DynamicalData = DynamicalData;
-    window.HeatmapData   = HeatmapData;
+    Maperial.DynamicalData = DynamicalData;
+    Maperial.HeatmapData   = HeatmapData;
 
     /*---------------------*/
     /* Maperial views */
@@ -81,11 +81,11 @@ Maperial.prototype.refreshSharedItems = function () {
     console.log("Refreshing shared items");
 
     // cache containing all previously loaded colorbars
-    window.maperialColorbars    = window.maperialColorbars || {};
+    Maperial.colorbars            = Maperial.colorbars        || {};
 
-    window.sourceManager        = window.sourceManager  || new SourceManager();
-    window.styleManager         = window.styleManager   || new StyleManager();
-    window.colorbarManager      = window.colorbarManager|| new ColorbarManager();
+    Maperial.sourceManager        = Maperial.sourceManager    || new SourceManager();
+    Maperial.styleManager         = Maperial.styleManager     || new StyleManager();
+    Maperial.colorbarManager      = Maperial.colorbarManager  || new ColorbarManager();
 };
 
 //-----------------------------------------------------------------
