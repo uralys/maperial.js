@@ -324,10 +324,8 @@ HeatmapRenderer.prototype._BuildTexture = function () {
             gl.bindTexture             (gl.TEXTURE_2D, this.texB);
             gl.uniform1i               (prog.params.uSamplerTex1.name, 0);
 
-            console.log(this.mapView.id, this.colorbar.tex[this.mapView.id] );
-            
             gl.activeTexture           (gl.TEXTURE1);
-            gl.bindTexture             (gl.TEXTURE_2D, this.colorbar.tex[this.mapView.id] );
+            gl.bindTexture             (gl.TEXTURE_2D, this.colorbar.tex );
             gl.uniform1i               (prog.params.uSamplerTex2.name, 1);
 
             mat4.identity              ( mvMatrix );

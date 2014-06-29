@@ -1,11 +1,11 @@
-//------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 function ColorbarRenderer ( mapView ) {
    this.mapView  = mapView;
    this.gl       = mapView.context.assets.ctx;
 }
 
-//------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 ColorbarRenderer.prototype.refreshAllColorBars = function () {
 
@@ -15,26 +15,26 @@ ColorbarRenderer.prototype.refreshAllColorBars = function () {
    this.gl.finish();
 
    for ( var colorbarUID in colorbars ) {
-      var colorbar = colorbars[colorbarUID];
-      if(colorbar.version != colorbar.data.version){
+      var colorbar   = colorbars[colorbarUID],
+          sync       = colorbar.version === colorbar.data.version,
+          sameView   = colorbar.mapView === this.mapView;
+
+      if(sameView && !sync){
          this.renderColorbar(colorbar);
          colorbar.version = colorbar.data.version;
       }
    }
-
+   
    return true;
 }
 
-//------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 ColorbarRenderer.prototype.renderColorbar = function (colorbar) {
 
    if ( colorbar == null  || ! colorbar.data.IsValid () ) {
-      console.log ( "Invalid colorbar data : " + colorbarUID );
+      console.log ( "Invalid colorbar data : " + colorbar.uid);
    }
-
-   if(!colorbar.tex)
-      colorbar.tex = [];
 
    // Raster it !
    var data = [];
@@ -48,13 +48,13 @@ ColorbarRenderer.prototype.renderColorbar = function (colorbar) {
 
    data = new Uint8Array(data);
    
-   if ( colorbar.tex[this.mapView.id] ) {
-      this.deleteTexture ( colorbar.tex[this.mapView.id] );
+   if ( colorbar.tex ) {
+      this.deleteTexture ( colorbar.tex );
    }
 
    try {
-      colorbar.tex[this.mapView.id] = this.gl.createTexture();
-      this.gl.bindTexture  (this.gl.TEXTURE_2D, colorbar.tex[this.mapView.id] );
+      colorbar.tex = this.gl.createTexture();
+      this.gl.bindTexture  (this.gl.TEXTURE_2D, colorbar.tex );
       this.gl.pixelStorei  (this.gl.UNPACK_FLIP_Y_WEBGL  , false    );
       this.gl.texImage2D   (this.gl.TEXTURE_2D, 0 , this.gl.RGBA, 256 , 1 , 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data );
       this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
@@ -63,12 +63,12 @@ ColorbarRenderer.prototype.renderColorbar = function (colorbar) {
       this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T,this.gl.CLAMP_TO_EDGE);
       this.gl.bindTexture  (this.gl.TEXTURE_2D, null );
    } catch (e) { 
-      this.deleteTexture ( colorbar.tex[this.mapView.id] );
-      console.log ( "Error in colorbar building : " + colorbarUID );
+      this.deleteTexture ( colorbar.tex );
+      console.log ( "Error in colorbar building : " + colorbar.uid );
    }
 }
 
-//------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------
 
 ColorbarRenderer.prototype.deleteTexture = function (tex) {
    this.gl.deleteTexture ( tex );
@@ -76,6 +76,6 @@ ColorbarRenderer.prototype.deleteTexture = function (tex) {
    tex = null;
 }
 
-//------------------------------------------------------------------//
+//-----------------------------------------------------
 
 module.exports = ColorbarRenderer;

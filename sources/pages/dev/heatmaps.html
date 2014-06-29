@@ -62,7 +62,6 @@
       		});
 
       		//-----------------------------------------------//
-      		//Layer Images
       	   
       		map.addWatercolor();
       	
@@ -80,6 +79,8 @@
       		};
       	
       		map.addHeatmapLayer(data, options);
+
+                  return map;
             }
 
             buildMap("heatmap1");

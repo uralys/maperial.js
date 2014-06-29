@@ -16,7 +16,7 @@ function Maperial(options){
    console.log("-----------------------");
    console.log("Creating a Maperial");
    this.options   = options;
-   this.views     = {};
+   this.views     = [];
 
    /* global content */
    this.refreshSharedItems();
@@ -35,7 +35,7 @@ Maperial.prototype.expose = function () {
     /* global entities for API*/
 
     Maperial.DynamicalData = DynamicalData;
-    Maperial.HeatmapData   = HeatmapData;
+    Maperial.HeatmapData = HeatmapData;
 
     /*---------------------*/
     /* Maperial views */
@@ -86,6 +86,12 @@ Maperial.prototype.refreshSharedItems = function () {
     Maperial.sourceManager        = Maperial.sourceManager    || new SourceManager();
     Maperial.styleManager         = Maperial.styleManager     || new StyleManager();
     Maperial.colorbarManager      = Maperial.colorbarManager  || new ColorbarManager();
+
+    window.addEventListener("resize", function(){
+      this.views.forEach(function(view){
+        view.refresh();
+      })
+    }.bind(this));
 };
 
 //-----------------------------------------------------------------
@@ -218,7 +224,7 @@ function createView (options) {
    // Proceed
 
    var view =  new MapView(this, options);
-   this.views[view.id] = view;
+   this.views.push(view);
 
    return view;
 };

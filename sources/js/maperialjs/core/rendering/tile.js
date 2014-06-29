@@ -67,7 +67,7 @@ Tile.prototype.textureReady = function ( ) {
 
 Tile.prototype.release = function() {
 
-    sourceManager.release(this.mapView.id, this.x, this.y, this.z);
+    Maperial.sourceManager.release(this.mapView.id, this.x, this.y, this.z);
 
     this.layerParts.forEach(function(layerPart){
         try{

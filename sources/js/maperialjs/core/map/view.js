@@ -57,10 +57,10 @@ MapView.prototype.prepare = function (maperial, options)   {
     //-------------------------------------------------------------
     // settings
 
-    this.maperial       = maperial;
-    this.options        = options;
-    this.id             = utils.generateUID() + "_" + this.options.container.id;
-    this.type           = options.type;
+    this.maperial = maperial;
+    this.options  = options;
+    this.id       = utils.generateUID() + "_" + this.options.container.id;
+    this.type     = options.type;
 
     //-------------------------------------------------------------
     // plug mixins in
@@ -111,15 +111,12 @@ MapView.prototype.prepareView = function ()   {
     this.canvas.className = this.type;
     this.options.container.appendChild(this.canvas);
 
-    this.width       = this.options.container.clientWidth;
-    this.height      = this.options.container.clientHeight;
-
-    this.setCanvasSize();
+    this.refresh();
 };
 
-MapView.prototype.setCanvasSize = function() {
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
+MapView.prototype.refresh = function() {
+    this.canvas.width  = this.width    = this.options.container.clientWidth;
+    this.canvas.height = this.height   = this.options.container.clientHeight;
 };
 
 //--------------------------------------------------------------------------
@@ -157,7 +154,8 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options)   {
 
 MapView.prototype.addHeatmapLayer = function (heatmapData, options)   {
 
-    options.colorbar = options.colorbar || Maperial.colorbarManager.createColorbar();
+    options.colorbar = options.colorbar 
+    || Maperial.colorbarManager.defaultColorbar(this);
 
     //-------------------------------------------
     // Proceed

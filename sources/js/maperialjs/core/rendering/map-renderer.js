@@ -144,11 +144,6 @@ MapRenderer.prototype.drawScene = function ( ) {
 
     //---------------------------------------------------------------
 
-    // TODO : utiliser le principe de version des colorbars ici aussi
-//  this.renderAllColorBars();
-
-    //---------------------------------------------------------------
-
     this.colorbarRenderer.refreshAllColorBars();
 
     //---------------------------------------------------------------
@@ -199,7 +194,7 @@ MapRenderer.prototype.drawScene = function ( ) {
     //---------------------------------------------------------------
 
     this.forceGlobalRedraw  = true;
-    this.forceTileRedraw    = false;
+    // this.forceTileRedraw    = false;
 };
 
 //--------------------------------------------------------------------
