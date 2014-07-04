@@ -10,7 +10,7 @@ function DynamicalLayer (params, composition) {
    this.mapView            = params.mapView;
    this.dynamicalData      = params.dynamicalData;
 
-   this.style              = styleManager.createCustomStyle(params.style);
+   this.style              = Maperial.styleManager.createCustomStyle(params.style);
    
    this.composition        = composition;
 

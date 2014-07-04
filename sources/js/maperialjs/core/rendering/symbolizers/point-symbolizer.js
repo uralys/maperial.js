@@ -12,7 +12,7 @@ PointSymbolizer.prototype.Load = function  (symblist) {
    for ( var i = 0 ; i < symblist.length ; i++) {
       symbs[symblist[i]] = 1
    }
-   styleManager.LoadSymbList (symbs,function(){})
+   Maperial.styleManager.LoadSymbList (symbs,function(){})
 }
 
 PointSymbolizer.prototype.Translate = function  ( trX, trY ) {
