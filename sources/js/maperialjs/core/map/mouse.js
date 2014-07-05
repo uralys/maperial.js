@@ -206,7 +206,11 @@ MouseListener.prototype.wheelOnZoomer = function (event, delta) {
 
     this.mapView.deltaZoom = this.context.zoom - mainZoom
 
-    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, [this.mapView.map, this.mapView.name, this.mapView.type, this.context.zoom]);
+    $(window).trigger(MaperialEvents.ZOOM_TO_REFRESH, 
+        [this.mapView.map, 
+        this.mapView.name, 
+        this.mapView.type, 
+        this.context.zoom]);
 }
 
 //---------------------------------------------------------------------------//

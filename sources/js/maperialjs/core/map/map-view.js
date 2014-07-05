@@ -8,7 +8,8 @@ var Context                 = require('./context.js'),
     Layer                   = require('../models/layer.js'),
     Source                  = require('../models/source.js'),
     Events                  = require('../../libs/events.js'),
-    utils                   = require('../../../libs/utils.js');
+    utils                   = require('../../../libs/utils.js'),
+    TWEEN                   = require('tween.js');
 
 //--------------------------------------------------------------------------
 
@@ -38,7 +39,7 @@ MapView.prototype.expose = function () {
 
 
     /*---------------------*/
-    /* Maperial layers*/
+    /* Maperial layers */
 
     /* TODO doc */
     this.addShade = function(){
@@ -71,6 +72,7 @@ MapView.prototype.prepare = function (maperial, options)   {
     // prepare the view
 
     this.prepareView();
+    this.prepareCamera();
 
     //-------------------------------------------------------------
     // plug modules
@@ -109,6 +111,8 @@ MapView.prototype.prepareView = function ()   {
 
     this.canvas = document.createElement('canvas');
     this.canvas.className = this.type;
+    
+    this.options.container.style.overflow = 'hidden';
     this.options.container.appendChild(this.canvas);
 
     this.refresh();
@@ -202,8 +206,78 @@ MapView.prototype.addOSMLayer = function (styleId)   {
 //-     Camera
 //--------------------------------------------------------------------------
 
+MapView.prototype.prepareCamera= function ()   {
+    this.on("tap", this.zoomCanvas);
+};
 
+//--------------------------------------------------------------------------
+// TODO: create ./zoomer.js and move the following algo there
 
+MapView.prototype.zoomCanvas = function() {
+
+    var canvas    = cloneCanvas(this.canvas),
+        container = this.options.container;
+    
+    container.appendChild(canvas);
+
+    canvas.className      = this.canvas.className;
+    canvas.style.position = 'absolute';
+    canvas.style.top      = '0';
+    canvas.style.left     = '0';
+
+    var from    = { scale: 1 },
+        to      = { scale: 2 },
+        time    = 600,
+        tween   = new TWEEN.Tween( from )
+        .to( to, time )
+        .easing( TWEEN.Easing.Circular.Out )
+        .onUpdate( function () {
+            var transform = 'scale(' + this.scale + ')';
+            canvas.style.webkitTransform = transform;
+            canvas.style.transform = transform;
+        })
+        .onComplete( function () {
+            var from    = { alpha: 1 },
+                to      = { alpha: 0 },
+                time    = 500,
+                tween   = new TWEEN.Tween( from )
+                .to( to, time )
+                .easing( TWEEN.Easing.Circular.In )
+                .onUpdate( function () {
+                    canvas.style.opacity = this.alpha;
+                })
+                .onComplete( function () {
+                    container.removeChild(canvas);                    
+                })
+                .start();
+        })
+        .start();
+
+}
+
+function cloneCanvas(oldCanvas) {
+
+    //create a new canvas
+    var newCanvas = document.createElement('canvas');
+    var context = newCanvas.getContext('2d');
+
+    //set dimensions
+    newCanvas.width = oldCanvas.width;
+    newCanvas.height = oldCanvas.height;
+
+    var dataURL = oldCanvas.toDataURL("image/jpeg", 1);
+    var imageExported = new Image();
+    
+    // load image from data url
+    imageExported.onload = function() {
+      context.drawImage(this, 0, 0);
+    };
+
+    imageExported.src = dataURL;
+
+    //return the new canvas
+    return newCanvas;
+}
 
 //--------------------------------------------------------------------------
 

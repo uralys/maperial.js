@@ -1,0 +1,19 @@
+.maperial-simple-zoom-in{
+    top: 10px;
+    left: 10px;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url("http://static.maperial.com/images/plus.png");
+    z-index: 10;
+}
+
+.maperial-simple-zoom-out{
+    top: 70px;
+    left: 10px;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url("http://static.maperial.com/images/minus.png");
+    z-index: 10;
+}

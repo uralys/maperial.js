@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------
 
-var MapView                 = require('./map/view.js'),
+var MapView                 = require('./map/map-view.js'),
     SourceManager           = require('./managers/source-manager.js'),
     StyleManager            = require('./managers/style-manager.js'),
     ColorbarManager         = require('./managers/colorbar-manager.js'),
@@ -8,6 +8,7 @@ var MapView                 = require('./map/view.js'),
     HeatmapData             = require('./models/data/heatmap-data.js'),
     Source                  = require('./models/source.js'),
     utils                   = require('../../libs/utils.js'),
+    SimpleZoom              = require('../extensions/hud/simple-zoom.js'),
     environment             = require('../../environment/config.js');
 
 //-----------------------------------------------------------------
@@ -32,16 +33,21 @@ function Maperial(options){
 Maperial.prototype.expose = function () {
 
     /*---------------------------*/
-    /* global entities for API*/
-
-    Maperial.DynamicalData = DynamicalData;
-    Maperial.HeatmapData = HeatmapData;
-
-    /*---------------------*/
     /* Maperial views */
 
     /* TODO doc */
     this.createView = createView.bind(this);
+
+    /*---------------------*/
+    /* Tools */
+
+    this.createHeatmapData = function(appender){
+        var data = new HeatmapData();
+        if(appender){
+          appender(data);
+        }
+        return data;
+    };
 
     /*---------------------*/
     /* Maperial HUD */
@@ -72,6 +78,12 @@ Maperial.prototype.expose = function () {
         document.querySelector("body").appendChild(hud);
     }.bind(this);
 
+    /*
+     * TODO doc
+     */
+    this.addSimpleZoom = function(options){
+        new SimpleZoom(options);
+    };
 };
 
 

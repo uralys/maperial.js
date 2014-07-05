@@ -7,7 +7,8 @@ var GLTools                 = require("./tools/gl-tools.js"),
     HeatmapRenderer         = require('./heatmap-renderer.js'),
     utils                   = require('../../../libs/utils.js'),
     mat4                    = require('../../libs/gl-matrix-min.js').mat4,
-    ajax                    = require('../../../libs/ajax.js');
+    ajax                    = require('../../../libs/ajax.js'),
+    TWEEN                   = require('tween.js');
 
 //-----------------------------------------------------------------------------
 
@@ -37,8 +38,8 @@ MapRenderer.prototype.start = function () {
     try {
         // Try to grab the standard context.
         // If it fails, fallback to experimental.
-        this.gl =   this.mapView.canvas.getContext("webgl")
-                ||  this.mapView.canvas.getContext("experimental-webgl");
+        this.gl =   this.mapView.canvas.getContext("webgl", {preserveDrawingBuffer: true})
+                ||  this.mapView.canvas.getContext("experimental-webgl", {preserveDrawingBuffer: true});
         this.fitToSize();
     } catch (e) {}
 
@@ -108,6 +109,8 @@ MapRenderer.prototype.addHeatmapRenderer = function(heatmapData, colorbar, optio
 //--------------------------------------------------------------------
 
 MapRenderer.prototype.drawScene = function ( ) {
+
+    TWEEN.update();
 
     var w = this.mapView.canvas.clientWidth,
         h = this.mapView.canvas.clientHeight,

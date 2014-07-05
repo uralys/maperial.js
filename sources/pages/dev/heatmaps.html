@@ -7,7 +7,9 @@
 </head>
 
 <body>
-    <div id="heatmap1"></div>
+    <div id="heatmap1">
+          <div id="zoom"></div>
+    </div>
     <div id="heatmap2"></div>
     <div id="heatmap3"></div>
     <div id="heatmap4"></div>
@@ -48,7 +50,6 @@
 <script type="text/javascript">
 
 	(function() {
-	
 		var maperial = new Maperial();
 	
 		//-----------------------------------------------//
@@ -68,27 +69,33 @@
       		//-----------------------------------------------//
       		//Layer Vectorial Data 
       	
-      		var data = new Maperial.HeatmapData();
-      		fillDummyHeatmap(data);
+      		var data = maperial.createHeatmapData(fillDummyHeatmap);
       	
-      		var options = {
-      		        diameter      : 300,
-      		        scale         : 0.8,
-      		        fill          : "linear", // "gaussian"
-      		        diameterUnit  : "meter",
-      		};
-      	
-      		map.addHeatmapLayer(data, options);
+      		map.addHeatmapLayer(data, {
+                      diameter      : 300,
+                      scale         : 0.8,
+                      fill          : "linear", // "gaussian"
+                      diameterUnit  : "meter",
+                  });
 
                   return map;
             }
 
-            buildMap("heatmap1");
-            buildMap("heatmap2");
-            buildMap("heatmap3");
-            buildMap("heatmap4");
+            var map1 = buildMap("heatmap1");
+            var map2 = buildMap("heatmap2");
+            var map3 = buildMap("heatmap3");
+            var map4 = buildMap("heatmap4");
+		
+            //-------------------------------------------------------//
 
-		//-------------------------------------------------------//
+            maperial.addSimpleZoom({
+                  container : 'zoom',
+                  views     : [map1, map2],
+                  min       : 5,
+                  max       : 16
+            });
+
+            //-------------------------------------------------------//
 	    // dev purpose
 	    
 	    // window.data = data;
