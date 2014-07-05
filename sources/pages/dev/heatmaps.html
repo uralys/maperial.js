@@ -58,6 +58,8 @@
       		var map = maperial.createView({
                       container       : container,
       		    defaultZoom     : 7,
+                      minZoom         : 5,
+                      maxZoom         : 16,
       		    latitude        : 50.916584,
       		    longitude       : 3.136998
       		});
@@ -90,9 +92,7 @@
 
             maperial.addSimpleZoom({
                   container : 'zoom',
-                  views     : [map1, map2],
-                  min       : 5,
-                  max       : 16
+                  views     : [map1, map2]
             });
 
             //-------------------------------------------------------//

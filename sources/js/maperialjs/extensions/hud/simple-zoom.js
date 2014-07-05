@@ -9,12 +9,6 @@ function SimpleZoom (options) {
     var container = document.getElementById(options.container),
         views     = options.views;
 
-    this.contexts = [];
-    views.forEach(function(view){
-        this.contexts.push(view.context);
-    }.bind(this));
-
-
     var zoomIn  = document.createElement('div');
     var zoomOut = document.createElement('div');
 
@@ -23,6 +17,18 @@ function SimpleZoom (options) {
 
     container.appendChild(zoomIn);
     container.appendChild(zoomOut);
+
+    zoomIn.addEventListener("click", function(){
+        views.forEach(function(view){
+            view.trigger("zoom-in");
+        });
+    });
+
+    zoomOut.addEventListener("click", function(){
+        views.forEach(function(view){
+            view.trigger("zoom-out");
+        });
+    });
 }
 
 //------------------------------------------------------------------------------

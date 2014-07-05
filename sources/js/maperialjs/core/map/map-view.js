@@ -207,13 +207,22 @@ MapView.prototype.addOSMLayer = function (styleId)   {
 //--------------------------------------------------------------------------
 
 MapView.prototype.prepareCamera= function ()   {
-    this.on("tap", this.zoomCanvas);
+    
+    this.on("zoom-in", function(){
+        this.zoomCanvas(2);
+        this.context.zoom ++;   
+    }.bind(this));
+
+    this.on("zoom-out", function(){
+        this.zoomCanvas(0.5);
+        this.context.zoom --;   
+    }.bind(this));
 };
 
 //--------------------------------------------------------------------------
 // TODO: create ./zoomer.js and move the following algo there
 
-MapView.prototype.zoomCanvas = function() {
+MapView.prototype.zoomCanvas = function(scaleTo) {
 
     var canvas    = cloneCanvas(this.canvas),
         container = this.options.container;
@@ -226,7 +235,7 @@ MapView.prototype.zoomCanvas = function() {
     canvas.style.left     = '0';
 
     var from    = { scale: 1 },
-        to      = { scale: 2 },
+        to      = { scale: scaleTo },
         time    = 600,
         tween   = new TWEEN.Tween( from )
         .to( to, time )
