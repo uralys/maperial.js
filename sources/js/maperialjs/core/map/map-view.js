@@ -229,11 +229,6 @@ MapView.prototype.zoomCanvas = function(scaleTo) {
     
     container.appendChild(canvas);
 
-    canvas.className      = this.canvas.className;
-    canvas.style.position = 'absolute';
-    canvas.style.top      = '0';
-    canvas.style.left     = '0';
-
     var from    = { scale: 1 },
         to      = { scale: scaleTo },
         time    = 600,
@@ -271,8 +266,12 @@ function cloneCanvas(oldCanvas) {
     var context = newCanvas.getContext('2d');
 
     //set dimensions
-    newCanvas.width = oldCanvas.width;
+    newCanvas.width  = oldCanvas.width;
     newCanvas.height = oldCanvas.height;
+
+    newCanvas.style.position = 'absolute';
+    newCanvas.style.top      = '0';
+    newCanvas.style.left     = '0';
 
     var dataURL = oldCanvas.toDataURL("image/jpeg", 1);
     var imageExported = new Image();
