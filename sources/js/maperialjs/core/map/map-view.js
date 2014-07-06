@@ -111,8 +111,6 @@ MapView.prototype.prepareView = function ()   {
 
     this.canvas = document.createElement('canvas');
     this.canvas.className = this.type;
-    
-    this.options.container.style.overflow = 'hidden';
     this.options.container.appendChild(this.canvas);
 
     this.refresh();
