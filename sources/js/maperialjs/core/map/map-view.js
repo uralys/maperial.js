@@ -225,9 +225,16 @@ MapView.prototype.prepareCamera= function ()   {
 MapView.prototype.zoomCanvas = function(scaleTo) {
 
     var canvas    = cloneCanvas(this.canvas),
+        div       = document.createElement("div"),
         container = this.options.container;
     
-    container.appendChild(canvas);
+    div.className      = "maperial-zoomer";
+    div.style.position = "absolute";
+    div.style.top      = "0";
+    div.style.overflow = "hidden";
+
+    div.appendChild(canvas);
+    container.appendChild(div);
 
     var from    = { scale: 1 },
         to      = { scale: scaleTo },
@@ -251,7 +258,7 @@ MapView.prototype.zoomCanvas = function(scaleTo) {
                     canvas.style.opacity = this.alpha;
                 })
                 .onComplete( function () {
-                    container.removeChild(canvas);                    
+                    container.removeChild(div);
                 })
                 .start();
         })
@@ -269,9 +276,7 @@ function cloneCanvas(oldCanvas) {
     newCanvas.width  = oldCanvas.width;
     newCanvas.height = oldCanvas.height;
 
-    newCanvas.style.position = 'absolute';
-    newCanvas.style.top      = '0';
-    newCanvas.style.left     = '0';
+    newCanvas.style.position = 'relative'; //+ translate3d pour recentrer. chech taille du container VS taille du canvas...?
 
     var dataURL = oldCanvas.toDataURL("image/jpeg", 1);
     var imageExported = new Image();
