@@ -186,14 +186,14 @@ Tile.prototype.createLayerPart = function (layer, index) {
 
 Tile.prototype.addLayer = function (layerConfig) {
     this.createLayerFromConfig(layerConfig, this.config.layers.length - 1)
-    sourceManager.loadSources(this.x, this.y, this.z, this.mapView.id)
+    Maperial.sourceManager.loadSources(this.x, this.y, this.z, this.mapView.id)
     this.Refresh()
 }
 
 Tile.prototype.changeLayer = function (layerConfig, index) {
     this.removeLayer(index)
     this.createLayerFromConfig(layerConfig, index)
-    sourceManager.loadSources(this.x, this.y, this.z, this.mapView.id)
+    Maperial.sourceManager.loadSources(this.x, this.y, this.z, this.mapView.id)
     this.Refresh()
 }
 

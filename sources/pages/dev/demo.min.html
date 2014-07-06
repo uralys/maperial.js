@@ -22,13 +22,16 @@
 		//-----------------------------------------------//
 	
 		var map = maperial.createView({
-		    container : "map",
+		    container : 'map',
+		    latitude : 48.693417,
+		    longitude : -3.747378,
+		    defaultZoom : 12
 		});
 	
 		//-----------------------------------------------//
 	
-		map.addWatercolor();
-		map.addOCMTransport();
+		map.addOCMLandscape();
+		map.addMapquest();
 
 	    maperial.addSimpleZoom({
 	    	container: 'zoom',

@@ -9,11 +9,11 @@ function VectorialData (sourceId, x, y, z) {
 
    this.content   = null;
 
-   sourceManager.LoadVectorial(sourceId, x, y, z)
+   Maperial.sourceManager.LoadVectorial(sourceId, x, y, z)
 }
 
 //-----------------------------------------------------------------------------------//
 
 VectorialData.prototype.tryToFillContent = function(){
-   this.content = sourceManager.getData(this.sourceId, this.x, this.y, this.z);
+   this.content = Maperial.sourceManager.getData(this.sourceId, this.x, this.y, this.z);
 }

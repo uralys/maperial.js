@@ -31,10 +31,25 @@ MapView.prototype.expose = function () {
     this.addOCMTransport = function(){
         return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
     }.bind(this);
+    
+    /* TODO doc */
+    this.addOCMLandscape = function(){
+        return this.addImageLayer(Source.IMAGES_OCM_LANDSCAPE);
+    }.bind(this);
 
     /* TODO doc */
     this.addWatercolor = function(){
         return this.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
+    }.bind(this);
+
+    /* TODO doc */
+    this.addMapquest = function(){
+        return this.addImageLayer(Source.IMAGES_MAPQUEST);
+    }.bind(this);
+
+    /* TODO doc */
+    this.addSatellite = function(){
+        return this.addImageLayer(Source.IMAGES_MAPQUEST_SATELLITE);
     }.bind(this);
 
 
@@ -276,7 +291,7 @@ function cloneCanvas(oldCanvas) {
 
     newCanvas.style.position = 'relative'; //+ translate3d pour recentrer. chech taille du container VS taille du canvas...?
 
-    var dataURL = oldCanvas.toDataURL("image/jpeg", 1);
+    var dataURL = oldCanvas.toDataURL("image/jpeg", 0.5);
     var imageExported = new Image();
     
     // load image from data url

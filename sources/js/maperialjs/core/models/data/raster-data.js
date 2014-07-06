@@ -9,11 +9,11 @@ function RasterData (sourceId, x, y, z) {
 
    this.content   = null;
 
-   sourceManager.LoadRaster(sourceId, x, y, z)
+   Maperial.sourceManager.LoadRaster(sourceId, x, y, z)
 }
 
 //-----------------------------------------------------------------------------------//
 
 RasterData.prototype.tryToFillContent = function(){
-   this.content = sourceManager.getData(this.sourceId, this.x, this.y, this.z);
+   this.content = Maperial.sourceManager.getData(this.sourceId, this.x, this.y, this.z);
 }
