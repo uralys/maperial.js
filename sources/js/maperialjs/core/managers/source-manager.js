@@ -129,12 +129,16 @@ SourceManager.prototype.loadImage = function ( sourceId, x, y, z ) {
     var url        = this.getImageURL(sourceId, x, y, z),
         requestId  = getRequestId(sourceId, x, y, z);
 
+    if(this.requests[requestId])
+        return;
+    
     this.requests[requestId] = new Image();
 
     //http://blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html
     this.requests[requestId].crossOrigin = ''; // no credentials flag. Same as img.crossOrigin='anonymous'
 
     this.requests[requestId].onload = function (oEvent) {
+        console.log("onload : requestId : " + requestId);
         var img                     = this.requests[requestId];
         this.errors[requestId]      = false;
         this.complete[requestId]    = true;
@@ -142,11 +146,13 @@ SourceManager.prototype.loadImage = function ( sourceId, x, y, z ) {
     }.bind(this);
 
     this.requests[requestId].onerror = function (oEvent) {
+        console.log("ON ERROR : requestId : " + requestId);
         this.errors[requestId]    = true;
         this.complete[requestId]  = true;
     }.bind(this);
 
     this.requests[requestId].abort = function () {
+        console.log("ABORT : requestId : " + requestId);
         this.requests[requestId].src = "";
     }.bind(this);
 

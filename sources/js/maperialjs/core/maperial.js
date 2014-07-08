@@ -79,6 +79,7 @@ Maperial.prototype.expose = function () {
     }.bind(this);
 
     /*
+     * TODO : remove container for simple zoom : add the 2 buttons on top left not in a container
      * TODO doc
      */
     this.addSimpleZoom = function(options){
