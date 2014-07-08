@@ -74,21 +74,21 @@ SourceManager.prototype.release = function (sourceId, x, y, z) {
 SourceManager.prototype.loadVectorial = function ( sourceId, x, y, z ) {
     var url         = Maperial.apiURL + "/api/tile?x="+x+"&y="+y+"&z="+z,
         requestId   = getRequestId(sourceId, x, y, z);
-    this.LoadAPISource(url, requestId);
+    this.loadAPISource(url, requestId);
 };
 
 SourceManager.prototype.loadShade = function ( x, y, z ) {
    var url         = Maperial.apiURL + "/api/srtm?x="+x+"&y="+y+"&z="+z,
     // var url         = Maperial.apiURL + "/api/ReTiler?x="+x+"&y="+y+"&z="+z,
         requestId   = getRequestId(Source.Shade, x, y, z);
-    this.LoadAPISource(url, requestId);
+    this.loadAPISource(url, requestId);
 };
 
 // à analyser : ReTiler (not sade but anything)
 SourceManager.prototype.loadReTiler = function ( sourceId, x, y, z ) {
     var url         = "/api/ReTiler?x="+tx+"&y="+ty+"&z="+z,
         requestId   = getRequestId(sourceId, x, y, z);
-    this.LoadAPISource(url, requestId)
+    this.loadAPISource(url, requestId)
 }
 
 //----------------------------------------------------------------------------
