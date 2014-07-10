@@ -245,7 +245,7 @@ SourceManager.prototype.getImageURL = function (sourceId, tx, ty, z) {
     switch (sourceId) {
 
         case Source.MAPERIAL_EARTHLIGHT : 
-            return Maperial.staticURL + "/tiles/earthlight/earth_"+tx+"_"+gty+"_"+z+".png";
+            return Maperial.staticURL + "/tiles/earthlight/earth_"+tx+"_"+ty+"_"+z+".png";
             break;
 
 
