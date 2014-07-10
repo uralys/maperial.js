@@ -52,6 +52,11 @@ MapView.prototype.expose = function () {
         return this.addImageLayer(Source.IMAGES_MAPQUEST_SATELLITE);
     }.bind(this);
 
+    /* TODO doc */
+    this.addEarthLight = function(){
+        return this.addImageLayer(Source.MAPERIAL_EARTHLIGHT);
+    }.bind(this);
+
 
     /*---------------------*/
     /* Maperial layers */

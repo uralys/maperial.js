@@ -243,6 +243,12 @@ SourceManager.prototype.getImageURL = function (sourceId, tx, ty, z) {
         server  = ["a", "b", "c", "d"];
 
     switch (sourceId) {
+
+        case Source.MAPERIAL_EARTHLIGHT : 
+            return Maperial.staticURL + "/tiles/earthlight/earth_"+tx+"_"+gty+"_"+z+".png";
+            break;
+
+
         case Source.IMAGES_MAPQUEST : // need to check http://developer.mapquest.com/web/products/open/map
             var r = utils.random1(4);
             return "http://otile"+r+".mqcdn.com/tiles/1.0.0/osm/"+z+"/"+tx+"/"+gty+".png";
