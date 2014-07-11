@@ -236,7 +236,7 @@ function createView (options) {
    //-------------------------------------------
    // Proceed
 
-   var view =  new MapView(this, options);
+   var view = new MapView(this, options);
    this.views.push(view);
 
    return view;

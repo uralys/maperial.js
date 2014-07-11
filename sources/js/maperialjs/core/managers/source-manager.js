@@ -248,6 +248,22 @@ SourceManager.prototype.getImageURL = function (sourceId, tx, ty, z) {
             return Maperial.staticURL + "/tiles/earthlight/earth_"+tx+"_"+ty+"_"+z+".png";
             break;
 
+        case Source.MAPERIAL_AEROSOL : 
+            return Maperial.staticURL + "/tiles/aerosol/aerosol_"+tx+"_"+ty+"_"+z+".png";
+            break;
+        
+        case Source.MAPERIAL_NDVI : 
+            return Maperial.staticURL + "/tiles/ndvi/ndvi_"+tx+"_"+ty+"_"+z+".png";
+            break;
+        
+        case Source.MAPERIAL_SRTM : 
+            return Maperial.staticURL + "/tiles/srtm/retiled_"+tx+"_"+ty+"_"+z+".png";
+            break;
+        
+        case Source.MAPERIAL_SST : 
+            return Maperial.staticURL + "/tiles/sst/sst_"+tx+"_"+ty+"_"+z+".png";
+            break;
+
 
         case Source.IMAGES_MAPQUEST : // need to check http://developer.mapquest.com/web/products/open/map
             var r = utils.random1(4);

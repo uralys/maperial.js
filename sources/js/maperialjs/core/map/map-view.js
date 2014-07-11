@@ -52,9 +52,30 @@ MapView.prototype.expose = function () {
         return this.addImageLayer(Source.IMAGES_MAPQUEST_SATELLITE);
     }.bind(this);
 
+    
     /* TODO doc */
     this.addEarthLight = function(){
         return this.addImageLayer(Source.MAPERIAL_EARTHLIGHT);
+    }.bind(this);
+
+    /* TODO doc */
+    this.addAerosol = function(){
+        return this.addImageLayer(Source.MAPERIAL_AEROSOL);
+    }.bind(this);
+
+    /* TODO doc */
+    this.addNDVI = function(){
+        return this.addImageLayer(Source.MAPERIAL_NDVI);
+    }.bind(this);
+
+    /* TODO doc */
+    this.addSRTM = function(){
+        return this.addImageLayer(Source.MAPERIAL_SRTM);
+    }.bind(this);
+
+    /* TODO doc */
+    this.addSST = function(){
+        return this.addImageLayer(Source.MAPERIAL_SST);
     }.bind(this);
 
 
@@ -227,13 +248,17 @@ MapView.prototype.addOSMLayer = function (styleId)   {
 MapView.prototype.prepareCamera= function ()   {
     
     this.on("zoom-in", function(){
-        this.zoomCanvas(2);
-        this.context.zoom ++;   
+        if(this.options.zoomMax > this.context.zoom){
+            this.zoomCanvas(2);
+            this.context.zoom ++;   
+        }
     }.bind(this));
 
     this.on("zoom-out", function(){
-        this.zoomCanvas(0.5);
-        this.context.zoom --;   
+        if(this.options.zoomMin < this.context.zoom){
+            this.zoomCanvas(0.5);
+            this.context.zoom --;   
+        }
     }.bind(this));
 };
 

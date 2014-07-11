@@ -32,6 +32,10 @@ Source.MAPERIAL_YELLOW_ID           = "1_style_13ea3369f7dbbf63b42";
 // Images.src
 
 Source.MAPERIAL_EARTHLIGHT          = "images.maperial.earthlight";
+Source.MAPERIAL_AEROSOL             = "images.maperial.aerosol";
+Source.MAPERIAL_NDVI                = "images.maperial.ndvi";
+Source.MAPERIAL_SRTM                = "images.maperial.srtm";
+Source.MAPERIAL_SST                 = "images.maperial.sst";
 
 Source.IMAGES_MAPQUEST              = "images.mapquest";
 Source.IMAGES_MAPQUEST_SATELLITE    = "images.mapquest.satellite";
