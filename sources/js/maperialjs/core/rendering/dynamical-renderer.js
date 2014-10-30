@@ -97,14 +97,14 @@ DynamicalRenderer.prototype.synchronize = function ( z , tileX, tileY, nbTX , nb
 
       this.scaleX = (1 / res);
       this.scaleY = - (1 / res);
-      this.trX    = (this.originShift / res) - this.tx * Maperial.tileSize;
-      this.trY    = this.h - ((this.originShift / res) - this.ty * Maperial.tileSize);
-   };
-};
 
 DynamicalRenderer.prototype.AllocCanvas = function ( sizeX, sizeY) {
    this.cnv             = document.createElement("canvas");
    this.cnv.height      = sizeY ;
+      this.trX    = (this.originShift / res) - this.tx * Maperial.tileSize;
+      this.trY    = this.h - ((this.originShift / res) - this.ty * Maperial.tileSize);
+   };
+};
    this.cnv.width       = sizeX ;
    this.ctx             = this.cnv.getContext("2d");
    ExtendCanvasContext  ( this.ctx );
