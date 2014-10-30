@@ -47,7 +47,6 @@ DynamicalData.prototype.import = function (data) {
 //------------------------------------------------------------------------------
 
 DynamicalData.prototype.addPoint = function (feature) {
-    console.log(feature);
     var latitude  = feature.geometry.coordinates[1];
     var longitude = feature.geometry.coordinates[0];
     var data      = feature.properties;

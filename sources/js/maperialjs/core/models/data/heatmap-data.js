@@ -44,20 +44,25 @@ HeatmapData.prototype.import = function (data) {
 
 //------------------------------------------------------------------------------
 
-HeatmapData.prototype.addPoint = function(latitude, longitude, diameter, scale){
+HeatmapData.prototype.addPoint = function(feature){
 
-   var id   = utils.generateUID(),
-       p    = new Proj4js.Point(longitude, latitude),
-       attr = {
-         diameter : diameter,
-         scale    : scale
-       };
+    var latitude  = feature.geometry.coordinates[1];
+    var longitude = feature.geometry.coordinates[0];
+    var diameter  = feature.properties.diameter;
+    var scale     = feature.properties.scale;
 
-   Proj4js.transform(this.srcPrj, this.dstPrj, p);
-   this.minx = Math.min (this.minx , p.x);
-   this.maxx = Math.max (this.maxx , p.x);
-   this.miny = Math.min (this.miny , p.y);
-   this.maxy = Math.max (this.maxy , p.y);
+    var id        = utils.generateUID();
+    var p         = new Proj4js.Point(longitude, latitude);
+    var attr      = {
+        diameter : diameter,
+        scale    : scale
+    };
+
+    Proj4js.transform(this.srcPrj, this.dstPrj, p);
+    this.minx = Math.min (this.minx , p.x);
+    this.maxx = Math.max (this.maxx , p.x);
+    this.miny = Math.min (this.miny , p.y);
+    this.maxy = Math.max (this.maxy , p.y);
 //
 //   var point = {
 //         id       : id,
