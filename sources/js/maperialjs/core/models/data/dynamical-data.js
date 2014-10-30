@@ -40,12 +40,7 @@ DynamicalData.prototype.import = function (data) {
 
         data.features.forEach(function(feature){
             this.addPoint(feature);
-            var tmp = feature.geometry.coordinates[0];
-            feature.geometry.coordinates[0] = feature.geometry.coordinates[1];
-            feature.geometry.coordinates[1] = tmp;
         }.bind(this));
-
-        console.log(JSON.stringify(data));
     }
 }
 
