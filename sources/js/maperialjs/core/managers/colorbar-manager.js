@@ -3,7 +3,6 @@
 var GradiantColor           = require('../../libs/gradient-color.js'),
 ColorbarData            = require('../models/data/colorbar-data.js'),
 utils                   = require('../../../libs/utils.js'),
-lodash                  = require('../../../libs/lodash.js'),
 ajax                    = require('../../../libs/ajax.js');
 
 //------------------------------------------------------------------//
@@ -18,23 +17,23 @@ function ColorbarManager(){
 //-------------------------------------------//
 
 ColorbarManager.prototype.initDefaultColorbarData = function() {
-    
+
     if(!Maperial.defaultColorbarData){
       Maperial.defaultColorbarData = new ColorbarData({
           beginAlphaAtZero : true
       });
-      
+
       var steps = ColorbarManager.defaultSteps;
 
       for(var step in steps){
         Maperial.defaultColorbarData.Set(step, new GradiantColor(
-          steps[step].r, 
-          steps[step].g, 
-          steps[step].b, 
+          steps[step].r,
+          steps[step].g,
+          steps[step].b,
           steps[step].a
         ));
       }
-      
+
     }
 }
 
@@ -56,7 +55,7 @@ ColorbarManager.prototype.addColorbar = function( mapView, colorbarData ) {
    mapView  : mapView,
    data     : colorbarData,   /**  1 common data for every mapview      **/
    version  : -1,             /**  force not to be sync to build tex    **/
-   tex      : null,             
+   tex      : null,
  };
 
  return Maperial.colorbars[uid];

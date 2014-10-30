@@ -31,7 +31,7 @@ MapView.prototype.expose = function () {
     this.addOCMTransport = function(){
         return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
     }.bind(this);
-    
+
     /* TODO doc */
     this.addOCMLandscape = function(){
         return this.addImageLayer(Source.IMAGES_OCM_LANDSCAPE);
@@ -52,7 +52,7 @@ MapView.prototype.expose = function () {
         return this.addImageLayer(Source.IMAGES_MAPQUEST_SATELLITE);
     }.bind(this);
 
-    
+
     /* TODO doc */
     this.addEarthLight = function(){
         return this.addImageLayer(Source.MAPERIAL_EARTHLIGHT);
@@ -197,7 +197,7 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options)   {
 
 MapView.prototype.addHeatmapLayer = function (heatmapData, options)   {
 
-    options.colorbar = options.colorbar 
+    options.colorbar = options.colorbar
     || Maperial.colorbarManager.defaultColorbar(this);
 
     //-------------------------------------------
@@ -246,18 +246,18 @@ MapView.prototype.addOSMLayer = function (styleId)   {
 //--------------------------------------------------------------------------
 
 MapView.prototype.prepareCamera= function ()   {
-    
+
     this.on("zoom-in", function(){
         if(this.options.zoomMax > this.context.zoom){
             this.zoomCanvas(2);
-            this.context.zoom ++;   
+            this.context.zoom ++;
         }
     }.bind(this));
 
     this.on("zoom-out", function(){
         if(this.options.zoomMin < this.context.zoom){
             this.zoomCanvas(0.5);
-            this.context.zoom --;   
+            this.context.zoom --;
         }
     }.bind(this));
 };
@@ -270,7 +270,7 @@ MapView.prototype.zoomCanvas = function(scaleTo) {
     var canvas    = cloneCanvas(this.canvas),
         div       = document.createElement("div"),
         container = this.options.container;
-    
+
     div.className      = "maperial-zoomer";
     div.style.position = "absolute";
     div.style.top      = "0";
@@ -323,7 +323,7 @@ function cloneCanvas(oldCanvas) {
 
     var dataURL = oldCanvas.toDataURL("image/jpeg", 0.5);
     var imageExported = new Image();
-    
+
     // load image from data url
     imageExported.onload = function() {
       context.drawImage(this, 0, 0);

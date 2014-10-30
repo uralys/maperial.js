@@ -87,9 +87,14 @@ module.exports = function(grunt) {
 
             exec : {
                 clean    : "rm -rf static/",
-                tmp      : "mkdir -p static; mkdir -p static/js; mkdir -p static/css; mkdir -p static/shaders",
+                tmp      : "mkdir -p static; \
+                            mkdir -p static/js; \
+                            mkdir -p static/css; \
+                            mkdir -p static/geojson; \
+                            mkdir -p static/shaders",
                 assets   : "cp -r assets/symbols static/symbols; \
                             cp -r assets/images/ static/images; \
+                            cp -r assets/geojson/ static/geojson; \
                             cp sources/shaders/all.json static/shaders/all.json; \
                             cp sources/js/vendors/* static/js/; \
                             cp sources/css/vendors/* static/css/; \

@@ -1,0 +1,52 @@
+<html>
+
+<head>
+<title>Maperial 2.0 - Dynamical data</title>
+<link href="http://static.maperial.localhost/css/maperial.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="map" class="fullscreen-map"></div>
+</body>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="http://static.maperial.localhost/js/maperial.js"></script>
+
+<script type="text/javascript">
+    (function() {
+
+        //------------------------------------------------------
+        // Maperial
+        //------------------------------------------------------
+
+        var maperial = new Maperial();
+
+        var map = maperial.createView({
+            container       : "map",
+            defaultZoom     : 13,
+            latitude        : 53.03787562127988,
+            longitude       : 4.844833878624368
+        });
+
+        //----------------------------------------------
+
+        // map.addOCMTransport();
+
+        //----------------------------------------------
+
+        var url = 'http://static.maperial.localhost/geojson/demo.geojson.json';
+        var brasseries = maperial.createDynamicalData(url);
+        var options = {
+            style : {
+                symbol : "symbols/simple.pointer.png"
+            }
+        };
+
+        map.addDynamicalLayer(brasseries, options);
+
+    })();
+</script>
+
+
+</html>
+

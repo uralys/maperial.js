@@ -41,12 +41,12 @@ Maperial.prototype.expose = function () {
     /*---------------------*/
     /* Tools */
 
-    this.createHeatmapData = function(appender){
-        var data = new HeatmapData();
-        if(appender){
-          appender(data);
-        }
-        return data;
+    this.createDynamicalData = function(data){
+        return new DynamicalData(data);
+    };
+
+    this.createHeatmapData = function(data){
+        return new DynamicalDHeatmapDataata(data);
     };
 
     /*---------------------*/
