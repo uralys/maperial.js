@@ -1,4 +1,5 @@
-var utils = require('../../../../libs/utils.js'),
+var utils = require('../../../../libs/utils.js');
+var ajax = require('../../../../libs/ajax.js'),
     Proj4js = require('../../../libs/proj4js-compressed.js');
 
 //------------------------------------------------------------------------------
@@ -27,18 +28,17 @@ function DynamicalData(data) {
 DynamicalData.prototype.import = function (data) {
     if (data) {
         if ('string' === typeof (data)) {
-            data = ajax.get({
-                'url': data,
-                'async': false,
-                'dataType': 'json'
-            }).responseJSON;
+            ajax.get({
+                url: data,
+                callback: function (error, data) {
+                    data.features.forEach(function (feature) {
+                        this.addPoint(feature);
+                    }.bind(this));
+                }.bind(this)
+            });
         } else if ('object' === typeof (data)) {
             console.log('--> importing geojson ? TODO');
         }
-
-        data.features.forEach(function (feature) {
-            this.addPoint(feature);
-        }.bind(this));
     }
 }
 
