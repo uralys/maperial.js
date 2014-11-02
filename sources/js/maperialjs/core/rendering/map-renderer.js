@@ -87,7 +87,13 @@ MapRenderer.prototype.initGL = function () {
 //--------------------------------------------------------------------
 
 MapRenderer.prototype.addDynamicalRenderer = function (dynamicalData, style) {
-    var renderer = new DynamicalRenderer(this.gl, dynamicalData, style);
+
+    var renderer = new DynamicalRenderer(
+        this.gl,
+        dynamicalData,
+        style
+    );
+
     this.dynamicalRenderers[renderer.id] = renderer;
     return renderer;
 }
@@ -280,13 +286,13 @@ function prepareGL(glAsset, gl, glTools) {
         }
     };
 
-    ajax.get(
-        Maperial.staticURL + "/shaders/all.json",
-        null,
-        shadersReceived,
-        "json",
-        false
-    );
+    ajax.get({
+        url: Maperial.staticURL + "/shaders/all.json",
+        data: null,
+        callback: shadersReceived,
+        responseType: "json",
+        async: false
+    });
 
     var vertices = [
         0.0, 0.0, 0.0,

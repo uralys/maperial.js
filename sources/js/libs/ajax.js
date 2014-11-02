@@ -44,13 +44,16 @@ ajax.x = function () {
     return xhr;
 };
 
-ajax.send = function (url, callback, method, data, responseType, async) {
+ajax.send = function (url, callback, method, data, dataType, responseType, async) {
     var xhr = ajax.x();
 
     xhr.open(method, url, async);
 
-    if (async)
+    if (async) {
         xhr.responseType = responseType || "json";
+    }
+
+    xhr.dataType = dataType || 'json';
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState == ajax.RESPONSE_READY) {
@@ -79,27 +82,45 @@ ajax.send = function (url, callback, method, data, responseType, async) {
 //-----------------------------------------------------------------
 
 ajax.get = function (options, callback) {
-    //url, data, callback, responseType, async
     var query = [];
 
-    for (var key in data) {
-        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    for (var key in options.data) {
+        query.push(
+            encodeURIComponent(key) + '=' +
+            encodeURIComponent(options.data[key])
+        );
     }
 
     if (query.length > 0)
-        url = url + '?' + query.join('&');
+        options.url = options.url + '?' + query.join('&');
 
-    ajax.send(url, callback, 'GET', null, responseType, async);
+    ajax.send(
+        options.url,
+        options.callback,
+        'GET',
+        null,
+        options.dataType,
+        options.responseType,
+        options.async
+    );
 };
 
-ajax.post = function (url, data, callback, responseType, async) {
+ajax.post = function (options, callback) {
     var query = [];
 
-    for (var key in data) {
-        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+    for (var key in options.data) {
+        query.push(encodeURIComponent(key) + '=' + encodeURIComponent(options.data[key]));
     }
 
-    ajax.send(url, callback, 'POST', query.join('&'), responseType, async);
+    ajax.send(
+        options.url,
+        options.callback,
+        'POST',
+        query.join('&'),
+        options.dataType,
+        options.responseType,
+        options.async
+    );
 };
 
 //-----------------------------------------------------------------

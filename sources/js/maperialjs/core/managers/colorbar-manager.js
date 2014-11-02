@@ -110,12 +110,13 @@ ColorbarManager.prototype.loadColorbar = function (colorbarUID) {
         }
     }.bind(this);
 
-    ajax.get(
-        colorbarURL,
-        null,
-        colobarReceived,
-        true
-    );
+    ajax.get({
+        url: colorbarURL,
+        data: null,
+        callback: colobarReceived,
+        responseType: 'json',
+        async: true
+    });
 };
 
 //----------------------------//

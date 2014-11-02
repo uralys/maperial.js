@@ -237,7 +237,7 @@ TileRenderer.ApplyLookupStyle = function (ctx, line, attr, subLayer, zoom) {
 
 //----------------------------------------------------------------------------------------------//
 
-//v2 @deprecated ? 
+//v2 @deprecated ?
 TileRenderer.DrawImages = function (tile, ctx, wx, wy) {
 
     if (tile && tile.IsLoaded() && tile.isUpToDate()) {

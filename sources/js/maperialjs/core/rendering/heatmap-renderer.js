@@ -53,9 +53,14 @@ HeatmapRenderer.prototype.isSync = function () {
 
 HeatmapRenderer.prototype.synchronize = function (z, tileX, tileY, nbTX, nbTY) {
 
-    var cameraMoved = this.z != z || this.tx == null || tileX < this.tx || tileY < this.ty || tileX + nbTX > this.tx + this.nbtx || tileY + nbTY > this.ty + this.nbty,
+    var cameraMoved = this.z != z ||
+        this.tx == null ||
+        tileX < this.tx ||
+        tileY < this.ty ||
+        tileX + nbTX > this.tx + this.nbtx ||
+        tileY + nbTY > this.ty + this.nbty;
 
-        dataChanged = this.version != this.heatmapData.version;
+    var dataChanged = this.version != this.heatmapData.version;
 
     if (cameraMoved || dataChanged) {
 

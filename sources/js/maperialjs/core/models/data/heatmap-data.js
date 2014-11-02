@@ -27,18 +27,19 @@ function HeatmapData(data) {
 HeatmapData.prototype.import = function (data) {
     if (data) {
         if ('string' === typeof (data)) {
-            data = ajax.get({
-                'url': data,
-                'async': false,
-                'dataType': 'json'
-            }).responseJSON;
+            ajax.get({
+                url: data,
+                async: true,
+                callback: function (error, data) {
+                    data.features.forEach(function (feature) {
+                        this.addPoint(feature);
+                    }.bind(this));
+                }.bind(this)
+            });
         } else if ('object' === typeof (data)) {
             console.log('--> importing geojson ? TODO');
         }
 
-        data.features.forEach(function (feature) {
-            this.addPoint(feature);
-        }.bind(this));
     }
 }
 
@@ -63,6 +64,9 @@ HeatmapData.prototype.addPoint = function (feature) {
     this.maxx = Math.max(this.maxx, p.x);
     this.miny = Math.min(this.miny, p.y);
     this.maxy = Math.max(this.maxy, p.y);
+
+    console.log(p.x, p.y, this.maxy);
+
     //
     //   var point = {
     //         id       : id,
