@@ -1,43 +1,43 @@
 var _ = require("../../../../libs/lodash.js");
 
-function GLTools () {}
+function GLTools() {}
 
-GLTools.prototype.RenderLayer = function  ( ctx ,  layer ) {
+GLTools.prototype.RenderLayer = function (ctx, layer) {
     id = layer["i"]
     cl = layer["c"]
     ll = layer["g"]
-    if (ll == null) return 
-    for ( l = 0 ; l < ll.length ; ++l ) {
+    if (ll == null) return
+    for (l = 0; l < ll.length; ++l) {
         lines = ll[l]
-        for ( li = 0 ; li < lines.length ; ++li ) {
+        for (li = 0; li < lines.length; ++li) {
             line = lines[li]
             ctx.beginPath();
-            ctx.moveTo(line[0],line[1]);
-            for (p = 2 ; p < line.length - 1 ; p = p + 2) {
-                ctx.lineTo(line[p],line[p+1]);      
+            ctx.moveTo(line[0], line[1]);
+            for (p = 2; p < line.length - 1; p = p + 2) {
+                ctx.lineTo(line[p], line[p + 1]);
             }
-            if ( line[line.length-1] == "c")
+            if (line[line.length - 1] == "c")
                 ctx.closePath()
-                this[cl](ctx); 
+            this[cl](ctx);
         }
     }
 }
 
-GLTools.prototype.LoadCanvasAsTexture = function  ( gl , inUrl , inCallback ) {
-    var tex     = gl.createTexture();
-    tex.isLoad  = false; 
-    tex.error   = false;
-    tex.req     = $.ajax({
-        type     : "GET",
-        url      : inUrl,
-        dataType : "json",  
-        success  : function(data, textStatus, jqXHR) {
+GLTools.prototype.LoadCanvasAsTexture = function (gl, inUrl, inCallback) {
+    var tex = gl.createTexture();
+    tex.isLoad = false;
+    tex.error = false;
+    tex.req = $.ajax({
+        type: "GET",
+        url: inUrl,
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
             tex.svgRenderer = document.createElement("canvas");
             tex.svgRenderer.height = 256;
-            tex.svgRenderer.width  = 256;
+            tex.svgRenderer.width = 256;
 
-            for ( i = 0 ; i < data["l"].length ; ++i ) {
-                RenderLayer  (  tex.svgRenderer.getContext("2d") , data["l"][i] )
+            for (i = 0; i < data["l"].length; ++i) {
+                RenderLayer(tex.svgRenderer.getContext("2d"), data["l"][i])
             }
 
             //canvg(tex.svgRenderer, data);
@@ -47,21 +47,21 @@ GLTools.prototype.LoadCanvasAsTexture = function  ( gl , inUrl , inCallback ) {
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
             gl.bindTexture(gl.TEXTURE_2D, null);
-            tex.isLoad    = true;
-            tex.Error     = false;
-            inCallback() ;
-        },
-        error : function(jqXHR, textStatus, errorThrown) {
             tex.isLoad = true;
-            tex.error  = true;
-            console.log ( inUrl + " : loading failed : " + textStatus );
-            inCallback ({},{});
+            tex.Error = false;
+            inCallback();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            tex.isLoad = true;
+            tex.error = true;
+            console.log(inUrl + " : loading failed : " + textStatus);
+            inCallback({}, {});
         }
-    });    
+    });
     return tex
 }
 
-GLTools.prototype.LoadSvgAsTexture = function  ( gl , inUrl , inCallback ) {
+GLTools.prototype.LoadSvgAsTexture = function (gl, inUrl, inCallback) {
     /*var tex     = gl.createTexture();
       tex.isLoad  = false; 
       tex.error   = false;
@@ -106,19 +106,19 @@ GLTools.prototype.LoadSvgAsTexture = function  ( gl , inUrl , inCallback ) {
             inCallback ({},{});
          }
       });    */
-    var tex     = gl.createTexture();
-    tex.isLoad  = false; 
-    tex.error   = false;
-    var img     = new Image;
-    tex.req     = $.ajax({
-        type     : "GET",
-        url      : inUrl,
-        dataType : "text",  
-        success  : function(data, textStatus, jqXHR) {
-            img.onload = function(){
+    var tex = gl.createTexture();
+    tex.isLoad = false;
+    tex.error = false;
+    var img = new Image;
+    tex.req = $.ajax({
+        type: "GET",
+        url: inUrl,
+        dataType: "text",
+        success: function (data, textStatus, jqXHR) {
+            img.onload = function () {
                 tex.svgRenderer = document.createElement("canvas");
                 var ctx = tex.svgRenderer.getContext('2d');
-                ctx.drawImage(img,0,0);
+                ctx.drawImage(img, 0, 0);
 
                 gl.bindTexture(gl.TEXTURE_2D, tex);
                 gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
@@ -126,58 +126,58 @@ GLTools.prototype.LoadSvgAsTexture = function  ( gl , inUrl , inCallback ) {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
                 gl.bindTexture(gl.TEXTURE_2D, null);
-                tex.isLoad    = true;
-                tex.Error     = false;
-                inCallback() ;  
+                tex.isLoad = true;
+                tex.Error = false;
+                inCallback();
             };
-            img.src    = "data:image/svg+xml;base64,"+btoa(data);
+            img.src = "data:image/svg+xml;base64," + btoa(data);
         },
-        error : function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             shader.isLoad = true;
-            shader.error  = true;
-            console.log ( inUrl + " : loading failed : " + textStatus );
-            inCallback ({},{});
+            shader.error = true;
+            console.log(inUrl + " : loading failed : " + textStatus);
+            inCallback({}, {});
         }
     });
     return tex
 }
 
-GLTools.prototype.CreateFrameBufferTex = function  ( gl , sizeX, sizeY , linear /*, useFloat*/) {
+GLTools.prototype.CreateFrameBufferTex = function (gl, sizeX, sizeY, linear /*, useFloat*/ ) {
     linear = typeof linear !== 'undefined' ? linear : false;
     //useFloat = typeof useFloat !== 'undefined' ? useFloat : false;
 
-    var fb                        = gl.createFramebuffer();
-    var tex                       = gl.createTexture(); 
+    var fb = gl.createFramebuffer();
+    var tex = gl.createTexture();
 
-    gl.bindFramebuffer            ( gl.FRAMEBUFFER, fb);
-    fb.width                      = sizeX;
-    fb.height                     = sizeY;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+    fb.width = sizeX;
+    fb.height = sizeY;
 
-    gl.bindTexture                ( gl.TEXTURE_2D, tex );
+    gl.bindTexture(gl.TEXTURE_2D, tex);
     if (linear) {
-        gl.texParameteri              ( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR );
-        gl.texParameteri              ( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR );
-    }else {
-        gl.texParameteri              ( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
-        gl.texParameteri              ( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    } else {
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     }
     //if (! useFloat ) {
-    gl.texImage2D                 ( gl.TEXTURE_2D, 0, gl.RGBA, fb.width, fb.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null );
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, fb.width, fb.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
     /*}
       else {
          gl.texImage2D                 ( gl.TEXTURE_2D, 0, gl.RGBA, fb.width, fb.height, 0, gl.RGBA, gl.FLOAT, null );
       }*/
-    gl.framebufferTexture2D       ( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0 );
-    gl.bindTexture                ( gl.TEXTURE_2D, null );
-    gl.bindFramebuffer            ( gl.FRAMEBUFFER, null );
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-    return [fb,tex];
+    return [fb, tex];
 }
 
-GLTools.prototype.BuildShader = function  ( gl , inShader ) {
-    var shader        = new Object ( );
-    shader.error      = false;
-    shader.obj        = null;
+GLTools.prototype.BuildShader = function (gl, inShader) {
+    var shader = new Object();
+    shader.error = false;
+    shader.obj = null;
     shader.attributes = inShader.attributes;
     shader.parameters = inShader.parameters;
 
@@ -186,78 +186,78 @@ GLTools.prototype.BuildShader = function  ( gl , inShader ) {
     } else if (inShader.type == "x-shader/x-vertex") {
         shader.obj = gl.createShader(gl.VERTEX_SHADER);
     } else {
-        shader.error  = true;
+        shader.error = true;
         return;
     }
 
-    gl.shaderSource   ( shader.obj, inShader.code );
-    gl.compileShader  ( shader.obj );
+    gl.shaderSource(shader.obj, inShader.code);
+    gl.compileShader(shader.obj);
     if (!gl.getShaderParameter(shader.obj, gl.COMPILE_STATUS)) {
-        shader.error  = true;
-        console.log ( "Build " + inShader.name + " : Failed ! " );
-        console.log (gl.getShaderInfoLog(shader.obj));            
+        shader.error = true;
+        console.log("Build " + inShader.name + " : Failed ! ");
+        console.log(gl.getShaderInfoLog(shader.obj));
     }
     return shader;
 }
 
-GLTools.prototype.MakeProgram = function ( inVertexName , inFragmentName , inAssets ) {
-    if (! inAssets.shaderData ) {
-        console.log ( "invalid shader data" );
+GLTools.prototype.MakeProgram = function (inVertexName, inFragmentName, inAssets) {
+    if (!inAssets.shaderData) {
+        console.log("invalid shader data");
         return null;
     }
-    if ( ! ( inVertexName in inAssets.shaderData ) ) {
-        console.log ( inVertexName + " not in shader data" );
+    if (!(inVertexName in inAssets.shaderData)) {
+        console.log(inVertexName + " not in shader data");
         return null;
     }
-    if ( ! ( inFragmentName in inAssets.shaderData ) ) {
-        console.log ( inFragmentName + " not in shader data" );
+    if (!(inFragmentName in inAssets.shaderData)) {
+        console.log(inFragmentName + " not in shader data");
         return null;
     }
-    var vert             = inAssets.shaderData[inVertexName];
-    vert.name            = inVertexName
-    var frag             = inAssets.shaderData[inFragmentName];
-    frag.name            = inFragmentName
+    var vert = inAssets.shaderData[inVertexName];
+    vert.name = inVertexName
+    var frag = inAssets.shaderData[inFragmentName];
+    frag.name = inFragmentName
 
-    var gl               = inAssets.ctx;
-    var vertObj          = this.BuildShader(gl,vert);
-    var fragObj          = this.BuildShader(gl,frag);
+    var gl = inAssets.ctx;
+    var vertObj = this.BuildShader(gl, vert);
+    var fragObj = this.BuildShader(gl, frag);
 
-    if ( vertObj.error || fragObj.error ) {
+    if (vertObj.error || fragObj.error) {
         return null;
     }
-    var shaderProgram    = gl.createProgram();
-    shaderProgram.error  = false;
-    shaderProgram.attr   = {};
+    var shaderProgram = gl.createProgram();
+    shaderProgram.error = false;
+    shaderProgram.attr = {};
     shaderProgram.params = {};
-    var attributes       = {};
-    var parameters       = {};
+    var attributes = {};
+    var parameters = {};
 
-    _.extend( attributes, vertObj.attributes );
-    _.extend( parameters, vertObj.parameters );
-    _.extend( attributes, fragObj.attributes );
-    _.extend( parameters, fragObj.parameters );
+    _.extend(attributes, vertObj.attributes);
+    _.extend(parameters, vertObj.parameters);
+    _.extend(attributes, fragObj.attributes);
+    _.extend(parameters, fragObj.parameters);
 
-    gl.attachShader( shaderProgram , vertObj.obj );
-    gl.attachShader( shaderProgram , fragObj.obj);
-    gl.linkProgram ( shaderProgram );
-    if (! gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-        console.log ( "Could not link programm with " +inVertexName + " and " + inFragmentName);
-        shaderProgram.error  = true;
-        return ;
+    gl.attachShader(shaderProgram, vertObj.obj);
+    gl.attachShader(shaderProgram, fragObj.obj);
+    gl.linkProgram(shaderProgram);
+    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+        console.log("Could not link programm with " + inVertexName + " and " + inFragmentName);
+        shaderProgram.error = true;
+        return;
     }
     gl.useProgram(shaderProgram);
     for (var key in attributes) {
-        shaderProgram.attr[key]    = gl.getAttribLocation( shaderProgram, attributes[key] ); 
+        shaderProgram.attr[key] = gl.getAttribLocation(shaderProgram, attributes[key]);
     }
     for (var key in parameters) {
         shaderProgram.params[key] = {}
         shaderProgram.params[key]["name"] = gl.getUniformLocation(shaderProgram, parameters[key][0]);
-        shaderProgram.params[key]["fct"]  = parameters[key][1];
+        shaderProgram.params[key]["fct"] = parameters[key][1];
     }
     return shaderProgram;
 }
 
-GLTools.prototype.LoadTexture = function  (gl , url , callback) {
+GLTools.prototype.LoadTexture = function (gl, url, callback) {
     /*
       var tex     = gl.createTexture();
       tex.isLoad  = false; 
@@ -277,11 +277,11 @@ GLTools.prototype.LoadTexture = function  (gl , url , callback) {
       tex.image.src = url;
       return tex;
      */
-    var tex     = gl.createTexture();
-    tex.isLoad  = false; 
-    tex.error   = false;
-    var   img   = new Image();
-    img.onload  = function () {
+    var tex = gl.createTexture();
+    tex.isLoad = false;
+    tex.error = false;
+    var img = new Image();
+    img.onload = function () {
         gl.bindTexture(gl.TEXTURE_2D, tex);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
@@ -290,16 +290,16 @@ GLTools.prototype.LoadTexture = function  (gl , url , callback) {
         gl.bindTexture(gl.TEXTURE_2D, null);
         tex.isLoad = true;
         delete img;
-        callback() ; 
+        callback();
     };
-    img.onerror =  function () {
+    img.onerror = function () {
         tex.isLoad = true;
-        tex.error  = true;
+        tex.error = true;
         delete img;
     };
     img.onabort = function () {
         tex.isLoad = true;
-        tex.error  = true;
+        tex.error = true;
         delete img;
     };
 
@@ -307,8 +307,7 @@ GLTools.prototype.LoadTexture = function  (gl , url , callback) {
     return tex;
 }
 
-
-GLTools.prototype.LoadCsvTexture = function (gl , url , callback) {
+GLTools.prototype.LoadCsvTexture = function (gl, url, callback) {
     /*
       var tex     = gl.createTexture();
       tex.isLoad  = false; 
@@ -331,11 +330,11 @@ GLTools.prototype.LoadCsvTexture = function (gl , url , callback) {
 
     var svgRenderer = document.createElement("canvas");
     canvg(this.svgRenderer, 'test/auv.svg');
-    var tex     = gl.createTexture();
-    tex.isLoad  = false; 
-    tex.error   = false;
-    var   img   = new Image();
-    img.onload  = function () {
+    var tex = gl.createTexture();
+    tex.isLoad = false;
+    tex.error = false;
+    var img = new Image();
+    img.onload = function () {
         gl.bindTexture(gl.TEXTURE_2D, tex);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
@@ -344,16 +343,16 @@ GLTools.prototype.LoadCsvTexture = function (gl , url , callback) {
         gl.bindTexture(gl.TEXTURE_2D, null);
         tex.isLoad = true;
         delete img;
-        callback() ; 
+        callback();
     };
-    img.onerror =  function () {
+    img.onerror = function () {
         tex.isLoad = true;
-        tex.error  = true;
+        tex.error = true;
         delete img;
     };
     img.onabort = function () {
         tex.isLoad = true;
-        tex.error  = true;
+        tex.error = true;
         delete img;
     };
 
@@ -361,36 +360,34 @@ GLTools.prototype.LoadCsvTexture = function (gl , url , callback) {
     return tex;
 }
 
-
-GLTools.prototype.LoadData = function (gl, inUrl ) {
-    var tex     = gl.createTexture();
-    tex.isLoad  = false;
-    tex.error   = false;
+GLTools.prototype.LoadData = function (gl, inUrl) {
+    var tex = gl.createTexture();
+    tex.isLoad = false;
+    tex.error = false;
 
     tex.req = $.ajax({
-        type     : "GET",
-        url      : inUrl,
-        dataType : "json",  
-        success  : function(data, textStatus, jqXHR) {
+        type: "GET",
+        url: inUrl,
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
             tex.isLoad = true;
-            tex.error  = false;
+            tex.error = false;
 
             gl.bindTexture(gl.TEXTURE_2D, tex);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl[data.input_type], data.width , data.height, 0, gl[data.output_type], gl.UNSIGNED_BYTE, new Uint8Array(data.data));
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl[data.input_type], data.width, data.height, 0, gl[data.output_type], gl.UNSIGNED_BYTE, new Uint8Array(data.data));
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
         },
-        error : function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             tex.isLoad = true;
-            tex.error  = true;
-            console.log ( inUrl + " : loading failed : " + textStatus );
+            tex.error = true;
+            console.log(inUrl + " : loading failed : " + textStatus);
         }
     });
 
     tex.src = inUrl;
-    return tex;   
+    return tex;
 }
-
 
 //------------------------------------------------------------------//
 

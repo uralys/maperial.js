@@ -1,23 +1,22 @@
-
-var utils           = require('../../../libs/utils.js'),
-    Source          = require('../models/source.js'),
-    ajax            = require('../../../libs/ajax.js');
+var utils = require('../../../libs/utils.js'),
+    Source = require('../models/source.js'),
+    ajax = require('../../../libs/ajax.js');
 
 //----------------------------------------------------------------------------
 
-function SourceManager(){
+function SourceManager() {
 
-    this.data      = {};
-    this.requests  = {};
-    this.complete  = {};
-    this.errors    = {};
+    this.data = {};
+    this.requests = {};
+    this.complete = {};
+    this.errors = {};
 
     this.requestsCounter = {};
 }
 
 //----------------------------------------------------------------------------
 
-SourceManager.prototype.getData = function ( source, x, y, z ) {
+SourceManager.prototype.getData = function (source, x, y, z) {
     var requestId = getRequestId(source, x, y, z);
     return this.data[requestId];
 };
@@ -26,13 +25,12 @@ SourceManager.prototype.getData = function ( source, x, y, z ) {
 
 SourceManager.prototype.releaseNetwork = function () {
 
-    for(var requestId in this.requests){
+    for (var requestId in this.requests) {
 
-        if(!this.complete[requestId] || this.errors[requestId] || !this.data[requestId]){
-            try{
+        if (!this.complete[requestId] || this.errors[requestId] || !this.data[requestId]) {
+            try {
                 this.requests[requestId].abort();
-            }
-            catch(e){}
+            } catch (e) {}
         }
 
         delete this.data[requestId];
@@ -47,19 +45,17 @@ SourceManager.prototype.releaseNetwork = function () {
 
 SourceManager.prototype.release = function (sourceId, x, y, z) {
 
-    var requestId   = getRequestId(sourceId, x, y, z),
-        nbRequests  = this.requestsCounter[requestId] || 0;
+    var requestId = getRequestId(sourceId, x, y, z),
+        nbRequests = this.requestsCounter[requestId] || 0;
 
-    if(nbRequests > 1){
+    if (nbRequests > 1) {
         this.requestsCounter[requestId] = nbRequests - 1;
-    }
-    else{
-        if(!this.complete[requestId]){
+    } else {
+        if (!this.complete[requestId]) {
 
-            try{
+            try {
                 this.requests[requestId].abort();
-            }
-            catch(e){}
+            } catch (e) {}
         }
 
         delete this.data[requestId];
@@ -71,44 +67,42 @@ SourceManager.prototype.release = function (sourceId, x, y, z) {
 
 //----------------------------------------------------------------------------
 
-SourceManager.prototype.loadVectorial = function ( sourceId, x, y, z ) {
-    var url         = Maperial.apiURL + "/api/tile?x="+x+"&y="+y+"&z="+z,
-        requestId   = getRequestId(sourceId, x, y, z);
+SourceManager.prototype.loadVectorial = function (sourceId, x, y, z) {
+    var url = Maperial.apiURL + "/api/tile?x=" + x + "&y=" + y + "&z=" + z,
+        requestId = getRequestId(sourceId, x, y, z);
     this.loadAPISource(url, requestId);
 };
 
-SourceManager.prototype.loadShade = function ( x, y, z ) {
-   var url         = Maperial.apiURL + "/api/srtm?x="+x+"&y="+y+"&z="+z,
-    // var url         = Maperial.apiURL + "/api/ReTiler?x="+x+"&y="+y+"&z="+z,
-        requestId   = getRequestId(Source.Shade, x, y, z);
+SourceManager.prototype.loadShade = function (x, y, z) {
+    var url = Maperial.apiURL + "/api/srtm?x=" + x + "&y=" + y + "&z=" + z,
+        // var url         = Maperial.apiURL + "/api/ReTiler?x="+x+"&y="+y+"&z="+z,
+        requestId = getRequestId(Source.Shade, x, y, z);
     this.loadAPISource(url, requestId);
 };
 
 // à analyser : ReTiler (not sade but anything)
-SourceManager.prototype.loadReTiler = function ( sourceId, x, y, z ) {
-    var url         = "/api/ReTiler?x="+tx+"&y="+ty+"&z="+z,
-        requestId   = getRequestId(sourceId, x, y, z);
+SourceManager.prototype.loadReTiler = function (sourceId, x, y, z) {
+    var url = "/api/ReTiler?x=" + tx + "&y=" + ty + "&z=" + z,
+        requestId = getRequestId(sourceId, x, y, z);
     this.loadAPISource(url, requestId)
 }
 
 //----------------------------------------------------------------------------
 
-SourceManager.prototype.loadAPISource = function ( url, requestId ) {
+SourceManager.prototype.loadAPISource = function (url, requestId) {
 
-    var sourceReceived = function(error, content){
-        if(!error){
-            if ( ! content ) {
-                this.errors[requestId]  = true;
-            }
-            else {
-                this.data[requestId]    = content;
+    var sourceReceived = function (error, content) {
+        if (!error) {
+            if (!content) {
+                this.errors[requestId] = true;
+            } else {
+                this.data[requestId] = content;
             }
 
-            this.complete[requestId]    = true;
-        }
-        else{
-            this.errors[requestId]      = true;
-            this.complete[requestId]    = true;
+            this.complete[requestId] = true;
+        } else {
+            this.errors[requestId] = true;
+            this.complete[requestId] = true;
         }
     }.bind(this);
 
@@ -123,14 +117,14 @@ SourceManager.prototype.loadAPISource = function ( url, requestId ) {
 
 //----------------------------------------------------------------------------
 
-SourceManager.prototype.loadImage = function ( sourceId, x, y, z ) {
+SourceManager.prototype.loadImage = function (sourceId, x, y, z) {
 
-    var url        = this.getImageURL(sourceId, x, y, z),
-        requestId  = getRequestId(sourceId, x, y, z);
+    var url = this.getImageURL(sourceId, x, y, z),
+        requestId = getRequestId(sourceId, x, y, z);
 
-    if(this.requests[requestId])
+    if (this.requests[requestId])
         return;
-    
+
     this.requests[requestId] = new Image();
 
     //http://blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html
@@ -138,16 +132,16 @@ SourceManager.prototype.loadImage = function ( sourceId, x, y, z ) {
 
     this.requests[requestId].onload = function (oEvent) {
         console.log("onload : requestId : " + requestId);
-        var img                     = this.requests[requestId];
-        this.errors[requestId]      = false;
-        this.complete[requestId]    = true;
-        this.data[requestId]        = img;
+        var img = this.requests[requestId];
+        this.errors[requestId] = false;
+        this.complete[requestId] = true;
+        this.data[requestId] = img;
     }.bind(this);
 
     this.requests[requestId].onerror = function (oEvent) {
         console.log("ON ERROR : requestId : " + requestId);
-        this.errors[requestId]    = true;
-        this.complete[requestId]  = true;
+        this.errors[requestId] = true;
+        this.complete[requestId] = true;
     }.bind(this);
 
     this.requests[requestId].abort = function () {
@@ -236,97 +230,90 @@ SourceManager.prototype.loadImage = function ( sourceId, x, y, z ) {
 //}
 //}
 
-
 SourceManager.prototype.getImageURL = function (sourceId, tx, ty, z) {
 
-    var gty     = (Math.pow ( 2,z ) - 1) - ty,
-        server  = ["a", "b", "c", "d"];
+    var gty = (Math.pow(2, z) - 1) - ty,
+        server = ["a", "b", "c", "d"];
 
     switch (sourceId) {
 
-        case Source.MAPERIAL_EARTHLIGHT : 
-            return Maperial.staticURL + "/tiles/earthlight/earth_"+tx+"_"+ty+"_"+z+".png";
-            break;
-
-        case Source.MAPERIAL_AEROSOL : 
-            return Maperial.staticURL + "/tiles/aerosol/aerosol_"+tx+"_"+ty+"_"+z+".png";
-            break;
-        
-        case Source.MAPERIAL_NDVI : 
-            return Maperial.staticURL + "/tiles/ndvi/ndvi_"+tx+"_"+ty+"_"+z+".png";
-            break;
-        
-        case Source.MAPERIAL_SRTM : 
-            return Maperial.staticURL + "/tiles/srtm/retiled_"+tx+"_"+ty+"_"+z+".png";
-            break;
-        
-        case Source.MAPERIAL_SST : 
-            return Maperial.staticURL + "/tiles/sst/sst_"+tx+"_"+ty+"_"+z+".png";
-            break;
-
-
-        case Source.IMAGES_MAPQUEST : // need to check http://developer.mapquest.com/web/products/open/map
-            var r = utils.random1(4);
-            return "http://otile"+r+".mqcdn.com/tiles/1.0.0/osm/"+z+"/"+tx+"/"+gty+".png";
-            break;
-
-        case Source.IMAGES_MAPQUEST_SATELLITE : // need to check http://developer.mapquest.com/web/products/open/map
-            var r = utils.random1(4);
-            return "http://otile"+r+".mqcdn.com/tiles/1.0.0/sat/"+z+"/"+tx+"/"+gty+".png";
-
-
-        case Source.IMAGES_OCM_CYCLE :
-            var s = utils.random0(2);
-            return "http://"+server[s]+".tile.opencyclemap.org/cycle/"+z+"/"+tx+"/"+gty+".png";
-
-        case Source.IMAGES_OCM_TRANSPORT :
-            var s = utils.random0(2);
-            return "http://"+server[s]+".tile2.opencyclemap.org/transport/"+z+"/"+tx+"/"+gty+".png";
-
-        case Source.IMAGES_OCM_LANDSCAPE :
-            var s = utils.random0(2);
-            return "http://"+server[s]+".tile3.opencyclemap.org/landscape/"+z+"/"+tx+"/"+gty+".png";
-
-
-
-        case Source.IMAGES_STAMEN_WATERCOLOR :
-            var s = utils.random0(3);
-            return "http://"+server[s]+".tile.stamen.com/watercolor/"+z+"/"+tx+"/"+gty+".jpg";
-
-        case Source.IMAGES_STAMEN_TERRAIN : // US only
-            var s = utils.random0(3);
-            return "http://"+server[s]+".tile.stamen.com/terrain/"+z+"/"+tx+"/"+gty+".jpg";
-
-        case Source.IMAGES_STAMEN_TONER :
-            var s = utils.random0(3);
-            return "http://"+server[s]+".tile.stamen.com/toner/"+z+"/"+tx+"/"+gty+".png";
-
-        case Source.IMAGES_STAMEN_TONER_BG :
-            var s = utils.random0(3);
-            return "http://"+server[s]+".tile.stamen.com/toner-background/"+z+"/"+tx+"/"+gty+".png";
-
-
-        case Source.IMAGES_OSM:  // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
-        default :
-            var s = utils.random0(2);
-        return "http://"+server[s]+".tile.openstreetmap.org/"+z+"/"+tx+"/"+gty+".png";
+    case Source.MAPERIAL_EARTHLIGHT:
+        return Maperial.staticURL + "/tiles/earthlight/earth_" + tx + "_" + ty + "_" + z + ".png";
         break;
 
-//      // Use google API
-//      case Source.IMAGES_GOOGLE_SATELLITE :
-//      return "http://khm1.google.com/kh/v=121&x="+tx+"&y="+gty+"&z="+z
-//      case Source.IMAGES_GOOGLE_TERRAIN :
-//      return "http://mt0.googleapis.com/vt?x="+tx+"&y="+gty+"&z="+z;
+    case Source.MAPERIAL_AEROSOL:
+        return Maperial.staticURL + "/tiles/aerosol/aerosol_" + tx + "_" + ty + "_" + z + ".png";
+        break;
+
+    case Source.MAPERIAL_NDVI:
+        return Maperial.staticURL + "/tiles/ndvi/ndvi_" + tx + "_" + ty + "_" + z + ".png";
+        break;
+
+    case Source.MAPERIAL_SRTM:
+        return Maperial.staticURL + "/tiles/srtm/retiled_" + tx + "_" + ty + "_" + z + ".png";
+        break;
+
+    case Source.MAPERIAL_SST:
+        return Maperial.staticURL + "/tiles/sst/sst_" + tx + "_" + ty + "_" + z + ".png";
+        break;
+
+    case Source.IMAGES_MAPQUEST: // need to check http://developer.mapquest.com/web/products/open/map
+        var r = utils.random1(4);
+        return "http://otile" + r + ".mqcdn.com/tiles/1.0.0/osm/" + z + "/" + tx + "/" + gty + ".png";
+        break;
+
+    case Source.IMAGES_MAPQUEST_SATELLITE: // need to check http://developer.mapquest.com/web/products/open/map
+        var r = utils.random1(4);
+        return "http://otile" + r + ".mqcdn.com/tiles/1.0.0/sat/" + z + "/" + tx + "/" + gty + ".png";
+
+    case Source.IMAGES_OCM_CYCLE:
+        var s = utils.random0(2);
+        return "http://" + server[s] + ".tile.opencyclemap.org/cycle/" + z + "/" + tx + "/" + gty + ".png";
+
+    case Source.IMAGES_OCM_TRANSPORT:
+        var s = utils.random0(2);
+        return "http://" + server[s] + ".tile2.opencyclemap.org/transport/" + z + "/" + tx + "/" + gty + ".png";
+
+    case Source.IMAGES_OCM_LANDSCAPE:
+        var s = utils.random0(2);
+        return "http://" + server[s] + ".tile3.opencyclemap.org/landscape/" + z + "/" + tx + "/" + gty + ".png";
+
+    case Source.IMAGES_STAMEN_WATERCOLOR:
+        var s = utils.random0(3);
+        return "http://" + server[s] + ".tile.stamen.com/watercolor/" + z + "/" + tx + "/" + gty + ".jpg";
+
+    case Source.IMAGES_STAMEN_TERRAIN: // US only
+        var s = utils.random0(3);
+        return "http://" + server[s] + ".tile.stamen.com/terrain/" + z + "/" + tx + "/" + gty + ".jpg";
+
+    case Source.IMAGES_STAMEN_TONER:
+        var s = utils.random0(3);
+        return "http://" + server[s] + ".tile.stamen.com/toner/" + z + "/" + tx + "/" + gty + ".png";
+
+    case Source.IMAGES_STAMEN_TONER_BG:
+        var s = utils.random0(3);
+        return "http://" + server[s] + ".tile.stamen.com/toner-background/" + z + "/" + tx + "/" + gty + ".png";
+
+    case Source.IMAGES_OSM: // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
+    default:
+        var s = utils.random0(2);
+        return "http://" + server[s] + ".tile.openstreetmap.org/" + z + "/" + tx + "/" + gty + ".png";
+        break;
+
+        //      // Use google API
+        //      case Source.IMAGES_GOOGLE_SATELLITE :
+        //      return "http://khm1.google.com/kh/v=121&x="+tx+"&y="+gty+"&z="+z
+        //      case Source.IMAGES_GOOGLE_TERRAIN :
+        //      return "http://mt0.googleapis.com/vt?x="+tx+"&y="+gty+"&z="+z;
 
         // PB JPG ?
-//      case Source.IRS_SATELLITE:
-//      return "http://irs.gis-lab.info/?layers=landsat&request=GetTile&z="+z+"&x="+tx+"&y="+gty;
-//      //http://irs.gis-lab.info/
+        //      case Source.IRS_SATELLITE:
+        //      return "http://irs.gis-lab.info/?layers=landsat&request=GetTile&z="+z+"&x="+tx+"&y="+gty;
+        //      //http://irs.gis-lab.info/
 
-//      // Check nokia
+        //      // Check nokia
 
-
-//      http://www.neongeo.com/wiki/doku.php?id=map_servers
+        //      http://www.neongeo.com/wiki/doku.php?id=map_servers
     };
 
 };
@@ -346,68 +333,65 @@ SourceManager.prototype.getImageURL = function (sourceId, tx, ty, z) {
  */
 SourceManager.prototype.getWMSURL = function (source, tx, ty, z) {
 
-    var topLeftP     = new Point(tx * Maperial.tileSize, ty*Maperial.tileSize);
-    var topLeftM     = receiver.context.coordS.PixelsToMeters(topLeftP.x, topLeftP.y, receiver.context.zoom);
+    var topLeftP = new Point(tx * Maperial.tileSize, ty * Maperial.tileSize);
+    var topLeftM = receiver.context.coordS.PixelsToMeters(topLeftP.x, topLeftP.y, receiver.context.zoom);
 
     var bottomRightP = new Point(topLeftP.x + Maperial.tileSize, topLeftP.y + Maperial.tileSize);
     var bottomRightM = receiver.context.coordS.PixelsToMeters(bottomRightP.x, bottomRightP.y, receiver.context.zoom);
 
-    switch(source.params.src){
+    switch (source.params.src) {
 
-        case Source.WMS_BRETAGNECANTONS:
-            //http://www.mapmatters.org/wms/602246
+    case Source.WMS_BRETAGNECANTONS:
+        //http://www.mapmatters.org/wms/602246
 
-            var topLeft       = topLeftM;
-            var bottomRight   = bottomRightM;
+        var topLeft = topLeftM;
+        var bottomRight = bottomRightM;
 
-            return(Maperial.apiURL + "/geo1?SERVICE=WMS&LAYERS=bzh%3ACANTON&FORMAT=image%2Fpng&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize);
-            break;
+        return (Maperial.apiURL + "/geo1?SERVICE=WMS&LAYERS=bzh%3ACANTON&FORMAT=image%2Fpng&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
+        break;
 
-        case Source.WMS_FRANCECOURSDEAU:
-            //http://www.mapmatters.org/wms/647145
+    case Source.WMS_FRANCECOURSDEAU:
+        //http://www.mapmatters.org/wms/647145
 
-            var topLeft       = topLeftM;
-            var bottomRight   = bottomRightM;
+        var topLeft = topLeftM;
+        var bottomRight = bottomRightM;
 
-            return(Maperial.apiURL + "/geo2?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize);
-            break;
+        return (Maperial.apiURL + "/geo2?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
+        break;
 
-        case Source.WMS_SOLS_ILEETVILAINE:
-            //http://www.mapmatters.org/wms/647148
+    case Source.WMS_SOLS_ILEETVILAINE:
+        //http://www.mapmatters.org/wms/647148
 
-            var topLeft       = topLeftM;
-            var bottomRight   = bottomRightM;
+        var topLeft = topLeftM;
+        var bottomRight = bottomRightM;
 
-            return(Maperial.apiURL + "/geo2?SERVICE=WMS&LAYERS=igcs%3Aucs35&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize);
-            break;
+        return (Maperial.apiURL + "/geo2?SERVICE=WMS&LAYERS=igcs%3Aucs35&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
+        break;
 
-        case Source.WMS_CORINE_LAND_COVER:
+    case Source.WMS_CORINE_LAND_COVER:
 
-            var topLeft       = topLeftM;
-            var bottomRight   = bottomRightM;
+        var topLeft = topLeftM;
+        var bottomRight = bottomRightM;
 
-            return(Maperial.apiURL + "/geo3?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize);
-            break;
+        return (Maperial.apiURL + "/geo3?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
+        break;
 
+        //          case Source.WMS4:
+        // http://www.mapmatters.org/wms/624097
+        // http://www.mapmatters.org/wms/603594
+        // http://www.mapmatters.org/server/4114
+        // Bretagne : http://www.mapmatters.org/server/3525   (leurs png n'ont pas dalpha :( )
 
-//          case Source.WMS4:
-            // http://www.mapmatters.org/wms/624097
-            // http://www.mapmatters.org/wms/603594
-            // http://www.mapmatters.org/server/4114
-            // Bretagne : http://www.mapmatters.org/server/3525   (leurs png n'ont pas dalpha :( )
+        //          console.log("http://ws.carmen.developpement-durable.gouv.fr/cgi-bin/mapserv?map=/mnt/data_carmen/PACA/Publication/environnement.map&LAYERS=layer227&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A2154&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+        //          break;
 
+        break;
 
-//          console.log("http://ws.carmen.developpement-durable.gouv.fr/cgi-bin/mapserv?map=/mnt/data_carmen/PACA/Publication/environnement.map&LAYERS=layer227&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A2154&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
-//          break;
+    default:
+        var topLeft = topLeftM;
+        var bottomRight = bottomRightM;
 
-
-            break;
-
-        default :
-            var topLeft       = topLeftM;
-        var bottomRight   = bottomRightM;
-
-        return(source.params.src + "&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize);
+        return (source.params.src + "&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
 
     }
 };
@@ -416,7 +400,7 @@ SourceManager.prototype.getWMSURL = function (source, tx, ty, z) {
 //- PRIVATE
 //----------------------------------------------------------------------------
 
-function getRequestId (sourceId, x, y, z) {
+function getRequestId(sourceId, x, y, z) {
     return sourceId + "_" + x + "_" + y + "_" + z;
 }
 

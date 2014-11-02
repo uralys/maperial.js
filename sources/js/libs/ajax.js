@@ -1,4 +1,3 @@
-
 //-----------------------------------------------------------------
 
 var ajax = {};
@@ -18,11 +17,11 @@ var ajax = {};
  */
 
 ajax.RESPONSE_READY = 4;
-ajax.STATUS_OK      = 200;
+ajax.STATUS_OK = 200;
 
 //-----------------------------------------------------------------
 
-ajax.x = function() {
+ajax.x = function () {
     if (typeof XMLHttpRequest !== 'undefined') {
         return new XMLHttpRequest();
     }
@@ -36,35 +35,36 @@ ajax.x = function() {
 
     var xhr = null;
 
-    for(var i = 0; i < versions.length; i++) {
+    for (var i = 0; i < versions.length; i++) {
         try {
             xhr = new ActiveXObject(versions[i]);
             break;
-        } catch (e) {
-        }
+        } catch (e) {}
     }
     return xhr;
 };
 
-ajax.send = function(url, callback, method, data, responseType, async) {
+ajax.send = function (url, callback, method, data, responseType, async) {
     var xhr = ajax.x();
 
     xhr.open(method, url, async);
 
-    if(async)
-        xhr.responseType = responseType || "json" ;
+    if (async)
+        xhr.responseType = responseType || "json";
 
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (xhr.readyState == ajax.RESPONSE_READY) {
             if (xhr.status === ajax.STATUS_OK) {
                 var response;
 
-                try     {   response = JSON.parse(xhr.responseText); }
-                catch(e){   response = xhr.response; }
+                try {
+                    response = JSON.parse(xhr.responseText);
+                } catch (e) {
+                    response = xhr.response;
+                }
 
                 callback(response.error, response);
-            }
-            else
+            } else
                 callback(true, null);
         }
     };
@@ -78,20 +78,21 @@ ajax.send = function(url, callback, method, data, responseType, async) {
 
 //-----------------------------------------------------------------
 
-ajax.get = function(url, data, callback, responseType, async) {
+ajax.get = function (options, callback) {
+    //url, data, callback, responseType, async
     var query = [];
 
     for (var key in data) {
         query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
     }
 
-    if(query.length > 0)
+    if (query.length > 0)
         url = url + '?' + query.join('&');
 
     ajax.send(url, callback, 'GET', null, responseType, async);
 };
 
-ajax.post = function(url, data, callback, responseType, async) {
+ajax.post = function (url, data, callback, responseType, async) {
     var query = [];
 
     for (var key in data) {
@@ -104,6 +105,6 @@ ajax.post = function(url, data, callback, responseType, async) {
 //-----------------------------------------------------------------
 
 module.exports = {
-    get     : ajax.get,
-    post    : ajax.post
+    get: ajax.get,
+    post: ajax.post
 };

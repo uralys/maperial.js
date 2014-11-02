@@ -1,19 +1,19 @@
 //-----------------------------------------------------------------------------------//
 
-function RasterData (sourceId, x, y, z) {
-   
-   this.sourceId  = sourceId;
-   this.x         = x;
-   this.y         = y;
-   this.z         = z;
+function RasterData(sourceId, x, y, z) {
 
-   this.content   = null;
+    this.sourceId = sourceId;
+    this.x = x;
+    this.y = y;
+    this.z = z;
 
-   Maperial.sourceManager.LoadRaster(sourceId, x, y, z)
+    this.content = null;
+
+    Maperial.sourceManager.LoadRaster(sourceId, x, y, z)
 }
 
 //-----------------------------------------------------------------------------------//
 
-RasterData.prototype.tryToFillContent = function(){
-   this.content = Maperial.sourceManager.getData(this.sourceId, this.x, this.y, this.z);
+RasterData.prototype.tryToFillContent = function () {
+    this.content = Maperial.sourceManager.getData(this.sourceId, this.x, this.y, this.z);
 }

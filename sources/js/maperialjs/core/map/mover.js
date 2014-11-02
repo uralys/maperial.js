@@ -1,23 +1,23 @@
 //---------------------------------------------------------------------------//
 
-var utils                   = require('../../../libs/utils.js');
+var utils = require('../../../libs/utils.js');
 
 //---------------------------------------------------------------------------//
 
-function Mover(mapView){
+function Mover(mapView) {
 
     console.log("  building mover");
 
-    this.mapView             = mapView;
+    this.mapView = mapView;
 
-    this.lastMouseX          = null;
-    this.lastMouseY          = null;
-    this.autoMoving          = false;
-    this.mouseData           = [];
-    this.drawers             = [];
+    this.lastMouseX = null;
+    this.lastMouseY = null;
+    this.autoMoving = false;
+    this.mouseData = [];
+    this.drawers = [];
 
     this.defaultMoveDistance = 300;
-    this.defaultMoveMillis   = 150;
+    this.defaultMoveMillis = 150;
 
     this.initListeners();
 }
@@ -26,23 +26,22 @@ function Mover(mapView){
 
 Mover.prototype.initListeners = function (event) {
 
-    this.mapView.on("dragstart", function(event){
+    this.mapView.on("dragstart", function (event) {
         this.reset(event);
     }.bind(this));
 
-    this.mapView.on("drag", function(event){
+    this.mapView.on("drag", function (event) {
         this.drag(event);
     }.bind(this));
 
-    this.mapView.on("dragend", function(event){
+    this.mapView.on("dragend", function (event) {
         this.dragend(event);
     }.bind(this));
 
-
-    this.mapView.on("tap", function(event){
+    this.mapView.on("tap", function (event) {
 
         this.mapView.context.mouseP = utils.getPoint(event);
-        this.mapView.context.mouseM = utils.converToMeters (
+        this.mapView.context.mouseM = utils.converToMeters(
             this.mapView.canvas,
             this.mapView.context,
             this.mapView.context.mouseP
@@ -50,37 +49,37 @@ Mover.prototype.initListeners = function (event) {
 
     }.bind(this));
 
-//  var mover = this;
+    //  var mover = this;
 
-//  this.mapView.mapCanvas.on(MaperialEvents.MOUSE_DOWN, function(){
-//  mover.reset();
-//  });
+    //  this.mapView.mapCanvas.on(MaperialEvents.MOUSE_DOWN, function(){
+    //  mover.reset();
+    //  });
 
-//  this.context.mapCanvas.on(MaperialEvents.MOUSE_UP, function(){
-//  mover.receivedMouseUp();
-//  });
+    //  this.context.mapCanvas.on(MaperialEvents.MOUSE_UP, function(){
+    //  mover.receivedMouseUp();
+    //  });
 
-//  $(window).on(MaperialEvents.DRAGGING_MAP, function(event, name){
-//  if(mover.mapView.name == name){
-//  mover.drag();
-//  }
-//  });
+    //  $(window).on(MaperialEvents.DRAGGING_MAP, function(event, name){
+    //  if(mover.mapView.name == name){
+    //  mover.drag();
+    //  }
+    //  });
 
-//  this.context.mapCanvas.on(MaperialEvents.CONTROL_UP, function(){
-//  mover.moveUp();
-//  });
+    //  this.context.mapCanvas.on(MaperialEvents.CONTROL_UP, function(){
+    //  mover.moveUp();
+    //  });
 
-//  this.context.mapCanvas.on(MaperialEvents.CONTROL_DOWN, function(){
-//  mover.moveDown();
-//  });
+    //  this.context.mapCanvas.on(MaperialEvents.CONTROL_DOWN, function(){
+    //  mover.moveDown();
+    //  });
 
-//  this.context.mapCanvas.on(MaperialEvents.CONTROL_RIGHT, function(){
-//  mover.moveRight();
-//  });
+    //  this.context.mapCanvas.on(MaperialEvents.CONTROL_RIGHT, function(){
+    //  mover.moveRight();
+    //  });
 
-//  this.context.mapCanvas.on(MaperialEvents.CONTROL_LEFT, function(){
-//  mover.moveLeft();
-//  });
+    //  this.context.mapCanvas.on(MaperialEvents.CONTROL_LEFT, function(){
+    //  mover.moveLeft();
+    //  });
 };
 
 //----------------------------------------------------------------------//
@@ -89,26 +88,24 @@ Mover.prototype.removeListeners = function () {
 
 };
 
-
 //---------------------------------------------------------------------------//
 
 Mover.prototype.reset = function (event) {
     this.mapView.context.mouseP = utils.getPoint(event);
 
-    this.mouseData    = [];
+    this.mouseData = [];
     this.autoMoving = false;
 
-    this.lastMouseX   = this.mapView.context.mouseP.x;
-    this.lastMouseY   = this.mapView.context.mouseP.y;
+    this.lastMouseX = this.mapView.context.mouseP.x;
+    this.lastMouseY = this.mapView.context.mouseP.y;
 };
-
 
 //---------------------------------------------------------------------------//
 
 Mover.prototype.drag = function (event) {
 
     this.mapView.context.mouseP = utils.getPoint(event);
-    this.mapView.context.mouseM = utils.converToMeters (
+    this.mapView.context.mouseM = utils.converToMeters(
         this.mapView.canvas,
         this.mapView.context,
         this.mapView.context.mouseP
@@ -133,7 +130,7 @@ Mover.prototype.drag = function (event) {
 //Auto Move workflow
 
 Mover.prototype.dragend = function () {
-    if(this.requireAutoMove()){
+    if (this.requireAutoMove()) {
         this.prepareAutoMove();
     }
 };
@@ -141,12 +138,12 @@ Mover.prototype.dragend = function () {
 //---------------------------------------------------------------------------//
 
 Mover.prototype.moveMap = function (dx, dy) {
-  var r = this.mapView.context.coordS.Resolution ( this.mapView.context.zoom );
+    var r = this.mapView.context.coordS.Resolution(this.mapView.context.zoom);
 
-  this.mapView.context.centerM.x -= dx * r;
-  this.mapView.context.centerM.y += dy * r;
+    this.mapView.context.centerM.x -= dx * r;
+    this.mapView.context.centerM.y += dy * r;
 
-//  $(window).trigger(MaperialEvents.MAP_MOVING, [this.mapView.map, this.mapView.name, this.mapView.type]);
+    //  $(window).trigger(MaperialEvents.MAP_MOVING, [this.mapView.map, this.mapView.name, this.mapView.type]);
 };
 
 //---------------------------------------------------------------------------//
@@ -154,47 +151,45 @@ Mover.prototype.moveMap = function (dx, dy) {
 Mover.prototype.requireAutoMove = function () {
 
     // on arrive dans des cas chelous qui petent tout parfois..
-    if(this.mouseData.length < 3)
+    if (this.mouseData.length < 3)
         return false;
 
     // recup des derniers moves de la souris
-    var endPoint    = this.mouseData.pop(),
-        now         = new Date().getTime();
+    var endPoint = this.mouseData.pop(),
+        now = new Date().getTime();
 
     // verif si la souris n'a pas été statique à la fin = no automove
-    return (now - endPoint.time <=  120);
+    return (now - endPoint.time <= 120);
 };
 
 Mover.prototype.prepareAutoMove = function () {
 
-    var startPoint  = this.mouseData[0],
-        endPoint    = this.mouseData.pop(),
+    var startPoint = this.mouseData[0],
+        endPoint = this.mouseData.pop(),
 
-        deltaX      = endPoint.x - startPoint.x,
-        deltaY      = endPoint.y - startPoint.y,
+        deltaX = endPoint.x - startPoint.x,
+        deltaY = endPoint.y - startPoint.y,
 
-        deltaTime   = endPoint.time - startPoint.time;
+        deltaTime = endPoint.time - startPoint.time;
 
     this.move(deltaX, deltaY, deltaTime);
 };
-
 
 //---------------------------------------------------------------------------//
 
 Mover.prototype.move = function (deltaX, deltaY, deltaTime) {
 
-    var distance = Math.sqrt( deltaX*deltaX + deltaY*deltaY ),
+    var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
 
-        speed = (distance*1000/deltaTime)/Maperial.refreshRate,
+        speed = (distance * 1000 / deltaTime) / Maperial.refreshRate,
 
-        speedX = (speed*deltaX/distance)*Maperial.autoMoveSpeedRate,
-        speedY = (speed*deltaY/distance)*Maperial.autoMoveSpeedRate;
+        speedX = (speed * deltaX / distance) * Maperial.autoMoveSpeedRate,
+        speedY = (speed * deltaY / distance) * Maperial.autoMoveSpeedRate;
 
     this.autoMoving = true;
 
     this.moveScene(Maperial.autoMoveMillis, speedX, speedY, 0);
 };
-
 
 //---------------------------------------------------------------------------//
 //Controls
@@ -215,38 +210,36 @@ Mover.prototype.moveLeft = function () {
     this.move(this.defaultMoveDistance, 0, this.defaultMoveMillis);
 };
 
-
 //---------------------------------------------------------------------------//
 
 Mover.prototype.moveScene = function (timeRemaining, speedX, speedY, nbAutoMove) {
 
-    if(timeRemaining < 0 || !this.autoMoving)
+    if (timeRemaining < 0 || !this.autoMoving)
         return;
 
-    if(isNaN(speedX)){
+    if (isNaN(speedX)) {
         return;
     }
 
     this.moveMap(speedX, speedY);
     this.moveDrawers(speedX, speedY);
 
-    var rate = 0.99 - nbAutoMove* Maperial.autoMoveDeceleration;
+    var rate = 0.99 - nbAutoMove * Maperial.autoMoveDeceleration;
 
     var mover = this;
-    setTimeout(function() {
+    setTimeout(function () {
         mover.moveScene(
             timeRemaining - Maperial.refreshRate,
-            speedX*rate,
-            speedY*rate,
-            nbAutoMove+1
+            speedX * rate,
+            speedY * rate,
+            nbAutoMove + 1
         );
-    }, Maperial.refreshRate );
+    }, Maperial.refreshRate);
 };
-
 
 Mover.prototype.registerMouseData = function (x, y) {
 
-    if(this.mouseData.length >= Maperial.autoMoveAnalyseSize)
+    if (this.mouseData.length >= Maperial.autoMoveAnalyseSize)
         this.mouseData.shift();
 
     var data = new Object();
@@ -258,7 +251,6 @@ Mover.prototype.registerMouseData = function (x, y) {
 
 };
 
-
 //---------------------------------------------------------------------------//
 //Drawers To Move
 
@@ -268,29 +260,28 @@ Mover.prototype.addDrawer = function (drawer) {
 
 Mover.prototype.removeDrawer = function (drawer) {
 
-    for(var i = 0; i < this.drawers.length; i++){
-        if(this.drawers[i] === drawer){
+    for (var i = 0; i < this.drawers.length; i++) {
+        if (this.drawers[i] === drawer) {
             break;
         }
     }
 
-    this.drawers.splice(i,1);
+    this.drawers.splice(i, 1);
 };
-
 
 Mover.prototype.resizeDrawers = function () {
 
-    for(var i = 0; i < this.drawers.length; i++){
+    for (var i = 0; i < this.drawers.length; i++) {
         this.drawers[i].resize(this.config.width, this.config.height);
     }
 
 };
 
 Mover.prototype.moveDrawers = function (dx, dy) {
-    for(var i = 0; i < this.drawers.length; i++){
+    for (var i = 0; i < this.drawers.length; i++) {
         var drawer = this.drawers[i];
 
-        for(var j = 0; j < drawer.pointsToMove.length; j++){
+        for (var j = 0; j < drawer.pointsToMove.length; j++) {
             var point = drawer.pointsToMove[j];
             point.x += dx;
             point.y += dy;
@@ -303,4 +294,3 @@ Mover.prototype.moveDrawers = function (dx, dy) {
 //------------------------------------------------------------------//
 
 module.exports = Mover;
-

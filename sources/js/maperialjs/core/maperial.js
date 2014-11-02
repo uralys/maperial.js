@@ -1,29 +1,29 @@
 //-----------------------------------------------------------------
 
-var MapView                 = require('./map/map-view.js'),
-    SourceManager           = require('./managers/source-manager.js'),
-    StyleManager            = require('./managers/style-manager.js'),
-    ColorbarManager         = require('./managers/colorbar-manager.js'),
-    DynamicalData           = require('./models/data/dynamical-data.js'),
-    HeatmapData             = require('./models/data/heatmap-data.js'),
-    Source                  = require('./models/source.js'),
-    utils                   = require('../../libs/utils.js'),
-    SimpleZoom              = require('../extensions/hud/simple-zoom.js'),
-    environment             = require('../../environment/config.js');
+var MapView = require('./map/map-view.js'),
+    SourceManager = require('./managers/source-manager.js'),
+    StyleManager = require('./managers/style-manager.js'),
+    ColorbarManager = require('./managers/colorbar-manager.js'),
+    DynamicalData = require('./models/data/dynamical-data.js'),
+    HeatmapData = require('./models/data/heatmap-data.js'),
+    Source = require('./models/source.js'),
+    utils = require('../../libs/utils.js'),
+    SimpleZoom = require('../extensions/hud/simple-zoom.js'),
+    environment = require('../../environment/config.js');
 
 //-----------------------------------------------------------------
 
-function Maperial(options){
-   console.log("-----------------------");
-   console.log("Creating a Maperial");
-   this.options   = options;
-   this.views     = [];
+function Maperial(options) {
+    console.log("-----------------------");
+    console.log("Creating a Maperial");
+    this.options = options;
+    this.views = [];
 
-   /* global content */
-   this.refreshSharedItems();
+    /* global content */
+    this.refreshSharedItems();
 
-   /* expose maperial api */
-   this.expose();
+    /* expose maperial api */
+    this.expose();
 }
 
 //-----------------------------------------------------------------
@@ -41,12 +41,12 @@ Maperial.prototype.expose = function () {
     /*---------------------*/
     /* Tools */
 
-    this.createDynamicalData = function(data){
+    this.createDynamicalData = function (data) {
         return new DynamicalData(data);
     };
 
-    this.createHeatmapData = function(data){
-        return new DynamicalDHeatmapDataata(data);
+    this.createHeatmapData = function (data) {
+        return new HeatmapData(data);
     };
 
     /*---------------------*/
@@ -56,7 +56,7 @@ Maperial.prototype.expose = function () {
      * TODO doc
      * layers : array
      */
-    this.addShadeControls = function(layers){
+    this.addShadeControls = function (layers) {
         var hud = document.createElement("div");
         var bar = document.createElement("input");
 
@@ -68,8 +68,7 @@ Maperial.prototype.expose = function () {
         bar.setAttribute("step", "1");
         bar.setAttribute("value", layers[0].params.scale);
 
-
-        bar.addEventListener("input", function(event) {
+        bar.addEventListener("input", function (event) {
             layers[0].params.scale = event.target.valueAsNumber;
         });
 
@@ -82,11 +81,10 @@ Maperial.prototype.expose = function () {
      * TODO : remove container for simple zoom : add the 2 buttons on top left not in a container
      * TODO doc
      */
-    this.addSimpleZoom = function(options){
+    this.addSimpleZoom = function (options) {
         new SimpleZoom(options);
     };
 };
-
 
 //-----------------------------------------------------------------
 
@@ -94,16 +92,16 @@ Maperial.prototype.refreshSharedItems = function () {
     console.log("Refreshing shared items");
 
     // cache containing all previously loaded colorbars
-    Maperial.colorbars            = Maperial.colorbars        || {};
+    Maperial.colorbars = Maperial.colorbars || {};
 
-    Maperial.sourceManager        = Maperial.sourceManager    || new SourceManager();
-    Maperial.styleManager         = Maperial.styleManager     || new StyleManager();
-    Maperial.colorbarManager      = Maperial.colorbarManager  || new ColorbarManager();
+    Maperial.sourceManager = Maperial.sourceManager || new SourceManager();
+    Maperial.styleManager = Maperial.styleManager || new StyleManager();
+    Maperial.colorbarManager = Maperial.colorbarManager || new ColorbarManager();
 
-    window.addEventListener("resize", function(){
-      this.views.forEach(function(view){
-        view.refresh();
-      })
+    window.addEventListener("resize", function () {
+        this.views.forEach(function (view) {
+            view.refresh();
+        })
     }.bind(this));
 };
 
@@ -111,35 +109,35 @@ Maperial.prototype.refreshSharedItems = function () {
 //Views types
 //TYPE = css class
 
-Maperial.MAIN                    = "maperial-main";
-Maperial.ANCHOR                  = "maperial-anchor";
+Maperial.MAIN = "maperial-main";
+Maperial.ANCHOR = "maperial-anchor";
 
 //camera centered on what is under it
-Maperial.LENS                    = "maperial-lens";
+Maperial.LENS = "maperial-lens";
 
 //camera centered on the parent's center
-Maperial.MINIFIER                = "maperial-minifier";
+Maperial.MINIFIER = "maperial-minifier";
 
 //camera centered on what is under the mouse
-Maperial.MAGNIFIER               = "maperial-magnifier";
+Maperial.MAGNIFIER = "maperial-magnifier";
 
 //-----------------------------------------------------------------
 //Vectorial layers types
 
-Maperial.OSM                     = "tiles";
-Maperial.VECTORIAL_DATA          = "data";
+Maperial.OSM = "tiles";
+Maperial.VECTORIAL_DATA = "data";
 
 //-----------------------------------------------------------------
 
-Maperial.staticURL              = environment.staticURL;
-Maperial.apiURL                 = environment.apiURL;
-Maperial.tileURL                = environment.tileURL;
+Maperial.staticURL = environment.staticURL;
+Maperial.apiURL = environment.apiURL;
+Maperial.tileURL = environment.tileURL;
 
 //-----------------------------------------------------------------
 
-Maperial.DEFAULT_ZOOM           = 10;
-Maperial.DEFAULT_LATITUDE       = 48.813;
-Maperial.DEFAULT_LONGITUDE      = 2.313;
+Maperial.DEFAULT_ZOOM = 10;
+Maperial.DEFAULT_LATITUDE = 48.813;
+Maperial.DEFAULT_LONGITUDE = 2.313;
 
 //Clermont City
 //Maperial.DEFAULT_LATITUDE       = 45.779017;
@@ -147,25 +145,25 @@ Maperial.DEFAULT_LONGITUDE      = 2.313;
 
 //-----------------------------------------------------------------
 
-Maperial.bgdimg                 = "symbols/water.png";
+Maperial.bgdimg = "symbols/water.png";
 
-Maperial.refreshRate            = 1000/30;   // ms
-Maperial.tileDLTimeOut          = 60000;     // ms
-Maperial.tileSize               = 256;
+Maperial.refreshRate = 1000 / 30; // ms
+Maperial.tileDLTimeOut = 60000; // ms
+Maperial.tileSize = 256;
 
-Maperial.autoMoveSpeedRate      = 0.2;
-Maperial.autoMoveMillis         = 700;
-Maperial.autoMoveDeceleration   = 0.005;
-Maperial.autoMoveAnalyseSize    = 10;
+Maperial.autoMoveSpeedRate = 0.2;
+Maperial.autoMoveMillis = 700;
+Maperial.autoMoveDeceleration = 0.005;
+Maperial.autoMoveAnalyseSize = 10;
 
-Maperial.DEFAULT_STYLE_UID      = "1_style_13ed75438c8b2ed8914";
-Maperial.DEFAULT_COLORBAR_UID   = "1_colorbar_13c630ec3a5068919c3";
+Maperial.DEFAULT_STYLE_UID = "1_style_13ed75438c8b2ed8914";
+Maperial.DEFAULT_COLORBAR_UID = "1_colorbar_13c630ec3a5068919c3";
 
-Maperial.AlphaClip              = "AlphaClip";
-Maperial.AlphaBlend             = "AlphaBlend";
-Maperial.MulBlend               = "MulBlend";
+Maperial.AlphaClip = "AlphaClip";
+Maperial.AlphaBlend = "AlphaBlend";
+Maperial.MulBlend = "MulBlend";
 
-Maperial.globalDataCpt          = 0;
+Maperial.globalDataCpt = 0;
 
 //-----------------------------------------------------------------
 
@@ -195,53 +193,52 @@ Maperial.globalDataCpt          = 0;
  *          default Maperial.DEFAULT_LONGITUDE
  *
  */
-function createView (options) {
+function createView(options) {
 
-   //-------------------------------------------
-   // Checking options
+    //-------------------------------------------
+    // Checking options
 
-   utils.prepareOptions(options, "container");
+    utils.prepareOptions(options, "container");
 
-   if(!options){
-      console.log("Wrong call to createView. Check the options");
-   }
+    if (!options) {
+        console.log("Wrong call to createView. Check the options");
+    }
 
-   //-------------------------------------------
-   // Checking view
+    //-------------------------------------------
+    // Checking view
 
-   console.log("Adding view in container " + options.container);
+    console.log("Adding view in container " + options.container);
 
-   if(document.getElementById(options.container) == null){
-      console.log("Container " + options.container  + " could not be found");
-      return;
-   }
+    if (document.getElementById(options.container) == null) {
+        console.log("Container " + options.container + " could not be found");
+        return;
+    }
 
-   options.container = document.getElementById(options.container);
+    options.container = document.getElementById(options.container);
 
-   //-------------------------------------------
-   // Set defaults
+    //-------------------------------------------
+    // Set defaults
 
-   if(options.type === undefined){
-      options.type = Maperial.MAIN;
-   }
+    if (options.type === undefined) {
+        options.type = Maperial.MAIN;
+    }
 
-   if(options.latitude === undefined){
-      options.latitude = Maperial.DEFAULT_LATITUDE;
-   }
+    if (options.latitude === undefined) {
+        options.latitude = Maperial.DEFAULT_LATITUDE;
+    }
 
-   if(options.longitude === undefined){
-      options.longitude = Maperial.DEFAULT_LONGITUDE;
-   }
+    if (options.longitude === undefined) {
+        options.longitude = Maperial.DEFAULT_LONGITUDE;
+    }
 
-   //-------------------------------------------
-   // Proceed
+    //-------------------------------------------
+    // Proceed
 
-   var view = new MapView(this, options);
-   this.views.push(view);
+    var view = new MapView(this, options);
+    this.views.push(view);
 
-   return view;
+    return view;
 };
-
 
 //-----------------------------------------------------------------
 // quicker than standalone...

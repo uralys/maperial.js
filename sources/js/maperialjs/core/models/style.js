@@ -1,11 +1,11 @@
 //-----------------------------------------------------------------------------------//
 
-function Style(){}
+function Style() {}
 
 //------------------------------------------------------------------//
 
-Style.Vectorial   = "Style.Vectorial";
-Style.Custom      = "Style.Custom";
+Style.Vectorial = "Style.Vectorial";
+Style.Custom = "Style.Custom";
 
 //------------------------------------------------------------------//
 

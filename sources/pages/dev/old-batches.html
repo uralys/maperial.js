@@ -1,0 +1,109 @@
+<html>
+
+<head>
+    <title>Maperial 2.0 - Dynamical data</title>
+    <link href="http://static.maperial.localhost/css/maperial.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="heatmap" class="fullscreen-map"></div>
+    <div class="hud">
+        <input type="range" class="slider" min="1" step="1">
+    </div>
+</body>
+
+<script type="text/javascript" src="http://static.maperial.localhost/js/maperial.js"></script>
+
+<script type="text/javascript">
+    (function () {
+
+        //------------------------------------------------------
+        // data demo
+        //------------------------------------------------------
+        var nbBatches = 50,
+            nbData = 50,
+            generateBatch = function () {
+
+                var batch = [];
+
+                for (var i = 0; i < nbBatches; i++) {
+                    var point = {
+                        lat: 50.007874 + (Math.floor(Math.random() * (nbData))) / nbData,
+                        lon: 2.080601999999999 + (Math
+                            .floor(Math.random() * (1200))) / 600,
+                        data: {
+                            brasserie: "Abbaye de St Landelin"
+                        }
+                    };
+
+                    batch.push(point);
+                }
+
+                return batch;
+            }
+
+        //---------------------------------
+
+        var batches = [];
+        for (var i = 0; i < 1000; i++)
+            batches.push(generateBatch());
+
+        //---------------------------------
+
+        var loadBatch = function (batch, dynamicalData) {
+            dynamicalData.removeAll();
+            batch.forEach(function (point) {
+                dynamicalData.addPoint(point.lat, point.lon, point.data);
+            })
+        }
+
+        //------------------------------------------------------
+        // Maperial
+        //------------------------------------------------------
+
+        var maperial = new Maperial(),
+            map = maperial.createView({
+                container: "heatmap",
+                defaultZoom: 9,
+                latitude: 50.516584,
+                longitude: 3.186998
+            });
+
+        //----------------------------------------------
+
+        // map.addOCMTransport();
+
+        //----------------------------------------------
+        //Layer Vectorial Data
+        // TODO : Api 1 function 
+
+        var brasseries = new Maperial.DynamicalData(),
+            options = {
+                style: {
+                    symbol: "symbols/blue.pointer.png"
+                }
+            };
+
+        map.addDynamicalLayer(brasseries, options);
+
+        //------------------------------------------------------
+        // demo hud
+        //------------------------------------------------------
+
+        var slider = document.querySelector(".slider");
+        slider.setAttribute("max", nbBatches);
+
+        /* on slide : load another batch 
+         TODO : maperial keep visual batches loaded */
+        slider.addEventListener("input", function (event) {
+            loadBatch(batches[event.target.valueAsNumber - 1], brasseries);
+        });
+
+        /* First loading */
+        loadBatch(batches[0], brasseries);
+
+    })();
+</script>
+
+
+</html>
