@@ -1,5 +1,7 @@
 module.exports = function (grunt) {
 
+    require('time-grunt')(grunt);
+
     var gruntCfg = {
         pkg: grunt.file.readJSON('package.json'),
         env: grunt.file.readJSON('environment/env.json'),
