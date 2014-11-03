@@ -2,13 +2,19 @@
 ### Get started
 Add scripts : js + css
 
-### A simple map
+### Your first map
 [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
 
-### 2 simple layers
+### Adding a layer
 [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
 
-### Import data
+### Adding a point
+[demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
+
+### Adding/Removing points
+[demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
+
+### Heatmap
 [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
 
 #test jsbin
