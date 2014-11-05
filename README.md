@@ -14,20 +14,30 @@ First of all, add the js + css scripts on your page :
     <script src="http://static.maperial.com/js/maperial.js" type="text/javascript"></script>
 
 ### Your first map
-- Add your html container
-    <div id="map" class="fullscreen-map"></div>
+Add your html container
 
-- Call upon Maperial
-  var maperial = new window.Maperial();
+```
+<div id="map" class="fullscreen-map"></div>
+```
 
-- Use it to add a view : this is your map !
+Call upon Maperial
+
+```
+var maperial = new window.Maperial();
+```
+
+Use it to add a view : this is your map !
 remember to provide your container id
-    var map = maperial.createView({
-        container: 'map'
-    });
+```
+var map = maperial.createView({
+    container: 'map'
+});
+```
 
-- Ask for a new layer on your map from the available layers
-    map.addMapquest();
+Ask for a new layer on your map from the available [layers] (./documentation.md#layers)
+```
+map.addMapquest();
+```
 
 
 [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
@@ -47,6 +57,6 @@ remember to provide your container id
 - heatmapData + heatmap geojson url
 [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
 
-# More demos [here] (./demos.md)
-# Documentation [here] (./documentation.md)
+## More [demos] (./demos.md)
+## [Documentation] (./documentation.md)
 
