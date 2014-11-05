@@ -8,16 +8,16 @@
 [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
 
 # Getting started
-First of all, add the js + css scripts on your page :
-
-    <link href="http://static.maperial.com/css/maperial.css" rel="stylesheet" type="text/css" />
-    <script src="http://static.maperial.com/js/maperial.js" type="text/javascript"></script>
+First of all, add the js script on your page :
+```
+<script src="http://static.maperial.com/js/maperial.js" type="text/javascript"></script>
+```
 
 ### Your first map
 Add your html container
 
 ```
-<div id="map" class="fullscreen-map"></div>
+<div id="map"></div>
 ```
 
 Call upon Maperial
