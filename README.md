@@ -13,8 +13,10 @@ First of all, add the js script on your page :
 <script src="http://static.maperial.com/js/maperial.js" type="text/javascript"></script>
 ```
 
-### Your first map [jsbin](http://jsbin.com/bixatibufogu/10/embed?js,output)
-Add your html container
+### Your first map
+[(jsbin)](http://jsbin.com/bixatibufogu/10/embed?js,output)
+
+Start by adding your html container
 
 ```
 <div id="map"></div>
