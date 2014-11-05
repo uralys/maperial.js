@@ -23,7 +23,7 @@ Add your html container
 Call upon Maperial
 
 ```
-var maperial = new window.Maperial();
+var maperial = new Maperial();
 ```
 
 Use it to add a view : this is your map !
