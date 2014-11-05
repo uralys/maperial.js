@@ -26,8 +26,7 @@ Call upon Maperial
 var maperial = new Maperial();
 ```
 
-Use it to add a view : this is your map !
-remember to provide your container id
+Use it to add a view, linked with your html container
 ```
 var map = maperial.createView({
     container: 'map'
