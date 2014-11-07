@@ -13,17 +13,14 @@ First of all, add the js script on your page :
 <script src="http://static.maperial.com/js/maperial.js" type="text/javascript"></script>
 ```
 
-### Your first map
-[(jsbin)](http://jsbin.com/bixatibufogu/10/embed?js,output)
+### Your first map [(jsbin)](http://jsbin.com/bixatibufogu/10/embed?js,output)
 
 Start by adding your html container
-
 ```
 <div id="map"></div>
 ```
 
 Call upon Maperial
-
 ```
 var maperial = new Maperial();
 ```
@@ -41,9 +38,10 @@ map.addMapquest();
 ```
 
 
-### Adding a layer
+### Adding goodies
 - simple classic tile layer
 - shade
+- add shade setting panel
 [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
 
 ### Adding points
