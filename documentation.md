@@ -7,7 +7,7 @@ var maperial = new Maperial();
 With your Maperial you can now draw Maps and share Data between them.
 
  - maperial.createMap
-  returns a [Map](/#Maps)
+  returns a [Map](#maps)
  - maperial.createDynamicalData
  - maperial.createHeatmapData
 
