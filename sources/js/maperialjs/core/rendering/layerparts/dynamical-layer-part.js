@@ -6,7 +6,6 @@ function DynamicalLayerPart(layer, tile) {
     this.y = tile.y;
     this.z = tile.z;
 
-    this.version = null;
     this.tex = null;
 
     this.renderer = layer.renderer;
@@ -37,8 +36,8 @@ DynamicalLayerPart.prototype.dataReady = function () {
 
 //-----------------------------------------------------------------------------
 
-DynamicalLayerPart.prototype.prepare = function () {
-
+DynamicalLayerPart.prototype.refresh = function () {
+    this.renderer.refresh();
 }
 
 //-----------------------------------------------------------------------------

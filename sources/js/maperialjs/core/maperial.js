@@ -13,6 +13,18 @@ var MapView = require('./map/map-view.js'),
 
 //-----------------------------------------------------------------
 
+/**
+ * Instanciate one Maperial to build every maps on your web page.
+ *
+ * With your Maperial you can now draw Maps and share Data between them.
+ *
+ * @example
+ * var maperial = new Maperial();
+ *
+ *
+ *
+ * @constructor
+ */
 function Maperial(options) {
     console.log("-----------------------");
     console.log("Creating a Maperial");
@@ -25,66 +37,6 @@ function Maperial(options) {
     /* expose maperial api */
     this.expose();
 }
-
-//-----------------------------------------------------------------
-// API
-//-----------------------------------------------------------------
-
-Maperial.prototype.expose = function () {
-
-    /*---------------------------*/
-    /* Maperial views */
-
-    /* TODO doc */
-    this.createView = createView.bind(this);
-
-    /*---------------------*/
-    /* Tools */
-
-    this.createDynamicalData = function (data) {
-        return new DynamicalData(data);
-    };
-
-    this.createHeatmapData = function (data) {
-        return new HeatmapData(data);
-    };
-
-    /*---------------------*/
-    /* Maperial HUD */
-
-    /*
-     * TODO doc
-     * layers : array
-     */
-    this.addShadeControls = function (layers) {
-        var hud = document.createElement("div");
-        var bar = document.createElement("input");
-
-        hud.className = "hud";
-        bar.className = "scale";
-        bar.setAttribute("type", "range");
-        bar.setAttribute("min", "1");
-        bar.setAttribute("max", "100");
-        bar.setAttribute("step", "1");
-        bar.setAttribute("value", layers[0].params.scale);
-
-        bar.addEventListener("input", function (event) {
-            layers[0].params.scale = event.target.valueAsNumber;
-        });
-
-        hud.appendChild(bar);
-
-        document.querySelector("body").appendChild(hud);
-    }.bind(this);
-
-    /*
-     * TODO : remove container for simple zoom : add the 2 buttons on top left not in a container
-     * TODO doc
-     */
-    this.addSimpleZoom = function (options) {
-        new SimpleZoom(options);
-    };
-};
 
 //-----------------------------------------------------------------
 
@@ -165,79 +117,147 @@ Maperial.MulBlend = "MulBlend";
 
 Maperial.globalDataCpt = 0;
 
-//-----------------------------------------------------------------
+//------------------------------------------------------------------------------
+// API
+//------------------------------------------------------------------------------
 
-/**
- * options:
- *
- *    # mandatory ----------
- *
- *       view : "div.id"  (can be used as only param)
- *
- *    # others -------------
- *
- *       type
- *          Maperial.MAIN (default)
- *          Maperial.ANCHOR
- *          Maperial.LENS
- *          Maperial.MINIFIER
- *          Maperial.MAGNIFIER
- *
- *       defaultZoom
- *          default Maperial.DEFAULT_ZOOM
- *
- *       latitude
- *          default Maperial.DEFAULT_LATITUDE
- *
- *       longitude
- *          default Maperial.DEFAULT_LONGITUDE
- *
- */
-function createView(options) {
+Maperial.prototype.expose = function () {
 
-    //-------------------------------------------
-    // Checking options
+    /**
+     * @function
+     * @param {object|string} options May be either an object containing many
+     *                                settings or just the container as
+     *                                unique parameter.
+     * @param {string} options.container [Mandatory] The div id that will contain
+     *                                      the map. May replace 'options'
+     * @param {integer} options.defaultZoom The map start zoom (default : 10)
+     * @param {float} options.latitude The map start latitude (default : 48.813)
+     * @param {float} options.longitude The map start longitude (default : 2.313)
+     *
+     * @example <caption>
+     * Both following examples use this container :
+     * &lt;div id="map-container"&gt;&lt;/div&gt;
+     * </caption>
+     *
+     * var map = maperial.createMap('map-container');
+     *
+     * @example
+     * var map = maperial.createMap({
+     *     container:   'map-container',
+     *     defaultZoom: 15,
+     *     latitude:    53.03787562127988,
+     *     longitude:   4.844833878624368
+     * });
+     */
+    this.createMap = function (options) {
 
-    utils.prepareOptions(options, "container");
+        //-------------------------------------------
+        // Checking options
 
-    if (!options) {
-        console.log("Wrong call to createView. Check the options");
-    }
+        utils.prepareOptions(options, "container");
 
-    //-------------------------------------------
-    // Checking view
+        if (!options) {
+            console.log("Wrong call to createMap. Check the options");
+        }
 
-    console.log("Adding view in container " + options.container);
+        //-------------------------------------------
+        // Checking view
 
-    if (document.getElementById(options.container) == null) {
-        console.log("Container " + options.container + " could not be found");
-        return;
-    }
+        console.log("Adding view in container " + options.container);
 
-    options.container = document.getElementById(options.container);
+        if (document.getElementById(options.container) == null) {
+            console.log("Container " + options.container + " could not be found");
+            return;
+        }
 
-    //-------------------------------------------
-    // Set defaults
+        options.container = document.getElementById(options.container);
 
-    if (options.type === undefined) {
-        options.type = Maperial.MAIN;
-    }
+        //-------------------------------------------
+        // Set defaults
 
-    if (options.latitude === undefined) {
-        options.latitude = Maperial.DEFAULT_LATITUDE;
-    }
+        if (options.type === undefined) {
+            options.type = Maperial.MAIN;
+        }
 
-    if (options.longitude === undefined) {
-        options.longitude = Maperial.DEFAULT_LONGITUDE;
-    }
+        if (options.latitude === undefined) {
+            options.latitude = Maperial.DEFAULT_LATITUDE;
+        }
 
-    //-------------------------------------------
-    // Proceed
+        if (options.longitude === undefined) {
+            options.longitude = Maperial.DEFAULT_LONGITUDE;
+        }
 
-    var view = new MapView(this, options);
-    this.views.push(view);
+        //-------------------------------------------
+        // Proceed
 
-    return view;
+        var view = new MapView(this, options);
+        this.views.push(view);
+
+        return view;
+    };
+
+    /**
+     * @function
+     * @param {object|string} data May be either an GeoJson object or a url
+     *                             providing a GeoJson object
+
+     * @example <caption> Example with a GeoJson provided by a url </caption>
+     *
+     * @example
+     * var url = 'http://static.maperial.com/geojson/demo.geojson.json';
+     * var data = maperial.createDynamicalData(url);
+     *
+     */
+    this.createDynamicalData = function (data) {
+        return new DynamicalData(data);
+    };
+
+    /**
+     * @function
+     * @param {object|string} data May be either an GeoJson object or a url
+     *                             providing a GeoJson object
+
+     * @example <caption> Example with a GeoJson provided by a url </caption>
+     * var url = 'http://static.maperial.com/geojson/demo.geojson.json';
+     * var data = maperial.createDynamicalData(url);
+     *
+     */
+    this.createHeatmapData = function (data) {
+        return new HeatmapData(data);
+    };
+
+    /**
+     * @function
+     * @param {array} layers Add controls to an array of layers.
+     */
+    this.addShadeControls = function (layers) {
+        var hud = document.createElement("div");
+        var bar = document.createElement("input");
+
+        hud.className = "hud";
+        bar.className = "scale";
+        bar.setAttribute("type", "range");
+        bar.setAttribute("min", "1");
+        bar.setAttribute("max", "100");
+        bar.setAttribute("step", "1");
+        bar.setAttribute("value", layers[0].params.scale);
+
+        bar.addEventListener("input", function (event) {
+            layers[0].params.scale = event.target.valueAsNumber;
+        });
+
+        hud.appendChild(bar);
+
+        document.querySelector("body").appendChild(hud);
+    }.bind(this);
+
+    /*
+     * TODO : container should be optional : default 2 buttons on top left
+     * TODO doc
+     */
+    this.addSimpleZoom = function (options) {
+        new SimpleZoom(options);
+    };
 };
 
 //-----------------------------------------------------------------

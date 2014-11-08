@@ -7,7 +7,7 @@
 (function (window, undefined) {
     'use strict';
 
-    /**
+    /*
      * @main
      * @module hammer
      *
@@ -15,7 +15,7 @@
      * @static
      */
 
-    /**
+    /*
      * Hammer, use this to create instances
      * ````
      * var hammertime = new Hammer(myElement);
@@ -30,7 +30,7 @@
         return new Hammer.Instance(element, options || {});
     };
 
-    /**
+    /*
      * version, as defined in package.json
      * the value will be set at each build
      * @property VERSION
@@ -39,7 +39,7 @@
      */
     Hammer.VERSION = '1.1.2';
 
-    /**
+    /*
      * default settings.
      * more settings are defined per gesture at `/gestures`. Each gesture can be disabled/enabled
      * by setting it's name (like `swipe`) to false.
@@ -54,14 +54,14 @@
      * @type {Object}
      */
     Hammer.defaults = {
-        /**
+        /*
          * this setting object adds styles and attributes to the element to prevent the browser from doing
          * its native behavior. The css properties are auto prefixed for the browsers when needed.
          * @property defaults.behavior
          * @type {Object}
          */
         behavior: {
-            /**
+            /*
              * Disables text selection to improve the dragging gesture. When the value is `none` it also sets
              * `onselectstart=false` for IE on the element. Mainly for desktop browsers.
              * @property defaults.behavior.userSelect
@@ -70,7 +70,7 @@
              */
             userSelect: 'none',
 
-            /**
+            /*
              * Specifies whether and how a given region can be manipulated by the user (for instance, by panning or zooming).
              * Used by IE10>. By default this makes the element blocking any touch event.
              * @property defaults.behavior.touchAction
@@ -79,7 +79,7 @@
              */
             touchAction: 'none',
 
-            /**
+            /*
              * Disables the default callout shown when you touch and hold a touch target.
              * On iOS, when you touch and hold a touch target such as a link, Safari displays
              * a callout containing information about the link. This property allows you to disable that callout.
@@ -89,7 +89,7 @@
              */
             touchCallout: 'none',
 
-            /**
+            /*
              * Specifies whether zooming is enabled. Used by IE10>
              * @property defaults.behavior.contentZooming
              * @type {String}
@@ -97,7 +97,7 @@
              */
             contentZooming: 'none',
 
-            /**
+            /*
              * Specifies that an entire element should be draggable instead of its contents.
              * Mainly for desktop browsers.
              * @property defaults.behavior.userDrag
@@ -106,7 +106,7 @@
              */
             userDrag: 'none',
 
-            /**
+            /*
              * Overrides the highlight color shown when the user taps a link or a JavaScript
              * clickable element in Safari on iPhone. This property obeys the alpha value, if specified.
              *
@@ -121,7 +121,7 @@
         }
     };
 
-    /**
+    /*
      * hammer document where the base events are added at
      * @property DOCUMENT
      * @type {HTMLElement}
@@ -129,35 +129,35 @@
      */
     Hammer.DOCUMENT = document;
 
-    /**
+    /*
      * detect support for pointer events
      * @property HAS_POINTEREVENTS
      * @type {Boolean}
      */
     Hammer.HAS_POINTEREVENTS = navigator.pointerEnabled || navigator.msPointerEnabled;
 
-    /**
+    /*
      * detect support for touch events
      * @property HAS_TOUCHEVENTS
      * @type {Boolean}
      */
     Hammer.HAS_TOUCHEVENTS = ('ontouchstart' in window);
 
-    /**
+    /*
      * detect mobile browsers
      * @property IS_MOBILE
      * @type {Boolean}
      */
     Hammer.IS_MOBILE = /mobile|tablet|ip(ad|hone|od)|android|silk/i.test(navigator.userAgent);
 
-    /**
+    /*
      * detect if we want to support mouseevents at all
      * @property NO_MOUSEEVENTS
      * @type {Boolean}
      */
     Hammer.NO_MOUSEEVENTS = (Hammer.HAS_TOUCHEVENTS && Hammer.IS_MOBILE) || Hammer.HAS_POINTEREVENTS;
 
-    /**
+    /*
      * interval in which Hammer recalculates current velocity/direction/angle in ms
      * @property CALCULATE_INTERVAL
      * @type {Number}
@@ -165,7 +165,7 @@
      */
     Hammer.CALCULATE_INTERVAL = 25;
 
-    /**
+    /*
      * eventtypes per touchevent (start, move, end) are filled by `Event.determineEventTypes` on `setup`
      * the object contains the DOM event names per type (`EVENT_START`, `EVENT_MOVE`, `EVENT_END`)
      * @property EVENT_TYPES
@@ -175,7 +175,7 @@
      */
     var EVENT_TYPES = {};
 
-    /**
+    /*
      * direction strings, for safe comparisons
      * @property DIRECTION_DOWN|LEFT|UP|RIGHT
      * @final
@@ -187,7 +187,7 @@
     var DIRECTION_UP = Hammer.DIRECTION_UP = 'up';
     var DIRECTION_RIGHT = Hammer.DIRECTION_RIGHT = 'right';
 
-    /**
+    /*
      * pointertype strings, for safe comparisons
      * @property POINTER_MOUSE|TOUCH|PEN
      * @final
@@ -198,7 +198,7 @@
     var POINTER_TOUCH = Hammer.POINTER_TOUCH = 'touch';
     var POINTER_PEN = Hammer.POINTER_PEN = 'pen';
 
-    /**
+    /*
      * eventtypes
      * @property EVENT_START|MOVE|END|RELEASE|TOUCH
      * @final
@@ -211,7 +211,7 @@
     var EVENT_RELEASE = Hammer.EVENT_RELEASE = 'release';
     var EVENT_TOUCH = Hammer.EVENT_TOUCH = 'touch';
 
-    /**
+    /*
      * if the window events are set...
      * @property READY
      * @writeOnce
@@ -220,14 +220,14 @@
      */
     Hammer.READY = false;
 
-    /**
+    /*
      * plugins namespace
      * @property plugins
      * @type {Object}
      */
     Hammer.plugins = Hammer.plugins || {};
 
-    /**
+    /*
      * gestures namespace
      * see `/gestures` for the definitions
      * @property gestures
@@ -235,7 +235,7 @@
      */
     Hammer.gestures = Hammer.gestures || {};
 
-    /**
+    /*
      * setup events to detect gestures on the document
      * this function is called when creating an new instance
      * @private
@@ -261,14 +261,14 @@
         Hammer.READY = true;
     }
 
-    /**
+    /*
      * @module hammer
      *
      * @class Utils
      * @static
      */
     var Utils = Hammer.utils = {
-        /**
+        /*
          * extend method, could also be used for cloning when `dest` is an empty object.
          * changes the dest object
          * @method extend
@@ -287,7 +287,7 @@
             return dest;
         },
 
-        /**
+        /*
          * simple addEventListener wrapper
          * @method on
          * @param {HTMLElement} element
@@ -298,7 +298,7 @@
             element.addEventListener(type, handler, false);
         },
 
-        /**
+        /*
          * simple removeEventListener wrapper
          * @method off
          * @param {HTMLElement} element
@@ -309,7 +309,7 @@
             element.removeEventListener(type, handler, false);
         },
 
-        /**
+        /*
          * forEach over arrays and objects
          * @method each
          * @param {Object|Array} obj
@@ -343,7 +343,7 @@
             }
         },
 
-        /**
+        /*
          * find if a string contains the string using indexOf
          * @method inStr
          * @param {String} src
@@ -354,7 +354,7 @@
             return src.indexOf(find) > -1;
         },
 
-        /**
+        /*
          * find if a array contains the object using indexOf or a simple polyfill
          * @method inArray
          * @param {String} src
@@ -375,7 +375,7 @@
             }
         },
 
-        /**
+        /*
          * convert an array-like object (`arguments`, `touchlist`) to an array
          * @method toArray
          * @param {Object} obj
@@ -385,7 +385,7 @@
             return Array.prototype.slice.call(obj, 0);
         },
 
-        /**
+        /*
          * find if a node is in the given parent
          * @method hasParent
          * @param {HTMLElement} node
@@ -402,7 +402,7 @@
             return false;
         },
 
-        /**
+        /*
          * get the center of all the touches
          * @method getCenter
          * @param {Array} touches
@@ -441,7 +441,7 @@
             };
         },
 
-        /**
+        /*
          * calculate the velocity between two points. unit is in px per ms.
          * @method getVelocity
          * @param {Number} deltaTime
@@ -456,7 +456,7 @@
             };
         },
 
-        /**
+        /*
          * calculate the angle between two coordinates
          * @method getAngle
          * @param {Touch} touch1
@@ -470,7 +470,7 @@
             return Math.atan2(y, x) * 180 / Math.PI;
         },
 
-        /**
+        /*
          * do a small comparision to get the direction between two touches.
          * @method getDirection
          * @param {Touch} touch1
@@ -487,7 +487,7 @@
             return touch1.clientY - touch2.clientY > 0 ? DIRECTION_UP : DIRECTION_DOWN;
         },
 
-        /**
+        /*
          * calculate the distance between two touches
          * @method getDistance
          * @param {Touch}touch1
@@ -501,7 +501,7 @@
             return Math.sqrt((x * x) + (y * y));
         },
 
-        /**
+        /*
          * calculate the scale factor between two touchLists
          * no scale is 1, and goes down to 0 when pinched together, and bigger when pinched out
          * @method getScale
@@ -517,7 +517,7 @@
             return 1;
         },
 
-        /**
+        /*
          * calculate the rotation degrees between two touchLists
          * @method getRotation
          * @param {Array} start array of touches
@@ -532,7 +532,7 @@
             return 0;
         },
 
-        /**
+        /*
          * find out if the direction is vertical   *
          * @method isVertical
          * @param {String} direction matches `DIRECTION_UP|DOWN`
@@ -542,7 +542,7 @@
             return direction == DIRECTION_UP || direction == DIRECTION_DOWN;
         },
 
-        /**
+        /*
          * set css properties with their prefixes
          * @param {HTMLElement} element
          * @param {String} prop
@@ -569,7 +569,7 @@
             }
         },
 
-        /**
+        /*
          * toggle browser default behavior by setting css properties.
          * `userSelect='none'` also sets `element.onselectstart` to false
          * `userDrag='none'` also sets `element.ondragstart` to false
@@ -603,7 +603,7 @@
             }
         },
 
-        /**
+        /*
          * convert a string with underscores to camelCase
          * so prevent_default becomes preventDefault
          * @param {String} str
@@ -616,15 +616,15 @@
         }
     };
 
-    /**
+    /*
      * @module hammer
      */
-    /**
+    /*
      * @class Event
      * @static
      */
     var Event = Hammer.event = {
-        /**
+        /*
          * when touch events have been fired, this is true
          * this is used to stop mouse events
          * @property prevent_mouseevents
@@ -633,7 +633,7 @@
          */
         preventMouseEvents: false,
 
-        /**
+        /*
          * if EVENT_START has been fired
          * @property started
          * @private
@@ -641,7 +641,7 @@
          */
         started: false,
 
-        /**
+        /*
          * when the mouse is hold down, this is true
          * @property should_detect
          * @private
@@ -649,7 +649,7 @@
          */
         shouldDetect: false,
 
-        /**
+        /*
          * simple event binder with a hook and support for multiple types
          * @method on
          * @param {HTMLElement} element
@@ -666,7 +666,7 @@
             });
         },
 
-        /**
+        /*
          * simple event unbinder with a hook and support for multiple types
          * @method off
          * @param {HTMLElement} element
@@ -683,7 +683,7 @@
             });
         },
 
-        /**
+        /*
          * the core touch event handler.
          * this finds out if we should to detect gestures
          * @method onTouch
@@ -746,7 +746,7 @@
             return onTouchHandler;
         },
 
-        /**
+        /*
          * the core detection method
          * this finds out what hammer-touch-events to trigger
          * @method doDetect
@@ -816,7 +816,7 @@
             return triggerType;
         },
 
-        /**
+        /*
          * we have different events for each device/browser
          * determine what we need and set them in the EVENT_TYPES constant
          * the `onTouch` method is bind to these properties.
@@ -859,7 +859,7 @@
             return EVENT_TYPES;
         },
 
-        /**
+        /*
          * create touchList depending on the event
          * @method getTouchList
          * @param {Object} ev
@@ -897,7 +897,7 @@
             return [ev];
         },
 
-        /**
+        /*
          * collect basic event data
          * @method collectEventData
          * @param {HTMLElement} element
@@ -924,7 +924,7 @@
                 pointerType: pointerType,
                 srcEvent: ev,
 
-                /**
+                /*
                  * prevent the browser default actions
                  * mostly used to disable scrolling of the browser
                  */
@@ -934,14 +934,14 @@
                     srcEvent.preventDefault && srcEvent.preventDefault();
                 },
 
-                /**
+                /*
                  * stop bubbling the event up to its parents
                  */
                 stopPropagation: function () {
                     this.srcEvent.stopPropagation();
                 },
 
-                /**
+                /*
                  * immediately stop gesture detection
                  * might be useful after a swipe was detected
                  * @return {*}
@@ -953,21 +953,21 @@
         }
     };
 
-    /**
+    /*
      * @module hammer
      *
      * @class PointerEvent
      * @static
      */
     var PointerEvent = Hammer.PointerEvent = {
-        /**
+        /*
          * holds all pointers, by `identifier`
          * @property pointers
          * @type {Object}
          */
         pointers: {},
 
-        /**
+        /*
          * get the pointers as an array
          * @method getTouchList
          * @return {Array} touchlist
@@ -981,7 +981,7 @@
             return touchlist;
         },
 
-        /**
+        /*
          * update the position of a pointer
          * @method updatePointer
          * @param {String} eventType matches `EVENT_START|MOVE|END`
@@ -996,7 +996,7 @@
             }
         },
 
-        /**
+        /*
          * check if ev matches pointertype
          * @method matchType
          * @param {String} pointerType matches `POINTER_MOUSE|TOUCH|PEN`
@@ -1016,7 +1016,7 @@
             return types[pointerType];
         },
 
-        /**
+        /*
          * reset the stored pointers
          * @method reset
          */
@@ -1025,7 +1025,7 @@
         }
     };
 
-    /**
+    /*
      * @module hammer
      *
      * @class Detection
@@ -1045,7 +1045,7 @@
         // when this becomes true, no gestures are fired
         stopped: false,
 
-        /**
+        /*
          * start Hammer.gesture detection
          * @method startDetect
          * @param {Hammer.Instance} inst
@@ -1073,7 +1073,7 @@
             this.detect(eventData);
         },
 
-        /**
+        /*
          * Hammer.gesture detection
          * @method detect
          * @param {Object} eventData
@@ -1115,7 +1115,7 @@
             return eventData;
         },
 
-        /**
+        /*
          * clear the Hammer.gesture vars
          * this is called on endDetect, but can also be used when a final Hammer.gesture has been detected
          * to stop other Hammer.gestures from being fired
@@ -1131,7 +1131,7 @@
             this.stopped = true;
         },
 
-        /**
+        /*
          * calculate velocity, angle and direction
          * @method getVelocityData
          * @param {Object} ev
@@ -1173,7 +1173,7 @@
             ev.interimDirection = calcData.direction;
         },
 
-        /**
+        /*
          * extend eventData for Hammer.gestures
          * @method extendEventData
          * @param {Object} ev
@@ -1218,7 +1218,7 @@
             return ev;
         },
 
-        /**
+        /*
          * register new gesture
          * @method register
          * @param {Object} gesture object, see `gestures/` for documentation
@@ -1255,11 +1255,11 @@
         }
     };
 
-    /**
+    /*
      * @module hammer
      */
 
-    /**
+    /*
      * create new hammer instance
      * all methods should return the instance itself, so it is chainable.
      *
@@ -1276,20 +1276,20 @@
         // this also sets up the default options
         setup();
 
-        /**
+        /*
          * @property element
          * @type {HTMLElement}
          */
         this.element = element;
 
-        /**
+        /*
          * @property enabled
          * @type {Boolean}
          * @protected
          */
         this.enabled = true;
 
-        /**
+        /*
          * options, merged with the defaults
          * options with an _ are converted to camelCase
          * @property options
@@ -1307,7 +1307,7 @@
             Utils.toggleBehavior(this.element, this.options.behavior, true);
         }
 
-        /**
+        /*
          * event start handler on the element to start the detection
          * @property eventStartHandler
          * @type {Object}
@@ -1320,7 +1320,7 @@
             }
         });
 
-        /**
+        /*
          * keep a list of user event handlers which needs to be removed when calling 'dispose'
          * @property eventHandlers
          * @type {Array}
@@ -1329,7 +1329,7 @@
     };
 
     Hammer.Instance.prototype = {
-        /**
+        /*
          * bind events to the instance
          * @method on
          * @chainable
@@ -1348,7 +1348,7 @@
             return self;
         },
 
-        /**
+        /*
          * unbind events to the instance
          * @method off
          * @chainable
@@ -1370,7 +1370,7 @@
             return self;
         },
 
-        /**
+        /*
          * trigger gesture event
          * @method trigger
          * @chainable
@@ -1399,7 +1399,7 @@
             return this;
         },
 
-        /**
+        /*
          * enable of disable hammer.js detection
          * @method enable
          * @chainable
@@ -1410,7 +1410,7 @@
             return this;
         },
 
-        /**
+        /*
          * dispose this hammer instance
          * @method dispose
          * @return {Null}
@@ -1436,10 +1436,10 @@
         }
     };
 
-    /**
+    /*
      * @module gestures
      */
-    /**
+    /*
      * Move with x fingers (default 1) around on the page.
      * Preventing the default browser behavior is a good way to improve feel and working.
      * ````
@@ -1452,36 +1452,36 @@
      * @class Drag
      * @static
      */
-    /**
+    /*
      * @event drag
      * @param {Object} ev
      */
-    /**
+    /*
      * @event dragstart
      * @param {Object} ev
      */
-    /**
+    /*
      * @event dragend
      * @param {Object} ev
      */
-    /**
+    /*
      * @event drapleft
      * @param {Object} ev
      */
-    /**
+    /*
      * @event dragright
      * @param {Object} ev
      */
-    /**
+    /*
      * @event dragup
      * @param {Object} ev
      */
-    /**
+    /*
      * @event dragdown
      * @param {Object} ev
      */
 
-    /**
+    /*
      * @param {String} name
      */
     (function (name) {
@@ -1584,7 +1584,7 @@
             index: 50,
             handler: dragGesture,
             defaults: {
-                /**
+                /*
                  * minimal movement that have to be made before the drag event gets triggered
                  * @property dragMinDistance
                  * @type {Number}
@@ -1592,7 +1592,7 @@
                  */
                 dragMinDistance: 10,
 
-                /**
+                /*
                  * Set dragDistanceCorrection to true to make the starting point of the drag
                  * be calculated from where the drag was triggered, not from where the touch started.
                  * Useful to avoid a jerk-starting drag, which can make fine-adjustments
@@ -1603,7 +1603,7 @@
                  */
                 dragDistanceCorrection: true,
 
-                /**
+                /*
                  * set 0 for unlimited, but this can conflict with transform
                  * @property dragMaxTouches
                  * @type {Number}
@@ -1611,7 +1611,7 @@
                  */
                 dragMaxTouches: 1,
 
-                /**
+                /*
                  * prevent default browser behavior when dragging occurs
                  * be careful with it, it makes the element a blocking element
                  * when you are using the drag gesture, it is a good practice to set this true
@@ -1621,7 +1621,7 @@
                  */
                 dragBlockHorizontal: false,
 
-                /**
+                /*
                  * same as `dragBlockHorizontal`, but for vertical movement
                  * @property dragBlockVertical
                  * @type {Boolean}
@@ -1629,7 +1629,7 @@
                  */
                 dragBlockVertical: false,
 
-                /**
+                /*
                  * dragLockToAxis keeps the drag gesture on the axis that it started on,
                  * It disallows vertical directions if the initial direction was horizontal, and vice versa.
                  * @property dragLockToAxis
@@ -1638,7 +1638,7 @@
                  */
                 dragLockToAxis: false,
 
-                /**
+                /*
                  * drag lock only kicks in when distance > dragLockMinDistance
                  * This way, locking occurs only when the distance has become large enough to reliably determine the direction
                  * @property dragLockMinDistance
@@ -1650,17 +1650,17 @@
         };
     })('drag');
 
-    /**
+    /*
      * @module gestures
      */
-    /**
+    /*
      * trigger a simple gesture event, so you can do anything in your handler.
      * only usable if you know what your doing...
      *
      * @class Gesture
      * @static
      */
-    /**
+    /*
      * @event gesture
      * @param {Object} ev
      */
@@ -1672,21 +1672,21 @@
         }
     };
 
-    /**
+    /*
      * @module gestures
      */
-    /**
+    /*
      * Touch stays at the same place for x time
      *
      * @class Hold
      * @static
      */
-    /**
+    /*
      * @event hold
      * @param {Object} ev
      */
 
-    /**
+    /*
      * @param {String} name
      */
     (function (name) {
@@ -1728,14 +1728,14 @@
             name: name,
             index: 10,
             defaults: {
-                /**
+                /*
                  * @property holdTimeout
                  * @type {Number}
                  * @default 500
                  */
                 holdTimeout: 500,
 
-                /**
+                /*
                  * movement allowed while holding
                  * @property holdThreshold
                  * @type {Number}
@@ -1747,16 +1747,16 @@
         };
     })('hold');
 
-    /**
+    /*
      * @module gestures
      */
-    /**
+    /*
      * when a touch is being released from the page
      *
      * @class Release
      * @static
      */
-    /**
+    /*
      * @event release
      * @param {Object} ev
      */
@@ -1770,10 +1770,10 @@
         }
     };
 
-    /**
+    /*
      * @module gestures
      */
-    /**
+    /*
      * triggers swipe events when the end velocity is above the threshold
      * for best usage, set `preventDefault` (on the drag gesture) to `true`
      * ````
@@ -1786,23 +1786,23 @@
      * @class Swipe
      * @static
      */
-    /**
+    /*
      * @event swipe
      * @param {Object} ev
      */
-    /**
+    /*
      * @event swipeleft
      * @param {Object} ev
      */
-    /**
+    /*
      * @event swiperight
      * @param {Object} ev
      */
-    /**
+    /*
      * @event swipeup
      * @param {Object} ev
      */
-    /**
+    /*
      * @event swipedown
      * @param {Object} ev
      */
@@ -1810,21 +1810,21 @@
         name: 'swipe',
         index: 40,
         defaults: {
-            /**
+            /*
              * @property swipeMinTouches
              * @type {Number}
              * @default 1
              */
             swipeMinTouches: 1,
 
-            /**
+            /*
              * @property swipeMaxTouches
              * @type {Number}
              * @default 1
              */
             swipeMaxTouches: 1,
 
-            /**
+            /*
              * horizontal swipe velocity
              * @property swipeVelocityX
              * @type {Number}
@@ -1832,7 +1832,7 @@
              */
             swipeVelocityX: 0.6,
 
-            /**
+            /*
              * vertical swipe velocity
              * @property swipeVelocityY
              * @type {Number}
@@ -1864,25 +1864,25 @@
         }
     };
 
-    /**
+    /*
      * @module gestures
      */
-    /**
+    /*
      * Single tap and a double tap on a place
      *
      * @class Tap
      * @static
      */
-    /**
+    /*
      * @event tap
      * @param {Object} ev
      */
-    /**
+    /*
      * @event doubletap
      * @param {Object} ev
      */
 
-    /**
+    /*
      * @param {String} name
      */
     (function (name) {
@@ -1932,7 +1932,7 @@
             index: 100,
             handler: tapGesture,
             defaults: {
-                /**
+                /*
                  * max time of a tap, this is for the slow tappers
                  * @property tapMaxTime
                  * @type {Number}
@@ -1940,7 +1940,7 @@
                  */
                 tapMaxTime: 250,
 
-                /**
+                /*
                  * max distance of movement of a tap, this is for the slow tappers
                  * @property tapMaxDistance
                  * @type {Number}
@@ -1948,7 +1948,7 @@
                  */
                 tapMaxDistance: 10,
 
-                /**
+                /*
                  * always trigger the `tap` event, even while double-tapping
                  * @property tapAlways
                  * @type {Boolean}
@@ -1956,7 +1956,7 @@
                  */
                 tapAlways: true,
 
-                /**
+                /*
                  * max distance between two taps
                  * @property doubleTapDistance
                  * @type {Number}
@@ -1964,7 +1964,7 @@
                  */
                 doubleTapDistance: 20,
 
-                /**
+                /*
                  * max time between two taps
                  * @property doubleTapInterval
                  * @type {Number}
@@ -1975,16 +1975,16 @@
         };
     })('tap');
 
-    /**
+    /*
      * @module gestures
      */
-    /**
+    /*
      * when a touch is being touched at the page
      *
      * @class Touch
      * @static
      */
-    /**
+    /*
      * @event touch
      * @param {Object} ev
      */
@@ -1992,7 +1992,7 @@
         name: 'touch',
         index: -Infinity,
         defaults: {
-            /**
+            /*
              * call preventDefault at touchstart, and makes the element blocking by disabling the scrolling of the page,
              * but it improves gestures like transforming and dragging.
              * be careful with using this, it can be very annoying for users to be stuck on the page
@@ -2002,7 +2002,7 @@
              */
             preventDefault: false,
 
-            /**
+            /*
              * disable mouse events, so only touch (or pen!) input triggers events
              * @property preventMouse
              * @type {Boolean}
@@ -2026,10 +2026,10 @@
         }
     };
 
-    /**
+    /*
      * @module gestures
      */
-    /**
+    /*
      * User want to scale or rotate with 2 fingers
      * Preventing the default browser behavior is a good way to improve feel and working. This can be done with the
      * `preventDefault` option.
@@ -2037,32 +2037,32 @@
      * @class Transform
      * @static
      */
-    /**
+    /*
      * @event transform
      * @param {Object} ev
      */
-    /**
+    /*
      * @event transformstart
      * @param {Object} ev
      */
-    /**
+    /*
      * @event transformend
      * @param {Object} ev
      */
-    /**
+    /*
      * @event pinchin
      * @param {Object} ev
      */
-    /**
+    /*
      * @event pinchout
      * @param {Object} ev
      */
-    /**
+    /*
      * @event rotate
      * @param {Object} ev
      */
 
-    /**
+    /*
      * @param {String} name
      */
     (function (name) {
@@ -2126,7 +2126,7 @@
             name: name,
             index: 45,
             defaults: {
-                /**
+                /*
                  * minimal scale factor, no scale is 1, zoomin is to 0 and zoomout until higher then 1
                  * @property transformMinScale
                  * @type {Number}
@@ -2134,7 +2134,7 @@
                  */
                 transformMinScale: 0.01,
 
-                /**
+                /*
                  * rotation in degrees
                  * @property transformMinRotation
                  * @type {Number}
@@ -2147,7 +2147,7 @@
         };
     })('transform');
 
-    /**
+    /*
      * @module hammer
      */
 

@@ -1,4 +1,4 @@
-/**
+/*
  * @license
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modern -o ./dist/lodash.js`
@@ -10,26 +10,26 @@
 ;
 (function () {
 
-    /** Used as a safe reference for `undefined` in pre ES5 environments */
+    /* Used as a safe reference for `undefined` in pre ES5 environments */
     var undefined;
 
-    /** Used to pool arrays and objects used internally */
+    /* Used to pool arrays and objects used internally */
     var arrayPool = [],
         objectPool = [];
 
-    /** Used to generate unique IDs */
+    /* Used to generate unique IDs */
     var idCounter = 0;
 
-    /** Used to prefix keys to avoid issues with `__proto__` and properties on `Object.prototype` */
+    /* Used to prefix keys to avoid issues with `__proto__` and properties on `Object.prototype` */
     var keyPrefix = +new Date + '';
 
-    /** Used as the size when optimizations are enabled for large arrays */
+    /* Used as the size when optimizations are enabled for large arrays */
     var largeArraySize = 75;
 
-    /** Used as the max size of the `arrayPool` and `objectPool` */
+    /* Used as the max size of the `arrayPool` and `objectPool` */
     var maxPoolSize = 40;
 
-    /** Used to detect and test whitespace */
+    /* Used to detect and test whitespace */
     var whitespace = (
         // whitespace
         ' \t\x0B\f\xA0\ufeff' +
@@ -41,49 +41,49 @@
         '\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000'
     );
 
-    /** Used to match empty string literals in compiled template source */
+    /* Used to match empty string literals in compiled template source */
     var reEmptyStringLeading = /\b__p \+= '';/g,
         reEmptyStringMiddle = /\b(__p \+=) '' \+/g,
         reEmptyStringTrailing = /(__e\(.*?\)|\b__t\)) \+\n'';/g;
 
-    /**
+    /*
      * Used to match ES6 template delimiters
      * http://people.mozilla.org/~jorendorff/es6-draft.html#sec-literals-string-literals
      */
     var reEsTemplate = /\$\{([^\\}]*(?:\\.[^\\}]*)*)\}/g;
 
-    /** Used to match regexp flags from their coerced string values */
+    /* Used to match regexp flags from their coerced string values */
     var reFlags = /\w*$/;
 
-    /** Used to detected named functions */
+    /* Used to detected named functions */
     var reFuncName = /^\s*function[ \n\r\t]+\w/;
 
-    /** Used to match "interpolate" template delimiters */
+    /* Used to match "interpolate" template delimiters */
     var reInterpolate = /<%=([\s\S]+?)%>/g;
 
-    /** Used to match leading whitespace and zeros to be removed */
+    /* Used to match leading whitespace and zeros to be removed */
     var reLeadingSpacesAndZeros = RegExp('^[' + whitespace + ']*0+(?=.$)');
 
-    /** Used to ensure capturing order of template delimiters */
+    /* Used to ensure capturing order of template delimiters */
     var reNoMatch = /($^)/;
 
-    /** Used to detect functions containing a `this` reference */
+    /* Used to detect functions containing a `this` reference */
     var reThis = /\bthis\b/;
 
-    /** Used to match unescaped characters in compiled string literals */
+    /* Used to match unescaped characters in compiled string literals */
     var reUnescapedString = /['\n\r\t\u2028\u2029\\]/g;
 
-    /** Used to assign default `context` object properties */
+    /* Used to assign default `context` object properties */
     var contextProps = [
         'Array', 'Boolean', 'Date', 'Function', 'Math', 'Number', 'Object',
         'RegExp', 'String', '_', 'attachEvent', 'clearTimeout', 'isFinite', 'isNaN',
         'parseInt', 'setTimeout'
     ];
 
-    /** Used to make template sourceURLs easier to identify */
+    /* Used to make template sourceURLs easier to identify */
     var templateCounter = 0;
 
-    /** `Object#toString` result shortcuts */
+    /* `Object#toString` result shortcuts */
     var argsClass = '[object Arguments]',
         arrayClass = '[object Array]',
         boolClass = '[object Boolean]',
@@ -94,7 +94,7 @@
         regexpClass = '[object RegExp]',
         stringClass = '[object String]';
 
-    /** Used to identify object classifications that `_.clone` supports */
+    /* Used to identify object classifications that `_.clone` supports */
     var cloneableClasses = {};
     cloneableClasses[funcClass] = false;
     cloneableClasses[argsClass] = cloneableClasses[arrayClass] =
@@ -102,14 +102,14 @@
         cloneableClasses[numberClass] = cloneableClasses[objectClass] =
         cloneableClasses[regexpClass] = cloneableClasses[stringClass] = true;
 
-    /** Used as an internal `_.debounce` options object */
+    /* Used as an internal `_.debounce` options object */
     var debounceOptions = {
         'leading': false,
         'maxWait': 0,
         'trailing': false
     };
 
-    /** Used as the property descriptor for `__bindData__` */
+    /* Used as the property descriptor for `__bindData__` */
     var descriptor = {
         'configurable': false,
         'enumerable': false,
@@ -117,7 +117,7 @@
         'writable': false
     };
 
-    /** Used to determine if values are of the language type Object */
+    /* Used to determine if values are of the language type Object */
     var objectTypes = {
         'boolean': false,
         'function': true,
@@ -127,7 +127,7 @@
         'undefined': false
     };
 
-    /** Used to escape characters for inclusion in compiled string literals */
+    /* Used to escape characters for inclusion in compiled string literals */
     var stringEscapes = {
         '\\': '\\',
         "'": "'",
@@ -138,19 +138,19 @@
         '\u2029': 'u2029'
     };
 
-    /** Used as a reference to the global object */
+    /* Used as a reference to the global object */
     var root = (objectTypes[typeof window] && window) || this;
 
-    /** Detect free variable `exports` */
+    /* Detect free variable `exports` */
     var freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports;
 
-    /** Detect free variable `module` */
+    /* Detect free variable `module` */
     var freeModule = objectTypes[typeof module] && module && !module.nodeType && module;
 
-    /** Detect the popular CommonJS extension `module.exports` */
+    /* Detect the popular CommonJS extension `module.exports` */
     var moduleExports = freeModule && freeModule.exports === freeExports && freeExports;
 
-    /** Detect free variable `global` from Node.js or Browserified code and use it as `root` */
+    /* Detect free variable `global` from Node.js or Browserified code and use it as `root` */
     var freeGlobal = objectTypes[typeof global] && global;
     if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {
         root = freeGlobal;
@@ -158,7 +158,7 @@
 
     /*--------------------------------------------------------------------------*/
 
-    /**
+    /*
      * The base implementation of `_.indexOf` without support for binary searches
      * or `fromIndex` constraints.
      *
@@ -180,7 +180,7 @@
         return -1;
     }
 
-    /**
+    /*
      * An implementation of `_.contains` for cache objects that mimics the return
      * signature of `_.indexOf` by returning `0` if the value is found, else `-1`.
      *
@@ -205,7 +205,7 @@
         return type == 'object' ? (cache && baseIndexOf(cache, value) > -1 ? 0 : -1) : (cache ? 0 : -1);
     }
 
-    /**
+    /*
      * Adds a given value to the corresponding cache object.
      *
      * @private
@@ -232,7 +232,7 @@
         }
     }
 
-    /**
+    /*
      * Used by `_.max` and `_.min` as the default callback when a given
      * collection is a string value.
      *
@@ -244,7 +244,7 @@
         return value.charCodeAt(0);
     }
 
-    /**
+    /*
      * Used by `sortBy` to compare transformed `collection` elements, stable sorting
      * them in ascending order.
      *
@@ -281,7 +281,7 @@
         return a.index - b.index;
     }
 
-    /**
+    /*
      * Creates a cache object to optimize linear searches of large arrays.
      *
      * @private
@@ -313,7 +313,7 @@
         return result;
     }
 
-    /**
+    /*
      * Used by `template` to escape characters for inclusion in compiled
      * string literals.
      *
@@ -325,7 +325,7 @@
         return '\\' + stringEscapes[match];
     }
 
-    /**
+    /*
      * Gets an array from the array pool or creates a new one if the pool is empty.
      *
      * @private
@@ -335,7 +335,7 @@
         return arrayPool.pop() || [];
     }
 
-    /**
+    /*
      * Gets an object from the object pool or creates a new one if the pool is empty.
      *
      * @private
@@ -359,7 +359,7 @@
         };
     }
 
-    /**
+    /*
      * Releases the given array back to the array pool.
      *
      * @private
@@ -372,7 +372,7 @@
         }
     }
 
-    /**
+    /*
      * Releases the given object back to the object pool.
      *
      * @private
@@ -389,7 +389,7 @@
         }
     }
 
-    /**
+    /*
      * Slices the `collection` from the `start` index up to, but not including,
      * the `end` index.
      *
@@ -419,7 +419,7 @@
 
     /*--------------------------------------------------------------------------*/
 
-    /**
+    /*
      * Create a new `lodash` function using the given context object.
      *
      * @static
@@ -435,7 +435,7 @@
         // See http://es5.github.io/#x11.1.5.
         context = context ? _.defaults(root.Object(), context, _.pick(root, contextProps)) : root;
 
-        /** Native constructor references */
+        /* Native constructor references */
         var Array = context.Array,
             Boolean = context.Boolean,
             Date = context.Date,
@@ -447,7 +447,7 @@
             String = context.String,
             TypeError = context.TypeError;
 
-        /**
+        /*
          * Used for `Array` method references.
          *
          * Normally `Array.prototype` would suffice, however, using an array literal
@@ -455,23 +455,23 @@
          */
         var arrayRef = [];
 
-        /** Used for native method references */
+        /* Used for native method references */
         var objectProto = Object.prototype;
 
-        /** Used to restore the original `_` reference in `noConflict` */
+        /* Used to restore the original `_` reference in `noConflict` */
         var oldDash = context._;
 
-        /** Used to resolve the internal [[Class]] of values */
+        /* Used to resolve the internal [[Class]] of values */
         var toString = objectProto.toString;
 
-        /** Used to detect if a method is native */
+        /* Used to detect if a method is native */
         var reNative = RegExp('^' +
             String(toString)
             .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
             .replace(/toString| for [^\]]+/g, '.*?') + '$'
         );
 
-        /** Native method shortcuts */
+        /* Native method shortcuts */
         var ceil = Math.ceil,
             clearTimeout = context.clearTimeout,
             floor = Math.floor,
@@ -483,7 +483,7 @@
             splice = arrayRef.splice,
             unshift = arrayRef.unshift;
 
-        /** Used to set meta data on functions */
+        /* Used to set meta data on functions */
         var defineProperty = (function () {
             // IE 8 only accepts DOM elements
             try {
@@ -505,7 +505,7 @@
             nativeParseInt = context.parseInt,
             nativeRandom = Math.random;
 
-        /** Used to lookup a built-in constructor by [[Class]] */
+        /* Used to lookup a built-in constructor by [[Class]] */
         var ctorByClass = {};
         ctorByClass[arrayClass] = Array;
         ctorByClass[boolClass] = Boolean;
@@ -518,7 +518,7 @@
 
         /*--------------------------------------------------------------------------*/
 
-        /**
+        /*
          * Creates a `lodash` object which wraps the given value to enable intuitive
          * method chaining.
          *
@@ -588,7 +588,7 @@
             return (value && typeof value == 'object' && !isArray(value) && hasOwnProperty.call(value, '__wrapped__')) ? value : new lodashWrapper(value);
         }
 
-        /**
+        /*
          * A fast path for creating `lodash` wrapper objects.
          *
          * @private
@@ -603,7 +603,7 @@
             // ensure `new lodashWrapper` is an instance of `lodash`
         lodashWrapper.prototype = lodash.prototype;
 
-        /**
+        /*
          * An object used to flag environments features.
          *
          * @static
@@ -612,7 +612,7 @@
          */
         var support = lodash.support = {};
 
-        /**
+        /*
          * Detect if functions can be decompiled by `Function#toString`
          * (all but PS3 and older Opera mobile browsers & avoided in Windows 8 apps).
          *
@@ -621,7 +621,7 @@
          */
         support.funcDecomp = !isNative(context.WinRTError) && reThis.test(runInContext);
 
-        /**
+        /*
          * Detect if `Function#name` is supported (all but IE).
          *
          * @memberOf _.support
@@ -629,7 +629,7 @@
          */
         support.funcNames = typeof Function.name == 'string';
 
-        /**
+        /*
          * By default, the template delimiters used by Lo-Dash are similar to those in
          * embedded Ruby (ERB). Change the following template settings to use alternative
          * delimiters.
@@ -640,7 +640,7 @@
          */
         lodash.templateSettings = {
 
-            /**
+            /*
              * Used to detect `data` property values to be HTML-escaped.
              *
              * @memberOf _.templateSettings
@@ -648,7 +648,7 @@
              */
             'escape': /<%-([\s\S]+?)%>/g,
 
-            /**
+            /*
              * Used to detect code to be evaluated.
              *
              * @memberOf _.templateSettings
@@ -656,7 +656,7 @@
              */
             'evaluate': /<%([\s\S]+?)%>/g,
 
-            /**
+            /*
              * Used to detect `data` property values to inject.
              *
              * @memberOf _.templateSettings
@@ -664,7 +664,7 @@
              */
             'interpolate': reInterpolate,
 
-            /**
+            /*
              * Used to reference the data object in the template text.
              *
              * @memberOf _.templateSettings
@@ -672,7 +672,7 @@
              */
             'variable': '',
 
-            /**
+            /*
              * Used to import variables into the compiled template.
              *
              * @memberOf _.templateSettings
@@ -680,7 +680,7 @@
              */
             'imports': {
 
-                /**
+                /*
                  * A reference to the `lodash` function.
                  *
                  * @memberOf _.templateSettings.imports
@@ -692,7 +692,7 @@
 
         /*--------------------------------------------------------------------------*/
 
-        /**
+        /*
          * The base implementation of `_.bind` that creates the bound function and
          * sets its meta data.
          *
@@ -729,7 +729,7 @@
             return bound;
         }
 
-        /**
+        /*
          * The base implementation of `_.clone` without argument juggling or support
          * for `thisArg` binding.
          *
@@ -820,7 +820,7 @@
             return result;
         }
 
-        /**
+        /*
          * The base implementation of `_.create` without support for assigning
          * properties to the created object.
          *
@@ -846,7 +846,7 @@
             }());
         }
 
-        /**
+        /*
          * The base implementation of `_.createCallback` without support for creating
          * "_.pluck" or "_.where" style callbacks.
          *
@@ -907,7 +907,7 @@
             return bind(func, thisArg);
         }
 
-        /**
+        /*
          * The base implementation of `createWrapper` that creates the wrapper and
          * sets its meta data.
          *
@@ -960,7 +960,7 @@
             return bound;
         }
 
-        /**
+        /*
          * The base implementation of `_.difference` that accepts a single array
          * of values to exclude.
          *
@@ -997,7 +997,7 @@
             return result;
         }
 
-        /**
+        /*
          * The base implementation of `_.flatten` without support for callback
          * shorthands or `thisArg` binding.
          *
@@ -1036,7 +1036,7 @@
             return result;
         }
 
-        /**
+        /*
          * The base implementation of `_.isEqual`, without support for `thisArg` binding,
          * that allows partial "_.where" style comparisons.
          *
@@ -1209,7 +1209,7 @@
             return result;
         }
 
-        /**
+        /*
          * The base implementation of `_.merge` without argument juggling or support
          * for `thisArg` binding.
          *
@@ -1271,7 +1271,7 @@
             });
         }
 
-        /**
+        /*
          * The base implementation of `_.random` without argument juggling or support
          * for returning floating-point numbers.
          *
@@ -1284,7 +1284,7 @@
             return min + floor(nativeRandom() * (max - min + 1));
         }
 
-        /**
+        /*
          * The base implementation of `_.uniq` without support for callback shorthands
          * or `thisArg` binding.
          *
@@ -1328,7 +1328,7 @@
             return result;
         }
 
-        /**
+        /*
          * Creates a function that aggregates a collection, creating an object composed
          * of keys generated from the results of running each element of the collection
          * through a callback. The given `setter` function sets the keys and values
@@ -1360,7 +1360,7 @@
             };
         }
 
-        /**
+        /*
          * Creates a function that, when called, either curries or invokes `func`
          * with an optional `this` binding and partially applied arguments.
          *
@@ -1440,7 +1440,7 @@
             return creater([func, bitmask, partialArgs, partialRightArgs, thisArg, arity]);
         }
 
-        /**
+        /*
          * Used by `escape` to convert characters to HTML entities.
          *
          * @private
@@ -1451,7 +1451,7 @@
             return htmlEscapes[match];
         }
 
-        /**
+        /*
          * Gets the appropriate "indexOf" function. If the `_.indexOf` method is
          * customized, this method returns the custom method, otherwise it returns
          * the `baseIndexOf` function.
@@ -1464,7 +1464,7 @@
             return result;
         }
 
-        /**
+        /*
          * Checks if `value` is a native function.
          *
          * @private
@@ -1475,7 +1475,7 @@
             return typeof value == 'function' && reNative.test(value);
         }
 
-        /**
+        /*
          * Sets `this` binding data on a given function.
          *
          * @private
@@ -1487,7 +1487,7 @@
             defineProperty(func, '__bindData__', descriptor);
         };
 
-        /**
+        /*
          * A fallback implementation of `isPlainObject` which checks if a given value
          * is an object created by the `Object` constructor, assuming objects created
          * by the `Object` constructor have no inherited enumerable properties and that
@@ -1515,7 +1515,7 @@
             return typeof result == 'undefined' || hasOwnProperty.call(value, result);
         }
 
-        /**
+        /*
          * Used by `unescape` to convert HTML entities to characters.
          *
          * @private
@@ -1528,7 +1528,7 @@
 
         /*--------------------------------------------------------------------------*/
 
-        /**
+        /*
          * Checks if `value` is an `arguments` object.
          *
          * @static
@@ -1549,7 +1549,7 @@
                 toString.call(value) == argsClass || false;
         }
 
-        /**
+        /*
          * Checks if `value` is an array.
          *
          * @static
@@ -1571,7 +1571,7 @@
                 toString.call(value) == arrayClass || false;
         };
 
-        /**
+        /*
          * A fallback implementation of `Object.keys` which produces an array of the
          * given object's own enumerable property names.
          *
@@ -1593,7 +1593,7 @@
             return result
         };
 
-        /**
+        /*
          * Creates an array composed of the own enumerable property names of an object.
          *
          * @static
@@ -1613,7 +1613,7 @@
             return nativeKeys(object);
         };
 
-        /**
+        /*
          * Used to convert characters to HTML entities:
          *
          * Though the `>` character is escaped for symmetry, characters like `>` and `/`
@@ -1629,16 +1629,16 @@
             "'": '&#39;'
         };
 
-        /** Used to convert HTML entities to characters */
+        /* Used to convert HTML entities to characters */
         var htmlUnescapes = invert(htmlEscapes);
 
-        /** Used to match HTML entities and HTML characters */
+        /* Used to match HTML entities and HTML characters */
         var reEscapedHtml = RegExp('(' + keys(htmlUnescapes).join('|') + ')', 'g'),
             reUnescapedHtml = RegExp('[' + keys(htmlEscapes).join('') + ']', 'g');
 
         /*--------------------------------------------------------------------------*/
 
-        /**
+        /*
          * Assigns own enumerable properties of source object(s) to the destination
          * object. Subsequent sources will overwrite property assignments of previous
          * sources. If a callback is provided it will be executed to produce the
@@ -1696,7 +1696,7 @@
             return result
         };
 
-        /**
+        /*
          * Creates a clone of `value`. If `isDeep` is `true` nested objects will also
          * be cloned, otherwise they will be assigned by reference. If a callback
          * is provided it will be executed to produce the cloned values. If the
@@ -1747,7 +1747,7 @@
             return baseClone(value, isDeep, typeof callback == 'function' && baseCreateCallback(callback, thisArg, 1));
         }
 
-        /**
+        /*
          * Creates a deep clone of `value`. If a callback is provided it will be
          * executed to produce the cloned values. If the callback returns `undefined`
          * cloning will be handled by the method instead. The callback is bound to
@@ -1792,7 +1792,7 @@
             return baseClone(value, true, typeof callback == 'function' && baseCreateCallback(callback, thisArg, 1));
         }
 
-        /**
+        /*
          * Creates an object that inherits from the given `prototype` object. If a
          * `properties` object is provided its own enumerable properties are assigned
          * to the created object.
@@ -1828,7 +1828,7 @@
             return properties ? assign(result, properties) : result;
         }
 
-        /**
+        /*
          * Assigns own enumerable properties of source object(s) to the destination
          * object for all destination properties that resolve to `undefined`. Once a
          * property is set, additional defaults of the same property will be ignored.
@@ -1871,7 +1871,7 @@
             return result
         };
 
-        /**
+        /*
          * This method is like `_.findIndex` except that it returns the key of the
          * first element that passes the callback check, instead of the element itself.
          *
@@ -1924,7 +1924,7 @@
             return result;
         }
 
-        /**
+        /*
          * This method is like `_.findKey` except that it iterates over elements
          * of a `collection` in the opposite order.
          *
@@ -1977,7 +1977,7 @@
             return result;
         }
 
-        /**
+        /*
          * Iterates over own and inherited enumerable properties of an object,
          * executing the callback for each property. The callback is bound to `thisArg`
          * and invoked with three arguments; (value, key, object). Callbacks may exit
@@ -2020,7 +2020,7 @@
             return result
         };
 
-        /**
+        /*
          * This method is like `_.forIn` except that it iterates over elements
          * of a `collection` in the opposite order.
          *
@@ -2065,7 +2065,7 @@
             return object;
         }
 
-        /**
+        /*
          * Iterates over own enumerable properties of an object, executing the callback
          * for each property. The callback is bound to `thisArg` and invoked with three
          * arguments; (value, key, object). Callbacks may exit iteration early by
@@ -2103,7 +2103,7 @@
             return result
         };
 
-        /**
+        /*
          * This method is like `_.forOwn` except that it iterates over elements
          * of a `collection` in the opposite order.
          *
@@ -2135,7 +2135,7 @@
             return object;
         }
 
-        /**
+        /*
          * Creates a sorted array of property names of all enumerable properties,
          * own and inherited, of `object` that have function values.
          *
@@ -2160,7 +2160,7 @@
             return result.sort();
         }
 
-        /**
+        /*
          * Checks if the specified property name exists as a direct property of `object`,
          * instead of an inherited property.
          *
@@ -2179,7 +2179,7 @@
             return object ? hasOwnProperty.call(object, key) : false;
         }
 
-        /**
+        /*
          * Creates an object composed of the inverted keys and values of the given object.
          *
          * @static
@@ -2205,7 +2205,7 @@
             return result;
         }
 
-        /**
+        /*
          * Checks if `value` is a boolean value.
          *
          * @static
@@ -2223,7 +2223,7 @@
                 value && typeof value == 'object' && toString.call(value) == boolClass || false;
         }
 
-        /**
+        /*
          * Checks if `value` is a date.
          *
          * @static
@@ -2240,7 +2240,7 @@
             return value && typeof value == 'object' && toString.call(value) == dateClass || false;
         }
 
-        /**
+        /*
          * Checks if `value` is a DOM element.
          *
          * @static
@@ -2257,7 +2257,7 @@
             return value && value.nodeType === 1 || false;
         }
 
-        /**
+        /*
          * Checks if `value` is empty. Arrays, strings, or `arguments` objects with a
          * length of `0` and objects with no own enumerable properties are considered
          * "empty".
@@ -2296,7 +2296,7 @@
             return result;
         }
 
-        /**
+        /*
          * Performs a deep comparison between two values to determine if they are
          * equivalent to each other. If a callback is provided it will be executed
          * to compare values. If the callback returns `undefined` comparisons will
@@ -2338,7 +2338,7 @@
             return baseIsEqual(a, b, typeof callback == 'function' && baseCreateCallback(callback, thisArg, 2));
         }
 
-        /**
+        /*
          * Checks if `value` is, or can be coerced to, a finite number.
          *
          * Note: This is not the same as native `isFinite` which will return true for
@@ -2370,7 +2370,7 @@
             return nativeIsFinite(value) && !nativeIsNaN(parseFloat(value));
         }
 
-        /**
+        /*
          * Checks if `value` is a function.
          *
          * @static
@@ -2387,7 +2387,7 @@
             return typeof value == 'function';
         }
 
-        /**
+        /*
          * Checks if `value` is the language type of Object.
          * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
          *
@@ -2415,7 +2415,7 @@
             return !!(value && objectTypes[typeof value]);
         }
 
-        /**
+        /*
          * Checks if `value` is `NaN`.
          *
          * Note: This is not the same as native `isNaN` which will return `true` for
@@ -2446,7 +2446,7 @@
             return isNumber(value) && value != +value;
         }
 
-        /**
+        /*
          * Checks if `value` is `null`.
          *
          * @static
@@ -2466,7 +2466,7 @@
             return value === null;
         }
 
-        /**
+        /*
          * Checks if `value` is a number.
          *
          * Note: `NaN` is considered a number. See http://es5.github.io/#x8.5.
@@ -2486,7 +2486,7 @@
                 value && typeof value == 'object' && toString.call(value) == numberClass || false;
         }
 
-        /**
+        /*
          * Checks if `value` is an object created by the `Object` constructor.
          *
          * @static
@@ -2520,7 +2520,7 @@
             return objProto ? (value == objProto || getPrototypeOf(value) == objProto) : shimIsPlainObject(value);
         };
 
-        /**
+        /*
          * Checks if `value` is a regular expression.
          *
          * @static
@@ -2537,7 +2537,7 @@
             return value && typeof value == 'object' && toString.call(value) == regexpClass || false;
         }
 
-        /**
+        /*
          * Checks if `value` is a string.
          *
          * @static
@@ -2555,7 +2555,7 @@
                 value && typeof value == 'object' && toString.call(value) == stringClass || false;
         }
 
-        /**
+        /*
          * Checks if `value` is `undefined`.
          *
          * @static
@@ -2572,7 +2572,7 @@
             return typeof value == 'undefined';
         }
 
-        /**
+        /*
          * Creates an object with the same keys as `object` and values generated by
          * running each own enumerable property of `object` through the callback.
          * The callback is bound to `thisArg` and invoked with three arguments;
@@ -2618,7 +2618,7 @@
             return result;
         }
 
-        /**
+        /*
          * Recursively merges own enumerable properties of the source object(s), that
          * don't resolve to `undefined` into the destination object. Subsequent sources
          * will overwrite property assignments of previous sources. If a callback is
@@ -2699,7 +2699,7 @@
             return object;
         }
 
-        /**
+        /*
          * Creates a shallow clone of `object` excluding the specified properties.
          * Property names may be specified as individual arguments or as arrays of
          * property names. If a callback is provided it will be executed for each
@@ -2752,7 +2752,7 @@
             return result;
         }
 
-        /**
+        /*
          * Creates a two dimensional array of an object's key-value pairs,
          * i.e. `[[key1, value1], [key2, value2]]`.
          *
@@ -2779,7 +2779,7 @@
             return result;
         }
 
-        /**
+        /*
          * Creates a shallow clone of `object` composed of the specified properties.
          * Property names may be specified as individual arguments or as arrays of
          * property names. If a callback is provided it will be executed for each
@@ -2830,7 +2830,7 @@
             return result;
         }
 
-        /**
+        /*
          * An alternative to `_.reduce` this method transforms `object` to a new
          * `accumulator` object which is the result of running each of its own
          * enumerable properties through a callback, with each callback execution
@@ -2882,7 +2882,7 @@
             return accumulator;
         }
 
-        /**
+        /*
          * Creates an array composed of the own enumerable property values of `object`.
          *
          * @static
@@ -2909,7 +2909,7 @@
 
         /*--------------------------------------------------------------------------*/
 
-        /**
+        /*
          * Creates an array of elements from the specified indexes, or keys, of the
          * `collection`. Indexes may be specified as individual arguments or as arrays
          * of indexes.
@@ -2943,7 +2943,7 @@
             return result;
         }
 
-        /**
+        /*
          * Checks if a given value is present in a collection using strict equality
          * for comparisons, i.e. `===`. If `fromIndex` is negative, it is used as the
          * offset from the end of the collection.
@@ -2991,7 +2991,7 @@
             return result;
         }
 
-        /**
+        /*
          * Creates an object composed of keys generated from the results of running
          * each element of `collection` through the callback. The corresponding value
          * of each key is the number of times the key was returned by the callback.
@@ -3029,7 +3029,7 @@
             (hasOwnProperty.call(result, key) ? result[key] ++ : result[key] = 1);
         });
 
-        /**
+        /*
          * Checks if the given callback returns truey value for **all** elements of
          * a collection. The callback is bound to `thisArg` and invoked with three
          * arguments; (value, index|key, collection).
@@ -3091,7 +3091,7 @@
             return result;
         }
 
-        /**
+        /*
          * Iterates over elements of a collection, returning an array of all elements
          * the callback returns truey for. The callback is bound to `thisArg` and
          * invoked with three arguments; (value, index|key, collection).
@@ -3155,7 +3155,7 @@
             return result;
         }
 
-        /**
+        /*
          * Iterates over elements of a collection, returning the first element that
          * the callback returns truey for. The callback is bound to `thisArg` and
          * invoked with three arguments; (value, index|key, collection).
@@ -3223,7 +3223,7 @@
             }
         }
 
-        /**
+        /*
          * This method is like `_.find` except that it iterates over elements
          * of a `collection` from right to left.
          *
@@ -3255,7 +3255,7 @@
             return result;
         }
 
-        /**
+        /*
          * Iterates over elements of a collection, executing the callback for each
          * element. The callback is bound to `thisArg` and invoked with three arguments;
          * (value, index|key, collection). Callbacks may exit iteration early by
@@ -3298,7 +3298,7 @@
             return collection;
         }
 
-        /**
+        /*
          * This method is like `_.forEach` except that it iterates over elements
          * of a `collection` from right to left.
          *
@@ -3335,7 +3335,7 @@
             return collection;
         }
 
-        /**
+        /*
          * Creates an object composed of keys generated from the results of running
          * each element of a collection through the callback. The corresponding value
          * of each key is an array of the elements responsible for generating the key.
@@ -3374,7 +3374,7 @@
             (hasOwnProperty.call(result, key) ? result[key] : result[key] = []).push(value);
         });
 
-        /**
+        /*
          * Creates an object composed of keys generated from the results of running
          * each element of the collection through the given callback. The corresponding
          * value of each key is the last element responsible for generating the key.
@@ -3417,7 +3417,7 @@
             result[key] = value;
         });
 
-        /**
+        /*
          * Invokes the method named by `methodName` on each element in the `collection`
          * returning an array of the results of each invoked method. Additional arguments
          * will be provided to each invoked method. If `methodName` is a function it
@@ -3452,7 +3452,7 @@
             return result;
         }
 
-        /**
+        /*
          * Creates an array of values by running each element in the collection
          * through the callback. The callback is bound to `thisArg` and invoked with
          * three arguments; (value, index|key, collection).
@@ -3510,7 +3510,7 @@
             return result;
         }
 
-        /**
+        /*
          * Retrieves the maximum value of a collection. If the collection is empty or
          * falsey `-Infinity` is returned. If a callback is provided it will be executed
          * for each value in the collection to generate the criterion by which the value
@@ -3583,7 +3583,7 @@
             return result;
         }
 
-        /**
+        /*
          * Retrieves the minimum value of a collection. If the collection is empty or
          * falsey `Infinity` is returned. If a callback is provided it will be executed
          * for each value in the collection to generate the criterion by which the value
@@ -3656,7 +3656,7 @@
             return result;
         }
 
-        /**
+        /*
          * Retrieves the value of a specified property from all elements in the collection.
          *
          * @static
@@ -3678,7 +3678,7 @@
          */
         var pluck = map;
 
-        /**
+        /*
          * Reduces a collection to a value which is the accumulated result of running
          * each element in the collection through the callback, where each successive
          * callback execution consumes the return value of the previous execution. If
@@ -3731,7 +3731,7 @@
             return accumulator;
         }
 
-        /**
+        /*
          * This method is like `_.reduce` except that it iterates over elements
          * of a `collection` from right to left.
          *
@@ -3759,7 +3759,7 @@
             return accumulator;
         }
 
-        /**
+        /*
          * The opposite of `_.filter` this method returns the elements of a
          * collection that the callback does **not** return truey for.
          *
@@ -3804,7 +3804,7 @@
             });
         }
 
-        /**
+        /*
          * Retrieves a random element or `n` random elements from a collection.
          *
          * @static
@@ -3835,7 +3835,7 @@
             return result;
         }
 
-        /**
+        /*
          * Creates an array of shuffled values, using a version of the Fisher-Yates
          * shuffle. See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle.
          *
@@ -3862,7 +3862,7 @@
             return result;
         }
 
-        /**
+        /*
          * Gets the size of the `collection` by returning `collection.length` for arrays
          * and array-like objects or the number of own enumerable properties for objects.
          *
@@ -3887,7 +3887,7 @@
             return typeof length == 'number' ? length : keys(collection).length;
         }
 
-        /**
+        /*
          * Checks if the callback returns a truey value for **any** element of a
          * collection. The function returns as soon as it finds a passing value and
          * does not iterate over the entire collection. The callback is bound to
@@ -3950,7 +3950,7 @@
             return !!result;
         }
 
-        /**
+        /*
          * Creates an array of elements, sorted in ascending order by the results of
          * running each element in a collection through the callback. This method
          * performs a stable sort, that is, it will preserve the original sort order
@@ -4034,7 +4034,7 @@
             return result;
         }
 
-        /**
+        /*
          * Converts the `collection` to an array.
          *
          * @static
@@ -4054,7 +4054,7 @@
             return values(collection);
         }
 
-        /**
+        /*
          * Performs a deep comparison of each element in a `collection` to the given
          * `properties` object, returning an array of all elements that have equivalent
          * property values.
@@ -4083,7 +4083,7 @@
 
         /*--------------------------------------------------------------------------*/
 
-        /**
+        /*
          * Creates an array with all falsey values removed. The values `false`, `null`,
          * `0`, `""`, `undefined`, and `NaN` are all falsey.
          *
@@ -4111,7 +4111,7 @@
             return result;
         }
 
-        /**
+        /*
          * Creates an array excluding all values of the provided arrays using strict
          * equality for comparisons, i.e. `===`.
          *
@@ -4130,7 +4130,7 @@
             return baseDifference(array, baseFlatten(arguments, true, true, 1));
         }
 
-        /**
+        /*
          * This method is like `_.find` except that it returns the index of the first
          * element that passes the callback check, instead of the element itself.
          *
@@ -4184,7 +4184,7 @@
             return -1;
         }
 
-        /**
+        /*
          * This method is like `_.findIndex` except that it iterates over elements
          * of a `collection` from right to left.
          *
@@ -4236,7 +4236,7 @@
             return -1;
         }
 
-        /**
+        /*
          * Gets the first element or first `n` elements of an array. If a callback
          * is provided elements at the beginning of the array are returned as long
          * as the callback returns truey. The callback is bound to `thisArg` and
@@ -4306,7 +4306,7 @@
             return slice(array, 0, nativeMin(nativeMax(0, n), length));
         }
 
-        /**
+        /*
          * Flattens a nested array (the nesting can be to any depth). If `isShallow`
          * is truey, the array will only be flattened a single level. If a callback
          * is provided each element of the array is passed through the callback before
@@ -4360,7 +4360,7 @@
             return baseFlatten(array, isShallow);
         }
 
-        /**
+        /*
          * Gets the index at which the first occurrence of `value` is found using
          * strict equality for comparisons, i.e. `===`. If the array is already sorted
          * providing `true` for `fromIndex` will run a faster binary search.
@@ -4395,7 +4395,7 @@
             return baseIndexOf(array, value, fromIndex);
         }
 
-        /**
+        /*
          * Gets all but the last element or last `n` elements of an array. If a
          * callback is provided elements at the end of the array are excluded from
          * the result as long as the callback returns truey. The callback is bound
@@ -4461,7 +4461,7 @@
             return slice(array, 0, nativeMin(nativeMax(0, length - n), length));
         }
 
-        /**
+        /*
          * Creates an array of unique values present in all provided arrays using
          * strict equality for comparisons, i.e. `===`.
          *
@@ -4525,7 +4525,7 @@
             return result;
         }
 
-        /**
+        /*
          * Gets the last element or last `n` elements of an array. If a callback is
          * provided elements at the end of the array are returned as long as the
          * callback returns truey. The callback is bound to `thisArg` and invoked
@@ -4594,7 +4594,7 @@
             return slice(array, nativeMax(0, length - n));
         }
 
-        /**
+        /*
          * Gets the index at which the last occurrence of `value` is found using strict
          * equality for comparisons, i.e. `===`. If `fromIndex` is negative, it is used
          * as the offset from the end of the collection.
@@ -4634,7 +4634,7 @@
             return -1;
         }
 
-        /**
+        /*
          * Removes all provided values from the given array using strict equality for
          * comparisons, i.e. `===`.
          *
@@ -4670,7 +4670,7 @@
             return array;
         }
 
-        /**
+        /*
          * Creates an array of numbers (positive and/or negative) progressing from
          * `start` up to but not including `end`. If `start` is less than `stop` a
          * zero-length range is created unless a negative `step` is specified.
@@ -4723,7 +4723,7 @@
             return result;
         }
 
-        /**
+        /*
          * Removes all elements from an array that the callback returns truey for
          * and returns an array of removed elements. The callback is bound to `thisArg`
          * and invoked with three arguments; (value, index, array).
@@ -4772,7 +4772,7 @@
             return result;
         }
 
-        /**
+        /*
          * The opposite of `_.initial` this method gets all but the first element or
          * first `n` elements of an array. If a callback function is provided elements
          * at the beginning of the array are excluded from the result as long as the
@@ -4840,7 +4840,7 @@
             return slice(array, n);
         }
 
-        /**
+        /*
          * Uses a binary search to determine the smallest index at which a value
          * should be inserted into a given sorted array in order to maintain the sort
          * order of the array. If a callback is provided it will be executed for
@@ -4903,7 +4903,7 @@
             return low;
         }
 
-        /**
+        /*
          * Creates an array of unique values, in order, of the provided arrays using
          * strict equality for comparisons, i.e. `===`.
          *
@@ -4921,7 +4921,7 @@
             return baseUniq(baseFlatten(arguments, true, true));
         }
 
-        /**
+        /*
          * Creates a duplicate-value-free version of an array using strict equality
          * for comparisons, i.e. `===`. If the array is sorted, providing
          * `true` for `isSorted` will use a faster algorithm. If a callback is provided
@@ -4978,7 +4978,7 @@
             return baseUniq(array, isSorted, callback);
         }
 
-        /**
+        /*
          * Creates an array excluding all provided values using strict equality for
          * comparisons, i.e. `===`.
          *
@@ -4997,7 +4997,7 @@
             return baseDifference(array, slice(arguments, 1));
         }
 
-        /**
+        /*
          * Creates an array that is the symmetric difference of the provided arrays.
          * See http://en.wikipedia.org/wiki/Symmetric_difference.
          *
@@ -5027,7 +5027,7 @@
             return result || [];
         }
 
-        /**
+        /*
          * Creates an array of grouped elements, the first of which contains the first
          * elements of the given arrays, the second of which contains the second
          * elements of the given arrays, and so on.
@@ -5055,7 +5055,7 @@
             return result;
         }
 
-        /**
+        /*
          * Creates an object composed from arrays of `keys` and `values`. Provide
          * either a single two dimensional array, i.e. `[[key1, value1], [key2, value2]]`
          * or two arrays, one of `keys` and one of corresponding `values`.
@@ -5094,7 +5094,7 @@
 
         /*--------------------------------------------------------------------------*/
 
-        /**
+        /*
          * Creates a function that executes `func`, with  the `this` binding and
          * arguments of the created function, only after being called `n` times.
          *
@@ -5129,7 +5129,7 @@
             };
         }
 
-        /**
+        /*
          * Creates a function that, when called, invokes `func` with the `this`
          * binding of `thisArg` and prepends any additional `bind` arguments to those
          * provided to the bound function.
@@ -5155,7 +5155,7 @@
             return arguments.length > 2 ? createWrapper(func, 17, slice(arguments, 2), null, thisArg) : createWrapper(func, 1, null, null, thisArg);
         }
 
-        /**
+        /*
          * Binds methods of an object to the object itself, overwriting the existing
          * method. Method names may be specified as individual arguments or as arrays
          * of method names. If no method names are provided all the function properties
@@ -5191,7 +5191,7 @@
             return object;
         }
 
-        /**
+        /*
          * Creates a function that, when called, invokes the method at `object[key]`
          * and prepends any additional `bindKey` arguments to those provided to the bound
          * function. This method differs from `_.bind` by allowing bound functions to
@@ -5229,7 +5229,7 @@
             return arguments.length > 2 ? createWrapper(key, 19, slice(arguments, 2), null, object) : createWrapper(key, 3, null, null, object);
         }
 
-        /**
+        /*
          * Creates a function that is the composition of the provided functions,
          * where each function consumes the return value of the function that follows.
          * For example, composing the functions `f()`, `g()`, and `h()` produces `f(g(h()))`.
@@ -5279,7 +5279,7 @@
             };
         }
 
-        /**
+        /*
          * Creates a function which accepts one or more arguments of `func` that when
          * invoked either executes `func` returning its result, if all `func` arguments
          * have been provided, or returns a function that accepts one or more of the
@@ -5312,7 +5312,7 @@
             return createWrapper(func, 4, null, null, null, arity);
         }
 
-        /**
+        /*
          * Creates a function that will delay the execution of `func` until after
          * `wait` milliseconds have elapsed since the last time it was invoked.
          * Provide an options object to indicate that `func` should be invoked on
@@ -5450,7 +5450,7 @@
             };
         }
 
-        /**
+        /*
          * Defers executing the `func` function until the current call stack has cleared.
          * Additional arguments will be provided to `func` when it is invoked.
          *
@@ -5475,7 +5475,7 @@
             }, 1);
         }
 
-        /**
+        /*
          * Executes the `func` function after `wait` milliseconds. Additional arguments
          * will be provided to `func` when it is invoked.
          *
@@ -5501,7 +5501,7 @@
             }, wait);
         }
 
-        /**
+        /*
          * Creates a function that memoizes the result of `func`. If `resolver` is
          * provided it will be used to determine the cache key for storing the result
          * based on the arguments provided to the memoized function. By default, the
@@ -5552,7 +5552,7 @@
             return memoized;
         }
 
-        /**
+        /*
          * Creates a function that is restricted to execute `func` once. Repeat calls to
          * the function will return the value of the first call. The `func` is executed
          * with the `this` binding of the created function.
@@ -5589,7 +5589,7 @@
             };
         }
 
-        /**
+        /*
          * Creates a function that, when called, invokes `func` with any additional
          * `partial` arguments prepended to those provided to the new function. This
          * method is similar to `_.bind` except it does **not** alter the `this` binding.
@@ -5611,7 +5611,7 @@
             return createWrapper(func, 16, slice(arguments, 1));
         }
 
-        /**
+        /*
          * This method is like `_.partial` except that `partial` arguments are
          * appended to those provided to the new function.
          *
@@ -5642,7 +5642,7 @@
             return createWrapper(func, 32, null, slice(arguments, 1));
         }
 
-        /**
+        /*
          * Creates a function that, when executed, will only call the `func` function
          * at most once per every `wait` milliseconds. Provide an options object to
          * indicate that `func` should be invoked on the leading and/or trailing edge
@@ -5693,7 +5693,7 @@
             return debounce(func, wait, debounceOptions);
         }
 
-        /**
+        /*
          * Creates a function that provides `value` to the wrapper function as its
          * first argument. Additional arguments provided to the function are appended
          * to those provided to the wrapper function. The wrapper is executed with
@@ -5720,7 +5720,7 @@
 
         /*--------------------------------------------------------------------------*/
 
-        /**
+        /*
          * Creates a function that returns `value`.
          *
          * @static
@@ -5741,7 +5741,7 @@
             };
         }
 
-        /**
+        /*
          * Produces a callback bound to an optional `thisArg`. If `func` is a property
          * name the created callback will return the property value for a given element.
          * If `func` is an object the created callback will return `true` for elements
@@ -5807,7 +5807,7 @@
             };
         }
 
-        /**
+        /*
          * Converts the characters `&`, `<`, `>`, `"`, and `'` in `string` to their
          * corresponding HTML entities.
          *
@@ -5825,7 +5825,7 @@
             return string == null ? '' : String(string).replace(reUnescapedHtml, escapeHtmlChar);
         }
 
-        /**
+        /*
          * This method returns the first argument provided to it.
          *
          * @static
@@ -5843,7 +5843,7 @@
             return value;
         }
 
-        /**
+        /*
          * Adds function properties of a source object to the destination object.
          * If `object` is a function methods will be added to its prototype as well.
          *
@@ -5915,7 +5915,7 @@
             });
         }
 
-        /**
+        /*
          * Reverts the '_' variable to its previous value and returns a reference to
          * the `lodash` function.
          *
@@ -5932,7 +5932,7 @@
             return this;
         }
 
-        /**
+        /*
          * A no-operation function.
          *
          * @static
@@ -5948,7 +5948,7 @@
             // no operation performed
         }
 
-        /**
+        /*
          * Gets the number of milliseconds that have elapsed since the Unix epoch
          * (1 January 1970 00:00:00 UTC).
          *
@@ -5965,7 +5965,7 @@
             return new Date().getTime();
         };
 
-        /**
+        /*
          * Converts the given value into an integer of the specified radix.
          * If `radix` is `undefined` or `0` a `radix` of `10` is used unless the
          * `value` is a hexadecimal, in which case a `radix` of `16` is used.
@@ -5989,7 +5989,7 @@
             return nativeParseInt(isString(value) ? value.replace(reLeadingSpacesAndZeros, '') : value, radix || 0);
         };
 
-        /**
+        /*
          * Creates a "_.pluck" style function, which returns the `key` value of a
          * given object.
          *
@@ -6019,7 +6019,7 @@
             };
         }
 
-        /**
+        /*
          * Produces a random number between `min` and `max` (inclusive). If only one
          * argument is provided a number between `0` and the given number will be
          * returned. If `floating` is truey or either `min` or `max` are floats a
@@ -6076,7 +6076,7 @@
             return baseRandom(min, max);
         }
 
-        /**
+        /*
          * Resolves the value of property `key` on `object`. If `key` is a function
          * it will be invoked with the `this` binding of `object` and its result returned,
          * else the property value is returned. If `object` is falsey then `undefined`
@@ -6110,7 +6110,7 @@
             }
         }
 
-        /**
+        /*
          * A micro-templating method that handles arbitrary delimiters, preserves
          * whitespace, and correctly escapes quotes within interpolated code.
          *
@@ -6293,7 +6293,7 @@
             return result;
         }
 
-        /**
+        /*
          * Executes the callback `n` times, returning an array of the results
          * of each callback execution. The callback is bound to `thisArg` and invoked
          * with one argument; (index).
@@ -6328,7 +6328,7 @@
             return result;
         }
 
-        /**
+        /*
          * The inverse of `_.escape` this method converts the HTML entities
          * `&amp;`, `&lt;`, `&gt;`, `&quot;`, and `&#39;` in `string` to their
          * corresponding characters.
@@ -6347,7 +6347,7 @@
             return string == null ? '' : String(string).replace(reEscapedHtml, unescapeHtmlChar);
         }
 
-        /**
+        /*
          * Generates a unique ID. If `prefix` is provided the ID will be appended to it.
          *
          * @static
@@ -6370,7 +6370,7 @@
 
         /*--------------------------------------------------------------------------*/
 
-        /**
+        /*
          * Creates a `lodash` object that wraps the given value with explicit
          * method chaining enabled.
          *
@@ -6400,7 +6400,7 @@
             return value;
         }
 
-        /**
+        /*
          * Invokes `interceptor` with the `value` as the first argument and then
          * returns `value`. The purpose of this method is to "tap into" a method
          * chain in order to perform operations on intermediate results within
@@ -6425,7 +6425,7 @@
             return value;
         }
 
-        /**
+        /*
          * Enables explicit method chaining on the wrapper object.
          *
          * @name chain
@@ -6455,7 +6455,7 @@
             return this;
         }
 
-        /**
+        /*
          * Produces the `toString` result of the wrapped value.
          *
          * @name toString
@@ -6471,7 +6471,7 @@
             return String(this.__wrapped__);
         }
 
-        /**
+        /*
          * Extracts the wrapped value.
          *
          * @name valueOf
@@ -6675,7 +6675,7 @@
 
         /*--------------------------------------------------------------------------*/
 
-        /**
+        /*
          * The semantic version number.
          *
          * @static

@@ -31,7 +31,7 @@ TileRenderer.ApplyStyle = function (ctx, line, attr, subLayerId, zoom, style) {
     }
 }
 
-/**
+/*
  *  data = json qui contient toutes les donnees de la map.
  *  data["l"] = <layers> = toutes les donnees lieees au Layers
  *  			contient une liste de <layerGroup>
@@ -106,9 +106,6 @@ TileRenderer.RenderLayers = function (osmVisibilities, layerPosition, ctx, data,
 
 //------------------------------------------------------------------------------------------------//
 
-/**
- *
- */
 TileRenderer.RenderDynamicalLayer = function (ctx, data, zoom, style, needle) {
 
     //-------------------------------------------------//

@@ -26,7 +26,7 @@ function Tile(mapView, x, y, z) {
     this.texL = [];
     this.nbErrors = 0;
 
-    this.Refresh();
+    this.refresh();
     this.buildLayerParts();
     this.prepareBuffering();
 }
@@ -35,7 +35,7 @@ function Tile(mapView, x, y, z) {
 //-  STATUS MANAGEMENT
 //-----------------------------------------------------------------------------
 
-Tile.prototype.Refresh = function () {
+Tile.prototype.refresh = function () {
     this.tex = null;
 };
 
@@ -51,6 +51,7 @@ Tile.prototype.isUpToDate = function () {
         }
     }
 
+    // console.log('is up to date : ' + textureReady && allLayerPartsAreReady);
     return textureReady && allLayerPartsAreReady;
 };
 
@@ -91,7 +92,7 @@ Tile.prototype.releaseLayer = function (id) {
         this.layerParts[id].reset();
     }
 
-    this.Refresh();
+    this.refresh();
 };
 
 Tile.prototype.resetLayer = function (id) {
@@ -99,7 +100,7 @@ Tile.prototype.resetLayer = function (id) {
     if (this.layerParts[id])
         this.layerParts[id].reset();
 
-    this.Refresh();
+    this.refresh();
 };
 
 Tile.prototype.reset = function (onlyfuse) {
@@ -112,7 +113,7 @@ Tile.prototype.reset = function (onlyfuse) {
         }
     }
 
-    this.Refresh();
+    this.refresh();
 };
 
 //-----------------------------------------------------------------------------
@@ -182,26 +183,26 @@ Tile.prototype.createLayerPart = function (layer, index) {
 Tile.prototype.addLayer = function (layerConfig) {
     this.createLayerFromConfig(layerConfig, this.config.layers.length - 1)
     Maperial.sourceManager.loadSources(this.x, this.y, this.z, this.mapView.id)
-    this.Refresh()
+    this.refresh()
 }
 
 Tile.prototype.changeLayer = function (layerConfig, index) {
     this.removeLayer(index)
     this.createLayerFromConfig(layerConfig, index)
     Maperial.sourceManager.loadSources(this.x, this.y, this.z, this.mapView.id)
-    this.Refresh()
+    this.refresh()
 }
 
 Tile.prototype.removeLayer = function (position) {
     if (this.layerParts.length > 0) {
         this.layerParts[position].release()
         this.layerParts.splice(position, 1)
-        this.Refresh()
+        this.refresh()
     }
     //  else : all layers are released because no layer remains
 }
 
-/**
+/*
  * Exactly the same as Layer.exchangeLayers
  * exchangedIds contains a mapping between old layerIndexes and the new one, after a layer reposition
  * example, with 3 layers, after moving layer0 (ui bottom) to the top (becomes layer 2) :
@@ -219,7 +220,7 @@ Tile.prototype.exchangeLayers = function (exchangedIds) {
     }
 
     this.layerParts = newLayers;
-    this.Refresh();
+    this.refresh();
 }
 
 //----------------------------------------------------------------------------
@@ -282,37 +283,51 @@ Tile.prototype.prepareBuffering = function () {
 
 Tile.prototype.update = function (maxTime) {
 
-    //--------------------------------------//
+    //-------------------------------------
 
     var date = new Date(),
         startT = date.getTime(),
         diffT = 0,
+        imageUpdate = false,
         noLayerPartUpdate = true;
 
-    //--------------------------------------//
+    //-------------------------------------
     // layerParts update
 
-    for (var i = 0; i < this.layerParts.length; i++) {
-        if (!this.layerParts[i].isUpToDate()) {
-            if (this.layerParts[i].dataReady()) {
-                this.layerParts[i].update(i);
-                noLayerPartUpdate = false
+    this.layerParts.forEach(function (part, index) {
+        if (!part.isUpToDate()) {
+            if (part.dataReady()) {
+                part.update(index);
+                noLayerPartUpdate = false;
+                imageUpdate = 'ImageLayerPart' === part.constructor.name;
 
                 diffT = date.getTime() - startT;
-                if (maxTime - diffT <= 0)
-                    break;
+                if (maxTime - diffT <= 0) {
+                    return false;
+                }
             }
         }
-    }
+    });
 
-    //--------------------------------------//
+    //-------------------------------------
     // tile.tex update
 
     if (noLayerPartUpdate && this.textureReady()) {
         return maxTime - 1;
     } else {
         if (!noLayerPartUpdate && (maxTime - diffT > 0)) {
-            this.Refresh();
+
+            /* pb de refresh, mais ce refresh est foireux...
+            revoir la syncro des layerparts a reception/sync des sources !!! */
+            if (imageUpdate) {
+                this.layerParts.forEach(function (part) {
+                    if ('DynamicalLayerPart' === part.constructor.name) {
+                        part.refresh();
+                    }
+                });
+            }
+
+            this.refresh();
             this.compose();
             diffT = date.getTime() - startT;
         }
@@ -326,7 +341,7 @@ Tile.prototype.update = function (maxTime) {
 
 Tile.prototype.compose = function () {
 
-    //-------------------------//
+    //------------------------
 
     var layerPartsTocompose = []
     for (var i = 0; i < this.layerParts.length; i++) {
@@ -337,12 +352,13 @@ Tile.prototype.compose = function () {
     if (layerPartsTocompose.length == 0)
         return;
 
-    //-------------------------//
+    //------------------------
 
     var backTex = layerPartsTocompose[0].tex
     var destFb = this.frameBufferL[0]
     var tmpI = 0;
 
+    console.log(layerPartsTocompose);
     if (layerPartsTocompose.length > 1) {
 
         for (var i = 1; i < layerPartsTocompose.length; i++) {

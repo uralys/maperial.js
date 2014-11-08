@@ -3,20 +3,6 @@
   "description": "Maperial JS to craft awesome maps on the Cloud",
   "version": "0.1.0",
   "author": "Maperial <contact@maperial.com>",
-  "contributor": [
-    {
-      "name": "Julien Bost",
-      "email": "julien.bost@maperial.com"
-    },
-    {
-      "name": "Vivien Clauzon",
-      "email": "vivien.clauzon@maperial.com"
-    },
-    {
-      "name": "Christophe Dugne-Esquevin",
-      "email": "chris.dugne@maperial.com"
-    }
-  ],
   "devDependencies": {
     "browserify": "~3",
     "envify": "~1.2.0",
@@ -25,6 +11,7 @@
     "grunt-contrib-sass": "~0.7.3",
     "grunt-contrib-uglify": "~0.3.2",
     "grunt-exec": "~0.4.5",
+    "grunt-jsdoc": "^0.5.7",
     "grunt-replace": "~0.7.7",
     "time-grunt": "^1.0.0",
     "uglify-js": "*",

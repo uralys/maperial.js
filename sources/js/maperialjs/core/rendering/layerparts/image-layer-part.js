@@ -19,17 +19,17 @@ function ImageLayerPart(layer, tile, gl) {
 ImageLayerPart.prototype.dataReady = function () {
 
     if (this.data.content) {
-        return true;
+        return 1;
     } else {
         this.data.tryToFillContent();
 
         if (this.data.content) {
             this.prepare();
-            return true;
+            return 2;
         }
     }
 
-    return false;
+    return 0;
 };
 
 //---------------------------------------------------------------------------

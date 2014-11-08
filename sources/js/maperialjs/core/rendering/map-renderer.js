@@ -17,7 +17,7 @@ function MapRenderer(mapView) {
 
     this.mapView = mapView;
 
-    /** init GL **/
+    /* init GL **/
     this.start();
 
     this.assets = mapView.context.assets;

@@ -317,7 +317,7 @@ SourceManager.prototype.getImageURL = function (sourceId, tx, ty, z) {
 
 //----------------------------------------------------------------------------
 
-/**
+/*
  * Source.WMS_BRETAGNECANTONS
  *    geo1 : "http://geobretagne.fr/geoserver/ows?SERVICE=WMS&LAYERS=d22%3AASS_LIN_22&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize
  *

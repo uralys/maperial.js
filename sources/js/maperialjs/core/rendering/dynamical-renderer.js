@@ -40,6 +40,12 @@ function DynamicalRenderer(gl, dynamicalData, style) {
 
 //-----------------------------------------------------------------------------
 
+DynamicalRenderer.prototype.refresh = function () {
+    this.dynamicalData.version++;
+}
+
+//-----------------------------------------------------------------------------
+
 DynamicalRenderer.prototype.isSync = function () {
 
     if (this.isUpToDate() && this.texNeverRead) {
@@ -58,11 +64,11 @@ DynamicalRenderer.prototype.isSync = function () {
 //-----------------------------------------------------------------------------
 
 DynamicalRenderer.prototype.synchronize = function (z, tileX, tileY, nbTX, nbTY) {
-
     var cameraMoved = this.z != z || this.tx == null || tileX < this.tx || tileY < this.ty || tileX + nbTX > this.tx + this.nbtx || tileY + nbTY > this.ty + this.nbty,
         dataChanged = this.version != this.dynamicalData.version;
 
     if ((cameraMoved || dataChanged) && !this.texNeverRead) {
+        console.log('--> draw dynamical renderer', this.version + ' --> ' + this.dynamicalData.version);
         this.reset();
         this.version = this.dynamicalData.version;
 

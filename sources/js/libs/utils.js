@@ -38,7 +38,7 @@ Utils.prototype.rgbToHex = function (r, g, b) {
 
 //----------------------------------------------------------------------------------------//
 
-/***
+/**
  * bytes = 36550
  * return 36.55 KB
  */
@@ -56,7 +56,7 @@ Utils.prototype.formatFileSize = function (bytes) {
 };
 //----------------------------------------------------------------------------------------//
 
-/***
+/**
  * timestamp = 1355342389711
  * return 12/12/2012
  *
@@ -176,7 +176,7 @@ Utils.prototype.getPoint = function (event) {
     };
 };
 
-/**
+/*
  * param  point : Point with coordinates in pixels, in the Canvas coordinates system
  * return mouseM : Point with coordinates in meters, in the Meters coordinates system
  */

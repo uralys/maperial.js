@@ -21,7 +21,7 @@
 
         var maperial = new Maperial();
 
-        var map = maperial.createView({
+        var map = maperial.createMap({
             container: "map",
             defaultZoom: 15,
             latitude: 53.03787562127988,
@@ -34,8 +34,8 @@
 
         //----------------------------------------------
 
-        var url = 'http://static.maperial.localhost/geojson/demo.geojson.json';
-        var brasseries = maperial.createDynamicalData(url);
+        var url = 'http://static.maperial.com/geojson/demo.geojson.json';
+        var brasseries = window.data = maperial.createDynamicalData(url);
         var options = {
             style: {
                 symbol: "symbols/simple.pointer.png"

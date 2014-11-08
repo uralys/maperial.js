@@ -94,8 +94,25 @@ module.exports = function (grunt) {
             }
         },
 
+        jsdoc: {
+            dist: {
+                src: [
+                    'sources/js/maperialjs/core/maperial.js',
+                    // 'sources/js/maperialjs/core/map/map-view.js',
+                    // 'sources/js/maperialjs/core/models/data/dynamical-data.js',
+                    // 'sources/js/maperialjs/core/models/data/heatmap-data.js',
+                ],
+                options: {
+                    destination: 'static/doc',
+                    template: "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template",
+                    configure: "jsdoc.conf.json"
+                }
+            },
+        },
+
         exec: {
             clean: "rm -rf static/",
+            cleanDoc: "rm -rf static/doc",
             tmp: "mkdir -p static; \
                             mkdir -p static/js; \
                             mkdir -p static/css; \
@@ -122,6 +139,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-jsbeautifier');
+    grunt.loadNpmTasks('grunt-jsdoc');
 
     /** define custom tasks */
     grunt.registerTask('clean', ['exec:clean']);
@@ -130,10 +148,11 @@ module.exports = function (grunt) {
     grunt.registerTask('js', ['tidy', 'browserify:compile']);
     grunt.registerTask('standalone', ['browserify:standalone']);
     grunt.registerTask('jsmin', ['tidy', 'standalone', 'uglify']);
+    grunt.registerTask('doc', ['exec:cleanDoc', 'jsdoc:dist']);
 
     /** register custom 'deps' task */
     grunt.registerTask('dev', ['exec:clean', 'exec:tmp', 'replace', 'js', 'css', 'exec:assets']);
-    grunt.registerTask('prod', ['exec:clean', 'exec:tmp', 'replace', 'jsmin', 'css', 'exec:assets']);
+    grunt.registerTask('prod', ['exec:clean', 'exec:tmp', 'replace', 'jsmin', 'css', 'exec:assets', 'doc']);
 
     /** default is min */
     grunt.registerTask('default', ['prod']);

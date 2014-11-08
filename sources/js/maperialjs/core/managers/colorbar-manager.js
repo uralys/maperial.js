@@ -54,9 +54,9 @@ ColorbarManager.prototype.addColorbar = function (mapView, colorbarData) {
         name: uid,
         mapView: mapView,
         data: colorbarData,
-        /**  1 common data for every mapview      **/
+        /*  1 common data for every mapview      **/
         version: -1,
-        /**  force not to be sync to build tex    **/
+        /*  force not to be sync to build tex    **/
         tex: null,
     };
 

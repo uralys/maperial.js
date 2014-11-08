@@ -1,0 +1,29 @@
+{
+  "tags"      : {
+    "allowUnknownTags" : true
+  },
+  "plugins"   : ["plugins/markdown"],
+
+  "templates" : {
+    "cleverLinks"           : false,
+    "monospaceLinks"        : false,
+    "dateFormat"            : "ddd MMM Do YYYY",
+    "outputSourceFiles"     : false,
+    "outputSourcePath"      : false,
+    "systemName"            : "Maperial",
+    "footer"                : "",
+    "copyright"             : "Maperial Copyright © 2012-2014.",
+    "navType"               : "vertical",
+    "theme"                 : "journal",
+    "syntaxTheme"           : "dark",
+    "linenums"              : true,
+    "collapseSymbols"       : false,
+    "inverseNav"            : true,
+    "highlightTutorialCode" : true,
+    "protocol": "fred://"
+  },
+  "markdown"  : {
+    "parser"   : "gfm",
+    "hardwrap" : true
+  }
+}

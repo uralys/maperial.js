@@ -1,6 +1,6 @@
 var _ = require("../../libs/lodash.js");
 
-/**
+/*
  * Mixins for an object to let it trigger Events or receive Events.
  * If this object has a parent, the Event bubbles to this parent.
  */
@@ -13,7 +13,7 @@ function Events() {
         listeners = [],
 
         //-------------------------------------------------------------//
-        /* 
+        /*
          * Register a callback for the given event type
          *
          * @param type {string} the event type triggering the callback
@@ -32,7 +32,7 @@ function Events() {
         },
 
         //-------------------------------------------------------------//
-        /* 
+        /*
          * Unregister a previously registered callback
          *
          * @param type {string} the type of the event listener to unregister
@@ -45,7 +45,7 @@ function Events() {
         },
 
         //-------------------------------------------------------------//
-        /* 
+        /*
          * Trigger an event of the provided type, calling all registered
          * callbacks for this type of event
          *
