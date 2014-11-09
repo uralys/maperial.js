@@ -104,7 +104,7 @@ module.exports = function (grunt) {
                 ],
                 options: {
                     destination: 'static/doc',
-                    template: "assets/jsdoc-jaguar",
+                    template: "assets/jsdoc-jaguarjs",
                     configure: "jsdoc.conf.json"
                 }
             },
@@ -149,11 +149,13 @@ module.exports = function (grunt) {
     grunt.registerTask('js', ['tidy', 'browserify:compile']);
     grunt.registerTask('standalone', ['browserify:standalone']);
     grunt.registerTask('jsmin', ['tidy', 'standalone', 'uglify']);
+
+    /** building jsdoc */
     grunt.registerTask('doc', ['exec:cleanDoc', 'jsdoc:dist', 'exec:prepareDocIndex']);
 
     /** register custom 'deps' task */
     grunt.registerTask('dev', ['exec:clean', 'exec:tmp', 'replace', 'js', 'css', 'exec:assets']);
-    grunt.registerTask('prod', ['exec:clean', 'exec:tmp', 'replace', 'jsmin', 'css', 'exec:assets', 'doc']);
+    grunt.registerTask('prod', ['exec:clean', 'exec:tmp', 'replace', 'jsmin', 'css', 'exec:assets']);
 
     /** default is min */
     grunt.registerTask('default', ['prod']);
