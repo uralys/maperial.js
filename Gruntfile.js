@@ -104,8 +104,7 @@ module.exports = function (grunt) {
                 ],
                 options: {
                     destination: 'static/doc',
-                    // template: "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template",
-                    template: "assets/jsdoc-template/jaguarjs-jsdoc",
+                    template: "assets/jsdoc-jaguarjs",
                     configure: "jsdoc.conf.json"
                 }
             },
