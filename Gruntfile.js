@@ -104,7 +104,7 @@ module.exports = function (grunt) {
                 ],
                 options: {
                     destination: 'static/doc',
-                    template: "assets/jsdoc-jaguarjs",
+                    template: "assets/jsdoc-template",
                     configure: "jsdoc.conf.json"
                 }
             },
