@@ -155,7 +155,7 @@ module.exports = function (grunt) {
 
     /** register custom 'deps' task */
     grunt.registerTask('dev', ['exec:clean', 'exec:tmp', 'replace', 'js', 'css', 'exec:assets']);
-    grunt.registerTask('prod', ['exec:clean', 'exec:tmp', 'replace', 'jsmin', 'css', 'exec:assets']);
+    grunt.registerTask('prod', ['exec:clean', 'exec:tmp', 'replace', 'jsmin', 'css', 'exec:assets', 'doc']);
 
     /** default is min */
     grunt.registerTask('default', ['prod']);
