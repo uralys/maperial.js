@@ -1,5 +1,8 @@
 //-----------------------------------------------------------------
 
+/**
+ * @fileOverview ewrtdyf ert ertg   s e
+ */
 var MapView = require('./map/map-view.js'),
     SourceManager = require('./managers/source-manager.js'),
     StyleManager = require('./managers/style-manager.js'),
@@ -20,8 +23,6 @@ var MapView = require('./map/map-view.js'),
  *
  * @example
  * var maperial = new Maperial();
- *
- *
  *
  * @constructor
  */

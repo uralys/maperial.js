@@ -4,6 +4,11 @@ var ajax = require('../../../../libs/ajax.js'),
 
 //------------------------------------------------------------------------------
 
+/**
+ * a DynamicalData may be shared between many MapView
+ *
+ * @constructor
+ */
 function DynamicalData(data) {
     this.points = {};
     this.id = utils.generateUID();

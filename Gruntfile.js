@@ -99,12 +99,13 @@ module.exports = function (grunt) {
                 src: [
                     'sources/js/maperialjs/core/maperial.js',
                     // 'sources/js/maperialjs/core/map/map-view.js',
-                    // 'sources/js/maperialjs/core/models/data/dynamical-data.js',
+                    'sources/js/maperialjs/core/models/data/dynamical-data.js',
                     // 'sources/js/maperialjs/core/models/data/heatmap-data.js',
                 ],
                 options: {
                     destination: 'static/doc',
-                    template: "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template",
+                    // template: "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template",
+                    template: "assets/jsdoc-template/jaguarjs-jsdoc",
                     configure: "jsdoc.conf.json"
                 }
             },
@@ -112,19 +113,20 @@ module.exports = function (grunt) {
 
         exec: {
             clean: "rm -rf static/",
-            cleanDoc: "rm -rf static/doc",
             tmp: "mkdir -p static; \
                             mkdir -p static/js; \
                             mkdir -p static/css; \
                             mkdir -p static/geojson; \
                             mkdir -p static/shaders",
             assets: "cp -r assets/symbols static/symbols; \
-                            cp -r assets/images/ static/images; \
+                                cp -r assets/images/ static/images; \
                             cp assets/geojson/* static/geojson/; \
                             cp sources/shaders/all.json static/shaders/all.json; \
                             cp sources/js/vendors/* static/js/; \
                             cp sources/css/vendors/* static/css/; \
                             ",
+            cleanDoc: "rm -rf static/doc",
+            prepareDocIndex: "rm -f static/doc/index.html; cp static/doc/Maperial.html static/doc/index.html",
         },
 
     };
@@ -148,7 +150,7 @@ module.exports = function (grunt) {
     grunt.registerTask('js', ['tidy', 'browserify:compile']);
     grunt.registerTask('standalone', ['browserify:standalone']);
     grunt.registerTask('jsmin', ['tidy', 'standalone', 'uglify']);
-    grunt.registerTask('doc', ['exec:cleanDoc', 'jsdoc:dist']);
+    grunt.registerTask('doc', ['exec:cleanDoc', 'jsdoc:dist', 'exec:prepareDocIndex']);
 
     /** register custom 'deps' task */
     grunt.registerTask('dev', ['exec:clean', 'exec:tmp', 'replace', 'js', 'css', 'exec:assets']);
