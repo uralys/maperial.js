@@ -4,6 +4,13 @@ var utils = require('../../../../libs/utils.js'),
 
 //------------------------------------------------------------------------------
 
+/**
+ * A HeatmapData may be shared between many MapView.
+ *
+ * Create a HeatmapData using the [Maperial]{@link Maperial#createHeatmapData}
+ *
+ * @class
+ */
 function HeatmapData(data) {
     this.id = utils.generateUID();
     this.version = 0;

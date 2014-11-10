@@ -13,6 +13,18 @@ var Context = require('./context.js'),
 
 //--------------------------------------------------------------------------
 
+/**
+ * A MapView is the object you get when you create :
+ * <ul>
+ * <li>a [Map]{@link Maperial#createMap}</li>
+ * <li>an Anchor</li>
+ * <li>a Minifier</li>
+ * <li>a Magnifier</li>
+ * <li>a Lens</li>
+ * </ul>
+ *
+ * @constructor
+ */
 function MapView(maperial, options) {
     this.prepare(maperial, options);
     this.expose();

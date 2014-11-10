@@ -5,7 +5,9 @@ var ajax = require('../../../../libs/ajax.js'),
 //------------------------------------------------------------------------------
 
 /**
- * a DynamicalData may be shared between many MapView
+ * A DynamicalData may be shared between many MapView.
+ *
+ * Create a DynamicalData using the [Maperial]{@link Maperial#createDynamicalData}
  *
  * @constructor
  */

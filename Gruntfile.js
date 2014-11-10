@@ -98,9 +98,9 @@ module.exports = function (grunt) {
             dist: {
                 src: [
                     'sources/js/maperialjs/core/maperial.js',
-                    // 'sources/js/maperialjs/core/map/map-view.js',
+                    'sources/js/maperialjs/core/map/map-view.js',
                     'sources/js/maperialjs/core/models/data/dynamical-data.js',
-                    // 'sources/js/maperialjs/core/models/data/heatmap-data.js',
+                    'sources/js/maperialjs/core/models/data/heatmap-data.js',
                 ],
                 options: {
                     destination: 'static/doc',

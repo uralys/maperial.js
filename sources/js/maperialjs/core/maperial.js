@@ -135,9 +135,11 @@ Maperial.prototype.expose = function () {
      * @param {float} options.latitude The map start latitude (default : 48.813)
      * @param {float} options.longitude The map start longitude (default : 2.313)
      *
+     * @returns {MapView} <-toplink_dummydesc_bottomlink-> {@link MapView}
+     *
      * @example <caption>
      * Both following examples use this container :
-     * &lt;div id="map-container"&gt;&lt;/div&gt;
+     * <b>&lt;div id="map-container"&gt;&lt;/div&gt;</b>
      * </caption>
      *
      * var map = maperial.createMap('map-container');
@@ -201,7 +203,9 @@ Maperial.prototype.expose = function () {
      * @function
      * @param {object|string} data May be either an GeoJson object or a url
      *                             providing a GeoJson object
-
+     *
+     * @returns {DynamicalData} <-toplink_dd_bottomlink-> {@link DynamicalData}
+     *
      * @example <caption> Example with a GeoJson provided by a url </caption>
      *
      * @example
@@ -217,10 +221,11 @@ Maperial.prototype.expose = function () {
      * @function
      * @param {object|string} data May be either an GeoJson object or a url
      *                             providing a GeoJson object
-
+     *
+     * @returns {HeatmapData} <-toplink_dd_bottomlink-> {@link HeatmapData}
      * @example <caption> Example with a GeoJson provided by a url </caption>
-     * var url = 'http://static.maperial.com/geojson/demo.geojson.json';
-     * var data = maperial.createDynamicalData(url);
+     * var url = 'http://static.maperial.com/geojson/heatmap.geojson.json';
+     * var data = maperial.createHeatmapData(url);
      *
      */
     this.createHeatmapData = function (data) {

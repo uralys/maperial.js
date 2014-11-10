@@ -22,11 +22,14 @@ li {
   background-color: gray;
   border-radius: 4px;
 }
-/* Custom chris@maperial */
+/* ------------------------------------------ Custom chris@maperial */
 .tag-source {
   display: none;
 }
-/* /Custom */
+.container-overview .nameContainer {
+  display: none;
+}
+/* ------------------------------------------ /Custom chris@maperial */
 .navigation {
   position: fixed;
   float: left;
