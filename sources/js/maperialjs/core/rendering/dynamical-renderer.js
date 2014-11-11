@@ -7,7 +7,7 @@ var utils = require('../../../libs/utils.js'),
 function DynamicalRenderer(gl, dynamicalData, style) {
     // They don't realy need mapView ... And it's the same for all gl XX layers no ?
     // upgrade : One GL canvas for every GL renderers : views +  DynamicalRenderers
-
+    window.dr = this;
     this.id = utils.generateUID();
     this.dynamicalData = dynamicalData;
     this.style = style;
@@ -68,7 +68,7 @@ DynamicalRenderer.prototype.synchronize = function (z, tileX, tileY, nbTX, nbTY)
         dataChanged = this.version != this.dynamicalData.version;
 
     if ((cameraMoved || dataChanged) && !this.texNeverRead) {
-        console.log('--> draw dynamical renderer', this.version + ' --> ' + this.dynamicalData.version);
+        console.log('--> synchronizing dynamical renderer', this.version + ' --> ' + this.dynamicalData.version, this.dynamicalData);
         this.reset();
         this.version = this.dynamicalData.version;
 
@@ -80,8 +80,6 @@ DynamicalRenderer.prototype.synchronize = function (z, tileX, tileY, nbTX, nbTY)
 
         this.w = nbTX2 * Maperial.tileSize;
         this.h = nbTY2 * Maperial.tileSize;
-
-        this.AllocCanvas(this.w, this.h);
 
         var dx = nbTX2 - (nbTX),
             dy = nbTY2 - (nbTY),
@@ -103,6 +101,8 @@ DynamicalRenderer.prototype.synchronize = function (z, tileX, tileY, nbTX, nbTY)
 
         this.trX = (this.originShift / res) - this.tx * Maperial.tileSize;
         this.trY = this.h - ((this.originShift / res) - this.ty * Maperial.tileSize);
+
+        this.AllocCanvas(this.w, this.h);
     };
 };
 
@@ -128,6 +128,7 @@ DynamicalRenderer.prototype.reset = function () {
 
     var gl = this.gl;
     this.renderingStep = 0;
+    this.version = 0;
     this.texNeverRead = false;
 
     if (this.cnv) {
@@ -151,9 +152,9 @@ DynamicalRenderer.prototype.isUpToDate = function () {
 };
 
 DynamicalRenderer.prototype.update = function () {
-
-    if (this.cnv == null || this.renderingStep == null || this.style == null)
+    if (this.cnv == null || this.renderingStep == null || this.style == null) {
         return 0;
+    }
 
     this.ctx._sx = this.scaleX;
     this.ctx._sy = this.scaleY;
@@ -186,6 +187,7 @@ DynamicalRenderer.prototype.GetTex = function (tx, ty) {
     var j = ty - this.ty;
     if (i >= this.nbtx || j >= this.nbty || this.renderingStep != null || i < 0 || j < 0) {
         console.log("invalid custom tile");
+        this.reset();
         return null;
     }
     j = this.nbty - j - 1;

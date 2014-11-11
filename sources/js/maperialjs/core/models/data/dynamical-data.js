@@ -97,15 +97,21 @@ DynamicalData.prototype.import = function (data) {
             ajax.get({
                 url: data,
                 callback: function (error, data) {
-                    data.features.forEach(function (feature) {
-                        this.addPoint(feature);
-                    }.bind(this));
+                    this.addPoints(data);
                 }.bind(this)
             });
         } else if ('object' === typeof (data)) {
-            console.log('--> importing geojson ? TODO');
+            this.addPoints(data);
         }
     }
+}
+
+//------------------------------------------------------------------------------
+
+DynamicalData.prototype.addPoints = function (collection) {
+    collection.features.forEach(function (feature) {
+        this.addPoint(feature);
+    }.bind(this))
 }
 
 //------------------------------------------------------------------------------

@@ -30,18 +30,44 @@
 
         //----------------------------------------------
 
-        map.addOCMTransport();
-
         //----------------------------------------------
 
-        var url = 'http://static.maperial.com/geojson/demo.geojson.json';
-        var brasseries = window.data = maperial.createDynamicalData(url);
+        // var url = 'http://static.maperial.com/geojson/demo.geojson.json';
+        // var brasseries = window.data = maperial.createDynamicalData(url);
+
+        var collection = {
+            "type": "FeatureCollection",
+            "features": [{
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                        4.844833878624368,
+                        53.04105507065753
+                    ]
+                },
+                "type": "Feature",
+                "properties": {}
+            }, {
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                        4.834833878624368,
+                        53.03119775566745
+                    ]
+                },
+                "type": "Feature",
+                "properties": {}
+            }]
+        }
+        var brasseries = maperial.createDynamicalData(collection);
+
         var options = {
             style: {
                 symbol: "symbols/simple.pointer.png"
             }
         };
 
+        map.addOCMTransport();
         map.addDynamicalLayer(brasseries, options);
 
     })();

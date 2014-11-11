@@ -288,7 +288,6 @@ Tile.prototype.update = function (maxTime) {
     var date = new Date(),
         startT = date.getTime(),
         diffT = 0,
-        imageUpdate = false,
         noLayerPartUpdate = true;
 
     //-------------------------------------
@@ -299,7 +298,6 @@ Tile.prototype.update = function (maxTime) {
             if (part.dataReady()) {
                 part.update(index);
                 noLayerPartUpdate = false;
-                imageUpdate = 'ImageLayerPart' === part.constructor.name;
 
                 diffT = date.getTime() - startT;
                 if (maxTime - diffT <= 0) {
@@ -307,7 +305,7 @@ Tile.prototype.update = function (maxTime) {
                 }
             }
         }
-    });
+    }.bind(this));
 
     //-------------------------------------
     // tile.tex update
@@ -316,17 +314,6 @@ Tile.prototype.update = function (maxTime) {
         return maxTime - 1;
     } else {
         if (!noLayerPartUpdate && (maxTime - diffT > 0)) {
-
-            /* pb de refresh, mais ce refresh est foireux...
-            revoir la syncro des layerparts a reception/sync des sources !!! */
-            if (imageUpdate) {
-                this.layerParts.forEach(function (part) {
-                    if ('DynamicalLayerPart' === part.constructor.name) {
-                        part.refresh();
-                    }
-                });
-            }
-
             this.refresh();
             this.compose();
             diffT = date.getTime() - startT;
@@ -358,7 +345,8 @@ Tile.prototype.compose = function () {
     var destFb = this.frameBufferL[0]
     var tmpI = 0;
 
-    console.log(layerPartsTocompose);
+    /* FIXME demo dynamical-data-geojson :
+        image received and data not seen : fuse issue ? */
     if (layerPartsTocompose.length > 1) {
 
         for (var i = 1; i < layerPartsTocompose.length; i++) {
@@ -428,7 +416,6 @@ Tile.prototype.copy = function (backTex, destFB) {
     //----------------------------------------------------------------------------
 
 Tile.prototype.fuse = function (backTex, frontTex, destFB, prog, params) {
-
     var gl = this.gl,
         mvMatrix = mat4.create(),
         pMatrix = mat4.create();

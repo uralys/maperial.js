@@ -27,7 +27,7 @@ TileRenderer.ApplyStyle = function (ctx, line, attr, subLayerId, zoom, style) {
             }
         }
     } catch (e) {
-        //      console.log ( "ApplyStyle Failed : " + e );
+        // console.log("ApplyStyle Failed : " + e);
     }
 }
 
@@ -148,10 +148,11 @@ TileRenderer.RenderDynamicalLayer = function (ctx, data, zoom, style, needle) {
     //-------------------------------------------------//
 
     var diffT = (new Date).getTime() - startT;
-    if (needle < Object.keys(data.points).length)
+    if (needle < Object.keys(data.points).length) {
         return [needle + 1, diffT];
-    else
+    } else {
         return [null, diffT];
+    }
 }
 
 //------------------------------------------------------------------------------------------------//
