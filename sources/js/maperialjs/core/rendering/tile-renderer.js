@@ -129,9 +129,8 @@ TileRenderer.RenderDynamicalLayer = function (ctx, data, zoom, style, needle) {
     // rendering points only
     // todo : render lines
 
-    for (var id in data.points) {
-
-        var point = data.points[id];
+    for (var i = needle; i < data.points.length; ++i) {
+        var point = data.points[i];
 
         TileRenderer.ApplyStyle(ctx, [point.x, point.y], point.data, style.symbId, zoom, style.content);
 

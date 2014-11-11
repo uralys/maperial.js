@@ -66,8 +66,8 @@ MapRenderer.prototype.start = function () {
 MapRenderer.prototype.fitToSize = function () {
 
     if (this.gl) {
-        this.gl.viewportWidth = this.mapView.canvas.width();
-        this.gl.viewportHeight = this.mapView.canvas.height();
+        this.gl.viewportWidth = this.mapView.canvas.width;
+        this.gl.viewportHeight = this.mapView.canvas.height;
     } else {
         console.log("---------> couldn't fitToSize")
     }

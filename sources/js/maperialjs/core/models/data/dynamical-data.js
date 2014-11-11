@@ -71,7 +71,7 @@ var ajax = require('../../../../libs/ajax.js'),
  * var data = maperial.createDynamicalData(collection);
  */
 function DynamicalData(featureCollection) {
-    this.points = {};
+    this.points = [];
     this.id = utils.generateUID();
     this.version = 0;
 
@@ -139,7 +139,7 @@ DynamicalData.prototype.addPoint = function (feature) {
         data: data,
     };
 
-    this.points[id] = point;
+    this.points.push(point);
     this.version++;
 
     return point;
@@ -147,9 +147,14 @@ DynamicalData.prototype.addPoint = function (feature) {
 
 //------------------------------------------------------------------------------
 
-DynamicalData.prototype.removePoint = function (point) {
-    if (point) {
-        delete this.points[point.id];
+DynamicalData.prototype.removePoint = function (pointToRemove) {
+    if (pointToRemove) {
+        this.points.splice(
+            this.points.indexOf(
+                this.points.filter(function (point) {
+                    return point.id === pointToRemove.id;
+                })
+            ), 1);
         this.version++;
     }
 }
@@ -157,7 +162,7 @@ DynamicalData.prototype.removePoint = function (point) {
 //------------------------------------------------------------------------------
 
 DynamicalData.prototype.removeAll = function () {
-    this.points = {};
+    this.points = [];
     this.version++;
 }
 
