@@ -5,13 +5,72 @@ var ajax = require('../../../../libs/ajax.js'),
 //------------------------------------------------------------------------------
 
 /**
- * A DynamicalData may be shared between many MapView.
+ * To add points on your maps, use DynamicalData.
  *
- * Create a DynamicalData using the [Maperial]{@link Maperial#createDynamicalData}
+ * One DynamicalData may be shared between many {@link MapView}.
+ *
+ * Create a DynamicalData using {@link Maperial#createDynamicalData}
+ *
+ * You may directly import a FeatureCollection either by a url or an object.
+ *
+ * Each 'feature' in your FeatureCollection should be formatted as Point :
+ *
+ * <pre>
+ * {
+ *   "geometry": {
+ *     "type": "Point",
+ *     "coordinates": [
+ *       4.792116752641117,
+ *       53.05105507065753
+ *     ]
+ *   },
+ *   "type": "Feature",
+ *   "properties": {}
+ * }
+ * </pre>
  *
  * @constructor
+ *
+ * @param {object|string} featureCollection
+ *                        <a href="http://geojson.org">GeoJson</a>
+ *                        FeatureCollection
+ *
+ * @example <caption>Use a REST endpoint to import a FeatureCollection</caption>
+ * var url = 'http://static.maperial.com/geojson/demo.geojson.json';
+ * var data = maperial.createDynamicalData(url);
+ *
+ * @example <caption>Or use your js built FeatureCollection</caption>
+ * var collection = {
+ *   "type": "FeatureCollection",
+ *   "features": [
+ *     {
+ *       "geometry": {
+ *         "type": "Point",
+ *         "coordinates": [
+ *           4.792116752641117,
+ *           53.05105507065753
+ *         ]
+ *       },
+ *       "type": "Feature",
+ *       "properties": {}
+ *     },
+ *     {
+ *       "geometry": {
+ *         "type": "Point",
+ *         "coordinates": [
+ *           4.792800810802329,
+ *           53.05119775566745
+ *         ]
+ *       },
+ *       "type": "Feature",
+ *       "properties": {}
+ *     }
+ *   ]
+ * }
+ *
+ * var data = maperial.createDynamicalData(collection);
  */
-function DynamicalData(data) {
+function DynamicalData(featureCollection) {
     this.points = {};
     this.id = utils.generateUID();
     this.version = 0;
@@ -27,7 +86,7 @@ function DynamicalData(data) {
     // destination coordinates google
     this.dstPrj = new Proj4js.Proj('EPSG:900913');
 
-    this.import(data);
+    this.import(featureCollection);
 }
 
 //------------------------------------------------------------------------------
