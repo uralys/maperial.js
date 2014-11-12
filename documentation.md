@@ -78,8 +78,7 @@ Once your Data is created you can attach it to many maps
 
 ## Fusion
 
-Tell about settings
-
+Todo : tell about fusion settings
 
 # Data
 ## DynamicalData

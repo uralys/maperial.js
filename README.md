@@ -15,14 +15,12 @@
 Explore the complete API [documentation](http://static.maperial.com/doc)
 
 # Getting started
-First of all, add the js script on your page :
+First of all, add the js script on your page
 ```
 <script src="http://static.maperial.com/js/maperial.js" type="text/javascript"></script>
 ```
 
-### Your first map [(jsbin)](http://jsbin.com/bixatibufogu/10/embed?js,output)
-
-Start by adding your html container
+Now add your html container
 ```
 <div id="map"></div>
 ```
@@ -38,6 +36,9 @@ var map = maperial.createMap({
     container: 'map'
 });
 ```
+
+Here you got your first map !
+[(jsbin)](http://jsbin.com/bixatibufogu/10/embed?js,output)
 
 Now you can add to your map :
 - any [layers] (./documentation.md#layers)
