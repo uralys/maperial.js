@@ -52,8 +52,9 @@ and we'll play with the other MapViews later.
 
 # Layers
 
-- You may add any layers to a MapView, containing either [images](#image-layers)
-or [data](#data).
+- You may add any layers to a [MapView](#mapviews), containing either
+[Images](#image-layers)
+or [Data](#data-layers).
 - Use [Fusion](#fusion) to merge your layers with custom settings
 and draw unique maps.
 
@@ -97,15 +98,26 @@ Use custom settings to fuse 2 layers
 - XBlend
 
 # Data
-A Data may be shared by many layers. For instance, you may create
-one DynamicalData, and apply it on two different layers on two different maps.
+A Data may be shared by many [data layers](#data-layers).
+
+## Sharable
+For instance, you may create one DynamicalData,
+and apply it on two different layers on two different maps.
 
 Then, adding one point on this DynamicalData would add the point on the two
 layers.
 
-There are 2 kinds of Data
-- DynamicalData
-- HeatmapData
+## GeoJson
+Use <a href="http://geojson.org">GeoJson</a> to represent your Data.
+
+Check the different types of data below to set your
+Feature Collections accordingly.
+
+## Types
+- [DynamicalData](http://static.maperial.com/doc/DynamicalData.html)
+allows to add/remove points with custom properties.
+- [HeatmapData](http://static.maperial.com/doc/HeatmapData.html)
+allows to draw heatmaps with custom colorbars.
 
 # Tools
 You would need this css to use Tools :
