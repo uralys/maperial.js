@@ -1,5 +1,5 @@
 
-# Start playing with Maperial
+# Main concepts
 
 You'll find here how to use Maperial to create maps and layers,
 how to manipulate your data and how to add tools to your maps.
