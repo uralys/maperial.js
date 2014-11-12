@@ -356,7 +356,7 @@ function prepareGL(glAsset, gl, glTools) {
     glAsset.prog["Tex"] = glTools.MakeProgram("vertexTex", "fragmentTex", glAsset);
     glAsset.prog["Clut"] = glTools.MakeProgram("vertexTex", "fragmentClut", glAsset);
     glAsset.prog["Shade"] = glTools.MakeProgram("vertexTex", "fragmentShade", glAsset);
-    glAsset.prog[Maperial.MulBlend] = glTools.MakeProgram("vertexTex", "fragmentMulBlend", glAsset);
+    glAsset.prog[Maperial.XBlend] = glTools.MakeProgram("vertexTex", "fragmentXBlend", glAsset);
     glAsset.prog[Maperial.AlphaClip] = glTools.MakeProgram("vertexTex", "fragmentAlphaClip", glAsset);
     glAsset.prog[Maperial.AlphaBlend] = glTools.MakeProgram("vertexTex", "fragmentAlphaBlend", glAsset);
 }

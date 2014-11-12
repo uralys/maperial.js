@@ -114,7 +114,7 @@ Maperial.DEFAULT_COLORBAR_UID = "1_colorbar_13c630ec3a5068919c3";
 
 Maperial.AlphaClip = "AlphaClip";
 Maperial.AlphaBlend = "AlphaBlend";
-Maperial.MulBlend = "MulBlend";
+Maperial.XBlend = "XBlend";
 
 Maperial.globalDataCpt = 0;
 

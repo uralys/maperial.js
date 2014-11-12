@@ -39,52 +39,72 @@ MapView.prototype.expose = function () {
     /*---------------------*/
     // Images
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addOCMTransport = function () {
         return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
     }.bind(this);
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addOCMLandscape = function () {
         return this.addImageLayer(Source.IMAGES_OCM_LANDSCAPE);
     }.bind(this);
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addWatercolor = function () {
         return this.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
     }.bind(this);
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addMapquest = function () {
         return this.addImageLayer(Source.IMAGES_MAPQUEST);
     }.bind(this);
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addSatellite = function () {
         return this.addImageLayer(Source.IMAGES_MAPQUEST_SATELLITE);
     }.bind(this);
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addEarthLight = function () {
         return this.addImageLayer(Source.MAPERIAL_EARTHLIGHT);
     }.bind(this);
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addAerosol = function () {
         return this.addImageLayer(Source.MAPERIAL_AEROSOL);
     }.bind(this);
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addNDVI = function () {
         return this.addImageLayer(Source.MAPERIAL_NDVI);
     }.bind(this);
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addSRTM = function () {
         return this.addImageLayer(Source.MAPERIAL_SRTM);
     }.bind(this);
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addSST = function () {
         return this.addImageLayer(Source.MAPERIAL_SST);
     }.bind(this);
@@ -92,7 +112,9 @@ MapView.prototype.expose = function () {
     /*---------------------*/
     /* Maperial layers */
 
-    /* TODO doc */
+    /**
+     * @function
+     */
     this.addShade = function () {
         return this.addShadeLayer();
     }.bind(this);
@@ -151,7 +173,7 @@ MapView.prototype.prepare = function (maperial, options) {
 
     this.shaders = [Maperial.AlphaClip,
         Maperial.AlphaBlend,
-        Maperial.MulBlend
+        Maperial.XBlend
     ];
 };
 

@@ -77,10 +77,10 @@ LayerManager.prototype.addLayer = function (layerType, params) {
 //---------------------------------------------------------------
 //Default settings
 
-LayerManager.prototype.defaultMulBlend = function () {
+LayerManager.prototype.defaultXBlend = function () {
     return {
-        shader: Maperial.MulBlend,
-        params: LayerManager.defaultMulBlendParams
+        shader: Maperial.XBlend,
+        params: LayerManager.defaultXBlendParams
     };
 };
 
@@ -109,7 +109,7 @@ LayerManager.defaultShade = {
 
 //----------------------------------------
 
-LayerManager.defaultMulBlendParams = {
+LayerManager.defaultXBlendParams = {
     uParams: [0.0, 0.0, 1]
 };
 
