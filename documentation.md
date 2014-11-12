@@ -1,21 +1,24 @@
 
-# Documentation
+# Start playing with Maperial
 
-You'll find here how to use Maperial to create mapsand layers,
+You'll find here how to use Maperial to create maps and layers,
 how to manipulate your data and how to add tools to your maps.
 
-To start with your first maps checkout these [examples](./demos.md)
+You may want to check some [examples](./demos.md) before anything.
 
-Explore the complete API [documentation](http://static.maperial.com/doc)
+Once you're ready to go further, explore the complete
+API [documentation](http://static.maperial.com/doc).
+
+Ok let's go !
 
 # Maperial
 
-**Instanciate** one Maperial to build every maps on your web page.
+Instanciate and use **one** single Maperial to build every map on your web page.
 ```
 var maperial = new Maperial();
 ```
-##### With your Maperial you can now :
-- Draw [Map](#maps)
+##### With your maperial you can now :
+- Draw [Maps](#maps)
 - Create [DynamicalData](#dynamicaldata)
 - Create [HeatmapData](#heatmapdata)
 - Attach [Tools](#tools)
@@ -38,20 +41,23 @@ the container for the previous map.
 # MapViews
 
 Just a word about MapViews before to continue : the map created just above
-is a MapView, just the same as a Lens, or an Anchor which are MapViews.
+is a MapView, just the same as a Lens, or an Anchor which are equally MapViews.
 
 You may play with Layers on any MapView, so on the following chapter all layers
 are attached to a **view** rather than a *map*.
 
-Stick with the map for now, called **view** for now on,
+Stick with this map for now, called **view** for now on,
 and we'll play with the other MapViews later.
 
 # Layers
 
-- You may add any layers to your view, containing either images or data.
-- Use Fusion to merge your layers with custom settings and draw unique maps.
+- You may add any layers to a MapView, containing either [images](#image-layers)
+or [data](#data).
+- Use [Fusion](#fusion) to merge your layers with custom settings
+and draw unique maps.
 
 ## Image Layers
+- todo : thumbnails + links to /doc
 
 ### External layers
 - view.addOCMTransport()
@@ -67,22 +73,37 @@ and we'll play with the other MapViews later.
 - view.addSRTM()
 - view.addSST()
 
+### WMS Layers
+- todo : few examples
+
 ### Custom Layers
 - view.addShade()
-- WMS
+- view.addSRTM()
+- todo : maperialOSM
 
 ## Data Layers
-Once your Data is created you can attach it to many maps
+Before to add data layers, you need to create your [Data](#data) first.
+
+Then you can attach it to any MapView.
 - view.addDynamicalLayer(data, options);
 - view.addHeamapLayer(data, options);
 
 ## Fusion
-
-Todo : tell about fusion settings
+Use custom settings to fuse 2 layers
+- AlphaBlend (param float [0,1])
+- AlphaClip  (param float [0,1])
+- XBlend
 
 # Data
-## DynamicalData
-## HeatmapData
+A Data may be shared by many layers. For instance, you may create
+one DynamicalData, and apply it on two different layers on two different maps.
+
+Then, adding one point on this DynamicalData would add the point on the two
+layers.
+
+There are 2 kinds of Data
+- DynamicalData
+- HeatmapData
 
 
 # Tools

@@ -37,7 +37,6 @@ var map = maperial.createMap({
 });
 ```
 
-
 Now you can add to your map :
 - any [layers] (./documentation.md#layers)
 - any [data] (./documentation.md#data)
@@ -53,7 +52,7 @@ Check the full example on this [jsbin] (http://jsbin.com/bixatibufogu/10/embed?j
 
 # I want to know more !
 - Start to learn how to play with [Maperial] (./documentation.md)
-- Checkout a whole bunch of [Examples] (./demos.md) with code
-- Now you're expert, explore the complete API
+- Checkout a whole bunch of jsbin [examples] (./demos.md)
+- When you're expert, explore the complete API
 [documentation](http://static.maperial.com/doc)
 
