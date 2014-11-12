@@ -30,14 +30,22 @@ var map = maperial.createMap({
 ```
 
 Therefore, you will need an html tag for every map in your web page. Here is
-the container for the previous MapView.
+the container for the previous map.
 ```
 <div id="map1"></div>
 ```
 
+# MapViews
+
+Just a word about MapViews before to continue. The map you see just above
+is a MapView, just as can be a Lens, or an Anchor which are created as Tools.
+
+You may play with Layers on any MapView, so on the following chapter all layers
+are attached to a *view* rather than a **map**.
+
 # Layers
 
-- You may add any layers to your map, containing either images or data.
+- You may add any layers to your view, containing either images or data.
 - Use Fusion to merge your layers with custom settings and draw unique maps.
 
 ## Image Layers
