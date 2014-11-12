@@ -37,8 +37,6 @@ var map = maperial.createMap({
 });
 ```
 
-Here you got your first map !
-[(jsbin)](http://jsbin.com/bixatibufogu/10/embed?js,output)
 
 Now you can add to your map :
 - any [layers] (./documentation.md#layers)
@@ -49,6 +47,9 @@ For example, ask for a new layer :
 ```
 map.addMapquest();
 ```
+
+##### Well, you got your first map !
+Check the full example on this [jsbin] (http://jsbin.com/bixatibufogu/10/embed?js,output)
 
 # I want to know more !
 - Start to learn how to play with [Maperial] (./documentation.md)
