@@ -54,5 +54,5 @@ Check the full example on this [jsbin] (http://jsbin.com/bixatibufogu/10/embed?j
 - Start to learn how to play with [Maperial] (./documentation.md)
 - Checkout a whole bunch of jsbin [examples] (./demos.md)
 - When you're ready, explore the complete API
-[documentation](http://static.maperial.com/doc) to draft your awesome maps.
+[documentation](http://static.maperial.com/doc) to draft your own maps.
 
