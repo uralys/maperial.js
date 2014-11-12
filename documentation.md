@@ -61,24 +61,24 @@ and draw unique maps.
 ## Image Layers
 - todo : thumbnails + links to /doc
 
-### External layers
+#### External layers
 - view.addOCMTransport()
 - view.addOCMLandscape()
 - view.addWatercolor()
 - view.addMapquest()
 - view.addSatellite()
 
-### Maperial layers
+#### Maperial layers
 - view.addEarthLight()
 - view.addAerosol()
 - view.addNDVI()
 - view.addSRTM()
 - view.addSST()
 
-### WMS Layers
+#### WMS Layers
 - todo : few examples
 
-### Custom Layers
+#### Custom Layers
 - view.addShade()
 - view.addSRTM()
 - todo : maperialOSM
@@ -100,20 +100,20 @@ Use custom settings to fuse 2 layers
 # Data
 A Data may be shared by many [data layers](#data-layers).
 
-## Sharable
+#### Sharable
 For instance, you may create one DynamicalData,
 and apply it on two different layers on two different maps.
 
 Then, adding one point on this DynamicalData would add the point on the two
 layers.
 
-## GeoJson
+#### GeoJson
 Use <a href="http://geojson.org">GeoJson</a> to represent your Data.
 
 Check the different types of data below to set your
 Feature Collections accordingly.
 
-## Types
+#### Types
 - [DynamicalData](http://static.maperial.com/doc/DynamicalData.html)
 allows to add/remove points with custom properties.
 - [HeatmapData](http://static.maperial.com/doc/HeatmapData.html)
