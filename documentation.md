@@ -85,7 +85,8 @@ and draw unique maps.
 ## Data Layers
 Before to add data layers, you need to create your [Data](#data) first.
 
-Then you can attach it to any MapView.
+Then you can attach it to any [MapView](#mapviews) by adding a layer
+depending on the data type :
 - view.addDynamicalLayer(data, options);
 - view.addHeamapLayer(data, options);
 
@@ -105,7 +106,6 @@ layers.
 There are 2 kinds of Data
 - DynamicalData
 - HeatmapData
-
 
 # Tools
 You would need this css to use Tools :
