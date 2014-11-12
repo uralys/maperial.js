@@ -1,11 +1,18 @@
 
 # What you'll be able to draw
 - beautiful tile layer
+- shade
 - heatmap
 - anchor
-- magnifier
+- minifier
+- lens
 - fusion params
+- shade params
 [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
+
+# Technical documentation
+
+Explore the complete API [documentation](http://static.maperial.com/doc)
 
 # Getting started
 First of all, add the js script on your page :
@@ -27,33 +34,24 @@ var maperial = new Maperial();
 
 Use it to add a view, linked with your html container
 ```
-var map = maperial.createView({
+var map = maperial.createMap({
     container: 'map'
 });
 ```
 
-Ask for a new layer on your map from the available [layers] (./documentation.md#layers)
+Now you can add to your map :
+- any [layers] (./documentation.md#layers)
+- any [data] (./documentation.md#data)
+- any [tools] (./documentation.md#tools)
+
+For example, ask for a new layer :
 ```
 map.addMapquest();
 ```
 
-
-### Adding goodies
-- simple classic tile layer
-- shade
-- add shade setting panel
-[demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
-
-### Adding points
-- simple classic tile layer
-- dynamicalData + 3 geojson points
-[demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
-
-### Heatmap
-- simple classic tile layer
-- heatmapData + heatmap geojson url
-[demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
-
-## More [demos] (./demos.md)
-## [Documentation] (./documentation.md)
+# I want to know more !
+- Start to learn how to play with [Maperial] (./documentation.md)
+- Checkout a whole bunch of [Examples] (./demos.md) with code
+- Now you're expert, explore the complete API
+[documentation](http://static.maperial.com/doc)
 

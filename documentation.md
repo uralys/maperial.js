@@ -1,15 +1,24 @@
 
+# Documentation
+
+You'll find here how to use Maperial to create mapsand layers,
+how to manipulate your data and how to add tools to your maps.
+
+To start with your first maps checkout these [examples](./demos.md)
+
+Explore the complete API [documentation](http://static.maperial.com/doc)
+
 # Maperial
-Instanciate one Maperial to build every maps on your web page.
+
+**Instanciate** one Maperial to build every maps on your web page.
 ```
 var maperial = new Maperial();
 ```
-With your Maperial you can now draw Maps and share Data between them.
-
- - maperial.createMap
-  returns a [Map](#maps)
- - maperial.createDynamicalData
- - maperial.createHeatmapData
+##### With your Maperial you can now :
+- Draw [Map](#maps)
+- Create [DynamicalData](#dynamicaldata)
+- Create [HeatmapData](#heatmapdata)
+- Attach [Tools](#tools)
 
 # Maps
 
@@ -26,37 +35,56 @@ the container for the previous MapView.
 <div id="map1"></div>
 ```
 
-## Tile Layers
+# Layers
+
+- You may add any layers to your map, containing either images or data.
+- Use Fusion to merge your layers with custom settings and draw unique maps.
+
+## Image Layers
 
 ### External layers
-- map.addOCMTransport()
-- map.addOCMLandscape()
-- map.addWatercolor()
-- map.addMapquest()
-- map.addSatellite()
+- view.addOCMTransport()
+- view.addOCMLandscape()
+- view.addWatercolor()
+- view.addMapquest()
+- view.addSatellite()
 
 ### Maperial layers
-- map.addShade()
-- map.addEarthLight()
-- map.addAerosol()
-- map.addNDVI()
-- map.addSRTM()
-- map.addSST()
+- view.addEarthLight()
+- view.addAerosol()
+- view.addNDVI()
+- view.addSRTM()
+- view.addSST()
+
+### Custom Layers
+- view.addShade()
+- WMS
 
 ## Data Layers
 Once your Data is created you can attach it to many maps
-- map.addDynamicalLayer(data, options);
-- map.addHeamapLayer(data, options);
+- view.addDynamicalLayer(data, options);
+- view.addHeamapLayer(data, options);
 
-### Tools
-You would need this css to use Tools :
-```
-<link href="http://static.maperial.com/css/maperial.css" rel="stylesheet" type="text/css" />
-```
-- map.addSimpleZoom()
-- map.addMagnifier(magnifier)
+## Fusion
+
+Tell about settings
 
 
 # Data
 ## DynamicalData
 ## HeatmapData
+
+
+# Tools
+You would need this css to use Tools :
+```
+<link href="http://static.maperial.com/css/maperial.css" rel="stylesheet" type="text/css" />
+```
+- Zoom
+- Fusion settings
+- Shade settings
+- Anchors
+- Lens
+- Minifier
+- Magnifier
+
