@@ -41,7 +41,8 @@ the container for the previous map.
 # MapViews
 
 Just a word about MapViews before to continue : the map created just above
-is a MapView, just the same as a Lens, or an Anchor which are equally MapViews.
+is a [MapView](http://static.maperial.com/doc/MapView.html),
+just the same as a Lens, or an Anchor which are equally MapViews.
 
 You may play with Layers on any MapView, so on the following chapter all layers
 are attached to a **view** rather than a *map*.
