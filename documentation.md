@@ -41,7 +41,7 @@ Just a word about MapViews before to continue. The map you see just above
 is a MapView, just as can be a Lens, or an Anchor which are created as Tools.
 
 You may play with Layers on any MapView, so on the following chapter all layers
-are attached to a *view* rather than a **map**.
+are attached to a **view** rather than a *map*.
 
 # Layers
 
