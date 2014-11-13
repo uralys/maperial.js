@@ -1,5 +1,10 @@
 
-# What you'll be able to draw
+# What is Maperial ?
+
+##### Check this [demo](http://jsbin.com/bixatibufogu/10/embed?js,output) to
+get an idea at what you may draft.
+
+@todo demo jsbin :
 - beautiful tile layer
 - shade
 - heatmap
@@ -8,7 +13,7 @@
 - lens
 - fusion params
 - shade params
-[demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
+
 
 # Let me play !
 - Get [started] (#getting-started) with a first map
@@ -53,4 +58,3 @@ map.addMapquest();
 
 ##### Well, you got your first map !
 Check the full example on this [jsbin] (http://jsbin.com/bixatibufogu/10/embed?js,output)
-
