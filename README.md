@@ -12,8 +12,8 @@
 
 # Let me play !
 - Get [started] (#getting-started) with a first map
-- Understand the [Maperial]'s concepts (./documentation.md)
-- Checkout a whole bunch of jsbin [examples] (./demos.md)
+- Understand the [Maperial]'s concepts (./concepts.md)
+- Checkout a whole bunch of jsbin [examples] (./examples.md)
 - And when you're ready, explore the complete API
 [reference](http://static.maperial.com/doc) to draft your own maps.
 
@@ -41,10 +41,10 @@ var map = maperial.createMap({
 ```
 
 Now you can add to your map :
-- any [Layer] (./documentation.md#layers)
-- any other [MapView] (./documentation.md#mapview)
-- any [Data] (./documentation.md#data)
-- any [Tool] (./documentation.md#tools)
+- any [Layer] (./concepts.md#layers)
+- any other [MapView] (./concepts.md#mapview)
+- any [Data] (./concepts.md#data)
+- any [Tool] (./concepts.md#tools)
 
 For example, ask for a new layer :
 ```
@@ -53,3 +53,4 @@ map.addMapquest();
 
 ##### Well, you got your first map !
 Check the full example on this [jsbin] (http://jsbin.com/bixatibufogu/10/embed?js,output)
+
