@@ -18,12 +18,29 @@ Instanciate and use **one** single Maperial to build every map on your web page.
 var maperial = new Maperial();
 ```
 ##### With your maperial you can now :
-- Draw [Maps](#maps)
-- Create [DynamicalData](#dynamicaldata)
-- Create [HeatmapData](#heatmapdata)
+- Draw [MapViews](#mapviews)
+- Share [Data](#data)
 - Attach [Tools](#tools)
 
-# Maps
+# MapViews
+
+Just a word about MapViews before to continue : the map created just above
+is a
+just the same as a Lens, or an Anchor which are equally MapViews.
+
+A [MapView](http://static.maperial.com/doc/MapView.html) may be
+- a [Map](#map)
+- an [Anchor](#anchor)
+- a [Lens](#lens)
+- a [Magnifier](#magnifier)
+- a [Minifier](#minifier)
+
+### Map
+
+A Map is the 'mother' of all other MapView.
+
+Use your *maperial* to create maps, then you'll use each map to create the other
+attached MapViews.
 
 Each Map is linked with an html container :
 ```
@@ -38,17 +55,22 @@ the container for the previous map.
 <div id="map1"></div>
 ```
 
-# MapViews
+##### [API reference] (http://static.maperial.com/doc/Maperial.html#createMap)
 
-Just a word about MapViews before to continue : the map created just above
-is a [MapView](http://static.maperial.com/doc/MapView.html),
-just the same as a Lens, or an Anchor which are equally MapViews.
+### Anchor
+An Anchor the exact same thing as a [Map](#map), but you don't attach it
+to a container but place it inside a Map instead.
 
-You may play with Layers on any MapView, so on the following chapter all layers
-are attached to a **view** rather than a *map*.
+#####[API reference](http://static.maperial.com/doc/MapView.html#createAnchor)
 
-Stick with this map for now, called **view** for now on,
-and we'll play with the other MapViews later.
+### Lens
+#####[API reference](http://static.maperial.com/doc/MapView.html#createLens)
+
+### Magnifier
+#####[API reference](http://static.maperial.com/doc/MapView.html#createMagnifier)
+
+### Minifier
+#####[API reference](http://static.maperial.com/doc/MapView.html#createMinifier)
 
 # Layers
 
@@ -120,15 +142,30 @@ allows to add/remove points with custom properties.
 allows to draw heatmaps with custom colorbars.
 
 # Tools
-You would need this css to use Tools :
+
+#### Simple Zoom
+You can add +/- buttons in a container, and attach this tool
+to a set of MapViews
+```
+maperial.addSimpleZoom([views])
+```
+
+##### more
+- [API reference] (http://static.maperial.com/doc/Maperial.html#addSimpleZoom)
+- Require a [theme](#theme) on your page
+
+#### Slider Zoom
+todo : (1-18 slider and +/- buttons)
+  maperial.addSliderZoom([views])
+
+#### Fusion settings
+todo
+
+#### Shade settings
+todo
+
+#### Theme
+Most of the tools require a default theme, provided by this css :
 ```
 <link href="http://static.maperial.com/css/maperial.css" rel="stylesheet" type="text/css" />
 ```
-- Zoom
-- Fusion settings
-- Shade settings
-- Anchors
-- Lens
-- Minifier
-- Magnifier
-
