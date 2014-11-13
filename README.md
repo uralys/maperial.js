@@ -4,8 +4,9 @@
 As of today Maperial is a free javascript API to create maps for your web
 applications.
 
-The second aim is to build a web tool using to this API to help other guys
-who are not that comfortable with code.
+The next aim will be to build a web tool using to this API to help other guys
+who are not that comfortable with code draft their maps.
+And who knows, you may want to build your own ;)
 
 For now we stick on enhancing this API and hope to see a community
 gathering around, which would mean we are on the right path to provide a new
