@@ -257,9 +257,15 @@ Maperial.prototype.expose = function () {
         document.querySelector("body").appendChild(hud);
     }.bind(this);
 
-    /*
+    /**
+     * @function
+     * @param {object} options
+     * @param {string} options.container The html div id where to attach
+     *                                  this tool.
+     * @param {array} options.views Attach controls to this array of MapViews.
+     *                              (Note : Does not work with Anchors.)
+     *
      * TODO : container should be optional : default 2 buttons on top left
-     * TODO doc
      */
     this.addSimpleZoom = function (options) {
         new SimpleZoom(options);
