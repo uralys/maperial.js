@@ -10,9 +10,12 @@
 - shade params
 [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)
 
-# Technical documentation
-
-Explore the complete API [documentation](http://static.maperial.com/doc)
+# Let me play !
+- Get [started] (#getting-started) with a first map
+- Understand the [Maperial]'s concepts (./documentation.md)
+- Checkout a whole bunch of jsbin [examples] (./demos.md)
+- And when you're ready, explore the complete API
+[reference](http://static.maperial.com/doc) to draft your own maps.
 
 # Getting started
 First of all, add the js script on your page
@@ -38,9 +41,10 @@ var map = maperial.createMap({
 ```
 
 Now you can add to your map :
-- any [layers] (./documentation.md#layers)
-- any [data] (./documentation.md#data)
-- any [tools] (./documentation.md#tools)
+- any [Layer] (./documentation.md#layers)
+- any other [MapView] (./documentation.md#mapview)
+- any [Data] (./documentation.md#data)
+- any [Tool] (./documentation.md#tools)
 
 For example, ask for a new layer :
 ```
@@ -49,10 +53,3 @@ map.addMapquest();
 
 ##### Well, you got your first map !
 Check the full example on this [jsbin] (http://jsbin.com/bixatibufogu/10/embed?js,output)
-
-# I want to know more !
-- Start to learn how to play with [Maperial] (./documentation.md)
-- Checkout a whole bunch of jsbin [examples] (./demos.md)
-- When you're ready, explore the complete API
-[documentation](http://static.maperial.com/doc) to draft your own maps.
-
