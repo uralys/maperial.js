@@ -30,10 +30,10 @@ to get an idea about what you may draft.
 
 # Let me play !
 - Get [started] (#getting-started) with a first map
-- Understand the [Maperial](./concepts.md)'s concepts
-- Checkout a whole bunch of jsbin [examples] (./examples.md)
-- And when you're ready, explore the complete API
-[reference](http://static.maperial.com/doc) to draft your own maps.
+- Understand [Maperial](./concepts.md)'s concepts
+- Check out a whole bunch of jsbin [examples] (./examples.md)
+- Explore the complete API [reference](http://static.maperial.com/doc)
+to draft your own maps.
 
 # Getting started
 First of all, add the js script on your page
