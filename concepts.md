@@ -4,7 +4,7 @@
 You'll find here how to use Maperial to create maps and layers,
 how to manipulate your data and how to add tools to your maps.
 
-You may want to check some [examples](./demos.md) before anything.
+You may want to check some [examples](./examples.md) before anything.
 
 Once you're ready to go further, explore the complete
 API [documentation](http://static.maperial.com/doc).
@@ -24,11 +24,7 @@ var maperial = new Maperial();
 
 # MapViews
 
-Just a word about MapViews before to continue : the map created just above
-is a
-just the same as a Lens, or an Anchor which are equally MapViews.
-
-A [MapView](http://static.maperial.com/doc/MapView.html) may be
+There are 5 types of [MapView](http://static.maperial.com/doc/MapView.html) :
 - a [Map](#map)
 - an [Anchor](#anchor)
 - a [Lens](#lens)
@@ -37,10 +33,10 @@ A [MapView](http://static.maperial.com/doc/MapView.html) may be
 
 ### Map
 
-A Map is the 'mother' of all other MapView.
+A Map is the parent of all other types of MapView.
 
-Use your *maperial* to create maps, then you'll use each map to create the other
-attached MapViews.
+Use your *maperial* to create maps, then you will be able to attach every other
+type of MapView to a Map.
 
 Each Map is linked with an html container :
 ```
@@ -58,9 +54,14 @@ the container for the previous map.
 ##### [API reference] (http://static.maperial.com/doc/Maperial.html#createMap)
 
 ### Anchor
-An Anchor the exact same thing as a [Map](#map), but you don't attach it
-to a container but place it inside a Map instead.
+An Anchor the exact same thing as a [Map](#map), but instead of attaching it
+to a html container, you place it inside a Map.
 
+```
+var anchor = map.createAnchor();
+```
+
+You can add layers to your Anchor exactly as you would do with a Map.
 #####[API reference](http://static.maperial.com/doc/MapView.html#createAnchor)
 
 ### Lens
