@@ -1,8 +1,21 @@
 
 # What is Maperial ?
 
-##### Check this [demo](http://jsbin.com/bixatibufogu/10/embed?js,output) to
-get an idea at what you may draft.
+As of today Maperial is a free javascript API to create maps for your web
+applications.
+
+The second aim is to build a web tool using to this API to help other guys
+who are not that comfortable with code.
+
+For now we stick on enhancing this API and hope to see a community
+gathering around, which would mean we are on the right path to provide a new
+map tool.
+
+So enjoy drafting and sharing your maps, and don't forget to let us know
+what you miss to improve this API !
+
+**Check this [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)**
+to get an idea about what you may draft.
 
 @todo demo jsbin :
 - beautiful tile layer
@@ -13,7 +26,6 @@ get an idea at what you may draft.
 - lens
 - fusion params
 - shade params
-
 
 # Let me play !
 - Get [started] (#getting-started) with a first map
