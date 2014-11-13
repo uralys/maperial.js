@@ -51,7 +51,7 @@ the container for the previous map.
 <div id="map1"></div>
 ```
 
-##### [API reference] (http://static.maperial.com/doc/Maperial.html#createMap)
+#####  Read [more] (http://static.maperial.com/doc/Maperial.html#createMap)
 
 ### Anchor
 An Anchor the exact same thing as a [Map](#map), but instead of attaching it
@@ -62,16 +62,16 @@ var anchor = map.createAnchor();
 ```
 
 You can add layers to your Anchor exactly as you would do with a Map.
-#####[API reference](http://static.maperial.com/doc/MapView.html#createAnchor)
+##### Read [more](http://static.maperial.com/doc/MapView.html#createAnchor)
 
 ### Lens
-#####[API reference](http://static.maperial.com/doc/MapView.html#createLens)
+##### Read [more](http://static.maperial.com/doc/MapView.html#createLens)
 
 ### Magnifier
-#####[API reference](http://static.maperial.com/doc/MapView.html#createMagnifier)
+#####Read [more](http://static.maperial.com/doc/MapView.html#createMagnifier)
 
 ### Minifier
-#####[API reference](http://static.maperial.com/doc/MapView.html#createMinifier)
+##### Read [more](http://static.maperial.com/doc/MapView.html#createMinifier)
 
 # Layers
 
@@ -152,7 +152,7 @@ maperial.addSimpleZoom([views])
 ```
 
 ##### more
-- [API reference] (http://static.maperial.com/doc/Maperial.html#addSimpleZoom)
+-  Read [more] (http://static.maperial.com/doc/Maperial.html#addSimpleZoom)
 - Require a [theme](#theme) on your page
 
 #### Slider Zoom
