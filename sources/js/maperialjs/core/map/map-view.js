@@ -17,7 +17,7 @@ var Context = require('./context.js'),
  * A MapView is the object you get when you create :
  * <ul>
  * <li>a [Map]{@link Maperial#createMap}</li>
- * <li>an Anchor</li>
+ * <li>an [Anchor]{@link #addAnchor}</li>
  * <li>a Minifier</li>
  * <li>a Magnifier</li>
  * <li>a Lens</li>
@@ -37,7 +37,7 @@ function MapView(maperial, options) {
 MapView.prototype.expose = function () {
 
     /*---------------------*/
-    // Images
+    // Image Layers
 
     /**
      * @function
@@ -72,6 +72,16 @@ MapView.prototype.expose = function () {
      */
     this.addSatellite = function () {
         return this.addImageLayer(Source.IMAGES_MAPQUEST_SATELLITE);
+    }.bind(this);
+
+    /*---------------------*/
+    /* Maperial layers */
+
+    /**
+     * @function
+     */
+    this.addShade = function () {
+        return this.addShadeLayer();
     }.bind(this);
 
     /**
@@ -110,13 +120,34 @@ MapView.prototype.expose = function () {
     }.bind(this);
 
     /*---------------------*/
-    /* Maperial layers */
+    /* Child MapViews */
 
     /**
      * @function
      */
-    this.addShade = function () {
-        return this.addShadeLayer();
+    this.addAnchor = function (options) {
+        //@todo
+    }.bind(this);
+
+    /**
+     * @function
+     */
+    this.addLens = function (options) {
+        //@todo
+    }.bind(this);
+
+    /**
+     * @function
+     */
+    this.addMinifier = function (options) {
+        //@todo
+    }.bind(this);
+
+    /**
+     * @function
+     */
+    this.addMagnifier = function (options) {
+        //@todo
     }.bind(this);
 
 };
