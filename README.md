@@ -8,12 +8,8 @@ For now we stick on enhancing this API and hope to see a community
 gathering around, which would mean we are on the right path to provide a new
 map tool.
 
-The next goal could be to build a web tool using to this API to help other guys
-who are not that comfortable with code drafting their maps.
-Let us know if you start building your own client !
-
-Enjoy drafting and sharing your maps, and don't forget to let us know
-what you miss to improve this API.
+Enjoy drafting and sharing your maps, and don't forget
+to let us know your feedback !
 
 **Check this [demo](http://jsbin.com/bixatibufogu/10/embed?js,output)**
 to get an idea about what you may draft.
