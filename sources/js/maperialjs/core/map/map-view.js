@@ -309,16 +309,15 @@ MapView.prototype.addOSMLayer = function (styleId) {
 //--------------------------------------------------------------------------
 
 MapView.prototype.prepareCamera = function () {
-
-    this.on("zoom-in", function () {
-        if (this.options.zoomMax > this.context.zoom) {
+    this.on('zoom-in', function () {
+        if ((this.options.zoomMax || 18) > this.context.zoom) {
             this.zoomCanvas(2);
             this.context.zoom++;
         }
     }.bind(this));
 
-    this.on("zoom-out", function () {
-        if (this.options.zoomMin < this.context.zoom) {
+    this.on('zoom-out', function () {
+        if ((this.options.zoomMin || 1) < this.context.zoom) {
             this.zoomCanvas(0.5);
             this.context.zoom--;
         }
@@ -331,13 +330,13 @@ MapView.prototype.prepareCamera = function () {
 MapView.prototype.zoomCanvas = function (scaleTo) {
 
     var canvas = cloneCanvas(this.canvas),
-        div = document.createElement("div"),
+        div = document.createElement('div'),
         container = this.options.container;
 
-    div.className = "maperial-zoomer";
-    div.style.position = "absolute";
-    div.style.top = "0";
-    div.style.overflow = "hidden";
+    div.className = 'maperial-zoomer';
+    div.style.position = 'absolute';
+    div.style.top = '0';
+    div.style.overflow = 'hidden';
 
     div.appendChild(canvas);
     container.appendChild(div);
