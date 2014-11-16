@@ -163,7 +163,7 @@ Maperial.prototype.expose = function () {
 
         if ('string' === typeof (options)) {
             options = {
-                container : options
+                container: options
             }
         }
 

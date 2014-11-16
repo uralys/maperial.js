@@ -12,23 +12,10 @@
 <script type="text/javascript" src="http://code.createjs.com/tweenjs-0.5.1.min.js"></script>
 <script type="text/javascript" src="//static.maperial.localhost/js/maperial.js"></script>
 <script type="text/javascript">
-    (function () {
+    var maperial = new Maperial();
+    var map = maperial.createMap('map');
 
-        var maperial = new Maperial();
-
-        //--------------------------------------------
-
-        var map = maperial.createView({
-            container: "map",
-        });
-
-        //--------------------------------------------
-
-        map.addWaterColor();
-        map.addOCMTransport();
-
-        //--------------------------------------------
-    })();
+    map.addOCMTransport();
 </script>
 
 
