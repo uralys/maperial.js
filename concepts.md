@@ -79,6 +79,17 @@ Use options to set it fixed or draggable, its size, position etc...
 Read [more](http://static.maperial.com/doc/MapView.html#addLens)...
 
 ### Magnifier
+A Magnifier allows to highlight a your map using the s of map using a different zoom.
+
+```
+var lens = map.addLens(options);
+```
+
+You can add layers to your Lens exactly as you would do with any MapView,
+or don't add any to use the Map ones.
+
+Use options to set it fixed or draggable, its size, position etc...
+
 Read [more](http://static.maperial.com/doc/MapView.html#addMagnifier)...
 
 ### Minifier
