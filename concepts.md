@@ -54,24 +54,35 @@ the container for the previous map.
 Read [more] (http://static.maperial.com/doc/Maperial.html#createMap)...
 
 ### Anchor
-An Anchor the exact same thing as a [Map](#map), but instead of attaching it
+An Anchor is the exact same thing as a [Map](#map), but instead of attaching it
 to a html container, you place it inside a Map.
 
 ```
-var anchor = map.createAnchor();
+var anchor = map.addAnchor(options);
 ```
 
-You can add layers to your Anchor exactly as you would do with a Map.
-Read [more](http://static.maperial.com/doc/MapView.html#createAnchor)...
+You can add layers to your Anchor exactly as you would do with any MapView.
+Read [more](http://static.maperial.com/doc/MapView.html#addAnchor)...
 
 ### Lens
-Read [more](http://static.maperial.com/doc/MapView.html#createLens)...
+A Lens allows to highlight a part of map using a different zoom.
+
+```
+var lens = map.addLens(options);
+```
+
+You can add layers to your Lens exactly as you would do with any MapView,
+or don't add any to use the Map ones.
+
+Use options to set it fixed or draggable, its size, position etc...
+
+Read [more](http://static.maperial.com/doc/MapView.html#addLens)...
 
 ### Magnifier
-Read [more](http://static.maperial.com/doc/MapView.html#createMagnifier)...
+Read [more](http://static.maperial.com/doc/MapView.html#addMagnifier)...
 
 ### Minifier
-Read [more](http://static.maperial.com/doc/MapView.html#createMinifier)...
+Read [more](http://static.maperial.com/doc/MapView.html#addMinifier)...
 
 # Layers
 
@@ -92,19 +103,16 @@ and draw unique maps.
 - view.addSatellite()
 
 #### Maperial layers
+- view.addShade()
 - view.addEarthLight()
 - view.addAerosol()
 - view.addNDVI()
 - view.addSRTM()
 - view.addSST()
+- todo : maperialOSM
 
 #### WMS Layers
 - todo : few examples
-
-#### Custom Layers
-- view.addShade()
-- view.addSRTM()
-- todo : maperialOSM
 
 ## Data Layers
 Before to add data layers, you need to create your [Data](#data) first.
