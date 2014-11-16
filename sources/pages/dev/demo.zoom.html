@@ -7,9 +7,7 @@
 </head>
 
 <body>
-    <div id="map" class="fullscreen-map">
-        <div id="zoom"></div>
-    </div>
+    <div id="map" class="fullscreen-map"></div>
 </body>
 
 <script type="text/javascript" src="//static.maperial.localhost/js/maperial.js"></script>
@@ -20,19 +18,12 @@
 
         //-----------------------------------------------//
 
-        var map = maperial.createMap({
-            container: 'map',
-            latitude: 48.693417,
-            longitude: -3.747378,
-            defaultZoom: 12
-        });
+        var map = maperial.createMap('map');
+        map.addOCMLandscape();
 
         //-----------------------------------------------//
 
-        map.addOCMLandscape();
-
         maperial.addSimpleZoom({
-            container: 'zoom',
             views: [map]
         });
 

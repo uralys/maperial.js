@@ -6,11 +6,17 @@ var CoordinateSystem = require('../../libs/coordinate-system.js');
 
 function SimpleZoom(options) {
 
-    var container = document.getElementById(options.container),
-        views = options.views;
-
+    var container = null;
+    var views = options.views;
     var zoomIn = document.createElement('div');
     var zoomOut = document.createElement('div');
+
+    if (options.container) {
+        container = document.getElementById(options.container);
+    } else {
+        container = document.createElement('div');
+        views[0].container.appendChild(container);
+    }
 
     zoomIn.className = "maperial-simple-zoom-in";
     zoomOut.className = "maperial-simple-zoom-out";

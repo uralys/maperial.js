@@ -165,6 +165,7 @@ MapView.prototype.prepare = function (maperial, options) {
     this.maperial = maperial;
     this.options = options;
     this.id = utils.generateUID() + "_" + this.options.container.id;
+    this.container = options.container;
     this.type = options.type;
 
     //-------------------------------------------------------------
@@ -317,7 +318,7 @@ MapView.prototype.prepareCamera = function () {
     }.bind(this));
 
     this.on('zoom-out', function () {
-        if ((this.options.zoomMin || 1) < this.context.zoom) {
+        if ((this.options.zoomMin || 2) < this.context.zoom) {
             this.zoomCanvas(0.5);
             this.context.zoom--;
         }
