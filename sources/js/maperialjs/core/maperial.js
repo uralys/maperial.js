@@ -157,10 +157,14 @@ Maperial.prototype.expose = function () {
         //-------------------------------------------
         // Checking options
 
-        utils.prepareOptions(options, "container");
-
         if (!options) {
             console.log("Wrong call to createMap. Check the options");
+        }
+
+        if ('string' === typeof (options)) {
+            options = {
+                container : options
+            }
         }
 
         //-------------------------------------------
