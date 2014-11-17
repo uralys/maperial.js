@@ -11,7 +11,7 @@ var MapView = require('./map/map-view.js'),
     HeatmapData = require('./models/data/heatmap-data.js'),
     Source = require('./models/source.js'),
     utils = require('../../libs/utils.js'),
-    SimpleZoom = require('../extensions/hud/simple-zoom.js'),
+    SimpleZoom = require('../tools/simple-zoom.js'),
     environment = require('../../environment/config.js');
 
 //-----------------------------------------------------------------
@@ -38,25 +38,6 @@ function Maperial(options) {
     /* expose maperial api */
     this.expose();
 }
-
-//-----------------------------------------------------------------
-
-Maperial.prototype.refreshSharedItems = function () {
-    console.log("Refreshing shared items");
-
-    // cache containing all previously loaded colorbars
-    Maperial.colorbars = Maperial.colorbars || {};
-
-    Maperial.sourceManager = Maperial.sourceManager || new SourceManager();
-    Maperial.styleManager = Maperial.styleManager || new StyleManager();
-    Maperial.colorbarManager = Maperial.colorbarManager || new ColorbarManager();
-
-    window.addEventListener("resize", function () {
-        this.views.forEach(function (view) {
-            view.refresh();
-        })
-    }.bind(this));
-};
 
 //-----------------------------------------------------------------
 //Views types
@@ -117,6 +98,34 @@ Maperial.AlphaBlend = "AlphaBlend";
 Maperial.XBlend = "XBlend";
 
 Maperial.globalDataCpt = 0;
+
+//------------------------------------------------------------------------------
+// Hidden
+//------------------------------------------------------------------------------
+
+Maperial.prototype.refreshSharedItems = function () {
+    console.log("Refreshing shared items");
+
+    // cache containing all previously loaded colorbars
+    Maperial.colorbars = Maperial.colorbars || {};
+
+    Maperial.sourceManager = Maperial.sourceManager || new SourceManager();
+    Maperial.styleManager = Maperial.styleManager || new StyleManager();
+    Maperial.colorbarManager = Maperial.colorbarManager || new ColorbarManager();
+
+    window.addEventListener("resize", function () {
+        this.views.forEach(function (view) {
+            view.refresh();
+        })
+    }.bind(this));
+};
+
+Maperial.prototype.addMapView = function (options) {
+    var view = new MapView(this, options);
+    this.views.push(view);
+
+    return view;
+};
 
 //------------------------------------------------------------------------------
 // API
@@ -197,10 +206,7 @@ Maperial.prototype.expose = function () {
         //-------------------------------------------
         // Proceed
 
-        var view = new MapView(this, options);
-        this.views.push(view);
-
-        return view;
+        return this.addMapView(options);
     };
 
     /**

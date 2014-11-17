@@ -124,9 +124,37 @@ MapView.prototype.expose = function () {
 
     /**
      * @function
+     * @param {object} options
+     * @param {float} options.width The anchor width in pixels.
+     *                              (Default : map.width/2)
+     * @param {float} options.height The anchor height in pixels.
+     *                              (Default : map.height/2)
+     * @param {float} options.top The anchor top gap inside the map in pixels.
+     *                              (Default : 0)
+     * @param {float} options.left The anchor left gap inside the map in pixels.
+     *                              (Default : 0)
+     *
      */
     this.addAnchor = function (options) {
-        //@todo
+        options = options || {};
+        options.type = Maperial.ANCHOR;
+
+        options.container = document.createElement('div');
+        options.container.style.position = 'absolute';
+        this.container.appendChild(options.container);
+
+        var width = (options.width || this.width / 2) + 'px';
+        var height = (options.height || this.height / 2) + 'px';
+        var left = (options.left || 10) + 'px';
+        var top = (options.top || 10) + 'px';
+
+        options.container.style.width = width;
+        options.container.style.height = height;
+        options.container.style.top = top;
+        options.container.style.left = left;
+
+        var anchor = this.maperial.addMapView(options);
+        return anchor;
     }.bind(this);
 
     /**
@@ -203,7 +231,8 @@ MapView.prototype.prepare = function (maperial, options) {
 
     //-------------------------------------------------------------
 
-    this.shaders = [Maperial.AlphaClip,
+    this.shaders = [
+        Maperial.AlphaClip,
         Maperial.AlphaBlend,
         Maperial.XBlend
     ];
@@ -214,7 +243,6 @@ MapView.prototype.prepare = function (maperial, options) {
 //--------------------------------------------------------------------------
 
 MapView.prototype.prepareView = function () {
-
     this.canvas = document.createElement('canvas');
     this.canvas.className = this.type;
     this.options.container.appendChild(this.canvas);
