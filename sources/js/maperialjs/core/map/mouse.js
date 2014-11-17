@@ -25,20 +25,22 @@ MouseListener.prototype.initListeners = function () {
     case Maperial.ANCHOR:
 
         /* prepare the hammer listening on the canvas */
-        this.hammer = new Hammer(this.mapView.canvas);
+        var hammertime = new Hammer(this.mapView.canvas);
+        hammertime.on('pan', this.drag.bind(this));
 
         /* link every function on the listener to be able to
          * call 'off' on them*/
-        this.hammer.drag = this.drag.bind(this);
-        this.hammer.dragstart = this.dragstart.bind(this);
-        this.hammer.dragend = this.dragend.bind(this);
-        this.hammer.tap = this.tap.bind(this);
+
+        // this.hammer.drag = this.drag.bind(this);
+        // this.hammer.dragstart = this.dragstart.bind(this);
+        // this.hammer.dragend = this.dragend.bind(this);
+        // this.hammer.tap = this.tap.bind(this);
 
         /* turn the hammer listening on */
-        this.hammer.on('tap', this.hammer.tap);
-        this.hammer.on('drag', this.hammer.drag);
-        this.hammer.on('dragstart', this.hammer.dragstart);
-        this.hammer.on('dragend', this.hammer.dragend);
+        // this.hammer.on('tap', this.hammer.tap);
+        // this.hammer.on('panmove', this.hammer.drag);
+        // this.hammer.on('panstart', this.hammer.dragstart);
+        // this.hammer.on('panend', this.hammer.dragend);
 
         //this.mapView.canvas.addEventListener('click', this.down        .bind(this));
 

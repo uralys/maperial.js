@@ -21,14 +21,14 @@ Utils.prototype.dateTime = function () {
     return now.getFullYear() + "-" + this.zeroPad(now.getMonth() + 1, 2) + "-" + this.zeroPad(now.getDate(), 2);
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 /*
  */
 Utils.prototype.replaceAll = function (chain, value, replacement) {
     return chain.replace(new RegExp(value, 'g'), replacement);
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Utils.prototype.rgbToHex = function (r, g, b) {
     if (r > 255 || g > 255 || b > 255)
@@ -36,7 +36,7 @@ Utils.prototype.rgbToHex = function (r, g, b) {
     return ((r << 16) | (g << 8) | b).toString(16);
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 /**
  * bytes = 36550
@@ -54,7 +54,7 @@ Utils.prototype.formatFileSize = function (bytes) {
     }
     return (bytes / 1000).toFixed(2) + ' KB';
 };
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 /**
  * timestamp = 1355342389711
@@ -73,7 +73,7 @@ Utils.prototype.formatDate = function (timestamp) {
     return day + "/" + month + "/" + year;
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 //return 1->i
 Utils.prototype.random1 = function (i) {
@@ -85,7 +85,7 @@ Utils.prototype.random0 = function (i) {
     return Math.floor(Math.random() * (i + 1));
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Utils.prototype.generateUID = function () {
     var timestamp = new Date().getTime().toString(16);
@@ -94,7 +94,7 @@ Utils.prototype.generateUID = function () {
     return timestamp + random;
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Utils.prototype.popup = function (url, title, width, height) {
     var left = (screen.width / 2) - (width / 2);
@@ -102,13 +102,13 @@ Utils.prototype.popup = function (url, title, width, height) {
     return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Utils.prototype.isObject = function (stuff) {
     return Object.prototype.toString.call(stuff) === '[object Object]';
 }
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Utils.prototype.styleThumbURL = function (styleUID, size) {
     return this.thumbURL(styleUID, "style", size);
@@ -118,7 +118,7 @@ Utils.prototype.colorbarThumbURL = function (colorbarUID) {
     return this.thumbURL(colorbarUID, "colorbar");
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Utils.prototype.thumbURL = function (uid, type, size) {
     if (uid == undefined || uid == null)
@@ -140,7 +140,7 @@ Utils.prototype.thumbURL = function (uid, type, size) {
     return url + "/" + uid + size + ".png";
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Utils.prototype.getSourceThumb = function (layer) {
 
@@ -167,13 +167,31 @@ Utils.prototype.getSourceThumb = function (layer) {
     }
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Utils.prototype.getPoint = function (event) {
+    //not gesture anymore ?
+    debugger
     return {
         x: event.gesture.center.clientX,
         y: event.gesture.center.clientY
     };
+};
+
+Utils.prototype.centerInPixels = function (context) {
+    return context.coordS.MetersToPixels(
+        context.centerM.x,
+        context.centerM.y,
+        context.zoom
+    );
+};
+
+Utils.prototype.pointInMeters = function (pointInPixels, context) {
+    return context.coordS.PixelsToMeters(
+        pointInPixels.x,
+        pointInPixels.y,
+        context.zoom
+    );
 };
 
 /*
@@ -185,25 +203,22 @@ Utils.prototype.converToMeters = function (canvas, context, point) {
     var w = canvas.width,
         h = canvas.height,
 
-        centerP = context.coordS.MetersToPixels(
-            context.centerM.x,
-            context.centerM.y,
-            context.zoom
-        ),
+        centerP = this.centerInPixels(context),
 
         shiftX = w / 2 - point.x,
         shiftY = h / 2 - point.y,
 
-        meters = context.coordS.PixelsToMeters(
-            centerP.x - shiftX,
-            centerP.y + shiftY,
-            context.zoom
-        );
+        newCenterP = {
+            x : centerP.x - shiftX,
+            y : centerP.y + shiftY
+        }
+
+        meters = this.pointInMeters(newCenterP, context);
 
     return meters;
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Utils.prototype.randomRotate = function (element) {
 
@@ -223,7 +238,7 @@ Utils.prototype.randomRotate = function (element) {
 
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Utils.prototype.prepareOptions = function (options, mainParam) {
 
@@ -242,7 +257,7 @@ Utils.prototype.prepareOptions = function (options, mainParam) {
         return options;
 };
 
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 //Utils.prototype.cloneJsonObject = function (jsonObject) {
 //   return $.parseJSON(JSON.stringify(jsonObject));

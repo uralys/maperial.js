@@ -272,15 +272,15 @@ MapView.prototype.prepare = function (maperial, options) {
 
 MapView.prototype.prepareView = function () {
     this.canvas = document.createElement('canvas');
-    this.canvas.className = this.type;
-    this.options.container.appendChild(this.canvas);
+    this.container.classList.add(this.type);
+    this.container.appendChild(this.canvas);
 
     this.refresh();
 };
 
 MapView.prototype.refresh = function () {
-    this.canvas.width = this.width = this.options.container.clientWidth;
-    this.canvas.height = this.height = this.options.container.clientHeight;
+    this.canvas.width = this.width = this.container.clientWidth;
+    this.canvas.height = this.height = this.container.clientHeight;
 };
 
 //--------------------------------------------------------------------------
@@ -416,9 +416,7 @@ MapView.prototype.prepareCamera = function () {
 
 //--------------------------------------------------------------------------
 
-// TODO
 MapView.prototype.refreshCamera = function (event) {
-    console.log(this.type, this.id, 'refreshCamera from', event.currentTarget);
 
     switch (this.type) {
         // case Maperial.MINIFIER:
@@ -433,20 +431,28 @@ MapView.prototype.refreshCamera = function (event) {
         case Maperial.LENS:
         case Maperial.ANCHOR:
 
-            var initiator = event.currentTarget;
+            var initiator = event.currentTarget
+                                 .container
+                                 .getBoundingClientRect();
 
-            var viewPosition = panel.position();
+            var my = this.container.getBoundingClientRect();
 
-            var viewCenterX = viewPosition.left + panel.width() / 2
-            var viewCenterY = viewPosition.top + panel.height() / 2
+            var centerX = my.left + my.width / 2;
+            var centerY = my.top + my.height / 2;
 
-            var initiatorCenterX = panelTriggeringPosition.left + panelTriggering.width() / 2
-            var initiatorCenterY = panelTriggeringPosition.top + panelTriggering.height() / 2
+            var initiatorCenterX = initiator.left + initiator.width / 2;
+            var initiatorCenterY = initiator.top + initiator.height / 2;
 
-            var viewTriggeringCenterP = this.maperial.getCenterP(viewTriggering)
-            var lensCenterP = new Point(viewTriggeringCenterP.x - initiatorCenterX + viewCenterX, viewTriggeringCenterP.y + initiatorCenterY - viewCenterY);
+            var initiatorCenterP = utils.centerInPixels(initiator.context);
+            var newCenterP = new Point(
+                initiatorCenterP.x - initiatorCenterX + centerX,
+                initiatorCenterP.y + initiatorCenterY - centerY
+            );
 
-            this.context.centerM = this.context.coordS.PixelsToMeters(lensCenterP.x, lensCenterP.y, this.maperial.getZoom(this.map));
+            this.context.centerM = utils.pointInMeters(
+                newCenterP,
+                this.context
+            );
 
             break;
     }
@@ -460,7 +466,7 @@ MapView.prototype.zoomCanvas = function (scaleTo) {
 
     var canvas = cloneCanvas(this.canvas),
         div = document.createElement('div'),
-        container = this.options.container;
+        container = this.container;
 
     div.className = 'maperial-zoomer';
     div.style.position = 'absolute';
