@@ -145,7 +145,7 @@ Use custom settings to fuse 2 layers
 - XBlend
 
 You can allow users to change your settings manually by including the
-Fusion Settings [tool](fusion-settings)
+Fusion Settings [tool](#fusion-settings)
 
 # Data
 A Data may be shared by many [data layers](#data-layers).
