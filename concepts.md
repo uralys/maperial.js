@@ -31,6 +31,9 @@ There are 5 types of [MapView](http://static.maperial.com/doc/MapView.html) :
 - a [Magnifier](#magnifier)
 - a [Minifier](#minifier)
 
+If you don't specify layers on a child MapView, it will use the same ones as
+the parent MapView.
+
 ### Map
 
 A Map is the parent of all other types of MapView.
@@ -72,9 +75,6 @@ A Lens allows to highlight a part of map using a different zoom.
 var lens = map.addLens(options);
 ```
 
-You can add layers to your Lens exactly as you would do with any MapView,
-or don't add any to use the Map ones.
-
 Use options to set it fixed or draggable, its size, position etc...
 
 Read [more](http://static.maperial.com/doc/MapView.html#addLens)...
@@ -85,9 +85,6 @@ A Magnifier is a view to zoom in your map, with the same center.
 ```
 var magnifier = map.addMagnifier(options);
 ```
-
-You can add layers to your Magnifier exactly as you would do with any MapView,
-or don't add any to use the Map ones.
 
 Use options to set it fixed or draggable, its size, position etc...
 
@@ -100,17 +97,13 @@ A Minifier is a view to zoom out your map, with the same center.
 var minifier = map.addMinifier(options);
 ```
 
-You can add layers to your Minifier exactly as you would do with any MapView,
-or don't add any to use the Map ones.
-
 Use options to set it fixed or draggable, its size, position etc...
 Read [more](http://static.maperial.com/doc/MapView.html#addMinifier)...
 
 # Layers
 
-- You may add any layers to a [MapView](#mapviews), containing either
-[Images](#image-layers)
-or [Data](#data-layers).
+- You may add and remove any layers to any [MapView](#mapviews).
+- Each Layer may contain either [Images](#image-layers) or [Data](#data-layers).
 - Use [Fusion](#fusion) to merge your layers with custom settings
 and draw unique maps.
 
