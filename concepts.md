@@ -61,6 +61,7 @@ the container for the previous map.
 ```
 
 Read [more] (http://static.maperial.com/doc/Maperial.html#createMap)...
+about the options
 
 
 
@@ -76,6 +77,8 @@ var anchor = map.addAnchor(options);
 - May use a [theme](#theme)
 - Example : @todo jsbin + link
 - Read [more] (http://static.maperial.com/doc/Maperial.html#addAnchor)
+about the options
+
 
 
 
@@ -93,6 +96,7 @@ Use options to set it fixed or draggable, its size, position etc...
 - Require a [theme](#theme)
 - Example : @todo jsbin + link
 - Read [more] (http://static.maperial.com/doc/Maperial.html#addLens)
+about the options
 
 
 
@@ -109,6 +113,7 @@ Use options to set it fixed or draggable, its size, position etc...
 - Require a [theme](#theme)
 - Example : @todo jsbin + link
 - Read [more] (http://static.maperial.com/doc/Maperial.html#addMagnifier)
+about the options
 
 
 
@@ -121,7 +126,11 @@ var minifier = map.addMinifier(options);
 ```
 
 Use options to set it fixed or draggable, its size, position etc...
-Read [more](http://static.maperial.com/doc/MapView.html#addMinifier)...
+
+- Require a [theme](#theme)
+- Example : @todo jsbin + link
+- Read [more] (http://static.maperial.com/doc/Maperial.html#addMinifier)
+about the options
 
 
 
