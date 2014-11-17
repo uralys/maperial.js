@@ -65,6 +65,7 @@ You can add layers to your Anchor exactly as you would do with any MapView.
 Read [more](http://static.maperial.com/doc/MapView.html#addAnchor)...
 
 ### Lens
+A Lens is a view to zoom in your map, centered on where the Lens is placed.
 A Lens allows to highlight a part of map using a different zoom.
 
 ```
@@ -79,13 +80,13 @@ Use options to set it fixed or draggable, its size, position etc...
 Read [more](http://static.maperial.com/doc/MapView.html#addLens)...
 
 ### Magnifier
-A Magnifier allows to highlight a your map using the s of map using a different zoom.
+A Magnifier is a view to zoom in your map, with the same center.
 
 ```
-var lens = map.addLens(options);
+var magnifier = map.addMagnifier(options);
 ```
 
-You can add layers to your Lens exactly as you would do with any MapView,
+You can add layers to your Magnifier exactly as you would do with any MapView,
 or don't add any to use the Map ones.
 
 Use options to set it fixed or draggable, its size, position etc...
@@ -93,6 +94,16 @@ Use options to set it fixed or draggable, its size, position etc...
 Read [more](http://static.maperial.com/doc/MapView.html#addMagnifier)...
 
 ### Minifier
+A Minifier is a view to zoom out your map, with the same center.
+
+```
+var minifier = map.addMinifier(options);
+```
+
+You can add layers to your Minifier exactly as you would do with any MapView,
+or don't add any to use the Map ones.
+
+Use options to set it fixed or draggable, its size, position etc...
 Read [more](http://static.maperial.com/doc/MapView.html#addMinifier)...
 
 # Layers
@@ -135,9 +146,13 @@ depending on the data type :
 
 ## Fusion
 Use custom settings to fuse 2 layers
+@todo settings panel + doc
 - AlphaBlend (param float [0,1])
 - AlphaClip  (param float [0,1])
 - XBlend
+
+You can allow users to change your settings manually by including the
+Fusion Settings [tool](fusion-settings)
 
 # Data
 A Data may be shared by many [data layers](#data-layers).
@@ -167,22 +182,22 @@ allows to draw heatmaps with custom colorbars.
 You can add +/- buttons in a container, and attach this tool
 to a set of MapViews
 ```
-maperial.addSimpleZoom([views])
+maperial.addSimpleZoom(options)
 ```
 
 ##### more
--  Read [more] (http://static.maperial.com/doc/Maperial.html#addSimpleZoom)
+- Read [more] (http://static.maperial.com/doc/Maperial.html#addSimpleZoom)
 - Require a [theme](#theme) on your page
 
 #### Slider Zoom
-todo : (1-18 slider and +/- buttons)
+@todo : (1-18 slider and +/- buttons)
   maperial.addSliderZoom([views])
 
 #### Fusion settings
-todo
+@todo
 
 #### Shade settings
-todo
+@todo
 
 #### Theme
 Most of the tools require a default theme, provided by this css :
