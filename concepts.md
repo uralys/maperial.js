@@ -11,6 +11,8 @@ API [documentation](http://static.maperial.com/doc).
 
 Ok let's go !
 
+
+
 # Maperial
 
 Instanciate and use **one** single Maperial to build every map on your web page.
@@ -21,6 +23,8 @@ var maperial = new Maperial();
 - Draw [MapViews](#mapviews)
 - Share [Data](#data)
 - Attach [Tools](#tools)
+
+
 
 # MapViews
 
@@ -34,12 +38,14 @@ There are 5 types of [MapView](http://static.maperial.com/doc/MapView.html) :
 If you don't specify layers on a child MapView, it will use the same ones as
 the parent MapView.
 
+
+
 ### Map
 
 A Map is the parent of all other types of MapView.
 
 Use your *maperial* to create maps, then you will be able to attach every other
-type of MapView to a Map.
+type of [MapView](#mapviews) to a Map.
 
 Each Map is linked with an html container :
 ```
@@ -56,16 +62,23 @@ the container for the previous map.
 
 Read [more] (http://static.maperial.com/doc/Maperial.html#createMap)...
 
+
+
+
 ### Anchor
 An Anchor is the exact same thing as a [Map](#map), but instead of attaching it
-to a html container, you place it inside a Map.
+to a html container, you place it inside a [MapView](#mapviews).
 
 ```
 var anchor = map.addAnchor(options);
 ```
 
-You can add layers to your Anchor exactly as you would do with any MapView.
-Read [more](http://static.maperial.com/doc/MapView.html#addAnchor)...
+- May use a [theme](#theme)
+- Example : @todo jsbin + link
+- Read [more] (http://static.maperial.com/doc/Maperial.html#addAnchor)
+
+
+
 
 ### Lens
 A Lens is a view to zoom in your map, centered on where the Lens is placed.
@@ -77,7 +90,12 @@ var lens = map.addLens(options);
 
 Use options to set it fixed or draggable, its size, position etc...
 
-Read [more](http://static.maperial.com/doc/MapView.html#addLens)...
+- Require a [theme](#theme)
+- Example : @todo jsbin + link
+- Read [more] (http://static.maperial.com/doc/Maperial.html#addLens)
+
+
+
 
 ### Magnifier
 A Magnifier is a view to zoom in your map, with the same center.
@@ -88,7 +106,12 @@ var magnifier = map.addMagnifier(options);
 
 Use options to set it fixed or draggable, its size, position etc...
 
-Read [more](http://static.maperial.com/doc/MapView.html#addMagnifier)...
+- Require a [theme](#theme)
+- Example : @todo jsbin + link
+- Read [more] (http://static.maperial.com/doc/Maperial.html#addMagnifier)
+
+
+
 
 ### Minifier
 A Minifier is a view to zoom out your map, with the same center.
@@ -100,12 +123,17 @@ var minifier = map.addMinifier(options);
 Use options to set it fixed or draggable, its size, position etc...
 Read [more](http://static.maperial.com/doc/MapView.html#addMinifier)...
 
+
+
+
 # Layers
 
 - You may add and remove any layers to any [MapView](#mapviews).
 - Each Layer may contain either [Images](#image-layers) or [Data](#data-layers).
 - Use [Fusion](#fusion) to merge your layers with custom settings
 and draw unique maps.
+
+
 
 ## Image Layers
 - todo : thumbnails + links to /doc
@@ -129,6 +157,9 @@ and draw unique maps.
 #### WMS Layers
 - todo : few examples
 
+
+
+
 ## Data Layers
 Before to add data layers, you need to create your [Data](#data) first.
 
@@ -136,6 +167,9 @@ Then you can attach it to any [MapView](#mapviews) by adding a layer
 depending on the data type :
 - view.addDynamicalLayer(data, options);
 - view.addHeamapLayer(data, options);
+
+
+
 
 ## Fusion
 Use custom settings to fuse 2 layers
@@ -146,6 +180,9 @@ Use custom settings to fuse 2 layers
 
 You can allow users to change your settings manually by including the
 Fusion Settings [tool](#fusion-settings)
+
+
+
 
 # Data
 A Data may be shared by many [data layers](#data-layers).
@@ -169,6 +206,9 @@ allows to add/remove points with custom properties.
 - [HeatmapData](http://static.maperial.com/doc/HeatmapData.html)
 allows to draw heatmaps with custom colorbars.
 
+
+
+
 # Tools
 
 #### Simple Zoom
@@ -182,6 +222,8 @@ maperial.addSimpleZoom(options)
 - Read [more] (http://static.maperial.com/doc/Maperial.html#addSimpleZoom)
 - Require a [theme](#theme) on your page
 
+
+
 #### Slider Zoom
 @todo : (1-18 slider and +/- buttons)
   maperial.addSliderZoom([views])
@@ -191,6 +233,9 @@ maperial.addSimpleZoom(options)
 
 #### Shade settings
 @todo
+
+
+
 
 #### Theme
 Most of the tools require a default theme, provided by this css :
