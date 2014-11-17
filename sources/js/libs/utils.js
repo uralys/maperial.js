@@ -146,24 +146,24 @@ Utils.prototype.getSourceThumb = function (layer) {
 
     switch (layer.source.type) {
     case Source.MaperialOSM:
-        return " src=\"" + this.styleThumbURL(layer.params.styles[layer.params.selectedStyle], "l") + "\"";
+        return ' src="' + this.styleThumbURL(layer.params.styles[layer.params.selectedStyle], 'l') + '"';
 
     case Source.Vector:
     case Source.Images:
     case Source.WMS:
-        return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer." + layer.source.params.src + ".png\"";
+        return ' src="http://192.168.1.19/p/maperial/web/static/images/icons/layer.' + layer.source.params.src + '.png"';
 
     case Source.Raster:
-        return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer.raster.png\""; // TODO : thumb du raster
+        return ' src="http://192.168.1.19/p/maperial/web/static/images/icons/layer.raster.png"'; // TODO : thumb du raster
     }
 
     switch (layer.type) {
     case LayersManager.ReTiler:
-        return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer.ReTiler.png\"";
+        return ' src="http://192.168.1.19/p/maperial/web/static/images/icons/layer.ReTiler.png"';
 
     case LayersManager.Shade: // TODO fuse with ReTiler ???
     default:
-        return " src=\"http://192.168.1.19/p/maperial/web/static/images/icons/layer.shade.png\"";
+        return ' src="http://192.168.1.19/p/maperial/web/static/images/icons/layer.shade.png"';
     }
 };
 
