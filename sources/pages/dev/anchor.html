@@ -1,0 +1,34 @@
+<html>
+
+<head>
+    <title>Maperial - Anchors</title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <link href="http://static.maperial.localhost/css/maperial.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="map" class="fullscreen-map"></div>
+</body>
+
+<script type="text/javascript" src="http://static.maperial.localhost/js/maperial.js"></script>
+<script type="text/javascript">
+    (function () {
+
+        var maperial = new window.Maperial();
+
+        var map = maperial.createMap('map');
+        var anchor = map.addAnchor({
+            width: map.width * 0.2,
+            height: map.height * 0.2,
+            top: map.height * 0.05,
+            left: map.width * 0.05
+        });
+
+        map.addOCMLandscape();
+        anchor.addWatercolor();
+
+    })();
+</script>
+
+
+</html>
