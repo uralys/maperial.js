@@ -143,7 +143,8 @@ Mover.prototype.moveMap = function (dx, dy) {
     this.mapView.context.centerM.x -= dx * r;
     this.mapView.context.centerM.y += dy * r;
 
-    //  $(window).trigger(MaperialEvents.MAP_MOVING, [this.mapView.map, this.mapView.name, this.mapView.type]);
+    console.log(this.mapView.type, this.mapView.id, 'mode map');
+    this.mapView.trigger(Maperial.EVENTS.MAP_MOVED);
 };
 
 //---------------------------------------------------------------------------//

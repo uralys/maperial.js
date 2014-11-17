@@ -6,7 +6,7 @@ var Hammer = require('../../libs/hammer.js');
 
 function MouseListener(mapView) {
 
-    console.log("  listening mouse");
+    console.log('  listening mouse');
 
     this.mapView = mapView;
     this.lastWheelMillis = new Date().getTime();
@@ -27,7 +27,7 @@ MouseListener.prototype.initListeners = function () {
         /* prepare the hammer listening on the canvas */
         this.hammer = new Hammer(this.mapView.canvas);
 
-        /* link every function on the listener to be able to 
+        /* link every function on the listener to be able to
          * call 'off' on them*/
         this.hammer.drag = this.drag.bind(this);
         this.hammer.dragstart = this.dragstart.bind(this);
@@ -35,26 +35,26 @@ MouseListener.prototype.initListeners = function () {
         this.hammer.tap = this.tap.bind(this);
 
         /* turn the hammer listening on */
-        this.hammer.on("tap", this.hammer.tap);
-        this.hammer.on("drag", this.hammer.drag);
-        this.hammer.on("dragstart", this.hammer.dragstart);
-        this.hammer.on("dragend", this.hammer.dragend);
+        this.hammer.on('tap', this.hammer.tap);
+        this.hammer.on('drag', this.hammer.drag);
+        this.hammer.on('dragstart', this.hammer.dragstart);
+        this.hammer.on('dragend', this.hammer.dragend);
 
-        //this.mapView.canvas.addEventListener("click", this.down        .bind(this));
+        //this.mapView.canvas.addEventListener('click', this.down        .bind(this));
 
         //          .mouseup    ( this.up          .bind(this) )
         //          .mouseleave ( this.leave       .bind(this))
-        //          .mousemove  ( Utils.apply ( this , "move" ))
-        //          .dblclick   ( Utils.apply ( this , "doubleClick" ))
-        //          .bind('mousewheel', Utils.apply ( this , "wheel"))   
+        //          .mousemove  ( Utils.apply ( this , 'move' ))
+        //          .dblclick   ( Utils.apply ( this , 'doubleClick' ))
+        //          .bind('mousewheel', Utils.apply ( this , 'wheel'))
         break;
 
         //        case Maperial.LENS:
         //        case Maperial.MINIFIER:
         //        case Maperial.MAGNIFIER:
         //            this.context.mapCanvas
-        //            .dblclick   ( Utils.apply ( this , "doubleClick" ))
-        //            .bind('mousewheel', Utils.apply ( this , "wheelOnZoomer"))   
+        //            .dblclick   ( Utils.apply ( this , 'doubleClick' ))
+        //            .bind('mousewheel', Utils.apply ( this , 'wheelOnZoomer'))
         //            break;
     }
 
@@ -64,36 +64,36 @@ MouseListener.prototype.initListeners = function () {
 
 MouseListener.prototype.removeListeners = function () {
 
-    this.hammer.off("tap", this.hammer.tap);
-    this.hammer.off("dragstart", this.hammer.dragstart);
-    this.hammer.off("drag", this.hammer.drag);
-    this.hammer.off("dragend", this.hammer.dragend);
+    this.hammer.off('tap', this.hammer.tap);
+    this.hammer.off('dragstart', this.hammer.dragstart);
+    this.hammer.off('drag', this.hammer.drag);
+    this.hammer.off('dragend', this.hammer.dragend);
 
-    //  this.context.mapCanvas.off("mousedown");
-    //  this.context.mapCanvas.off("mouseup");
-    //  this.context.mapCanvas.off("mousemove");
-    //  this.context.mapCanvas.off("mouseleave");
-    //  this.context.mapCanvas.unbind('dblclick');  
-    //  this.context.mapCanvas.unbind('mousewheel');  
-    //  this.context.mapCanvas.unbind('wheelOnZoomer');  
+    //  this.context.mapCanvas.off('mousedown');
+    //  this.context.mapCanvas.off('mouseup');
+    //  this.context.mapCanvas.off('mousemove');
+    //  this.context.mapCanvas.off('mouseleave');
+    //  this.context.mapCanvas.unbind('dblclick');
+    //  this.context.mapCanvas.unbind('mousewheel');
+    //  this.context.mapCanvas.unbind('wheelOnZoomer');
 }
 
 //---------------------------------------------------------------------------//
 
 MouseListener.prototype.drag = function (event) {
-    this.mapView.trigger("drag", event);
+    this.mapView.trigger('drag', event);
 }
 
 MouseListener.prototype.dragstart = function (event) {
-    this.mapView.trigger("dragstart", event);
+    this.mapView.trigger('dragstart', event);
 }
 
 MouseListener.prototype.dragend = function (event) {
-    this.mapView.trigger("dragend", event);
+    this.mapView.trigger('dragend', event);
 }
 
 MouseListener.prototype.tap = function (event) {
-    this.mapView.trigger("tap", event);
+    this.mapView.trigger('tap', event);
 }
 
 //---------------------------------------------------------------------------//
@@ -113,7 +113,7 @@ MouseListener.prototype.tap = function (event) {
 //}
 //
 //MouseListener.prototype.up = function (event) {
-//    this.mouseDown = false; 
+//    this.mouseDown = false;
 //    this.context.mapCanvas.trigger(MaperialEvents.MOUSE_UP);
 //    this.mapView.trigger("drag", event);
 //}

@@ -1,15 +1,16 @@
 //--------------------------------------------------------------------------
 
-var Context = require('./context.js'),
-    Mouse = require('./mouse.js'),
-    Mover = require('./mover.js'),
-    MapRenderer = require('../rendering/map-renderer.js'),
+var Context      = require('./context.js'),
+    Mouse        = require('./mouse.js'),
+    Mover        = require('./mover.js'),
+    MapRenderer  = require('../rendering/map-renderer.js'),
     LayerManager = require('../managers/layer-manager.js'),
-    Layer = require('../models/layer.js'),
-    Source = require('../models/source.js'),
-    Events = require('../../libs/events.js'),
-    utils = require('../../../libs/utils.js'),
-    TWEEN = require('tween.js');
+    Layer        = require('../models/layer.js'),
+    Source       = require('../models/source.js'),
+    Events       = require('../../libs/events.js'),
+    utils        = require('../../../libs/utils.js'),
+    _            = require('../../../libs/lodash.js'),
+    TWEEN        = require('tween.js');
 
 //--------------------------------------------------------------------------
 
@@ -36,8 +37,9 @@ function MapView(maperial, options) {
 
 MapView.prototype.expose = function () {
 
-    /*---------------------*/
-    // Image Layers
+    //--------------------------------------------------------------------------
+    //      Image Layers
+    //--------------------------------------------------------------------------
 
     /**
      * @function
@@ -74,8 +76,9 @@ MapView.prototype.expose = function () {
         return this.addImageLayer(Source.IMAGES_MAPQUEST_SATELLITE);
     }.bind(this);
 
-    /*---------------------*/
-    /* Maperial layers */
+    //--------------------------------------------------------------------------
+    //      Maperial layers
+    //--------------------------------------------------------------------------
 
     /**
      * @function
@@ -119,29 +122,28 @@ MapView.prototype.expose = function () {
         return this.addImageLayer(Source.MAPERIAL_SST);
     }.bind(this);
 
-    /*---------------------*/
-    /* Child MapViews */
+    //--------------------------------------------------------------------------
+    //      Child MapViews
+    //--------------------------------------------------------------------------
 
     /**
      * @function
      * @param {object} options
-     * @param {float} options.width The anchor width in pixels.
+     * @param {float} options.width The anchor width, in pixels.
      *                              (Default : map.width/2)
-     * @param {float} options.height The anchor height in pixels.
+     * @param {float} options.height The anchor height, in pixels.
      *                              (Default : map.height/2)
-     * @param {float} options.top The anchor top gap inside the map in pixels.
+     * @param {float} options.top The anchor top gap inside the map, in pixels.
      *                              (Default : 0)
-     * @param {float} options.left The anchor left gap inside the map in pixels.
+     * @param {float} options.left The anchor left gap inside the map, in pixels.
      *                              (Default : 0)
      *
      */
     this.addAnchor = function (options) {
         options = options || {};
-        options.type = Maperial.ANCHOR;
-
-        options.container = document.createElement('div');
-        options.container.style.position = 'absolute';
-        this.container.appendChild(options.container);
+        this.prepareChildOptions(options, {
+            type : Maperial.ANCHOR
+        });
 
         var width = (options.width || this.width / 2) + 'px';
         var height = (options.height || this.height / 2) + 'px';
@@ -153,15 +155,39 @@ MapView.prototype.expose = function () {
         options.container.style.top = top;
         options.container.style.left = left;
 
-        var anchor = this.maperial.addMapView(options);
-        return anchor;
+        return this.createChild(options);
+
     }.bind(this);
 
     /**
      * @function
+     * @param {object} options
+     * @param {float} options.radius The lens radius, in pixels.
+     *                              (Default : map.width * 0.1)
+     * @param {float} options.top The lens center from the map top left, in pixels.
+     *                              (Default : map.width * 0.5)
+     * @param {float} options.left The lens center from the map top left, in pixels.
+     *                              (Default : map.width * 0.5)
+     *
      */
     this.addLens = function (options) {
-        //@todo
+        options = options || {};
+        this.prepareChildOptions(options, {
+            type : Maperial.LENS
+        });
+
+        var width = (options.radius * 2 || this.width / 2) + 'px';
+        var height = (options.height || this.height / 2) + 'px';
+        var left = (options.left || 10) + 'px';
+        var top = (options.top || 10) + 'px';
+
+        options.container.style.width = width;
+        options.container.style.height = height;
+        options.container.style.top = top;
+        options.container.style.left = left;
+
+        return this.createChild(options);
+
     }.bind(this);
 
     /**
@@ -225,6 +251,8 @@ MapView.prototype.prepare = function (maperial, options) {
     this.dynamicalRenderers = {};
 
     this.context = new Context(this);
+
+    this.linkedMapViews = [];
 
     this.mapRenderer = new MapRenderer(this);
     this.layerManager = new LayerManager(this);
@@ -290,7 +318,8 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options) {
 
 MapView.prototype.addHeatmapLayer = function (heatmapData, options) {
 
-    options.colorbar = options.colorbar || Maperial.colorbarManager.defaultColorbar(this);
+    options.colorbar = options.colorbar ||
+        Maperial.colorbarManager.defaultColorbar(this);
 
     //-------------------------------------------
     // Proceed
@@ -327,14 +356,46 @@ MapView.prototype.addWMSLayer = function (sourceId) {
 //-----------------------------------------------------------------
 
 MapView.prototype.addOSMLayer = function (styleId) {
-
     if (!styleId)
         styleId = Maperial.DEFAULT_STYLE_UID;
-
 };
 
 //--------------------------------------------------------------------------
+//-     Child tools
+//--------------------------------------------------------------------------
+
+MapView.prototype.prepareChildOptions = function (options, settings) {
+    _.extend(options, settings);
+    options.container = document.createElement('div');
+    this.container.appendChild(options.container);
+};
+
+MapView.prototype.createChild = function (options) {
+    var child = this.maperial.addMapView(options);
+    this.link(child);
+    return child;
+};
+
+// links mapViews so that each Event may change the linkedMapViews
+MapView.prototype.link = function (view) {
+    this.linkedMapViews.forEach(function (link) {
+        view.linkedMapViews.push(link);
+        link.linkedMapViews.push(view);
+
+        link.on(Maperial.EVENTS.MAP_MOVED, this.refreshCamera.bind(view));
+        view.on(Maperial.EVENTS.MAP_MOVED, this.refreshCamera.bind(link));
+    }.bind(this));
+
+    view.linkedMapViews.push(this);
+    this.linkedMapViews.push(view);
+
+    this.on(Maperial.EVENTS.MAP_MOVED, this.refreshCamera.bind(view));
+    view.on(Maperial.EVENTS.MAP_MOVED, this.refreshCamera.bind(this));
+}
+
+//--------------------------------------------------------------------------
 //-     Camera
+// TODO: create ./camera.js and move the following algo there
 //--------------------------------------------------------------------------
 
 MapView.prototype.prepareCamera = function () {
@@ -352,6 +413,45 @@ MapView.prototype.prepareCamera = function () {
         }
     }.bind(this));
 };
+
+//--------------------------------------------------------------------------
+
+// TODO
+MapView.prototype.refreshCamera = function (event) {
+    console.log(this.type, this.id, 'refreshCamera from', event.currentTarget);
+
+    switch (this.type) {
+        // case Maperial.MINIFIER:
+        //     this.context.centerM = this.maperial.getMainView(this.map).context.centerM
+        //     break;
+
+        // case Maperial.MAGNIFIER:
+        //     this.context.centerM = this.maperial.getView(viewTriggering).context.mouseM
+        //     break;
+
+        case Maperial.MAIN:
+        case Maperial.LENS:
+        case Maperial.ANCHOR:
+
+            var initiator = event.currentTarget;
+
+            var viewPosition = panel.position();
+
+            var viewCenterX = viewPosition.left + panel.width() / 2
+            var viewCenterY = viewPosition.top + panel.height() / 2
+
+            var initiatorCenterX = panelTriggeringPosition.left + panelTriggering.width() / 2
+            var initiatorCenterY = panelTriggeringPosition.top + panelTriggering.height() / 2
+
+            var viewTriggeringCenterP = this.maperial.getCenterP(viewTriggering)
+            var lensCenterP = new Point(viewTriggeringCenterP.x - initiatorCenterX + viewCenterX, viewTriggeringCenterP.y + initiatorCenterY - viewCenterY);
+
+            this.context.centerM = this.context.coordS.PixelsToMeters(lensCenterP.x, lensCenterP.y, this.maperial.getZoom(this.map));
+
+            break;
+    }
+
+}
 
 //--------------------------------------------------------------------------
 // TODO: create ./zoomer.js and move the following algo there
@@ -418,9 +518,11 @@ function cloneCanvas(oldCanvas) {
     newCanvas.width = oldCanvas.width;
     newCanvas.height = oldCanvas.height;
 
-    newCanvas.style.position = 'relative'; //+ translate3d pour recentrer. chech taille du container VS taille du canvas...?
+    //+ translate3d pour recentrer.
+    //chech taille du container VS taille du canvas...?
+    newCanvas.style.position = 'relative';
 
-    var dataURL = oldCanvas.toDataURL("image/jpeg", 0.5);
+    var dataURL = oldCanvas.toDataURL('image/jpeg', 0.5);
     var imageExported = new Image();
 
     // load image from data url

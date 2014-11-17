@@ -17,15 +17,24 @@
         var maperial = new window.Maperial();
 
         var map = maperial.createMap('map');
-        var anchor = map.addAnchor({
+        var anchor = map.addAnchor();
+        var anchor2 = map.addAnchor({
+            width: map.width * 0.2,
+            height: map.height * 0.2,
+            top: map.height * 0.75,
+            left: map.width * 0.05
+        });
+        var anchor3 = map.addAnchor({
             width: map.width * 0.2,
             height: map.height * 0.2,
             top: map.height * 0.05,
-            left: map.width * 0.05
+            left: map.width * 0.75
         });
 
         map.addOCMLandscape();
         anchor.addWatercolor();
+        anchor2.addWatercolor();
+        anchor3.addWatercolor();
 
     })();
 </script>

@@ -85,9 +85,7 @@ module.exports = function (grunt) {
         jsbeautifier: {
             modify: {
                 src: [
-                    'Gruntfile.js',
-                    'sources/**/*.js',
-                    'sources/**/*.html',
+                    'Gruntfile.js'
                 ],
                 options: {
                     config: '.jsbeautifyrc'
@@ -140,14 +138,16 @@ module.exports = function (grunt) {
     /** Init Project configuration. */
     grunt.initConfig(gruntCfg);
 
+    /** js cleanup -> modify sources not to tidy everything */
+    grunt.registerTask('tidy', ['jsbeautifier:modify']);
+    grunt.registerTask('lint', ['eslint']);
+
     /** define custom tasks */
     grunt.registerTask('clean', ['exec:clean']);
     grunt.registerTask('css', ['sass:dist']);
-    grunt.registerTask('tidy', ['jsbeautifier:modify']);
-    grunt.registerTask('lint', ['eslint']);
-    grunt.registerTask('js', ['tidy', 'browserify:compile']);
+    grunt.registerTask('js', ['browserify:compile']);
     grunt.registerTask('standalone', ['browserify:standalone']);
-    grunt.registerTask('jsmin', ['tidy', 'standalone', 'uglify']);
+    grunt.registerTask('jsmin', ['standalone', 'uglify']);
 
     /** building jsdoc */
     grunt.registerTask('doc', ['exec:cleanDoc', 'jsdoc:dist', 'exec:prepareDocIndex']);

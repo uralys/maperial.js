@@ -27,8 +27,8 @@ var MapView = require('./map/map-view.js'),
  * @constructor
  */
 function Maperial(options) {
-    console.log("-----------------------");
-    console.log("Creating a Maperial");
+    console.log('-----------------------');
+    console.log('Creating a Maperial');
     this.options = options;
     this.views = [];
 
@@ -43,23 +43,28 @@ function Maperial(options) {
 //Views types
 //TYPE = css class
 
-Maperial.MAIN = "maperial-main";
-Maperial.ANCHOR = "maperial-anchor";
+Maperial.MAIN = 'maperial-main';
+Maperial.ANCHOR = 'maperial-anchor';
 
 //camera centered on what is under it
-Maperial.LENS = "maperial-lens";
+Maperial.LENS = 'maperial-lens';
 
 //camera centered on the parent's center
-Maperial.MINIFIER = "maperial-minifier";
+Maperial.MINIFIER = 'maperial-minifier';
 
 //camera centered on what is under the mouse
-Maperial.MAGNIFIER = "maperial-magnifier";
+Maperial.MAGNIFIER = 'maperial-magnifier';
 
 //-----------------------------------------------------------------
 //Vectorial layers types
 
-Maperial.OSM = "tiles";
-Maperial.VECTORIAL_DATA = "data";
+Maperial.OSM = 'tiles';
+Maperial.VECTORIAL_DATA = 'data';
+//-----------------------------------------------------------------
+
+Maperial.EVENTS = {
+    MAP_MOVED: 'maperial:map:moved'
+};
 
 //-----------------------------------------------------------------
 
@@ -79,7 +84,7 @@ Maperial.DEFAULT_LONGITUDE = 2.313;
 
 //-----------------------------------------------------------------
 
-Maperial.bgdimg = "symbols/water.png";
+Maperial.bgdimg = 'symbols/water.png';
 
 Maperial.refreshRate = 1000 / 30; // ms
 Maperial.tileDLTimeOut = 60000; // ms
@@ -90,12 +95,12 @@ Maperial.autoMoveMillis = 700;
 Maperial.autoMoveDeceleration = 0.005;
 Maperial.autoMoveAnalyseSize = 10;
 
-Maperial.DEFAULT_STYLE_UID = "1_style_13ed75438c8b2ed8914";
-Maperial.DEFAULT_COLORBAR_UID = "1_colorbar_13c630ec3a5068919c3";
+Maperial.DEFAULT_STYLE_UID = '1_style_13ed75438c8b2ed8914';
+Maperial.DEFAULT_COLORBAR_UID = '1_colorbar_13c630ec3a5068919c3';
 
-Maperial.AlphaClip = "AlphaClip";
-Maperial.AlphaBlend = "AlphaBlend";
-Maperial.XBlend = "XBlend";
+Maperial.AlphaClip = 'AlphaClip';
+Maperial.AlphaBlend = 'AlphaBlend';
+Maperial.XBlend = 'XBlend';
 
 Maperial.globalDataCpt = 0;
 
@@ -104,7 +109,7 @@ Maperial.globalDataCpt = 0;
 //------------------------------------------------------------------------------
 
 Maperial.prototype.refreshSharedItems = function () {
-    console.log("Refreshing shared items");
+    console.log('Refreshing shared items');
 
     // cache containing all previously loaded colorbars
     Maperial.colorbars = Maperial.colorbars || {};
@@ -113,7 +118,7 @@ Maperial.prototype.refreshSharedItems = function () {
     Maperial.styleManager = Maperial.styleManager || new StyleManager();
     Maperial.colorbarManager = Maperial.colorbarManager || new ColorbarManager();
 
-    window.addEventListener("resize", function () {
+    window.addEventListener('resize', function () {
         this.views.forEach(function (view) {
             view.refresh();
         })
@@ -167,7 +172,7 @@ Maperial.prototype.expose = function () {
         // Checking options
 
         if (!options) {
-            console.log("Wrong call to createMap. Check the options");
+            console.log('Wrong call to createMap. Check the options');
         }
 
         if ('string' === typeof (options)) {
@@ -179,10 +184,10 @@ Maperial.prototype.expose = function () {
         //-------------------------------------------
         // Checking view
 
-        console.log("Adding view in container " + options.container);
+        console.log('Adding view in container ' + options.container);
 
         if (document.getElementById(options.container) == null) {
-            console.log("Container " + options.container + " could not be found");
+            console.log('Container ' + options.container + ' could not be found');
             return;
         }
 
@@ -247,24 +252,24 @@ Maperial.prototype.expose = function () {
      * @param {array} layers Add controls to an array of layers.
      */
     this.addShadeControls = function (layers) {
-        var hud = document.createElement("div");
-        var bar = document.createElement("input");
+        var hud = document.createElement('div');
+        var bar = document.createElement('input');
 
-        hud.className = "hud";
-        bar.className = "scale";
-        bar.setAttribute("type", "range");
-        bar.setAttribute("min", "1");
-        bar.setAttribute("max", "100");
-        bar.setAttribute("step", "1");
-        bar.setAttribute("value", layers[0].params.scale);
+        hud.className = 'hud';
+        bar.className = 'scale';
+        bar.setAttribute('type', 'range');
+        bar.setAttribute('min', '1');
+        bar.setAttribute('max', '100');
+        bar.setAttribute('step', '1');
+        bar.setAttribute('value', layers[0].params.scale);
 
-        bar.addEventListener("input", function (event) {
+        bar.addEventListener('input', function (event) {
             layers[0].params.scale = event.target.valueAsNumber;
         });
 
         hud.appendChild(bar);
 
-        document.querySelector("body").appendChild(hud);
+        document.querySelector('body').appendChild(hud);
     }.bind(this);
 
     /**
