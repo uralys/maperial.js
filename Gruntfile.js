@@ -1,5 +1,6 @@
 module.exports = function (grunt) {
 
+    require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
 
     var gruntCfg = {
@@ -94,6 +95,12 @@ module.exports = function (grunt) {
             }
         },
 
+        eslint: {
+            target: [
+                'sources/js/maperialjs/**/*.js'
+            ],
+        },
+
         jsdoc: {
             dist: {
                 src: [
@@ -133,19 +140,11 @@ module.exports = function (grunt) {
     /** Init Project configuration. */
     grunt.initConfig(gruntCfg);
 
-    /** load plugin tasks */
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-replace');
-    grunt.loadNpmTasks('grunt-exec');
-    grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-jsbeautifier');
-    grunt.loadNpmTasks('grunt-jsdoc');
-
     /** define custom tasks */
     grunt.registerTask('clean', ['exec:clean']);
     grunt.registerTask('css', ['sass:dist']);
     grunt.registerTask('tidy', ['jsbeautifier:modify']);
+    grunt.registerTask('lint', ['eslint']);
     grunt.registerTask('js', ['tidy', 'browserify:compile']);
     grunt.registerTask('standalone', ['browserify:standalone']);
     grunt.registerTask('jsmin', ['tidy', 'standalone', 'uglify']);
