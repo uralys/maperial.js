@@ -418,20 +418,21 @@ MapView.prototype.prepareCamera = function () {
 
 MapView.prototype.refreshCamera = function (event) {
 
-    switch (this.type) {
-        // case Maperial.MINIFIER:
-        //     this.context.centerM = this.maperial.getMainView(this.map).context.centerM
-        //     break;
+    var initiator = event.currentTarget;
 
-        // case Maperial.MAGNIFIER:
-        //     this.context.centerM = this.maperial.getView(viewTriggering).context.mouseM
-        //     break;
+    switch (this.type) {
+        case Maperial.MINIFIER:
+            this.context.centerM = this.context.centerM
+            break;
+
+        case Maperial.MAGNIFIER:
+            this.context.centerM = initiator.context.mouseM
+            break;
 
         case Maperial.MAIN:
         case Maperial.LENS:
         case Maperial.ANCHOR:
 
-            var initiator = event.currentTarget;
             var initiatorBox = initiator.container.getBoundingClientRect();
             var initiatorCenterX = initiatorBox.left + initiatorBox.width / 2;
             var initiatorCenterY = initiatorBox.top + initiatorBox.height / 2;
