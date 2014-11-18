@@ -1,8 +1,8 @@
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 
 var utils = require('../../../libs/utils.js');
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 
 function Mover(mapView) {
 
@@ -22,7 +22,7 @@ function Mover(mapView) {
     this.initListeners();
 }
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 
 Mover.prototype.initListeners = function (event) {
 
@@ -82,13 +82,13 @@ Mover.prototype.initListeners = function (event) {
     //  });
 };
 
-//----------------------------------------------------------------------//
+//--------------------------------------------------------------------
 
 Mover.prototype.removeListeners = function () {
 
 };
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 
 Mover.prototype.reset = function (event) {
     this.mapView.context.mouseP = utils.getPoint(event);
@@ -100,7 +100,7 @@ Mover.prototype.reset = function (event) {
     this.lastMouseY = this.mapView.context.mouseP.y;
 };
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 
 Mover.prototype.drag = function (event) {
 
@@ -126,7 +126,7 @@ Mover.prototype.drag = function (event) {
 
 };
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 //Auto Move workflow
 
 Mover.prototype.dragend = function () {
@@ -135,7 +135,7 @@ Mover.prototype.dragend = function () {
     }
 };
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 
 Mover.prototype.moveMap = function (dx, dy) {
     var r = this.mapView.context.coordS.Resolution(this.mapView.context.zoom);
@@ -146,7 +146,7 @@ Mover.prototype.moveMap = function (dx, dy) {
     this.mapView.trigger(Maperial.EVENTS.MAP_MOVED);
 };
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 
 Mover.prototype.requireAutoMove = function () {
 
@@ -175,7 +175,7 @@ Mover.prototype.prepareAutoMove = function () {
     this.move(deltaX, deltaY, deltaTime);
 };
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 
 Mover.prototype.move = function (deltaX, deltaY, deltaTime) {
 
@@ -191,7 +191,7 @@ Mover.prototype.move = function (deltaX, deltaY, deltaTime) {
     this.moveScene(Maperial.autoMoveMillis, speedX, speedY, 0);
 };
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 //Controls
 
 Mover.prototype.moveUp = function () {
@@ -210,7 +210,7 @@ Mover.prototype.moveLeft = function () {
     this.move(this.defaultMoveDistance, 0, this.defaultMoveMillis);
 };
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 
 Mover.prototype.moveScene = function (timeRemaining, speedX, speedY, nbAutoMove) {
 
@@ -251,7 +251,7 @@ Mover.prototype.registerMouseData = function (x, y) {
 
 };
 
-//---------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
 //Drawers To Move
 
 Mover.prototype.addDrawer = function (drawer) {
@@ -291,6 +291,6 @@ Mover.prototype.moveDrawers = function (dx, dy) {
     }
 };
 
-//------------------------------------------------------------------//
+//----------------------------------------------------------------
 
 module.exports = Mover;
