@@ -66,4 +66,4 @@ map.addMapquest();
 ```
 
 ##### Well, you got your first map !
-Check the full example on this [jsbin] (http://jsbin.com/qinevu/3/watch?js,output)
+Check the full example on this [codepen] (http://codepen.io/chrisdugne/pen/yyyYVr)
