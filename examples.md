@@ -1,5 +1,6 @@
 
 #Demos
+@ todo demos + links here
 
 Here is a complete set of demos :
 - Dynamical points

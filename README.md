@@ -1,7 +1,7 @@
 
-# What is Maperial ?
+# Maperial : a new way to create maps
 
-As of today Maperial is a free javascript API to create maps for your web
+Maperial is a free javascript API to create maps for your web
 applications.
 
 For now we stick on enhancing this API and hope to see a community
