@@ -373,6 +373,9 @@ MapView.prototype.prepareChildOptions = function (options, settings) {
 MapView.prototype.createChild = function (options) {
     var child = this.maperial.addMapView(options);
     this.link(child);
+    child.refreshCamera({
+        currentTarget : this
+    });
     return child;
 };
 
@@ -422,11 +425,11 @@ MapView.prototype.refreshCamera = function (event) {
 
     switch (this.type) {
         case Maperial.MINIFIER:
-            this.context.centerM = this.context.centerM
+            this.context.centerM = this.context.centerM;
             break;
 
         case Maperial.MAGNIFIER:
-            this.context.centerM = initiator.context.mouseM
+            this.context.centerM = initiator.context.mouseM;
             break;
 
         case Maperial.MAIN:

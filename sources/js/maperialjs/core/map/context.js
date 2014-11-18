@@ -1,23 +1,32 @@
-//------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 var CoordinateSystem = require('../../libs/coordinate-system.js');
 
-//------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 function Context(mapView) {
-
     this.mapView = mapView
 
     this.assets = null
     this.coordS = new CoordinateSystem(Maperial.tileSize);
 
-    this.centerM = this.coordS.LatLonToMeters(this.startLatitude(), this.startLongitude());
+    this.centerM = this.coordS.LatLonToMeters(
+        this.startLatitude(),
+        this.startLongitude()
+    );
+
     this.mouseM = this.centerM; // Mouse coordinates in meters
     this.mouseP = null; // Mouse coordinates inside the canvas
     this.zoom = this.startZoom();
 }
 
-//-----------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------
+
+Context.prototype.latLon = function () {
+    return this.coordS.MetersToLatLon(this.centerM.x, this.centerM.y);
+}
+
+//------------------------------------------------------------------------------
 
 Context.prototype.startZoom = function () {
 
@@ -31,7 +40,7 @@ Context.prototype.startZoom = function () {
 
 }
 
-//------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Context.prototype.startLatitude = function () {
 
@@ -49,7 +58,7 @@ Context.prototype.startLatitude = function () {
 
 }
 
-//------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 Context.prototype.startLongitude = function () {
 
@@ -67,6 +76,6 @@ Context.prototype.startLongitude = function () {
 
 }
 
-//------------------------------------------------------------------//
+//------------------------------------------------------------------------------
 
 module.exports = Context;
