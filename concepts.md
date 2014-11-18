@@ -199,7 +199,7 @@ Fusion Settings [tool](#fusion-settings)
 #### Types
 - [DynamicalData](http://static.maperial.com/doc/DynamicalData.html)
 allows to add/remove points with custom properties.
-  @todo : Example jsbin + link
+  [Codepen example](http://codepen.io/chrisdugne/pen/ZYYWbx?editors=101)
 
 - [HeatmapData](http://static.maperial.com/doc/HeatmapData.html)
 allows to draw heatmaps with custom colorbars.
