@@ -177,6 +177,7 @@ depending on the data type :
 - view.addDynamicalLayer(data, options);
 - view.addHeamapLayer(data, options);
 
+@todo : links to /doc
 
 
 
