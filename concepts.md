@@ -194,27 +194,28 @@ Fusion Settings [tool](#fusion-settings)
 
 
 # Data
-A Data may be shared by many [data layers](#data-layers).
-
-#### Sharable
-For instance, you may create one DynamicalData,
-and apply it on two different layers on two different maps.
-
-Then, adding one point on this DynamicalData would add the point on the two
-layers.
-
-#### GeoJson
-Use <a href="http://geojson.org">GeoJson</a> to represent your Data.
-
-Check the different types of data below to set your
-Feature Collections accordingly.
 
 #### Types
 - [DynamicalData](http://static.maperial.com/doc/DynamicalData.html)
 allows to add/remove points with custom properties.
+  @todo : Example jsbin + link
+
 - [HeatmapData](http://static.maperial.com/doc/HeatmapData.html)
 allows to draw heatmaps with custom colorbars.
+  @todo : Example jsbin + link
 
+#### Sharable
+You may create one Data and apply it on many [data layers](#data-layers).
+
+Then, adding one point on this Data would display the point on every layer.
+
+- @todo : Example sharing data on 2 maps : jsbin + link
+
+#### GeoJson
+Use <a href="http://geojson.org">GeoJson</a> to represent your Data.
+
+Check the different [types](#types) of data
+to set your Feature Collections accordingly.
 
 
 
