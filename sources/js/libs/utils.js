@@ -170,11 +170,9 @@ Utils.prototype.getSourceThumb = function (layer) {
 //------------------------------------------------------------------------------
 
 Utils.prototype.getPoint = function (event) {
-    //not gesture anymore ?
-    debugger
     return {
-        x: event.gesture.center.clientX,
-        y: event.gesture.center.clientY
+        x: event.srcEvent.clientX,
+        y: event.srcEvent.clientY
     };
 };
 

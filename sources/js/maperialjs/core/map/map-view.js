@@ -431,23 +431,20 @@ MapView.prototype.refreshCamera = function (event) {
         case Maperial.LENS:
         case Maperial.ANCHOR:
 
-            var initiator = event.currentTarget
-                                 .container
-                                 .getBoundingClientRect();
+            var initiator = event.currentTarget;
+            var initiatorBox = initiator.container.getBoundingClientRect();
+            var initiatorCenterX = initiatorBox.left + initiatorBox.width / 2;
+            var initiatorCenterY = initiatorBox.top + initiatorBox.height / 2;
 
-            var my = this.container.getBoundingClientRect();
-
-            var centerX = my.left + my.width / 2;
-            var centerY = my.top + my.height / 2;
-
-            var initiatorCenterX = initiator.left + initiator.width / 2;
-            var initiatorCenterY = initiator.top + initiator.height / 2;
+            var myBox = this.container.getBoundingClientRect();
+            var myCenterX = myBox.left + myBox.width / 2;
+            var myCenterY = myBox.top + myBox.height / 2;
 
             var initiatorCenterP = utils.centerInPixels(initiator.context);
-            var newCenterP = new Point(
-                initiatorCenterP.x - initiatorCenterX + centerX,
-                initiatorCenterP.y + initiatorCenterY - centerY
-            );
+            var newCenterP = {
+                x: initiatorCenterP.x - initiatorCenterX + myCenterX,
+                y: initiatorCenterP.y + initiatorCenterY - myCenterY
+            };
 
             this.context.centerM = utils.pointInMeters(
                 newCenterP,
