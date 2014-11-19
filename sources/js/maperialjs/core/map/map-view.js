@@ -435,6 +435,7 @@ MapView.prototype.refreshCamera = function (event) {
         case Maperial.MAIN:
         case Maperial.LENS:
         case Maperial.ANCHOR:
+            console.log('refreshCamera', initiator, this);
 
             var initiatorBox = initiator.container.getBoundingClientRect();
             var initiatorCenterX = initiatorBox.left + initiatorBox.width / 2;

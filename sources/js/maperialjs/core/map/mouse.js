@@ -26,7 +26,9 @@ MouseListener.prototype.initListeners = function () {
 
         /* prepare the hammer listening on the canvas */
         var hammertime = new Hammer(this.mapView.canvas);
-        hammertime.on('pan', this.drag.bind(this));
+        hammertime.on('panstart', this.panstart.bind(this));
+        hammertime.on('panmove',  this.panmove.bind(this));
+        hammertime.on('panend',   this.panend.bind(this));
 
         /* link every function on the listener to be able to
          * call 'off' on them*/
@@ -66,10 +68,10 @@ MouseListener.prototype.initListeners = function () {
 
 MouseListener.prototype.removeListeners = function () {
 
-    this.hammer.off('tap', this.hammer.tap);
-    this.hammer.off('dragstart', this.hammer.dragstart);
-    this.hammer.off('drag', this.hammer.drag);
-    this.hammer.off('dragend', this.hammer.dragend);
+    // this.hammer.off('tap', this.hammer.tap);
+    // this.hammer.off('dragstart', this.hammer.dragstart);
+    // this.hammer.off('drag', this.hammer.drag);
+    // this.hammer.off('dragend', this.hammer.dragend);
 
     //  this.context.mapCanvas.off('mousedown');
     //  this.context.mapCanvas.off('mouseup');
@@ -82,16 +84,16 @@ MouseListener.prototype.removeListeners = function () {
 
 //---------------------------------------------------------------------------//
 
-MouseListener.prototype.drag = function (event) {
-    this.mapView.trigger('drag', event);
+MouseListener.prototype.panmove = function (event) {
+    this.mapView.trigger('panmove', event);
 }
 
-MouseListener.prototype.dragstart = function (event) {
-    this.mapView.trigger('dragstart', event);
+MouseListener.prototype.panstart = function (event) {
+    this.mapView.trigger('panstart', event);
 }
 
-MouseListener.prototype.dragend = function (event) {
-    this.mapView.trigger('dragend', event);
+MouseListener.prototype.panend = function (event) {
+    this.mapView.trigger('panend', event);
 }
 
 MouseListener.prototype.tap = function (event) {

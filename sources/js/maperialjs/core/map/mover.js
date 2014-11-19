@@ -26,16 +26,16 @@ function Mover(mapView) {
 
 Mover.prototype.initListeners = function (event) {
 
-    this.mapView.on("dragstart", function (event) {
+    this.mapView.on("panstart", function (event) {
         this.reset(event);
     }.bind(this));
 
-    this.mapView.on("drag", function (event) {
-        this.drag(event);
+    this.mapView.on("panmove", function (event) {
+        this.panmove(event);
     }.bind(this));
 
-    this.mapView.on("dragend", function (event) {
-        this.dragend(event);
+    this.mapView.on("panend", function (event) {
+        this.panend(event);
     }.bind(this));
 
     this.mapView.on("tap", function (event) {
@@ -102,7 +102,7 @@ Mover.prototype.reset = function (event) {
 
 //-------------------------------------------------------------------------
 
-Mover.prototype.drag = function (event) {
+Mover.prototype.panmove = function (event) {
 
     this.mapView.context.mouseP = utils.getPoint(event);
     this.mapView.context.mouseM = utils.converToMeters(
@@ -129,7 +129,7 @@ Mover.prototype.drag = function (event) {
 //-------------------------------------------------------------------------
 //Auto Move workflow
 
-Mover.prototype.dragend = function () {
+Mover.prototype.panend = function () {
     if (this.requireAutoMove()) {
         this.prepareAutoMove();
     }
