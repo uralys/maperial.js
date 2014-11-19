@@ -74,8 +74,8 @@ to a html container, you place it inside a [MapView](#mapviews).
 var anchor = map.addAnchor(options);
 ```
 
-- May use a [theme](#theme)
-- Example : @todo jsbin + link
+- Require a [theme](#theme)
+- Example on [codepen](http://codepen.io/chrisdugne/pen/VYYbEv)
 - Read [more] (http://static.maperial.com/doc/Maperial.html#addAnchor)
 about the options
 
