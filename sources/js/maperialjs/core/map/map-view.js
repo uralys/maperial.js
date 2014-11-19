@@ -142,7 +142,8 @@ MapView.prototype.expose = function () {
     this.addAnchor = function (options) {
         options = options || {};
         this.prepareChildOptions(options, {
-            type : Maperial.ANCHOR
+            type : Maperial.ANCHOR,
+            defaultZoom : this.context.zoom
         });
 
         var width = (options.width || this.width / 2) + 'px';
@@ -435,7 +436,7 @@ MapView.prototype.refreshCamera = function (event) {
         case Maperial.MAIN:
         case Maperial.LENS:
         case Maperial.ANCHOR:
-            console.log('refreshCamera', initiator, this);
+            this.context.zoom = initiator.context.zoom;
 
             var initiatorBox = initiator.container.getBoundingClientRect();
             var initiatorCenterX = initiatorBox.left + initiatorBox.width / 2;

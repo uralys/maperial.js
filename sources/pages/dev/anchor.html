@@ -13,29 +13,34 @@
 <script type="text/javascript" src="http://static.maperial.localhost/js/maperial.js"></script>
 <script type="text/javascript">
     (function () {
-
         var maperial = new window.Maperial();
 
-        var map = maperial.createMap('map');
+        var map = maperial.createMap({
+          container:   'map',
+          defaultZoom: 4,
+          latitude:    54.619144,
+          longitude:   28.837023
+        });
+
         var anchor = map.addAnchor();
+
         var anchor2 = map.addAnchor({
-            width: map.width * 0.2,
-            height: map.height * 0.2,
-            top: map.height * 0.75,
-            left: map.width * 0.05
+            width:  map.width * 0.35,
+            height: map.height * 0.35,
+            top:    map.height * 0.6,
+            left:   map.width * 0.05
         });
         var anchor3 = map.addAnchor({
-            width: map.width * 0.2,
-            height: map.height * 0.2,
-            top: map.height * 0.05,
-            left: map.width * 0.75
+            width:  map.width * 0.35,
+            height: map.height * 0.35,
+            top:    map.height * 0.05,
+            left:   map.width * 0.6
         });
 
-        map.addOCMLandscape();
-        anchor.addWatercolor();
-        anchor2.addWatercolor();
-        anchor3.addWatercolor();
-
+        map.addAerosol();
+        anchor.addEarthLight();
+        anchor2.addOCMLandscape();
+        anchor3.addSatellite();
     })();
 </script>
 
