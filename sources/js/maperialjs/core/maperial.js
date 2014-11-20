@@ -1,15 +1,20 @@
 //-----------------------------------------------------------------
 
 var MapView = require('./map/map-view.js'),
-    SourceManager = require('./managers/source-manager.js'),
-    StyleManager = require('./managers/style-manager.js'),
+    SourceManager   = require('./managers/source-manager.js'),
+    StyleManager    = require('./managers/style-manager.js'),
     ColorbarManager = require('./managers/colorbar-manager.js'),
-    DynamicalData = require('./models/data/dynamical-data.js'),
-    HeatmapData = require('./models/data/heatmap-data.js'),
-    Source = require('./models/source.js'),
-    utils = require('../../libs/utils.js'),
-    SimpleZoom = require('../tools/simple-zoom.js'),
-    environment = require('../../environment/config.js');
+    DynamicalData   = require('./models/data/dynamical-data.js'),
+
+    HeatmapData     = require('./models/data/heatmap-data.js'),
+    Source          = require('./models/source.js'),
+
+    utils           = require('../../libs/utils.js'),
+
+    SimpleZoom      = require('../tools/simple-zoom.js'),
+    ShadeControls   = require('../tools/shade-controls.js'),
+
+    environment     = require('../../environment/config.js');
 
 //-----------------------------------------------------------------
 
@@ -246,27 +251,13 @@ Maperial.prototype.expose = function () {
 
     /**
      * @function
-     * @param {array} layers Add controls to an array of layers.
+     * @param {object} options
+     * @param {string} options.container The html div id where to attach
+     *                                  this tool.
+     * @param {string} options.layer The layer to control
      */
-    this.addShadeControls = function (layers) {
-        var hud = document.createElement('div');
-        var bar = document.createElement('input');
-
-        hud.className = 'hud';
-        bar.className = 'scale';
-        bar.setAttribute('type', 'range');
-        bar.setAttribute('min', '1');
-        bar.setAttribute('max', '100');
-        bar.setAttribute('step', '1');
-        bar.setAttribute('value', layers[0].params.scale);
-
-        bar.addEventListener('input', function (event) {
-            layers[0].params.scale = event.target.valueAsNumber;
-        });
-
-        hud.appendChild(bar);
-
-        document.querySelector('body').appendChild(hud);
+    this.addShadeControls = function (options) {
+        new ShadeControls(options);
     }.bind(this);
 
     /**

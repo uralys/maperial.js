@@ -1,5 +1,5 @@
 
-module.exports = function ShadeSettings(options) {
+module.exports = function ShadeControls(options) {
 
     var container = null;
     var layer = options.layer;
@@ -7,25 +7,33 @@ module.exports = function ShadeSettings(options) {
 
     var lightX = createSlider({
         min:      1,
+        step:     1,
         max:      200,
+        value:    layer.lightX(),
         modifier: layer.setLightX.bind(layer)
     });
 
     var lightY = createSlider({
         min:      1,
+        step:     1,
         max:      200,
+        value:    layer.lightY(),
         modifier: layer.setLightY.bind(layer)
     });
 
     var lightZ = createSlider({
         min:      1,
+        step:     1,
         max:      200,
+        value:    layer.lightZ(),
         modifier: layer.setLightZ.bind(layer)
     });
 
     var scale = createSlider({
         min:      1,
+        step:     1,
         max:      200,
+        value:    layer.scale(),
         modifier: layer.setScale.bind(layer)
     });
 
@@ -33,7 +41,8 @@ module.exports = function ShadeSettings(options) {
         container = document.getElementById(options.container);
     } else {
         container = document.createElement('div');
-        views[0].container.appendChild(container);
+        container.classList.add('maperial-shade-controls');
+        mapView.container.appendChild(container);
     }
 
     container.appendChild(lightX);
@@ -46,10 +55,13 @@ module.exports = function ShadeSettings(options) {
 
 function createSlider(options){
     var slider       = document.createElement('input');
+
     slider.type      = 'range';
     slider.className = 'slider';
+    slider.step      = options.step;
     slider.min       = options.min;
     slider.max       = options.max;
+    slider.value     = options.value;
 
     slider.addEventListener("input", function (event) {
         options.modifier(event.target.valueAsNumber);

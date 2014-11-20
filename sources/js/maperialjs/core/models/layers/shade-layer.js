@@ -21,8 +21,8 @@ function ShadeLayer(options) {
 
 ShadeLayer.prototype.default = function () {
     return {
-        uLight: [10, 10, 20],
-        scale: 10
+        uLight: [50, 50, 70],
+        scale: 50
     };
 }
 
@@ -62,6 +62,36 @@ ShadeLayer.prototype.setLightZ = function (newZ) {
 ShadeLayer.prototype.setScale = function (newScale) {
     this.version();
     this.params.scale = newScale;
+}
+
+//---------------------------------------------------------------------------
+
+/**
+ * Return the lightX of your shade
+ */
+ShadeLayer.prototype.lightX = function () {
+    return this.params.uLight[0] ;
+}
+
+/**
+ * Return the lightY of your shade
+ */
+ShadeLayer.prototype.lightY = function () {
+    return this.params.uLight[1] ;
+}
+
+/**
+ * Return the lightZ of your shade
+ */
+ShadeLayer.prototype.lightZ = function () {
+    return this.params.uLight[2] ;
+}
+
+/**
+ * Return the amount of shade
+ */
+ShadeLayer.prototype.scale = function () {
+    return this.params.scale ;
 }
 
 //---------------------------------------------------------------------------

@@ -3,8 +3,9 @@
 @import "compass/reset";
 
 /* Modules */
-@import "hud/slider";
-@import "hud/simple-zoom";
+@import "tools/slider";
+@import "tools/simple-zoom";
+@import "tools/shade-controls";
 @import "maps/map";
 @import "other/utils";
 
