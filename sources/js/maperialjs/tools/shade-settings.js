@@ -1,15 +1,33 @@
-//------------------------------------------------------------------------------
 
-var CoordinateSystem = require('../libs/coordinate-system.js');
-
-//------------------------------------------------------------------------------
-
-function ShadeSettings(options) {
+module.exports = function ShadeSettings(options) {
 
     var container = null;
-    var views = options.views;
-    var zoomIn = document.createElement('div');
-    var zoomOut = document.createElement('div');
+    var layer = options.layer;
+    var mapView = layer.mapView;
+
+    var lightX = createSlider({
+        min:      1,
+        max:      200,
+        modifier: layer.setLightX.bind(layer)
+    });
+
+    var lightY = createSlider({
+        min:      1,
+        max:      200,
+        modifier: layer.setLightY.bind(layer)
+    });
+
+    var lightZ = createSlider({
+        min:      1,
+        max:      200,
+        modifier: layer.setLightZ.bind(layer)
+    });
+
+    var scale = createSlider({
+        min:      1,
+        max:      200,
+        modifier: layer.setScale.bind(layer)
+    });
 
     if (options.container) {
         container = document.getElementById(options.container);
@@ -18,25 +36,24 @@ function ShadeSettings(options) {
         views[0].container.appendChild(container);
     }
 
-    zoomIn.className = "maperial-simple-zoom-in";
-    zoomOut.className = "maperial-simple-zoom-out";
-
-    container.appendChild(zoomIn);
-    container.appendChild(zoomOut);
-
-    zoomIn.addEventListener("click", function () {
-        views.forEach(function (view) {
-            view.trigger("zoom-in");
-        });
-    });
-
-    zoomOut.addEventListener("click", function () {
-        views.forEach(function (view) {
-            view.trigger("zoom-out");
-        });
-    });
+    container.appendChild(lightX);
+    container.appendChild(lightY);
+    container.appendChild(lightZ);
+    container.appendChild(scale);
 }
 
 //------------------------------------------------------------------------------
 
-module.exports = SimpleZoom;
+function createSlider(options){
+    var slider       = document.createElement('input');
+    slider.type      = 'range';
+    slider.className = 'slider';
+    slider.min       = options.min;
+    slider.max       = options.max;
+
+    slider.addEventListener("input", function (event) {
+        options.modifier(event.target.valueAsNumber);
+    });
+
+    return slider;
+}

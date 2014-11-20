@@ -26,41 +26,42 @@ LayerManager.prototype.addLayer = function (layerType, params) {
 
         // ---------------------------------------
 
-    case Layer.Dynamical:
-        layer = new DynamicalLayer(params, this.defaultDynamicalComposition());
-        break;
+        case Layer.Dynamical:
+            layer = new DynamicalLayer(params, this.defaultDynamicalComposition());
+            break;
 
-        // ---------------------------------------
+            // ---------------------------------------
 
-    case Layer.Heat:
-        layer = new HeatmapLayer(params, this.defaultComposition());
-        break;
+        case Layer.Heat:
+            layer = new HeatmapLayer(params, this.defaultComposition());
+            break;
 
-        // ---------------------------------------
+            // ---------------------------------------
 
-    case Layer.Shade:
-        layer = new ShadeLayer(
-            this.defaultComposition()
-        );
-        break;
+        case Layer.Shade:
+            layer = new ShadeLayer({
+                composition: this.defaultComposition(),
+                mapView:     this.mapView
+            });
+            break;
 
-        // ---------------------------------------
+            // ---------------------------------------
 
-    case Layer.Raster:
-        layer = new RasterLayer(params, this.defaultComposition());
-        break;
+        case Layer.Raster:
+            layer = new RasterLayer(params, this.defaultComposition());
+            break;
 
-        // ---------------------------------------
+            // ---------------------------------------
 
-    case Layer.Images:
-    case Layer.WMS:
-        layer = new ImageLayer(params, this.defaultComposition());
-        break;
+        case Layer.Images:
+        case Layer.WMS:
+            layer = new ImageLayer(params, this.defaultComposition());
+            break;
 
-        // ---------------------------------------
+            // ---------------------------------------
 
-    case Layer.Vectorial:
-        break;
+        case Layer.Vectorial:
+            break;
 
     }
 

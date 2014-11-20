@@ -9,12 +9,14 @@ var utils = require('../../../../libs/utils.js'),
  *
  * @constructor
  */
-function ShadeLayer(composition) {
-    this.id = utils.generateUID();
-    this.type = Layer.Shade;
-    this.params = this.default();
-    this.composition = composition;
+function ShadeLayer(options) {
+    this.id          = utils.generateUID();
+    this.type        = Layer.Shade;
+    this.params      = this.default();
+    this.composition = options.composition;
+    this.mapView     = options.mapView;
 }
+
 //---------------------------------------------------------------------------
 
 ShadeLayer.prototype.default = function () {
