@@ -40,7 +40,6 @@ LayerManager.prototype.addLayer = function (layerType, params) {
 
     case Layer.Shade:
         layer = new ShadeLayer(
-            LayerManager.defaultShade,
             this.defaultComposition()
         );
         break;
@@ -98,13 +97,6 @@ LayerManager.prototype.defaultDynamicalComposition = function () {
             uParams: 1
         }
     };
-};
-
-//----------------------------------------
-
-LayerManager.defaultShade = {
-    uLight: [10, 10, 20],
-    scale: 10
 };
 
 //----------------------------------------

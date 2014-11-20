@@ -17,19 +17,20 @@ function MapRenderer(mapView) {
 
     this.mapView = mapView;
 
-    /* init GL **/
-    this.start();
+    this.init();
 
     this.assets = mapView.context.assets;
     this.gl = mapView.context.assets.ctx;
 
     this.dynamicalRenderers = {};
     this.colorbarRenderer = new ColorbarRenderer(this.mapView);
+
+    this.drawScene();
 }
 
 //-----------------------------------------------------------------------------
 
-MapRenderer.prototype.start = function () {
+MapRenderer.prototype.init = function () {
 
     this.gl = null;
     this.drawSceneInterval = null;
@@ -52,11 +53,6 @@ MapRenderer.prototype.start = function () {
 
     this.gltools = new GLTools();
     this.initGL();
-
-    this.drawSceneInterval = setInterval(
-        this.drawScene.bind(this),
-        Maperial.refreshRate
-    );
 
     return true;
 }
@@ -211,6 +207,8 @@ MapRenderer.prototype.drawScene = function () {
 
     this.forceGlobalRedraw = true;
     // this.forceTileRedraw    = false;
+
+    requestAnimationFrame(this.drawScene.bind(this));
 };
 
 //--------------------------------------------------------------------

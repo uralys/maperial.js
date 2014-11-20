@@ -12,15 +12,14 @@
 
 <script type="text/javascript" src="http://static.maperial.localhost/js/maperial.js"></script>
 <script type="text/javascript">
-    var maperial = new Maperial(),
-        map = maperial.createMap({
-            container: "map",
-        }),
+    var maperial = new Maperial();
+    window.map = maperial.createMap({
+        container: "map",
+    });
 
-        shadeLayer = map.addShade(),
-        ocmTransport = map.addWatercolor();
+    window.shadeLayer = map.addShade();
 
-    maperial.addShadeControls([shadeLayer]);
+    // maperial.addShadeControls([shadeLayer]);
 </script>
 
 

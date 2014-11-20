@@ -31,7 +31,7 @@ ShadeLayerPart.prototype.isUpToDate = function () {
     if (_.isEqual(this.params, this.layer.params) && this.tex != null) {
         return true;
     } else {
-        this.params = _.cloneDeep(this.layer.params);
+        this.params = _.extend({}, this.layer.params);
         this.reset();
         return false;
     }
