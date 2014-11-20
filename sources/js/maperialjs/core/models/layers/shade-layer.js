@@ -29,8 +29,8 @@ ShadeLayer.prototype.default = function () {
 //---------------------------------------------------------------------------
 
 /**
- * [setLightX description]
- * @param {int} newX [description]
+ * Change the light X for your shade
+ * @param {int} newX light X to set (default : 10)
  */
 ShadeLayer.prototype.setLightX = function (newX) {
     this.version();
@@ -38,8 +38,8 @@ ShadeLayer.prototype.setLightX = function (newX) {
 }
 
 /**
- * [setLightY description]
- * @param {int} newY [description]
+ * Change the light Y for your shade
+ * @param {int} newY light Y to set (default : 10)
  */
 ShadeLayer.prototype.setLightY = function (newY) {
     this.version();
@@ -47,8 +47,8 @@ ShadeLayer.prototype.setLightY = function (newY) {
 }
 
 /**
- * [setLightZ description]
- * @param {int} newZ [description]
+ * Change the light Z for your shade
+ * @param {int} newZ light Z to set (default : 20)
  */
 ShadeLayer.prototype.setLightZ = function (newZ) {
     this.version();
@@ -56,8 +56,8 @@ ShadeLayer.prototype.setLightZ = function (newZ) {
 }
 
 /**
- * [setScale description]
- * @param {int} newScale [description]
+ * Change the amount of shade
+ * @param {int} newScale The scale to set (default : 10)
  */
 ShadeLayer.prototype.setScale = function (newScale) {
     this.version();
