@@ -75,7 +75,7 @@ var anchor = map.addAnchor(options);
 ```
 
 - Require a [theme](#theme)
-- Example on [codepen](http://codepen.io/chrisdugne/pen/VYYbEv)
+- Example on [codepen](http://codepen.io/chrisdugne/pen/VYYbEv?editors=101)
 - Read [more] (http://static.maperial.com/doc/Maperial.html#addAnchor)
 about the options
 
@@ -242,9 +242,16 @@ maperial.addSimpleZoom(options)
 #### Fusion settings
 @todo
 
-#### Shade settings
-@todo
+#### Shade controls
+This tool allows you to play with our dynamical settings to modify your shade on the fly.
 
+You will have 4 sliders to alter:
+- The light x,y and z
+- The shade scale.
+
+- Read [more] (http://static.maperial.com/doc/Maperial.html#addShadeControls)
+- Require a [theme](#theme) on your page
+- Example on [codepen](http://codepen.io/chrisdugne/pen/qEEYRp?editors=101)
 
 
 
