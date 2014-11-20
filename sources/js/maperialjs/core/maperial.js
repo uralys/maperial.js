@@ -252,9 +252,9 @@ Maperial.prototype.expose = function () {
     /**
      * @function
      * @param {object} options
-     * @param {string} options.layer *Mandatory* The layer to control
-     * @param {string} options.container **optional** The html div id where to attach
-     *                                  this tool.
+     * @param {string} options.layer **Mandatory** The layer to control
+     * @param {string} options.container *optional* The html div id where to
+     *                                   attach this tool.
      */
     this.addShadeControls = function (options) {
         new ShadeControls(options);
@@ -265,7 +265,7 @@ Maperial.prototype.expose = function () {
      * @param {object} options
      * @param {array} options.views Attach controls to this array of MapViews.
      *                              (Note : Does not work with Anchors.)
-     * @param {string} options.container **optional** The html div id where to attach
+     * @param {string} options.container *optional* The html div id where to attach
      *                                  this tool.
      */
     this.addSimpleZoom = function (options) {
