@@ -31,7 +31,6 @@ ShadeLayer.prototype.default = function () {
  * @param {int} newX [description]
  */
 ShadeLayer.prototype.setLightX = function (newX) {
-    console.log('setLightX : ', newX);
     this.version();
     this.params.uLight[0] = newX;
 }
@@ -72,7 +71,7 @@ ShadeLayer.prototype.setScale = function (newScale) {
  */
 ShadeLayer.prototype.animateLightX = function (from, to) {
     var set = function (){
-        var way = Math.abs(from)/from * Math.abs(to)/to;
+        var way = Math.abs(to-from)/(to-from);
         this.setLightX(from);
         var next = from + way;
         if((next - to)*way < 0){
