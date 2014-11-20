@@ -68,7 +68,6 @@ DynamicalRenderer.prototype.synchronize = function (z, tileX, tileY, nbTX, nbTY)
         dataChanged = this.version != this.dynamicalData.version;
 
     if ((cameraMoved || dataChanged) && !this.texNeverRead) {
-        console.log('--> synchronizing dynamical renderer', this.version + ' --> ' + this.dynamicalData.version, this.dynamicalData);
         this.reset();
         this.version = this.dynamicalData.version;
 
@@ -186,7 +185,6 @@ DynamicalRenderer.prototype.GetTex = function (tx, ty) {
     var i = tx - this.tx;
     var j = ty - this.ty;
     if (i >= this.nbtx || j >= this.nbty || this.renderingStep != null || i < 0 || j < 0) {
-        console.log("invalid custom tile");
         this.reset();
         return null;
     }
