@@ -254,9 +254,7 @@ about the options
 
 
 #### Shade controls
-This tool allows you to play with our dynamical settings to modify your shade on the fly.
-
-You will have 4 sliders to alter the [shadeLayer](#shade) :
+This tool allows you to play with our dynamical settings to modify your [shade](#shade) on the fly using 4 sliders altering :
 - The light x,y and z
 - The shade scale.
 
