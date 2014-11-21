@@ -155,8 +155,12 @@ and draw unique maps.
 - view.addSatellite()
 
 #### Maperial layers
+###### Shade
 - view.addShade()
+
+###### City lights at night
 - view.addEarthLight()
+
 - view.addAerosol()
 - view.addNDVI()
 - view.addSRTM()
@@ -232,6 +236,7 @@ maperial.addSimpleZoom(options)
 - Require a [theme](#theme) on your page
 - @todo : Example on [codepen](http://codepen.io/chrisdugne)
 - Read [more] (http://static.maperial.com/doc/Maperial.html#addSimpleZoom)
+about the options
 
 
 
@@ -251,13 +256,11 @@ maperial.addSimpleZoom(options)
 #### Shade controls
 This tool allows you to play with our dynamical settings to modify your shade on the fly.
 
-You will have 4 sliders to alter:
+You will have 4 sliders to alter the [shadeLayer](#shade) :
 - The light x,y and z
 - The shade scale.
 
 ```
-window.shadeLayer = map.addShade();
-
 maperial.addShadeControls({
     layer : shadeLayer
 });
@@ -265,7 +268,7 @@ maperial.addShadeControls({
 
 - Require a [theme](#theme) on your page
 - Example on [codepen](http://codepen.io/chrisdugne/pen/qEEYRp?editors=101)
-- Read [more] (http://static.maperial.com/doc/Maperial.html#addShadeControls)
+- Read [more] (http://static.maperial.com/doc/Maperial.html#addShadeControls) about the options
 
 
 
