@@ -13,8 +13,8 @@ to let us know your feedback !
 
 # Let me play !
 - Get [started] (#getting-started) with a first map
-- Understand [Maperial](./concepts.md)'s concepts
 - Check out a whole bunch of Codepen [examples] (http://codepen.io/chrisdugne/)
+- Understand [Maperial](./concepts.md)'s concepts
 - Explore the complete API [reference](http://static.maperial.com/doc)
 to draft your own maps.
 

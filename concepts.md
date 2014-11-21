@@ -230,17 +230,24 @@ maperial.addSimpleZoom(options)
 ```
 
 ##### more
-- Read [more] (http://static.maperial.com/doc/Maperial.html#addSimpleZoom)
 - Require a [theme](#theme) on your page
+- @todo : Example on [codepen](http://codepen.io/chrisdugne)
+- Read [more] (http://static.maperial.com/doc/Maperial.html#addSimpleZoom)
+
 
 
 
 #### Slider Zoom
 @todo : (1-18 slider and +/- buttons)
-  maperial.addSliderZoom([views])
+  maperial.addSliderZoom(options)
+
+
 
 #### Fusion settings
 @todo
+
+
+
 
 #### Shade controls
 This tool allows you to play with our dynamical settings to modify your shade on the fly.
@@ -249,9 +256,18 @@ You will have 4 sliders to alter:
 - The light x,y and z
 - The shade scale.
 
-- Read [more] (http://static.maperial.com/doc/Maperial.html#addShadeControls)
+```
+window.shadeLayer = map.addShade();
+
+maperial.addShadeControls({
+    layer : shadeLayer
+});
+```
+
+##### more
 - Require a [theme](#theme) on your page
 - Example on [codepen](http://codepen.io/chrisdugne/pen/qEEYRp?editors=101)
+- Read [more] (http://static.maperial.com/doc/Maperial.html#addShadeControls)
 
 
 
