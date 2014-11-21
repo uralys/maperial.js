@@ -4,7 +4,7 @@
 You'll find here how to use Maperial to create maps and layers,
 how to manipulate your data and how to add tools to your maps.
 
-You may want to check some [examples](./examples.md) before anything.
+You may want to check some [examples](http://codepen.io/chrisdugne/) before anything.
 
 Once you're ready to go further, explore the complete
 API [documentation](http://static.maperial.com/doc).
