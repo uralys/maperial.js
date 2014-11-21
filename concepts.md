@@ -229,7 +229,6 @@ to a set of MapViews
 maperial.addSimpleZoom(options)
 ```
 
-##### more
 - Require a [theme](#theme) on your page
 - @todo : Example on [codepen](http://codepen.io/chrisdugne)
 - Read [more] (http://static.maperial.com/doc/Maperial.html#addSimpleZoom)
@@ -264,7 +263,6 @@ maperial.addShadeControls({
 });
 ```
 
-##### more
 - Require a [theme](#theme) on your page
 - Example on [codepen](http://codepen.io/chrisdugne/pen/qEEYRp?editors=101)
 - Read [more] (http://static.maperial.com/doc/Maperial.html#addShadeControls)
