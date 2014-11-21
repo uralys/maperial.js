@@ -10,6 +10,8 @@ var utils = require('../../../../libs/utils.js'),
  * Create a HeatmapData using the [Maperial]{@link Maperial#createHeatmapData}
  *
  * @class
+ *
+ * @example on [codepen](http://codepen.io/chrisdugne/pen/Wbbggr?editors=101)
  */
 function HeatmapData(data) {
     this.id = utils.generateUID();
