@@ -1,11 +1,12 @@
 //---------------------------------------------------------------
 
-var Layer = require('../models/layer.js'),
+var Layer          = require('../models/layer.js'),
+    Composition    = require('../models/layers/composition.js'),
     DynamicalLayer = require('../models/layers/dynamical-layer.js'),
-    ImageLayer = require('../models/layers/image-layer.js'),
-    ShadeLayer = require('../models/layers/shade-layer.js'),
-    RasterLayer = require('../models/layers/raster-layer.js'),
-    HeatmapLayer = require('../models/layers/heatmap-layer.js');
+    ImageLayer     = require('../models/layers/image-layer.js'),
+    ShadeLayer     = require('../models/layers/shade-layer.js'),
+    RasterLayer    = require('../models/layers/raster-layer.js'),
+    HeatmapLayer   = require('../models/layers/heatmap-layer.js');
 
 //---------------------------------------------------------------
 
@@ -13,7 +14,7 @@ function LayerManager(mapView) {
     this.mapView = mapView;
 }
 
-//----------------------------------------
+//---------------------------------------------------------------
 
 LayerManager.prototype.addLayer = function (layerType, params) {
 
@@ -27,35 +28,42 @@ LayerManager.prototype.addLayer = function (layerType, params) {
         // ---------------------------------------
 
         case Layer.Dynamical:
-            layer = new DynamicalLayer(params, this.defaultDynamicalComposition());
+            layer = new DynamicalLayer({
+                params: params,
+            });
             break;
 
             // ---------------------------------------
 
         case Layer.Heat:
-            layer = new HeatmapLayer(params, this.defaultComposition());
+            layer = new HeatmapLayer({
+                params: params
+            });
             break;
 
             // ---------------------------------------
 
         case Layer.Shade:
             layer = new ShadeLayer({
-                composition: this.defaultComposition(),
-                mapView:     this.mapView
+                mapView: this.mapView
             });
             break;
 
             // ---------------------------------------
 
         case Layer.Raster:
-            layer = new RasterLayer(params, this.defaultComposition());
+            layer = new RasterLayer({
+                sourceId: params
+            });
             break;
 
             // ---------------------------------------
 
         case Layer.Images:
         case Layer.WMS:
-            layer = new ImageLayer(params, this.defaultComposition());
+            layer = new ImageLayer({
+                sourceId: params
+            });
             break;
 
             // ---------------------------------------
@@ -72,46 +80,6 @@ LayerManager.prototype.addLayer = function (layerType, params) {
     layers.push(layer);
 
     return layer;
-};
-
-//---------------------------------------------------------------
-//Default settings
-
-LayerManager.prototype.defaultXBlend = function () {
-    return {
-        shader: Maperial.XBlend,
-        params: LayerManager.defaultXBlendParams
-    };
-};
-
-LayerManager.prototype.defaultComposition = function () {
-    return {
-        shader: Maperial.AlphaBlend,
-        params: LayerManager.defaultAlphaBlendParams
-    };
-};
-
-LayerManager.prototype.defaultDynamicalComposition = function () {
-    return {
-        shader: Maperial.AlphaBlend,
-        params: {
-            uParams: 1
-        }
-    };
-};
-
-//----------------------------------------
-
-LayerManager.defaultXBlendParams = {
-    uParams: [0.0, 0.0, 1]
-};
-
-LayerManager.defaultAlphaBlendParams = {
-    uParams: 0.5
-};
-
-LayerManager.defaultAlphaClipParams = {
-    uParams: 0.5
 };
 
 //---------------------------------------------------------------

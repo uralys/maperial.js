@@ -1,5 +1,6 @@
 var utils = require('../../../../libs/utils.js'),
     _     = require('../../../../libs/lodash.js'),
+    Composition = require('./composition.js'),
     Layer = require('../layer.js');
 
 //---------------------------------------------------------------------------
@@ -10,6 +11,9 @@ var utils = require('../../../../libs/utils.js'),
  * @constructor
  */
 function ShadeLayer(options) {
+
+    Composition.call(this);
+
     this.id          = utils.generateUID();
     this.type        = Layer.Shade;
     this.params      = this.default();

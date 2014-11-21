@@ -1,14 +1,17 @@
 var utils = require('../../../../libs/utils.js'),
+    Composition = require('./composition.js'),
     Layer = require('../layer.js');
 
 //---------------------------------------------------------------------------
 
-function RasterLayer(sourceId, composition) {
+function RasterLayer(options) {
+
+    Composition.call(this);
 
     this.id = utils.generateUID();
     this.type = Layer.Raster;
-    this.sourceId = sourceId;
-    this.composition = composition;
+    this.sourceId = options.sourceId;
+    this.composition = this.defaultComposition();
 
 }
 
