@@ -207,7 +207,7 @@ allows to add/remove points with custom properties.
 
 - [HeatmapData](http://static.maperial.com/doc/HeatmapData.html)
 allows to draw heatmaps with custom colorbars.
-  @todo : Example jsbin + link
+  ([Codepen example](http://codepen.io/chrisdugne/pen/Wbbggr?editors=101))
 
 #### Sharable
 You may create one Data and apply it on many [data layers](#data-layers).
