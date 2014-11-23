@@ -10,6 +10,8 @@ var Layer          = require('../models/layer.js'),
 
 //---------------------------------------------------------------
 
+// TODO : une mapview doit gerer ca, cest de la merde ce manager
+// --> exemple : mapview.layer.reset -> reset all layertparts
 function LayerManager(mapView) {
     this.mapView = mapView;
 }

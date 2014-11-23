@@ -1,4 +1,5 @@
 var utils = require('../../../../libs/utils.js'),
+    _ = require('../../../../libs/lodash.js'),
     Composition = require('./composition.js'),
     Layer = require('../layer.js');
 
@@ -6,13 +7,14 @@ var utils = require('../../../../libs/utils.js'),
 
 function ImageLayer(options) {
 
-    Composition.call(this);
-
     this.id = utils.generateUID();
     this.type = Layer.Images;
     this.sourceId = options.sourceId;
-    this.composition = this.defaultComposition();
 
+    this.composition = _.extend({}, Composition);
+    _.extend(this, this.composition.expose());
+
+    this.setAlphaBlend();
 }
 
 //------------------------------------------------------------------------

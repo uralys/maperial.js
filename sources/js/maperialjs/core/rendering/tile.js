@@ -350,8 +350,8 @@ Tile.prototype.compose = function () {
             var frontTex = layerPartsTocompose[i].tex;
             if (frontTex) {
                 var composition = layerPartsTocompose[i].layer.composition,
-                    prog = this.assets.prog[composition.shader],
-                    params = composition.params;
+                    prog = this.assets.prog[composition.settings.shader],
+                    params = composition.settings.params;
 
                 this.fuse(backTex, frontTex, destFb, prog, params);
             } else {

@@ -11,6 +11,7 @@ function ShadeLayerPart(tile, context, layer) {
     this.gl = context.assets.ctx;
 
     /* sync params with those from the layer */
+    // @FIXME refacto layermanager + mapview + reset
     this.layer = layer;
     this.params = null;
 

@@ -2,7 +2,7 @@
 
 <head>
     <title>Maperial 2.0 - Simple fusion</title>
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <link href="http://static.maperial.localhost/css/maperial.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -11,13 +11,14 @@
 
 <script type="text/javascript" src="//static.maperial.localhost/js/maperial.js"></script>
 <script type="text/javascript">
-    var maperial = new Maperial(),
-        map = maperial.createView({
+    window.maperial = new Maperial();
+    window.map = maperial.createMap({
             container: "map",
         });
 
-    map.addWatercolor();
-    map.addOCMTransport();
+    var watercolor = map.addWatercolor();
+    var transport = map.addOCMTransport();
+
 </script>
 
 
