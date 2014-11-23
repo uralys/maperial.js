@@ -1,4 +1,5 @@
-var ImageData = require("../../models/data/image-data.js");
+var ImageData = require('../../models/data/image-data.js'),
+    Layer = require('../../models/layer.js');
 
 //---------------------------------------------------------------------------
 
@@ -12,6 +13,11 @@ function ImageLayerPart(layer, tile, gl) {
     this.h = 0;
 
     this.data = new ImageData(layer.sourceId, tile.x, tile.y, tile.z);
+
+    this.layer.on(Layer.REFRESH, function(){
+        this.reset();
+    }.bind(this));
+
 }
 
 //---------------------------------------------------------------------------

@@ -1,24 +1,34 @@
+
+var Events = require('../../libs/events.js');
+
 //-----------------------------------------------------------------
-// Layer Types
 
-module.exports = function Layer (){
+function Layer (){
 
-  //WMS       : "Layer.WMS",
-  //ReTiler   : "Layer.ReTiler"
+    Events.call(this);
 
-  constructor: function(){
-    debugger
-  },
-
-  refresh: function(){
-    debugger
-  }
+    this.refresh = function(){
+        this.trigger(Layer.REFRESH);
+    };
 
 };
 
-Layer.Dynamical: "Layer.Dynamical",
-Layer.Heat:      "Layer.Heat",
-Layer.Vectorial: "Layer.Vectorial",
-Layer.Raster:    "Layer.Raster",
-Layer.Images:    "Layer.Images",
-Layer.Shade:     "Layer.Shade", // fuse with ReTile
+//-----------------------------------------------------------------
+
+Layer.REFRESH = 'layer:refresh';
+
+//-----------------------------------------------------------------
+
+Layer.Dynamical = 'layer.dynamical';
+Layer.Heat      = 'layer.heat';
+Layer.Vectorial = 'layer.vectorial';
+Layer.Raster    = 'layer.raster';
+Layer.Images    = 'layer.images';
+Layer.Shade     = 'layer.shade'; // fuse with ReTil;
+
+  //WMS       : "Layer.WMS",
+  //ReTiler   : "Layer.ReTiler"
+  //
+//-----------------------------------------------------------------
+
+module.exports = Layer;
