@@ -17,61 +17,57 @@ var defaultAlphaClipParams = {
 /*
  * Mixins for an object to implement a composition.
  */
-module.exports = {
+function Composition(layer){
 
-    settings : {},
-    version : 0,
+    this.layer = layer;
 
-    expose: function(){
-        return {
-            setAlpha : this.setAlpha.bind(this),
-            setAlphaBlend : this.setAlphaBlend.bind(this)
-        };
-    },
+    this.default = {
+        shader: Composition.ALPHA_BLEND,
+        params: defaultAlphaBlendParams
+    };
 
-    update: function () {
-        this.version ++;
-    },
+    this.settings = this.default;
 
-    setAlphaBlend: function () {
+    //--------------------------------------------------------------------------
+
+    this.setAlphaBlend = function () {
+        this.settings = this.default;
+        this.layer.refresh();
+    };
+
+    this.applyDefaultDynamicalComposition = function () {
         this.settings = {
-            shader: Maperial.AlphaBlend,
-            params: defaultAlphaBlendParams
-        };
-        this.update();
-    },
-
-    applyDefaultDynamicalComposition: function () {
-        this.settings = {
-            shader: Maperial.AlphaBlend,
+            shader: Composition.ALPHA_BLEND,
             params: {
                 uParams: 1
             }
         };
-        this.update();
-    },
 
-    applyDefaultXBlend: function () {
+        this.layer.refresh();
+    };
+
+    this.applyDefaultXBlend = function () {
         this.settings = {
-            shader: Maperial.XBlend,
+            shader: Composition.X_BLEND,
             params: defaultXBlendParams
         };
-        this.update();
-    },
+
+        this.layer.refresh();
+    };
 
     //--------------------------------------------------------------------------
 
     /**
-     * Changing the alpha. Maperial.AlphaClip or Maperial.AlphaBlend
+     * Changing the alpha. Composition.ALPHA_CLIP or Composition.ALPHA_BLEND
      * composirtions only
      * @param {float} alpha 0 < alpha < 1
      */
-    setAlpha: function (alpha) {
-        if( this.settings.shader !== Maperial.AlphaBlend &&
-            this.settings.shader !== Maperial.AlphaClip ){
+    this.setAlpha = function (alpha) {
+        if( this.settings.shader !== Composition.ALPHA_BLEND &&
+            this.settings.shader !== Composition.ALPHA_CLIP ){
             console.log('Could not setAlpha : \
-                -> only for Maperial.AlphaBlend or \
-                Maperial.AlphaClip compositions');
+                -> only for Composition.ALPHA_BLEND or \
+                Composition.ALPHA_CLIP compositions');
             return;
         }
 
@@ -80,7 +76,23 @@ module.exports = {
             return;
         }
 
-        this.composition.params.uParams = alpha;
-        this.update();
-    }
+        this.settings.params.uParams = alpha;
+        this.layer.refresh();
+    };
+
+    //--------------------------------------------------------------------------
+
+    // expose functions for public users
+    this.api = {
+        setAlphaBlend: this.setAlphaBlend.bind(this),
+        setAlpha:      this.setAlpha.bind(this)
+    };
+
 }
+
+
+Composition.ALPHA_CLIP  = 'AlphaClip';
+Composition.ALPHA_BLEND = 'AlphaBlend';
+Composition.X_BLEND     = 'XBlend';
+
+module.exports = Composition;

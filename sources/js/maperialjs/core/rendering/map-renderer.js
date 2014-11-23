@@ -1,6 +1,7 @@
 var GLTools = require("./tools/gl-tools.js"),
     Point = require('../../libs/point.js'),
     Tile = require('./tile.js'),
+    Composition = require('../models/layers/composition.js'),
     ColorbarRenderer = require('./colorbar-renderer.js'),
     DynamicalRenderer = require('./dynamical-renderer.js'),
     HeatmapRenderer = require('./heatmap-renderer.js'),
@@ -354,15 +355,15 @@ function prepareGL(glAsset, gl, glTools) {
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.disable(gl.DEPTH_TEST);
 
-    glAsset.prog = {}
-    glAsset.prog["HeatGaussian"] = glTools.MakeProgram("vertexTex", "fragmentHeatGaussian", glAsset);
-    glAsset.prog["HeatLinear"] = glTools.MakeProgram("vertexTex", "fragmentHeatLinear", glAsset);
-    glAsset.prog["Tex"] = glTools.MakeProgram("vertexTex", "fragmentTex", glAsset);
-    glAsset.prog["Clut"] = glTools.MakeProgram("vertexTex", "fragmentClut", glAsset);
-    glAsset.prog["Shade"] = glTools.MakeProgram("vertexTex", "fragmentShade", glAsset);
-    glAsset.prog[Maperial.XBlend] = glTools.MakeProgram("vertexTex", "fragmentMulBlend", glAsset);
-    glAsset.prog[Maperial.AlphaClip] = glTools.MakeProgram("vertexTex", "fragmentAlphaClip", glAsset);
-    glAsset.prog[Maperial.AlphaBlend] = glTools.MakeProgram("vertexTex", "fragmentAlphaBlend", glAsset);
+    glAsset.prog                          = {}
+    glAsset.prog['HeatGaussian']          = glTools.MakeProgram('vertexTex', 'fragmentHeatGaussian', glAsset);
+    glAsset.prog['HeatLinear']            = glTools.MakeProgram('vertexTex', 'fragmentHeatLinear', glAsset);
+    glAsset.prog['Tex']                   = glTools.MakeProgram('vertexTex', 'fragmentTex', glAsset);
+    glAsset.prog['Clut']                  = glTools.MakeProgram('vertexTex', 'fragmentClut', glAsset);
+    glAsset.prog['Shade']                 = glTools.MakeProgram('vertexTex', 'fragmentShade', glAsset);
+    glAsset.prog[Composition.X_BLEND]     = glTools.MakeProgram('vertexTex', 'fragmentMulBlend', glAsset);
+    glAsset.prog[Composition.ALPHA_CLIP]  = glTools.MakeProgram('vertexTex', 'fragmentAlphaClip', glAsset);
+    glAsset.prog[Composition.ALPHA_BLEND] = glTools.MakeProgram('vertexTex', 'fragmentAlphaBlend', glAsset);
 }
 
 //----------------------------------------------------------------

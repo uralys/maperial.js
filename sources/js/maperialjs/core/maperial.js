@@ -62,6 +62,7 @@ Maperial.MAGNIFIER = 'maperial-magnifier';
 
 Maperial.OSM = 'tiles';
 Maperial.VECTORIAL_DATA = 'data';
+
 //-----------------------------------------------------------------
 
 Maperial.EVENTS = {
@@ -99,10 +100,6 @@ Maperial.autoMoveAnalyseSize = 10;
 
 Maperial.DEFAULT_STYLE_UID = '1_style_13ed75438c8b2ed8914';
 Maperial.DEFAULT_COLORBAR_UID = '1_colorbar_13c630ec3a5068919c3';
-
-Maperial.AlphaClip = 'AlphaClip';
-Maperial.AlphaBlend = 'AlphaBlend';
-Maperial.XBlend = 'XBlend';
 
 Maperial.globalDataCpt = 0;
 

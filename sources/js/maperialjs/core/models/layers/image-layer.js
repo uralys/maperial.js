@@ -7,12 +7,14 @@ var utils = require('../../../../libs/utils.js'),
 
 function ImageLayer(options) {
 
+    _.extend(this, Layer);
+
     this.id = utils.generateUID();
     this.type = Layer.Images;
     this.sourceId = options.sourceId;
 
-    this.composition = _.extend({}, Composition);
-    _.extend(this, this.composition.expose());
+    this.composition = new Composition(this);
+    _.extend(this, this.composition.api);
 
     this.setAlphaBlend();
 }

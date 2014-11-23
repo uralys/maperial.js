@@ -6,6 +6,7 @@ var Context      = require('./context.js'),
     MapRenderer  = require('../rendering/map-renderer.js'),
     LayerManager = require('../managers/layer-manager.js'),
     Layer        = require('../models/layer.js'),
+    Composition  = require('../models/layers/composition.js'),
     Source       = require('../models/source.js'),
     Events       = require('../../libs/events.js'),
     utils        = require('../../../libs/utils.js'),
@@ -261,9 +262,9 @@ MapView.prototype.prepare = function (maperial, options) {
     //-------------------------------------------------------------
 
     this.shaders = [
-        Maperial.AlphaClip,
-        Maperial.AlphaBlend,
-        Maperial.XBlend
+        Composition.ALPHA_CLIP,
+        Composition.ALPHA_BLEND,
+        Composition.X_BLEND
     ];
 };
 
