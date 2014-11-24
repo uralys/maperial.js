@@ -13,6 +13,7 @@ var MapView = require('./map/map-view.js'),
 
     SimpleZoom      = require('../tools/simple-zoom.js'),
     ShadeControls   = require('../tools/shade-controls.js'),
+    FusionControls  = require('../tools/fusion-controls.js'),
 
     environment     = require('../../environment/config.js');
 
@@ -255,6 +256,17 @@ Maperial.prototype.expose = function () {
      */
     this.addShadeControls = function (options) {
         new ShadeControls(options);
+    }.bind(this);
+
+    /**
+     * @function
+     * @param {object} options
+     * @param {string} options.layer **Mandatory** The layer to control
+     * @param {string} options.container *optional* The html div id where to
+     *                                   attach this tool.
+     */
+    this.addFusionControls = function (options) {
+        new FusionControls(options);
     }.bind(this);
 
     /**

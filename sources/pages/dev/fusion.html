@@ -16,15 +16,18 @@
             container: "map",
         });
 
-    // window.shade = map.addShade();
+    window.shade = map.addShade();
     window.transport = map.addSatellite();
 
-    // maperial.addShadeControls({
-    //     layer : shade
-    // });
+    maperial.addShadeControls({
+        layer : shade
+    });
+
+    maperial.addFusionControls({
+        layer : transport
+    });
 
     shade.setScale(5);
-    transport.setXBlend();
 </script>
 
 

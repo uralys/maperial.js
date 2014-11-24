@@ -1,11 +1,20 @@
 
-var Events = require('../../libs/events.js');
+var Events = require('../../libs/events.js'),
+    Composition = require('./layers/composition.js'),
+    utils = require('../../../libs/utils.js'),
+    _ = require('../../../libs/lodash.js');
 
 //-----------------------------------------------------------------
 
-function Layer (){
+function Layer (options){
 
     Events.call(this);
+
+    this.id          = utils.generateUID();
+    this.mapView     = options.mapView;
+
+    this.composition = new Composition(this);
+    _.extend(this, this.composition.api);
 
     this.refresh = function(){
         this.trigger(Layer.REFRESH);

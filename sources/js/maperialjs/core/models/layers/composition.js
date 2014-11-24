@@ -56,8 +56,8 @@ function Composition(layer){
      * @param {float} alpha 0 < alpha < 1
      */
     this.setAlpha = function (alpha) {
-        if( this.settings.shader !== Composition.ALPHA_BLEND &&
-            this.settings.shader !== Composition.ALPHA_CLIP ){
+        if( this.type() !== Composition.ALPHA_BLEND &&
+            this.type() !== Composition.ALPHA_CLIP ){
             console.log('Could not setAlpha : \
                 -> only for Composition.ALPHA_BLEND or \
                 Composition.ALPHA_CLIP compositions');
@@ -71,6 +71,26 @@ function Composition(layer){
 
         this.settings.params.uParams = alpha;
         this.layer.refresh();
+    };
+
+    this.alpha = function () {
+        if( this.type() !== Composition.ALPHA_BLEND &&
+            this.type() !== Composition.ALPHA_CLIP ){
+            console.log('Could not return alpha : \
+                -> only for Composition.ALPHA_BLEND or \
+                Composition.ALPHA_CLIP compositions');
+        }
+        else{
+            return this.settings.params.uParams;
+        }
+    };
+
+    /**
+     * ALPHA_BLEND | ALPHA_CLIP | X_BLEND
+     * @return {string} the type of fusion for this layer
+     */
+    this.type = function () {
+        return this.settings.shader;
     };
 
     //--------------------------------------------------------------------------

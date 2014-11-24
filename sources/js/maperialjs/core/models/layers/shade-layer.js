@@ -1,6 +1,5 @@
 var utils = require('../../../../libs/utils.js'),
     _     = require('../../../../libs/lodash.js'),
-    Composition = require('./composition.js'),
     Layer = require('../layer.js');
 
 //---------------------------------------------------------------------------
@@ -12,14 +11,10 @@ var utils = require('../../../../libs/utils.js'),
  */
 function ShadeLayer(options) {
 
-    _.extend(this, new Layer());
-    this.composition = new Composition(this);
-    _.extend(this, this.composition.api);
+    _.extend(this, new Layer(options));
 
-    this.id          = utils.generateUID();
     this.type        = Layer.Shade;
     this.params      = this.default();
-    this.mapView     = options.mapView;
 
     this.setAlphaBlend();
 }

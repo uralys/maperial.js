@@ -31,6 +31,7 @@ LayerManager.prototype.addLayer = function (layerType, params) {
 
         case Layer.Dynamical:
             layer = new DynamicalLayer({
+                mapView: this.mapView,
                 params: params,
             });
             break;
@@ -39,6 +40,7 @@ LayerManager.prototype.addLayer = function (layerType, params) {
 
         case Layer.Heat:
             layer = new HeatmapLayer({
+                mapView: this.mapView,
                 params: params
             });
             break;
@@ -55,6 +57,7 @@ LayerManager.prototype.addLayer = function (layerType, params) {
 
         case Layer.Raster:
             layer = new RasterLayer({
+                mapView: this.mapView,
                 sourceId: params
             });
             break;
@@ -64,6 +67,7 @@ LayerManager.prototype.addLayer = function (layerType, params) {
         case Layer.Images:
         case Layer.WMS:
             layer = new ImageLayer({
+                mapView: this.mapView,
                 sourceId: params
             });
             break;
