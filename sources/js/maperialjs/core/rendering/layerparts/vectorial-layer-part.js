@@ -1,4 +1,6 @@
 //=============================================================//
+// @FIXME à refaire pour maperial 2.0
+//=============================================================//
 
 VectorialLayerPart.BACK = "back";
 VectorialLayerPart.FRONT = "front";

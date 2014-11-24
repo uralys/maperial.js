@@ -1,5 +1,6 @@
 var ShadeData = require("../../models/data/shade-data.js"),
     GLTools = require("../tools/gl-tools.js"),
+    Layer = require('../../models/layer.js'),
     _ = require("../../../../libs/lodash.js");
 
 //---------------------------------------------------------------------------
@@ -23,6 +24,9 @@ function ShadeLayerPart(tile, context, layer) {
 
     this.data = new ShadeData(tile.x, tile.y, tile.z);
 
+    this.layer.on(Layer.REFRESH, function(){
+        this.reset();
+    }.bind(this));
 }
 
 //---------------------------------------------------------------------------

@@ -1,3 +1,6 @@
+
+var Layer = require('../../models/layer.js');
+
 function DynamicalLayerPart(layer, tile) {
 
     this.layer = layer;
@@ -9,6 +12,10 @@ function DynamicalLayerPart(layer, tile) {
     this.tex = null;
 
     this.renderer = layer.renderer;
+
+    this.layer.on(Layer.REFRESH, function(){
+        this.reset();
+    }.bind(this));
 }
 
 //-----------------------------------------------------------------------------

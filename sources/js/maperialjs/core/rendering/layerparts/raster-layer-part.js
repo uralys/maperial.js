@@ -1,3 +1,6 @@
+
+var Layer = require('../../models/layer.js');
+
 function RasterLayerPart(mapView, inZoom) {
     this.mapView = mapView;
     this.assets = mapView.context.assets;
@@ -175,8 +178,8 @@ RasterLayer16.prototype.Init = function (data) {
            }
         }
         var byteArray              = new Uint8Array        ( newV );
-        this.w                     = 256;      
-        this.h                     = 256; 
+        this.w                     = 256;
+        this.h                     = 256;
         this.data                  = byteArray;
         */
     }

@@ -8,7 +8,6 @@ var utils = require('../../../../libs/utils.js'),
 function ImageLayer(options) {
 
     _.extend(this, new Layer());
-
     this.composition = new Composition(this);
     _.extend(this, this.composition.api);
 

@@ -6,13 +6,15 @@ var utils = require('../../../../libs/utils.js'),
 
 function RasterLayer(options) {
 
-    Composition.call(this);
+    _.extend(this, new Layer());
+    this.composition = new Composition(this);
+    _.extend(this, this.composition.api);
 
     this.id = utils.generateUID();
     this.type = Layer.Raster;
     this.sourceId = options.sourceId;
-    this.composition = this.defaultComposition();
 
+    this.setAlphaBlend();
 }
 
 //---------------------------------------------------------------------------

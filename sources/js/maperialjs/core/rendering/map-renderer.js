@@ -189,20 +189,16 @@ MapRenderer.prototype.drawScene = function () {
 
     // @FIXME
     // bug : once in a while data is not displayed : only with a image layer
-    // quickfix -> delaying the dynamicalRenderers sync enhance this behaviour..
-    setTimeout(function(){
-        for (var rendererId in this.dynamicalRenderers) {
-            var renderer = this.dynamicalRenderers[rendererId];
-            renderer.synchronize(
-                this.mapView.context.zoom,
-                tileC.x,
-                tileC.y - nbTileY,
-                nbTileX + 1,
-                nbTileY + 1
-            );
-        }
-
-    }.bind(this), 150);
+    for (var rendererId in this.dynamicalRenderers) {
+        var renderer = this.dynamicalRenderers[rendererId];
+        renderer.synchronize(
+            this.mapView.context.zoom,
+            tileC.x,
+            tileC.y - nbTileY,
+            nbTileX + 1,
+            nbTileY + 1
+        );
+    }
 
     //---------------------------------------------------------------
 

@@ -12,13 +12,16 @@ var utils = require('../../../../libs/utils.js'),
  */
 function ShadeLayer(options) {
 
-    Composition.call(this);
+    _.extend(this, new Layer());
+    this.composition = new Composition(this);
+    _.extend(this, this.composition.api);
 
     this.id          = utils.generateUID();
     this.type        = Layer.Shade;
     this.params      = this.default();
-    this.composition = options.composition;
     this.mapView     = options.mapView;
+
+    this.setAlphaBlend();
 }
 
 //---------------------------------------------------------------------------
@@ -37,8 +40,8 @@ ShadeLayer.prototype.default = function () {
  * @param {int} newX light X to set (default : 10)
  */
 ShadeLayer.prototype.setLightX = function (newX) {
-    this.version();
     this.params.uLight[0] = newX;
+    this.refresh();
 }
 
 /**
@@ -46,8 +49,8 @@ ShadeLayer.prototype.setLightX = function (newX) {
  * @param {int} newY light Y to set (default : 10)
  */
 ShadeLayer.prototype.setLightY = function (newY) {
-    this.version();
     this.params.uLight[1] = newY;
+    this.refresh();
 }
 
 /**
@@ -55,8 +58,8 @@ ShadeLayer.prototype.setLightY = function (newY) {
  * @param {int} newZ light Z to set (default : 20)
  */
 ShadeLayer.prototype.setLightZ = function (newZ) {
-    this.version();
     this.params.uLight[2] = newZ;
+    this.refresh();
 }
 
 /**
@@ -64,8 +67,8 @@ ShadeLayer.prototype.setLightZ = function (newZ) {
  * @param {int} newScale The scale to set (default : 10)
  */
 ShadeLayer.prototype.setScale = function (newScale) {
-    this.version();
     this.params.scale = newScale;
+    this.refresh();
 }
 
 //---------------------------------------------------------------------------
@@ -119,14 +122,6 @@ ShadeLayer.prototype.animateLightX = function (from, to) {
     }.bind(this);
 
     requestAnimationFrame(set);
-}
-
-//---------------------------------------------------------------------------
-// Private
-//---------------------------------------------------------------------------
-
-ShadeLayer.prototype.version = function () {
-    this.params = _.cloneDeep(this.params);
 }
 
 //---------------------------------------------------------------------------

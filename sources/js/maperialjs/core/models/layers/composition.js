@@ -4,11 +4,7 @@ var defaultXBlendParams = {
     uParams: [0.0, 0.0, 1]
 };
 
-var defaultAlphaBlendParams = {
-    uParams: 0.5
-};
-
-var defaultAlphaClipParams = {
+var defaultAlpha = {
     uParams: 0.5
 };
 
@@ -23,7 +19,7 @@ function Composition(layer){
 
     this.default = {
         shader: Composition.ALPHA_BLEND,
-        params: defaultAlphaBlendParams
+        params: defaultAlpha
     };
 
     this.settings = this.default;
@@ -35,18 +31,15 @@ function Composition(layer){
         this.layer.refresh();
     };
 
-    this.applyDefaultDynamicalComposition = function () {
+    this.setAlphaClip = function () {
         this.settings = {
-            shader: Composition.ALPHA_BLEND,
-            params: {
-                uParams: 1
-            }
+            shader: Composition.ALPHA_CLIP,
+            params: defaultAlpha
         };
-
         this.layer.refresh();
     };
 
-    this.applyDefaultXBlend = function () {
+    this.setXBlend = function () {
         this.settings = {
             shader: Composition.X_BLEND,
             params: defaultXBlendParams

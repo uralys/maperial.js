@@ -6,7 +6,9 @@ var utils = require('../../../../libs/utils.js'),
 
 function HeatmapLayer(options) {
 
-    Composition.call(this);
+    _.extend(this, new Layer());
+    this.composition = new Composition(this);
+    _.extend(this, this.composition.api);
 
     this.id = utils.generateUID();
     this.type = Layer.Heat;
@@ -16,13 +18,13 @@ function HeatmapLayer(options) {
     this.colorbar = options.params.colorbar;
     this.options = options.params.options;
 
-    this.composition = this.defaultComposition();
-
     this.renderer = this.mapView.mapRenderer.addHeatmapRenderer(
         this.heatmapData,
         this.colorbar,
         this.options
     );
+
+    this.setAlphaBlend();
 }
 
 //-----------------------------------------------------------------------
