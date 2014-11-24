@@ -74,7 +74,7 @@ function refreshParameters(container, mode, layer){
         case Composition.ALPHA_BLEND:
         case Composition.ALPHA_CLIP:
             container.parameters.appendChild(createSlider({
-                min:      0,
+                min:      -1,
                 step:     0.01,
                 max:      1,
                 value:    layer.composition.alpha(),
@@ -83,6 +83,27 @@ function refreshParameters(container, mode, layer){
             break;
 
         case Composition.X_BLEND:
+            container.parameters.appendChild(createSlider({
+                min:      -1,
+                step:     0.01,
+                max:      1,
+                value:    layer.composition.contrast(),
+                modifier: layer.setContrast.bind(layer)
+            }));
+            container.parameters.appendChild(createSlider({
+                min:      -1,
+                step:     0.01,
+                max:      1,
+                value:    layer.composition.luminosity(),
+                modifier: layer.setLuminosity.bind(layer)
+            }));
+            container.parameters.appendChild(createSlider({
+                min:      1,
+                step:     1,
+                max:      4,
+                value:    layer.composition.xMode(),
+                modifier: layer.setXMode.bind(layer)
+            }));
             break;
     }
 

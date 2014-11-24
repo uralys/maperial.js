@@ -2,11 +2,16 @@
     position: absolute;
     top: 5px;
     left: 5px;
+    background-color: #ccc;
+    width: 135px;
+    padding: 5px;
+
     -webkit-border-radius: 12px;
     -moz-border-radius: 12px;
     border-radius: 12px;
-    background-color: #ccc;
-    width: 140px;
-    padding-left: 5px;
-    padding-right: 5px;
+
+    -moz-box-shadow: 2px 2px 2px 0px #bbb;
+    -webkit-box-shadow: 2px 2px 2px 0px #bbb;
+    -o-box-shadow: 2px 2px 2px 0px #bbb;
+    box-shadow: 2px 2px 2px 0px #bbb;
 }
