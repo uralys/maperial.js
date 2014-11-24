@@ -78,6 +78,8 @@ function Composition(layer){
     // expose functions for public users
     this.api = {
         setAlphaBlend: this.setAlphaBlend.bind(this),
+        setAlphaClip:  this.setAlphaClip.bind(this),
+        setXBlend:     this.setXBlend.bind(this),
         setAlpha:      this.setAlpha.bind(this)
     };
 
