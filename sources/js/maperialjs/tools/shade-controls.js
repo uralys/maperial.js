@@ -6,7 +6,7 @@ module.exports = function ShadeControls(options) {
     var mapView = layer.mapView;
 
     var lightX = createSlider({
-        min:      1,
+        min:      -200,
         step:     1,
         max:      200,
         value:    layer.lightX(),
@@ -14,7 +14,7 @@ module.exports = function ShadeControls(options) {
     });
 
     var lightY = createSlider({
-        min:      1,
+        min:      -200,
         step:     1,
         max:      200,
         value:    layer.lightY(),
@@ -22,17 +22,17 @@ module.exports = function ShadeControls(options) {
     });
 
     var lightZ = createSlider({
-        min:      1,
+        min:      10,
         step:     1,
-        max:      200,
+        max:      220,
         value:    layer.lightZ(),
         modifier: layer.setLightZ.bind(layer)
     });
 
     var scale = createSlider({
-        min:      1,
-        step:     1,
-        max:      200,
+        min:      0,
+        step:     0.1,
+        max:      25,
         value:    layer.scale(),
         modifier: layer.setScale.bind(layer)
     });

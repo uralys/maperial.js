@@ -2193,7 +2193,7 @@
         }
         svg.Element.TextElementBase.prototype = new svg.Element.RenderedElementBase;
 
-        // tspan 
+        // tspan
         svg.Element.tspan = function (node) {
             this.captureTextNodes = true;
             this.base = svg.Element.TextElementBase;
@@ -2426,7 +2426,7 @@
         }
         svg.Element.style.prototype = new svg.Element.ElementBase;
 
-        // use element 
+        // use element
         svg.Element.use = function (node) {
             this.base = svg.Element.RenderedElementBase;
             this.base(node);
@@ -2474,7 +2474,7 @@
             this.base(node);
 
             this.apply = function (ctx, element) {
-                // render as temp svg	
+                // render as temp svg
                 var x = this.attribute('x').toPixels('x');
                 var y = this.attribute('y').toPixels('y');
                 var width = this.attribute('width').toPixels('x');
@@ -2558,7 +2558,7 @@
             this.base(node);
 
             this.apply = function (ctx, element) {
-                // render as temp svg	
+                // render as temp svg
                 var bb = element.getBoundingBox();
                 var x = Math.floor(bb.x1);
                 var y = Math.floor(bb.y1);
@@ -2799,6 +2799,7 @@
                 draw();
             }
             svg.intervalID = setInterval(function () {
+                console.log('qweqwe');
                 var needUpdate = false;
 
                 if (waitingForImages && svg.ImagesLoaded()) {

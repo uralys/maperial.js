@@ -427,7 +427,7 @@ CanvasUtilities.button = function (ctx, x, y, width, height, eventmanager, oncha
                 self.mouseclickID = self.eventmanager.listen('mouseclick', self.hit, self.eventhandler);
             }
             if (!self.mouseoutID && !self.toggle) {
-                // we need to know when the mouse leaves so we can stop 
+                // we need to know when the mouse leaves so we can stop
                 // listening for stuff
                 self.mouseoutID = self.eventmanager.listen('mouseout', self.hit, self.eventhandler);
             }
@@ -551,7 +551,7 @@ CanvasUtilities.button = function (ctx, x, y, width, height, eventmanager, oncha
 // a class to encapsulate the workings of a slider to be drawn on a canvas
 // ctx - canvas context, (assumes 2d), used in draw method
 // x,y - canvas relative location of top left
-// length - the long measurment, this could be along x or y axis depending 
+// length - the long measurment, this could be along x or y axis depending
 //	    on whether orientation is horizontal or vertical
 // width  - the short measurement
 // orientation - one of SLIDER_HORIZONTAL or SLIDER_VERTICAL
@@ -729,7 +729,7 @@ CanvasUtilities.slider = function (ctx, x, y, length, width, orientation, min, m
                     self.mouseclickID = self.eventmanager.listen('mouseclick', self.hit, self.eventhandler);
                 }
                 if (!self.mouseoutID) {
-                    // we need to know when the mouse leaves so we can stop 
+                    // we need to know when the mouse leaves so we can stop
                     // listening for stuff
                     self.mouseoutID = self.eventmanager.listen('mouseout', self.hit, self.eventhandler);
                 }
@@ -912,7 +912,7 @@ CanvasUtilities.eventManager = function (canvasManager) {
         'use strict';
         var queue = this.queues[eventType];
         if (queue == null) {
-            // No one's asked to listen to this yet, make a queue to 
+            // No one's asked to listen to this yet, make a queue to
             // store it in.
             this.queues[eventType] = new Array();
             queue = this.queues[eventType];
@@ -962,19 +962,19 @@ CanvasUtilities.eventManager = function (canvasManager) {
 
     // eventhandler for eventManager
     // At the global level, as an event goes down through the capture and
-    // then back up through the global stage, anyone can stop the 
+    // then back up through the global stage, anyone can stop the
     // propogation of the event. (Note that I don't allow my children
     // to choose one or the other.  I always ask for bubble events so
     // that's what they get.
     //
-    // The W3C DOM2 Event spec, says that even if stopPropagation is 
+    // The W3C DOM2 Event spec, says that even if stopPropagation is
     // called on an element, that the event will be dispatched to all
     // event listeners on the current element.  So, one interpretation,
     // since all the listeners in my queue are on the same canvas would
     // be for me to keep dispatching.  Another interpretation would have
     // me only dispatch to the same subelement.  We don't allow multiple
     // registers from the same element unless they use different dispatch
-    // routines or different hit routines.  If they differ with hit 
+    // routines or different hit routines.  If they differ with hit
     // routines or dispatch routines we do.
     // I completely ignore preventDefault since I don't execute that.
     //
@@ -1041,7 +1041,7 @@ CanvasUtilities.Clock = function (id) {
     this.now = null; // so we know what time it is.
     var xc = clockcanvas.width / 2; // x center of clock
     var yc = clockcanvas.height / 2; // y center of clock
-    var radius = Math.min(.85 * xc, .85 * yc); // size of the radius of the circle 
+    var radius = Math.min(.85 * xc, .85 * yc); // size of the radius of the circle
     var fontsize = radius / 3;
 
     this.start = function () {
@@ -1106,7 +1106,7 @@ CanvasUtilities.Clock = function (id) {
             ctx.stroke();
         }
 
-        // Next we draw the hour numbers.  We start at 3 because that 
+        // Next we draw the hour numbers.  We start at 3 because that
         // corresponds to 0 degrees
         var hours = ['3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '1', '2'];
         ctx.font = fontsize + "px Times,'Times New Roman',sans-serif";
