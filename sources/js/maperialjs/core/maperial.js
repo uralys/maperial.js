@@ -93,8 +93,8 @@ Maperial.refreshRate = 1000 / 30; // ms
 Maperial.tileDLTimeOut = 60000; // ms
 Maperial.tileSize = 256;
 
-Maperial.autoMoveSpeedRate = 0.2;
-Maperial.autoMoveMillis = 700;
+Maperial.autoMoveSpeedRate = 0.25;
+Maperial.autoMoveMillis = 1500;
 Maperial.autoMoveDeceleration = 0.005;
 Maperial.autoMoveAnalyseSize = 10;
 
