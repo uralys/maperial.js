@@ -227,14 +227,14 @@ Mover.prototype.moveScene = function (timeRemaining, speedX, speedY, nbAutoMove)
     var rate = 0.99 - nbAutoMove * Maperial.autoMoveDeceleration;
 
     var mover = this;
-    setTimeout(function () {
+    requestAnimationFrame(function () {
         mover.moveScene(
             timeRemaining - Maperial.refreshRate,
             speedX * rate,
             speedY * rate,
             nbAutoMove + 1
         );
-    }, Maperial.refreshRate);
+    });
 };
 
 Mover.prototype.registerMouseData = function (x, y) {
