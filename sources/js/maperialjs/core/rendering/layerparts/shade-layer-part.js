@@ -11,10 +11,7 @@ function ShadeLayerPart(tile, context, layer) {
     this.assets = context.assets;
     this.gl = context.assets.ctx;
 
-    /* sync params with those from the layer */
-    // @FIXME refacto layermanager + mapview + reset
     this.layer = layer;
-    this.params = null;
 
     this.tex = null;
     this.w = 0;
@@ -32,14 +29,7 @@ function ShadeLayerPart(tile, context, layer) {
 //---------------------------------------------------------------------------
 
 ShadeLayerPart.prototype.isUpToDate = function () {
-
-    if (_.isEqual(this.params, this.layer.params) && this.tex != null) {
-        return true;
-    } else {
-        this.params = _.extend({}, this.layer.params);
-        this.reset();
-        return false;
-    }
+    return this.tex != null;
 };
 
 //---------------------------------------------------------------------------
@@ -163,8 +153,13 @@ ShadeLayerPart.prototype.update = function () {
         gl.bindTexture(gl.TEXTURE_2D, tmpTex);
         gl.uniform1i(prog.params.uSamplerTex1.name, 0);
 
-        gl.uniform3fv(prog.params.uLight.name, [-this.params.uLight[0], -this.params.uLight[1], -this.params.uLight[2]]);
-        gl.uniform1f(prog.params.uScale.name, this.params.scale);
+        gl.uniform3fv(prog.params.uLight.name, [
+            -this.layer.params.uLight[0],
+            -this.layer.params.uLight[1],
+            -this.layer.params.uLight[2]
+        ]);
+
+        gl.uniform1f(prog.params.uScale.name, this.layer.params.scale);
         //gl.uniform3fv              (prog.params.uLight.name   , [0.0,0.0,-50.0] );
         //gl.uniform1f               (prog.params.uScale.name   , 1);
 
