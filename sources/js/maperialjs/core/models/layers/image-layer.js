@@ -8,10 +8,7 @@ var utils = require('../../../../libs/utils.js'),
 function ImageLayer(options) {
 
     _.extend(this, new Layer(options));
-    this.composition = new Composition(this);
-    _.extend(this, this.composition.api);
 
-    this.id = utils.generateUID();
     this.type = Layer.Images;
     this.sourceId = options.sourceId;
 

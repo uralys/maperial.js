@@ -1,4 +1,5 @@
 var utils = require('../../../../libs/utils.js'),
+    _ = require('../../../../libs/lodash.js'),
     Composition = require('./composition.js'),
     Layer = require('../layer.js');
 
@@ -7,12 +8,8 @@ var utils = require('../../../../libs/utils.js'),
 function HeatmapLayer(options) {
 
     _.extend(this, new Layer(options));
-    this.composition = new Composition(this);
-    _.extend(this, this.composition.api);
 
-    this.id = utils.generateUID();
     this.type = Layer.Heat;
-    this.mapView = options.params.mapView;
     this.heatmapData = options.params.heatmapData;
 
     this.colorbar = options.params.colorbar;

@@ -74,8 +74,6 @@ HeatmapData.prototype.addPoint = function (feature) {
     this.miny = Math.min(this.miny, p.y);
     this.maxy = Math.max(this.maxy, p.y);
 
-    console.log(p.x, p.y, this.maxy);
-
     //
     //   var point = {
     //         id       : id,

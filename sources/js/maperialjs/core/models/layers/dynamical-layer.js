@@ -8,12 +8,8 @@ var utils = require('../../../../libs/utils.js'),
 function DynamicalLayer(options) {
 
     _.extend(this, new Layer(options));
-    this.composition = new Composition(this);
-    _.extend(this, this.composition.api);
 
-    this.id = utils.generateUID();
     this.type = Layer.Dynamical;
-    this.mapView = options.params.mapView;
     this.dynamicalData = options.params.dynamicalData;
 
     this.style = Maperial.styleManager.createCustomStyle(options.params.style);
