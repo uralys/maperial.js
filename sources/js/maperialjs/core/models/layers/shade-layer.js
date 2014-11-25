@@ -10,7 +10,7 @@ var utils = require('../../../../libs/utils.js'),
  *
  * @constructor
  *
- * @mixes Composition into ShadeLayer.prototype
+ * @mixes Composition
  */
 function ShadeLayer(options) {
 
