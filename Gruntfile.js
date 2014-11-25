@@ -106,7 +106,9 @@ module.exports = function (grunt) {
                     'sources/js/maperialjs/core/map/map-view.js',
                     'sources/js/maperialjs/core/models/data/dynamical-data.js',
                     'sources/js/maperialjs/core/models/data/heatmap-data.js',
+                    'sources/js/maperialjs/core/models/layers/composition.js',
                     'sources/js/maperialjs/core/models/layers/shade-layer.js',
+                    'sources/js/maperialjs/core/models/layers/image-layer.js',
                 ],
                 options: {
                     destination: 'static/doc',

@@ -9,6 +9,8 @@ var utils = require('../../../../libs/utils.js'),
  * Add shade on your maps
  *
  * @constructor
+ *
+ * @mixes Composition into ShadeLayer.prototype
  */
 function ShadeLayer(options) {
 

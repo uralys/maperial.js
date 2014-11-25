@@ -1,4 +1,6 @@
 //------------------------------------------------------------------------------
+//  Mixin to implement a Composition.
+//------------------------------------------------------------------------------
 
 var defaultXBlendParams = {
     uParams: [0, 0, 1]
@@ -10,8 +12,10 @@ var defaultAlpha = {
 
 //------------------------------------------------------------------------------
 
-/*
- * Mixins to implement a Composition.
+/**
+ * These functions can be called on any layer to configure the fusion.
+ *
+ * @class
  */
 function Composition(layer){
 
@@ -26,7 +30,7 @@ function Composition(layer){
 
     //--------------------------------------------------------------------------
 
-    /**
+    /*
      * ALPHA_BLEND | ALPHA_CLIP | X_BLEND
      * @return {string} the type of fusion for this layer
      */
@@ -37,11 +41,17 @@ function Composition(layer){
     //--------------------------------------------------------------------------
     // Functions to change fusion type
 
+    /**
+     * Changing the fusion type to ALPHA_BLEND
+     */
     this.setAlphaBlend = function () {
         this.settings = this.default;
         this.layer.refresh();
     };
 
+    /**
+     * Changing the fusion type to ALPHA_CLIP
+     */
     this.setAlphaClip = function () {
         this.settings = {
             shader: Composition.ALPHA_CLIP,
@@ -50,6 +60,9 @@ function Composition(layer){
         this.layer.refresh();
     };
 
+    /**
+     * Changing the fusion type to X_BLEND
+     */
     this.setXBlend = function () {
         this.settings = {
             shader: Composition.X_BLEND,
@@ -62,8 +75,10 @@ function Composition(layer){
     //--------------------------------------------------------------------------
 
     /**
-     * Changing the alpha. Composition.ALPHA_CLIP or Composition.ALPHA_BLEND
-     * compositions only
+     * Change the alpha.
+     *
+     * (ALPHA_CLIP or ALPHA_BLEND compositions only)
+     *
      * @param {float} alpha 0 < alpha < 1
      */
     this.setAlpha = function (alpha) {
@@ -84,6 +99,11 @@ function Composition(layer){
         this.layer.refresh();
     };
 
+    /**
+     * return the current alpha for this layer.
+     *
+     * (ALPHA_CLIP or ALPHA_BLEND compositions only)
+     */
     this.alpha = function () {
         if( this.type() !== Composition.ALPHA_BLEND &&
             this.type() !== Composition.ALPHA_CLIP ){
@@ -100,7 +120,10 @@ function Composition(layer){
     //--------------------------------------------------------------------------
 
     /**
-     * Changing the contrast. Composition.X_BLEND only
+     * Change the contrast.
+     *
+     * (X_BLEND only)
+     *
      * @param {float} contrast
      */
     this.setContrast = function (contrast) {
@@ -114,6 +137,11 @@ function Composition(layer){
         this.layer.refresh();
     };
 
+    /**
+     * return the contrast alpha for this layer.
+     *
+     * (X_BLEND only)
+     */
     this.contrast = function () {
         if( this.type() !== Composition.X_BLEND){
             console.log('Could not return contrast : \
@@ -128,7 +156,10 @@ function Composition(layer){
     //--------------------------------------------------------------------------
 
     /**
-     * Changing the luminosity. Composition.X_BLEND only
+     * Change the luminosity.
+     *
+     * (X_BLEND only)
+     *
      * @param {float} luminosity
      */
     this.setLuminosity = function (luminosity) {
@@ -142,6 +173,11 @@ function Composition(layer){
         this.layer.refresh();
     };
 
+    /**
+     * return the contrast alpha for this layer.
+     *
+     * (X_BLEND only)
+     */
     this.luminosity = function () {
         if( this.type() !== Composition.X_BLEND){
             console.log('Could not return luminosity : \
@@ -156,8 +192,11 @@ function Composition(layer){
     //--------------------------------------------------------------------------
 
     /**
-     * Changing the xMode. Composition.X_BLEND only
-     * @param {float} xMode
+     * Change the x-blend mode.
+     *
+     * (X_BLEND only)
+     *
+     * @param {int} xMode 1,2,3 or 4
      */
     this.setXMode = function (xMode) {
         if( this.type() !== Composition.X_BLEND){
@@ -172,6 +211,11 @@ function Composition(layer){
         this.layer.refresh();
     };
 
+    /**
+     * return the x-blend mode for this layer.
+     *
+     * (X_BLEND only)
+     */
     this.xMode = function () {
         if( this.type() !== Composition.X_BLEND){
             console.log('Could not return xMode : \
