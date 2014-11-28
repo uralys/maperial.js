@@ -125,6 +125,31 @@ ShadeLayer.prototype.animateLightX = function (from, to, callback) {
     requestAnimationFrame(set);
 }
 
+/**
+ * Emulate sunlight
+ */
+ShadeLayer.prototype.loop = function () {
+    var bound = 100;
+
+    var back = function(callback){
+        this.animateLightX(-bound, bound, callback);
+    }.bind(this);
+
+    var forward = function(callback){
+        this.animateLightX(bound, -bound, callback);
+    }.bind(this);
+
+    var run = function(){
+      forward(function(){
+        back(function(){
+          requestAnimationFrame(run);
+        })
+      });
+    }
+
+    requestAnimationFrame(run);
+}
+
 //---------------------------------------------------------------------------
 
 module.exports = ShadeLayer;
