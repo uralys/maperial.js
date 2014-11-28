@@ -20,7 +20,7 @@ var MapView = require('./map/map-view.js'),
 //-----------------------------------------------------------------
 
 /**
- * Instanciate onezz Maperial to build every maps on your web page.
+ * Instanciate one Maperial to build every maps on your web page.
  *
  * With your Maperial you can now draw Maps and share Data between them.
  *
