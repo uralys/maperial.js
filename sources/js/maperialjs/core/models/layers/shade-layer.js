@@ -106,7 +106,7 @@ ShadeLayer.prototype.scale = function () {
  * @param {int} from [description]
  * @param {int} to [description]
  */
-ShadeLayer.prototype.animateLightX = function (from, to) {
+ShadeLayer.prototype.animateLightX = function (from, to, callback) {
     var set = function (){
         var way = Math.abs(to-from)/(to-from);
         this.setLightX(from);
@@ -116,6 +116,9 @@ ShadeLayer.prototype.animateLightX = function (from, to) {
         }
         else{
             this.setLightX(to);
+            if(callback){
+                callback();
+            }
         }
     }.bind(this);
 
