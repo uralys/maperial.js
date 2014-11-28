@@ -1,5 +1,5 @@
 
-# Maperial : a new way to create maps
+## A new way to create maps
 
 Maperial is a free javascript API to create *dynamical* maps for your web
 applications.
@@ -13,9 +13,9 @@ map tool.
 Enjoy drafting and sharing your maps, and don't forget
 to let us know your feedback !
 
-# Let me play !
+## Let me play !
 - Get [started](http://maperial.github.io/getting-started/) with a first map
 - Check out a whole bunch of Codepen [examples](http://codepen.io/chrisdugne/)
 - Understand [Maperial](http://maperial.github.io/concepts/)'s concepts
-- Explore the complete API [reference](http://static.maperial.com/doc)
+- Explore the complete API [reference](http://maperial.github.io/documentation/)
 to draft your own maps.
