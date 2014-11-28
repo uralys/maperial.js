@@ -112,7 +112,7 @@ ShadeLayer.prototype.animateLightX = function (from, to, callback) {
         this.setLightX(from);
         var next = from + way;
         if((next - to)*way < 0){
-            this.animateLightX(next, to);
+            this.animateLightX(next, to, callback);
         }
         else{
             this.setLightX(to);
