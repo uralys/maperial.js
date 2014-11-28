@@ -4,6 +4,7 @@ module.exports = function (grunt) {
     require('time-grunt')(grunt);
 
     var gruntCfg = {
+        documentation : "../../maperial.github.io/documentation",
         pkg: grunt.file.readJSON('package.json'),
         env: grunt.file.readJSON('environment/env.json'),
 
@@ -111,7 +112,7 @@ module.exports = function (grunt) {
                     'sources/js/maperialjs/core/models/layers/image-layer.js',
                 ],
                 options: {
-                    destination: 'static/doc',
+                    destination: '<%= documentation %>',
                     template: "assets/jsdoc-jaguarjs",
                     configure: "jsdoc.conf.json"
                 }
@@ -132,8 +133,15 @@ module.exports = function (grunt) {
                             cp sources/js/vendors/* static/js/; \
                             cp sources/css/vendors/* static/css/; \
                             ",
-            cleanDoc: "rm -rf static/doc",
-            prepareDocIndex: "rm -f static/doc/index.html; cp static/doc/Maperial.html static/doc/index.html",
+            cleanDoc: "rm -rf <%= documentation %> ",
+            prepareDocIndex: "rm -f <%= documentation %>/index.html; \
+                              cp <%= documentation %>/Maperial.html <%= documentation %>/index.html",
+            pushDoc: {
+                cmd : "git add --all .; \
+                        git commit -am 'generated documentation'; \
+                        git push origin master",
+                cwd: '<%= documentation %>'
+            },
         },
 
     };
@@ -153,11 +161,16 @@ module.exports = function (grunt) {
     grunt.registerTask('jsmin', ['standalone', 'uglify']);
 
     /** building jsdoc */
-    grunt.registerTask('doc', ['exec:cleanDoc', 'jsdoc:dist', 'exec:prepareDocIndex']);
+    grunt.registerTask('doc', [
+        'exec:cleanDoc',
+        'jsdoc:dist',
+        'exec:prepareDocIndex',
+        'exec:pushDoc'
+    ]);
 
     /** register custom 'deps' task */
     grunt.registerTask('dev', ['exec:clean', 'exec:tmp', 'replace', 'js', 'css', 'exec:assets']);
-    grunt.registerTask('prod', ['exec:clean', 'exec:tmp', 'replace', 'jsmin', 'css', 'exec:assets', 'doc']);
+    grunt.registerTask('prod', ['exec:clean', 'exec:tmp', 'replace', 'jsmin', 'css', 'exec:assets']);
 
     /** default is min */
     grunt.registerTask('default', ['prod']);
