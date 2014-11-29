@@ -7,31 +7,25 @@
 </head>
 
 <body>
-    <div id="heatmap" class="fullscreen-map"></div>
+    <div id="map" class="fullscreen-map"></div>
 </body>
 
 <script type="text/javascript" src="//static.maperial.localhost/js/maperial.js"></script>
 <script type="text/javascript">
     (function () {
 
+        /*
+            Maperial is a free javascript API to create maps for your web applications.
+            https://github.com/maperial/maperial.js
+        */
         var maperial = new Maperial();
 
-        //-----------------------------------------------//
-
         var map = maperial.createMap({
-            container: 'heatmap',
+            container: "map",
             defaultZoom: 7,
             latitude: 50.916584,
             longitude: 3.136998
         });
-
-        //-----------------------------------------------//
-        //Layer Images
-
-        map.addWatercolor();
-
-        //-----------------------------------------------//
-        //Layer Vectorial Data
 
         var url = 'http://static.maperial.com/geojson/heatmap.geojson.json';
         var data = maperial.createHeatmapData(url);
@@ -43,7 +37,12 @@
             diameterUnit: "meter",
         };
 
+        map.addSatellite();
         map.addHeatmapLayer(data, options);
+
+        maperial.addSimpleZoom({
+            views: [map]
+        });
 
         //-------------------------------------------------------//
         // dev purpose
