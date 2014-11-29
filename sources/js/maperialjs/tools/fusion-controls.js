@@ -97,13 +97,13 @@ function refreshParameters(container, mode, layer){
                 value:    layer.composition.luminosity(),
                 modifier: layer.setLuminosity.bind(layer)
             }));
-            container.parameters.appendChild(createSlider({
-                min:      1,
-                step:     1,
-                max:      4,
-                value:    layer.composition.xMode(),
-                modifier: layer.setXMode.bind(layer)
-            }));
+            // container.parameters.appendChild(createSlider({
+            //     min:      1,
+            //     step:     1,
+            //     max:      4,
+            //     value:    layer.composition.xMode(),
+            //     modifier: layer.setXMode.bind(layer)
+            // }));
             break;
     }
 
