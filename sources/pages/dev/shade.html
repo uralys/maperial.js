@@ -17,10 +17,13 @@
         var maperial = new Maperial(),
             map = maperial.createMap({
                 container: "map",
+                defaultZoom: 5,
             });
 
         map.addShade();
-
+        maperial.addSimpleZoom({
+                views: [map],
+        });
         window.map = map;
     })();
 </script>
