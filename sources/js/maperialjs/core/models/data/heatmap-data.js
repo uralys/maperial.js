@@ -40,9 +40,7 @@ HeatmapData.prototype.import = function (data) {
                 url: data,
                 async: true,
                 callback: function (error, data) {
-                    data.features.forEach(function (feature) {
-                        this.addPoint(feature);
-                    }.bind(this));
+                    this.addPoints(data);
                 }.bind(this)
             });
         } else if ('object' === typeof (data)) {
@@ -113,14 +111,16 @@ HeatmapData.prototype.addPoint = function (feature) {
 //------------------------------------------------------------------------------
 
 HeatmapData.prototype.reset = function () {
-    this.points = [],
-        this.content = {
-            "h": Maperial.tileSize,
-            "w": Maperial.tileSize,
-            "l": []
-        }
+    this.points = [];
+    this.content = {
+        "h": Maperial.tileSize,
+        "w": Maperial.tileSize,
+        "l": []
+    }
     this.version++;
 }
+
+HeatmapData.prototype.removeAll = HeatmapData.prototype.reset;
 
 //------------------------------------------------------------------------------
 
@@ -139,16 +139,36 @@ HeatmapData.prototype.removePoint = function (pointToRemove) {
 
 //------------------------------------------------------------------------------
 
-HeatmapData.prototype.removeAll = function () {
-    this.points = [];
-    this.version++;
+HeatmapData.prototype.animate = function (data) {
+
+    if (data) {
+        if ('string' === typeof (data)) {
+            ajax.get({
+                url: data,
+                async: true,
+                callback: function (error, batch) {
+                    this.animateBatches(batch);
+                }.bind(this)
+            });
+        } else if ('object' === typeof (data)) {
+            this.animateBatches(data);
+        }
+    }
 }
 
-//------------------------------------------------------------------------------
+HeatmapData.prototype.animateBatches = function (batches, options) {
 
-HeatmapData.prototype.animate = function () {
-    this.points = [];
-    this.version++;
+    options      = options || {};
+    options.step = options.step || 0;
+
+    var displayBatch = function(){
+        this.removeAll();
+        this.import(batches[options.step]);
+        options.step = (options.step + 1) % batches.length;
+        setTimeout(displayBatch, 45);
+    }.bind(this);
+
+    setTimeout(displayBatch, 45);
 }
 
 //------------------------------------------------------------------------------

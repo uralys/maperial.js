@@ -27,51 +27,7 @@
             longitude: 3.136998
         });
 
-        var collection = {
-            "type": "FeatureCollection",
-            "features": [{
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        3.136998,
-                        50.916584
-                    ]
-                },
-                "type": "Feature",
-                properties: {
-                    diameter: 42000,
-                    scale: 0.6
-                }
-            }, {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        3.236998,
-                        50.16584
-                    ]
-                },
-                "type": "Feature",
-                properties: {
-                    diameter: 145000,
-                    scale: 0.2
-                }
-            }, {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        2.536998,
-                        48.76584
-                    ]
-                },
-                "type": "Feature",
-                properties: {
-                    diameter: 145000,
-                    scale: 1.2
-                }
-            }]
-        }
-
-        var data = maperial.createHeatmapData(collection);
+        var data = maperial.createHeatmapData();
 
         var options = {
             diameter: 300,
@@ -82,6 +38,9 @@
 
         map.addSatellite();
         map.addHeatmapLayer(data, options);
+
+        var batch = 'http://static.maperial.com/geojson/heatmap.batch.json';
+        data.animate(batch);
 
         //-------------------------------------------------------//
         // dev purpose

@@ -28,7 +28,7 @@
         });
 
         var url = 'http://static.maperial.com/geojson/heatmap.geojson.json';
-        var data = maperial.createHeatmapData(url);
+        var data = window.data  = maperial.createHeatmapData(url);
 
         var options = {
             diameter: 300,
