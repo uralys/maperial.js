@@ -90,4 +90,19 @@ LayerManager.prototype.addLayer = function (layerType, params) {
 
 //---------------------------------------------------------------
 
+LayerManager.prototype.duplicate = function (layers) {
+    layers.forEach(function(layer){
+        var tiles = this.mapView.tiles;
+        var layers = this.mapView.layers;
+
+        for (var key in tiles) {
+            tiles[key].createLayerPart(layer, layers.length);
+        }
+
+        layers.push(layer);
+    }.bind(this));
+};
+
+//---------------------------------------------------------------
+
 module.exports = LayerManager;

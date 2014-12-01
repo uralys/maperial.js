@@ -143,8 +143,7 @@ MapView.prototype.expose = function () {
     this.addAnchor = function (options) {
         options = options || {};
         this.prepareChildOptions(options, {
-            type : Maperial.ANCHOR,
-            defaultZoom : this.context.zoom
+            type : Maperial.ANCHOR
         });
 
         var width = (options.width || this.width / 2) + 'px';
@@ -196,7 +195,28 @@ MapView.prototype.expose = function () {
      * @function
      */
     this.addMinifier = function (options) {
-        //@todo
+        options = options || {};
+        options.diffZoom = options.diffZoom || 3;
+
+        this.prepareChildOptions(options, {
+            type: Maperial.MINIFIER,
+        });
+
+        var defaultTop = this.height - (options.height || 200 ) - 20;
+        var width  = (options.width || 200 ) + 'px';
+        var height = (options.height || 200 ) + 'px';
+        var left   = (options.left || 20) + 'px';
+        var top    = (options.top || defaultTop) + 'px';
+
+        options.container.style.width  = width;
+        options.container.style.height = height;
+        options.container.style.top    = top;
+        options.container.style.left   = left;
+
+        var minifier = this.createChild(options);
+        minifier.defaultLayer = minifier.layerManager.duplicate(this.layers);
+
+        return minifier;
     }.bind(this);
 
     /**
@@ -375,6 +395,7 @@ MapView.prototype.prepareChildOptions = function (options, settings) {
 MapView.prototype.createChild = function (options) {
     var child = this.maperial.addMapView(options);
     this.link(child);
+    this.options = options;
     child.refreshCamera({
         currentTarget : this
     });
@@ -429,7 +450,8 @@ MapView.prototype.refreshCamera = function (event) {
 
     switch (this.type) {
         case Maperial.MINIFIER:
-            this.context.centerM = this.context.centerM;
+            this.context.zoom = initiator.context.zoom - this.options.diffZoom;
+            this.context.centerM = initiator.context.centerM;
             break;
 
         case Maperial.MAGNIFIER:
