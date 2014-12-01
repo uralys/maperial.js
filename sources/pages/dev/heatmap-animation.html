@@ -1,0 +1,96 @@
+<html>
+
+<head>
+    <title>Maperial 2.0 - Heatmap</title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <link href="http://static.maperial.localhost/css/maperial.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="map" class="fullscreen-map"></div>
+</body>
+
+<script type="text/javascript" src="//static.maperial.localhost/js/maperial.js"></script>
+<script type="text/javascript">
+    (function () {
+
+        /*
+            Maperial is a free javascript API to create maps for your web applications.
+            https://github.com/maperial/maperial.js
+        */
+        var maperial = new Maperial();
+
+        var map = maperial.createMap({
+            container: "map",
+            defaultZoom: 7,
+            latitude: 50.916584,
+            longitude: 3.136998
+        });
+
+        var collection = {
+            "type": "FeatureCollection",
+            "features": [{
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                        3.136998,
+                        50.916584
+                    ]
+                },
+                "type": "Feature",
+                properties: {
+                    diameter: 42000,
+                    scale: 0.6
+                }
+            }, {
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                        3.236998,
+                        50.16584
+                    ]
+                },
+                "type": "Feature",
+                properties: {
+                    diameter: 145000,
+                    scale: 0.2
+                }
+            }, {
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                        2.536998,
+                        48.76584
+                    ]
+                },
+                "type": "Feature",
+                properties: {
+                    diameter: 145000,
+                    scale: 1.2
+                }
+            }]
+        }
+
+        var data = maperial.createHeatmapData(collection);
+
+        var options = {
+            diameter: 300,
+            scale: 0.8,
+            fill: "linear", // "gaussian"
+            diameterUnit: "meter",
+        };
+
+        map.addSatellite();
+        map.addHeatmapLayer(data, options);
+
+        //-------------------------------------------------------//
+        // dev purpose
+
+        window.data = data;
+        window.map = map;
+
+    })();
+</script>
+
+
+</html>

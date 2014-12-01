@@ -46,10 +46,18 @@ HeatmapData.prototype.import = function (data) {
                 }.bind(this)
             });
         } else if ('object' === typeof (data)) {
-            console.log('--> importing geojson ? TODO');
+            this.addPoints(data);
         }
 
     }
+}
+
+//------------------------------------------------------------------------------
+
+HeatmapData.prototype.addPoints = function (collection) {
+    collection.features.forEach(function (feature) {
+        this.addPoint(feature);
+    }.bind(this))
 }
 
 //------------------------------------------------------------------------------
@@ -96,9 +104,8 @@ HeatmapData.prototype.addPoint = function (feature) {
     };
 
     this.content.l.push(point);
-    this.points[id] = point;
+    this.points.push(point);
     this.version++;
-    this.nbPoints++;
 
     return point;
 }
@@ -106,24 +113,35 @@ HeatmapData.prototype.addPoint = function (feature) {
 //------------------------------------------------------------------------------
 
 HeatmapData.prototype.reset = function () {
-    this.points = {},
+    this.points = [],
         this.content = {
             "h": Maperial.tileSize,
             "w": Maperial.tileSize,
             "l": []
         }
-    this.nbPoints = 0;
     this.version++;
 }
 
 //------------------------------------------------------------------------------
 
-HeatmapData.prototype.removePoint = function (point) {
-    if (point) {
-        delete this.points[point.id];
+HeatmapData.prototype.removePoint = function (pointToRemove) {
+    if (pointToRemove) {
+        this.points.splice(
+            this.points.indexOf(
+                this.points.filter(function (point) {
+                    return point.id === pointToRemove.id;
+                })
+            ), 1
+        );
         this.version++;
-        this.nbPoints--;
     }
+}
+
+//------------------------------------------------------------------------------
+
+HeatmapData.prototype.removeAll = function () {
+    this.points = [];
+    this.version++;
 }
 
 //--------------------------------------------------------------
