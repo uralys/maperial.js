@@ -408,6 +408,7 @@ MapView.prototype.prepareCamera = function () {
         if ((this.options.zoomMax || 18) > this.context.zoom) {
             this.zoomCanvas(2);
             this.context.zoom++;
+            this.trigger(Maperial.EVENTS.MAP_MOVED);
         }
     }.bind(this));
 
@@ -415,6 +416,7 @@ MapView.prototype.prepareCamera = function () {
         if ((this.options.zoomMin || 2) < this.context.zoom) {
             this.zoomCanvas(0.5);
             this.context.zoom--;
+            this.trigger(Maperial.EVENTS.MAP_MOVED);
         }
     }.bind(this));
 };
