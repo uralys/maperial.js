@@ -43,6 +43,7 @@ MapView.prototype.expose = function () {
     //--------------------------------------------------------------------------
 
     /**
+     * http://www.thunderforest.com/
      * @function
      */
     this.addOCMTransport = function () {
@@ -50,6 +51,7 @@ MapView.prototype.expose = function () {
     }.bind(this);
 
     /**
+     * http://www.thunderforest.com/
      * @function
      */
     this.addOCMLandscape = function () {
@@ -57,10 +59,43 @@ MapView.prototype.expose = function () {
     }.bind(this);
 
     /**
+     * http://www.thunderforest.com/
+     * @function
+     */
+    this.addOCMCycle = function () {
+        return this.addImageLayer(Source.IMAGES_OCM_CYCLE);
+    }.bind(this);
+
+    /**
+     * http://maps.stamen.com/
      * @function
      */
     this.addWatercolor = function () {
         return this.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
+    }.bind(this);
+
+    /**
+     * http://maps.stamen.com/
+     * @function
+     */
+    this.addTerrain = function () {
+        return this.addImageLayer(Source.IMAGES_STAMEN_TERRAIN);
+    }.bind(this);
+
+    /**
+     * http://maps.stamen.com/
+     * @function
+     */
+    this.addToner = function () {
+        return this.addImageLayer(Source.IMAGES_STAMEN_TONER);
+    }.bind(this);
+
+    /**
+     * http://maps.stamen.com/
+     * @function
+     */
+    this.addTonerBG = function () {
+        return this.addImageLayer(Source.IMAGES_STAMEN_TONER_BG);
     }.bind(this);
 
     /**
@@ -75,6 +110,13 @@ MapView.prototype.expose = function () {
      */
     this.addSatellite = function () {
         return this.addImageLayer(Source.IMAGES_MAPQUEST_SATELLITE);
+    }.bind(this);
+
+    /**
+     * @function
+     */
+    this.addOSM = function () {
+        return this.addImageLayer(Source.IMAGES_OSM);
     }.bind(this);
 
     //--------------------------------------------------------------------------
@@ -121,6 +163,18 @@ MapView.prototype.expose = function () {
      */
     this.addSST = function () {
         return this.addImageLayer(Source.MAPERIAL_SST);
+    }.bind(this);
+
+    //--------------------------------------------------------------------------
+    //      WMS layers
+    //--------------------------------------------------------------------------
+
+    /**
+     * test WMS CLC
+     * @function
+     */
+    this.addCorineLandCover = function () {
+        return this.addImageLayer(Source.WMS_CORINE_LAND_COVER);
     }.bind(this);
 
     //--------------------------------------------------------------------------
