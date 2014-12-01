@@ -14,40 +14,96 @@
 <script type="text/javascript">
     (function () {
 
-        /*
-            Maperial is a free javascript API to create maps for your web applications.
-            https://github.com/maperial/maperial.js
-        */
-        var maperial = new Maperial();
+        // /*
+        //     Maperial is a free javascript API to create maps for your web applications.
+        //     https://github.com/maperial/maperial.js
+        // */
+        // var maperial = new Maperial();
 
-        var map = maperial.createMap({
-            container: "map",
-            defaultZoom: 7,
-            latitude: 50.916584,
-            longitude: 3.136998
-        });
+        // var map = maperial.createMap({
+        //     container: "map",
+        //     defaultZoom: 7,
+        //     latitude: 50.916584,
+        //     longitude: 3.136998
+        // });
 
-        var data = maperial.createHeatmapData();
+        // var data = maperial.createHeatmapData();
 
-        var options = {
-            diameter: 300,
-            scale: 0.8,
-            fill: "linear", // "gaussian"
-            diameterUnit: "meter",
+        // var options = {
+        //     diameter: 300,
+        //     scale: 0.8,
+        //     fill: "linear", // "gaussian"
+        //     diameterUnit: "meter",
+        // };
+
+        // map.addSatellite();
+        // map.addHeatmapLayer(data, options);
+
+        // var batch = 'http://static.maperial.com/geojson/heatmap.batch.json';
+        // data.animate(batch);
+
+        // //-------------------------------------------------------//
+        // // dev purpose
+
+        // window.data = data;
+        // window.map = map;
+        //
+
+        var random1 = function (i) {
+            return Math.floor(Math.random() * i) + 1;
         };
 
-        map.addSatellite();
-        map.addHeatmapLayer(data, options);
+        var sign = function () {
+            return Math.pow(-1 ,random1(2));
+        };
 
-        var batch = 'http://static.maperial.com/geojson/heatmap.batch.json';
-        data.animate(batch);
+        var batches = [];
 
-        //-------------------------------------------------------//
-        // dev purpose
+        var addBatch = function(){
+            var batch = {
+                type: "FeatureCollection",
+                features: []
+            };
+            batches.push(batch);
+        };
 
-        window.data = data;
-        window.map = map;
+        var addPoint = function(startNum){
+            var lat = 50.916584 + sign() * 0.001 * random1(1200);
+            var lon = 3.136998 + sign() * 0.001 * random1(400);
 
+            for(var i = 0; i < 100; ++i){
+                var d = i < 50 ? 1000 * i : 50000 - (i-50) * 1000;
+                var s = i < 50 ? 0.04 * i : 2 - (i-50) * 0.04;
+
+                var point = {
+                    geometry: {
+                        type: "Point",
+                        coordinates: [
+                            lon,
+                            lat
+                        ]
+                    },
+                    type: "Feature",
+                    properties: {
+                        diameter: d,
+                        scale: s
+                    }
+                };
+
+                batches[startNum + i].features.push(point);
+            }
+        };
+
+        for(var i = 0; i < 500; i++){
+            addBatch();
+        }
+
+        for(var b = 0; b < 41; b++){
+            addPoint(b*10);
+        }
+
+
+        console.log(JSON.stringify(batches));
     })();
 </script>
 
