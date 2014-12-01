@@ -144,6 +144,13 @@ HeatmapData.prototype.removeAll = function () {
     this.version++;
 }
 
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+HeatmapData.prototype.animate = function () {
+    this.points = [];
+    this.version++;
+}
+
+//------------------------------------------------------------------------------
 
 module.exports = HeatmapData;
