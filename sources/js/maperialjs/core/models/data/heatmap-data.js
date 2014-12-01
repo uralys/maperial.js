@@ -165,10 +165,10 @@ HeatmapData.prototype.animateBatches = function (batches, options) {
         this.removeAll();
         this.import(batches[options.step]);
         options.step = (options.step + 1) % batches.length;
-        setTimeout(displayBatch, 45);
+        setTimeout(displayBatch, 25);
     }.bind(this);
 
-    setTimeout(displayBatch, 45);
+    setTimeout(displayBatch, 25);
 }
 
 //------------------------------------------------------------------------------
