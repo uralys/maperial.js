@@ -232,13 +232,13 @@ MapView.prototype.expose = function () {
      */
     this.addLens = function (options) {
         options = options || {};
-        options.diffZoom = options.diffZoom || -3;
+        options.diffZoom = options.diffZoom || 2;
 
         this.prepareChildOptions(options, {
             type: Maperial.LENS,
         });
 
-        var defaultTop = this.height - (options.height || 200 ) - 20;
+        var defaultTop = this.height - (options.height || 250 ) - 20;
         var width  = (options.width || 250 ) + 'px';
         var height = (options.height || 250 ) + 'px';
         var left   = (options.left || 20) + 'px';
@@ -470,9 +470,7 @@ MapView.prototype.createChild = function (options) {
     child.options = options;
     child.parent = this;
 
-    child.refreshCamera({
-        currentTarget : this
-    });
+    child.refreshCamera();
 
     return child;
 };
@@ -521,7 +519,7 @@ MapView.prototype.prepareCamera = function () {
 
 MapView.prototype.refreshCamera = function (event) {
 
-    var initiator = event.currentTarget;
+    var initiator = event ? event.currentTarget : this.parent;
 
     switch (this.type) {
         case Maperial.MINIFIER:
@@ -529,33 +527,40 @@ MapView.prototype.refreshCamera = function (event) {
             this.context.centerM = initiator.context.centerM;
             break;
 
-        case Maperial.MAIN:
         case Maperial.LENS:
+            this.context.zoom = initiator.context.zoom;
+            this.refreshCenter(initiator);
+            this.context.zoom = initiator.context.zoom + this.options.diffZoom;
+            break;
+
+        case Maperial.MAIN:
         case Maperial.ANCHOR:
             this.context.zoom = initiator.context.zoom;
-
-            var initiatorBox = initiator.container.getBoundingClientRect();
-            var initiatorCenterX = initiatorBox.left + initiatorBox.width / 2;
-            var initiatorCenterY = initiatorBox.top + initiatorBox.height / 2;
-
-            var myBox = this.container.getBoundingClientRect();
-            var myCenterX = myBox.left + myBox.width / 2;
-            var myCenterY = myBox.top + myBox.height / 2;
-
-            var initiatorCenterP = utils.centerInPixels(initiator.context);
-            var newCenterP = {
-                x: initiatorCenterP.x - initiatorCenterX + myCenterX,
-                y: initiatorCenterP.y + initiatorCenterY - myCenterY
-            };
-
-            this.context.centerM = utils.pointInMeters(
-                newCenterP,
-                this.context
-            );
-
+            this.refreshCenter(initiator);
             break;
     }
 
+}
+
+MapView.prototype.refreshCenter = function (initiator) {
+    var initiatorBox = initiator.container.getBoundingClientRect();
+    var initiatorCenterX = initiatorBox.left + initiatorBox.width / 2;
+    var initiatorCenterY = initiatorBox.top + initiatorBox.height / 2;
+
+    var myBox = this.container.getBoundingClientRect();
+    var myCenterX = myBox.left + myBox.width / 2;
+    var myCenterY = myBox.top + myBox.height / 2;
+
+    var initiatorCenterP = utils.centerInPixels(initiator.context);
+    var newCenterP = {
+        x: initiatorCenterP.x - initiatorCenterX + myCenterX,
+        y: initiatorCenterP.y + initiatorCenterY - myCenterY
+    };
+
+    this.context.centerM = utils.pointInMeters(
+        newCenterP,
+        this.context
+    );
 }
 
 //--------------------------------------------------------------------------

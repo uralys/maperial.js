@@ -145,7 +145,7 @@ Mover.prototype.dragTool = function (event) {
     this.mapView.container.style.left = newLeft + 'px';
     this.mapView.container.style.top  = newTop  + 'px';
 
-    this.mapView.trigger(Maperial.EVENTS.MAP_MOVED);
+    this.mapView.refreshCamera();
 };
 
 //-------------------------------------------------------------------------

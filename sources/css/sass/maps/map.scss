@@ -26,6 +26,11 @@
     position:absolute;
     border: 3px solid #666;
     cursor: -webkit-grab;
+    -webkit-border-radius: 130px;
+
+    canvas {
+        -webkit-border-radius: 130px;
+    }
 }
 
 .maperial-minifier {

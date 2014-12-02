@@ -23,10 +23,15 @@
         });
 
         map.addMapquest();
-        map.addLens();
+        var lens = map.addLens();
+        // map.addMinifier();
 
         maperial.addSimpleZoom({
           views:[map]
+        });
+
+        maperial.addSimpleZoom({
+          views:[lens]
         });
     })();
 </script>
