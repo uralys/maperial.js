@@ -214,8 +214,8 @@ MapView.prototype.expose = function () {
     }.bind(this);
 
     /**
-     * The Lens shows the map with a greater zoom, in order to see details
-     * on the area under it.
+     * A Lens is a view to zoom in your map, centered on where the Lens is placed.
+     * A Lens allows to highlight an area using a greater zoom.
      *
      * @function
      * @param {object} options
@@ -256,8 +256,8 @@ MapView.prototype.expose = function () {
     }.bind(this);
 
     /**
-     * The Minifier shows the map with a lower zoom, in order to see a broader
-     * area, using the same center as its parent.
+     * A Minifier is a view to zoom out your map, with the same center
+     * It allows to understand where is situated the area using a lower zoom.
      *
      * @function
      * @param {object} options
