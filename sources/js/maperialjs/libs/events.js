@@ -74,9 +74,9 @@ function Events() {
             });
 
             /* bubbling */
-            if (me.parent) {
-                me.parent.trigger.call(me.parent, type, event);
-            }
+            // if (me.parent) {
+            //     me.parent.trigger.call(me.parent, type, event);
+            // }
         };
 
     //-------------------------------------------------------------//

@@ -188,10 +188,10 @@ MapView.prototype.expose = function () {
      *                              (Default : map.width/2)
      * @param {float} options.height The anchor height, in pixels.
      *                              (Default : map.height/2)
-     * @param {float} options.top The anchor top gap inside the map, in pixels.
-     *                              (Default : 0)
-     * @param {float} options.left The anchor left gap inside the map, in pixels.
-     *                              (Default : 0)
+     * @param {float} options.top The anchor top gap inside the map,
+     *                            in pixels. (Default : 0)
+     * @param {float} options.left The anchor left gap inside the map,
+     *                             in pixels.(Default : 0)
      *
      */
     this.addAnchor = function (options) {
@@ -219,9 +219,11 @@ MapView.prototype.expose = function () {
      * @param {object} options
      * @param {float} options.radius The lens radius, in pixels.
      *                              (Default : map.width * 0.1)
-     * @param {float} options.top The lens center from the map top left, in pixels.
+     * @param {float} options.top The lens center from the map top left,
+     *                            in pixels.
      *                              (Default : map.width * 0.5)
-     * @param {float} options.left The lens center from the map top left, in pixels.
+     * @param {float} options.left The lens center from the map top left,
+     *                            in pixels.
      *                              (Default : map.width * 0.5)
      *
      */
@@ -448,11 +450,15 @@ MapView.prototype.prepareChildOptions = function (options, settings) {
 
 MapView.prototype.createChild = function (options) {
     var child = this.maperial.addMapView(options);
+
     this.link(child);
-    this.options = options;
+    child.options = options;
+    child.parent = this;
+
     child.refreshCamera({
         currentTarget : this
     });
+
     return child;
 };
 

@@ -26,12 +26,31 @@ function Mover(mapView) {
 
 Mover.prototype.initListeners = function (event) {
 
+    switch(this.mapView.type){
+
+        case Maperial.MAIN:
+        case Maperial.ANCHOR:
+            this.plugMapListening(event);
+
+            break;
+
+        case Maperial.MINIFIER:
+        case Maperial.MAGNIFIER:
+        case Maperial.LENS:
+            this.plugToolListening(event);
+
+            break;
+
+    };
+};
+
+Mover.prototype.plugMapListening = function (event) {
     this.mapView.on("panstart", function (event) {
         this.reset(event);
     }.bind(this));
 
     this.mapView.on("panmove", function (event) {
-        this.panmove(event);
+        this.dragMap(event);
     }.bind(this));
 
     this.mapView.on("panend", function (event) {
@@ -49,30 +68,7 @@ Mover.prototype.initListeners = function (event) {
 
     }.bind(this));
 
-    //  var mover = this;
-
-    //  this.mapView.mapCanvas.on(MaperialEvents.MOUSE_DOWN, function(){
-    //  mover.reset();
-    //  });
-
-    //  this.context.mapCanvas.on(MaperialEvents.MOUSE_UP, function(){
-    //  mover.receivedMouseUp();
-    //  });
-
-    //  $(window).on(MaperialEvents.DRAGGING_MAP, function(event, name){
-    //  if(mover.mapView.name == name){
-    //  mover.drag();
-    //  }
-    //  });
-
-    //  this.context.mapCanvas.on(MaperialEvents.CONTROL_UP, function(){
-    //  mover.moveUp();
-    //  });
-
-    //  this.context.mapCanvas.on(MaperialEvents.CONTROL_DOWN, function(){
-    //  mover.moveDown();
-    //  });
-
+    // pour le zoom reutiliser ces moveXXX
     //  this.context.mapCanvas.on(MaperialEvents.CONTROL_RIGHT, function(){
     //  mover.moveRight();
     //  });
@@ -80,6 +76,12 @@ Mover.prototype.initListeners = function (event) {
     //  this.context.mapCanvas.on(MaperialEvents.CONTROL_LEFT, function(){
     //  mover.moveLeft();
     //  });
+};
+
+Mover.prototype.plugToolListening = function (event) {
+    this.mapView.on("panmove", function (event) {
+        this.dragTool(event);
+    }.bind(this));
 };
 
 //--------------------------------------------------------------------
@@ -102,7 +104,7 @@ Mover.prototype.reset = function (event) {
 
 //-------------------------------------------------------------------------
 
-Mover.prototype.panmove = function (event) {
+Mover.prototype.dragMap = function (event) {
 
     this.mapView.context.mouseP = utils.getPoint(event);
     this.mapView.context.mouseM = utils.converToMeters(
@@ -124,6 +126,26 @@ Mover.prototype.panmove = function (event) {
     this.moveMap(deltaX, deltaY);
     this.moveDrawers(deltaX, deltaY);
 
+};
+
+//-------------------------------------------------------------------------
+
+Mover.prototype.dragTool = function (event) {
+    var left = parseFloat(this.mapView.container.style.left.split('px')[0]);
+    var top  = parseFloat(this.mapView.container.style.top.split('px')[0]);
+
+    var newLeft = Math.max(0, Math.min(
+        left + event.srcEvent.movementX,
+        this.mapView.parent.width - this.mapView.width
+    ));
+
+    var newTop = Math.max(0, Math.min(
+        top + event.srcEvent.movementY,
+        this.mapView.parent.height - this.mapView.height
+    ));
+
+    this.mapView.container.style.left = newLeft + 'px';
+    this.mapView.container.style.top  = newTop  + 'px';
 };
 
 //-------------------------------------------------------------------------
