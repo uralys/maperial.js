@@ -114,7 +114,6 @@ MouseListener.prototype.wheelOnZoomer = function (event, delta) {
 
     switch (this.mapView.type) {
     case Maperial.LENS:
-    case Maperial.MAGNIFIER:
         if (this.context.zoom < mainZoom)
             this.context.zoom = mainZoom
         break;

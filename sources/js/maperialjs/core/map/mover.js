@@ -31,11 +31,9 @@ Mover.prototype.initListeners = function (event) {
         case Maperial.MAIN:
         case Maperial.ANCHOR:
             this.plugMapListening(event);
-
             break;
 
         case Maperial.MINIFIER:
-        case Maperial.MAGNIFIER:
         case Maperial.LENS:
             this.plugToolListening(event);
 
@@ -146,6 +144,8 @@ Mover.prototype.dragTool = function (event) {
 
     this.mapView.container.style.left = newLeft + 'px';
     this.mapView.container.style.top  = newTop  + 'px';
+
+    this.mapView.trigger(Maperial.EVENTS.MAP_MOVED);
 };
 
 //-------------------------------------------------------------------------

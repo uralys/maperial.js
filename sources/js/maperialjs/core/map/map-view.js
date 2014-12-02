@@ -21,7 +21,6 @@ var Context      = require('./context.js'),
  * <li>a [Map]{@link Maperial#createMap}</li>
  * <li>an [Anchor]{@link #addAnchor}</li>
  * <li>a Minifier</li>
- * <li>a Magnifier</li>
  * <li>a Lens</li>
  * </ul>
  *
@@ -215,44 +214,67 @@ MapView.prototype.expose = function () {
     }.bind(this);
 
     /**
+     * The Lens shows the map with a greater zoom, in order to see details
+     * on the area under it.
+     *
      * @function
      * @param {object} options
-     * @param {float} options.radius The lens radius, in pixels.
-     *                              (Default : map.width * 0.1)
-     * @param {float} options.top The lens center from the map top left,
+     * @param {float} options.width The lens width, in pixels.
+     *                              (Default : 250px)
+     * @param {float} options.height The lens height, in pixels.
+     *                              (Default : 250px)
+     * @param {float} options.top The lens top from its parent top,
      *                            in pixels.
-     *                              (Default : map.width * 0.5)
-     * @param {float} options.left The lens center from the map top left,
+     *                            (Default : placed at parent.bottom - 20px)
+     * @param {float} options.left The lens left from its parent left,
      *                            in pixels.
-     *                              (Default : map.width * 0.5)
-     *
+     *                            (Default : placed at parent.left - 20px)
      */
     this.addLens = function (options) {
         options = options || {};
+        options.diffZoom = options.diffZoom || -3;
+
         this.prepareChildOptions(options, {
-            type : Maperial.LENS
+            type: Maperial.LENS,
         });
 
-        var width = (options.radius * 2 || this.width / 2) + 'px';
-        var height = (options.height || this.height / 2) + 'px';
-        var left = (options.left || 10) + 'px';
-        var top = (options.top || 10) + 'px';
+        var defaultTop = this.height - (options.height || 200 ) - 20;
+        var width  = (options.width || 250 ) + 'px';
+        var height = (options.height || 250 ) + 'px';
+        var left   = (options.left || 20) + 'px';
+        var top    = (options.top || defaultTop) + 'px';
 
-        options.container.style.width = width;
+        options.container.style.width  = width;
         options.container.style.height = height;
-        options.container.style.top = top;
-        options.container.style.left = left;
+        options.container.style.top    = top;
+        options.container.style.left   = left;
 
-        return this.createChild(options);
+        var lens = this.createChild(options);
+        lens.defaultLayer = lens.layerManager.duplicate(this.layers);
 
+        return lens;
     }.bind(this);
 
     /**
+     * The Minifier shows the map with a lower zoom, in order to see a broader
+     * area, using the same center as its parent.
+     *
      * @function
+     * @param {object} options
+     * @param {float} options.width The lens width, in pixels.
+     *                              (Default : 200px)
+     * @param {float} options.height The lens height, in pixels.
+     *                              (Default : 200px)
+     * @param {float} options.top The lens top from its parent top,
+     *                            in pixels.
+     *                            (Default : placed at parent.bottom - 20px)
+     * @param {float} options.left The lens left from its parent left,
+     *                            in pixels.
+     *                            (Default : placed at parent.left - 20px)
      */
     this.addMinifier = function (options) {
         options = options || {};
-        options.diffZoom = options.diffZoom || 3;
+        options.diffZoom = options.diffZoom || -3;
 
         this.prepareChildOptions(options, {
             type: Maperial.MINIFIER,
@@ -273,13 +295,6 @@ MapView.prototype.expose = function () {
         minifier.defaultLayer = minifier.layerManager.duplicate(this.layers);
 
         return minifier;
-    }.bind(this);
-
-    /**
-     * @function
-     */
-    this.addMagnifier = function (options) {
-        //@todo
     }.bind(this);
 
 };
@@ -510,12 +525,8 @@ MapView.prototype.refreshCamera = function (event) {
 
     switch (this.type) {
         case Maperial.MINIFIER:
-            this.context.zoom = initiator.context.zoom - this.options.diffZoom;
+            this.context.zoom = initiator.context.zoom + this.options.diffZoom;
             this.context.centerM = initiator.context.centerM;
-            break;
-
-        case Maperial.MAGNIFIER:
-            this.context.centerM = initiator.context.mouseM;
             break;
 
         case Maperial.MAIN:
