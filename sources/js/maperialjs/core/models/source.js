@@ -40,12 +40,14 @@ Source.IMAGES_MAPQUEST = "images.mapquest";
 Source.IMAGES_MAPQUEST_SATELLITE = "images.mapquest.satellite";
 Source.IMAGES_OSM = "images.osm";
 
-//http://www.thunderforest.com/ 
-Source.IMAGES_OCM_CYCLE = "images.ocm.cycle";
+//http://www.thunderforest.com/
+Source.IMAGES_OCM = "images.ocm.cycle";
 Source.IMAGES_OCM_TRANSPORT = "images.ocm.transport";
 Source.IMAGES_OCM_LANDSCAPE = "images.ocm.landscape";
+Source.IMAGES_OCM_OUTDOORS = "images.ocm.outdoors";
+Source.IMAGES_OCM_TRANSPORT_DARK = "images.ocm.transport.dark";
 
-/* Map tiles by <a href="http://stamen.com">Stamen Design</a>, 
+/* Map tiles by <a href="http://stamen.com">Stamen Design</a>,
  * under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>.
  * Data by <a href="http://openstreetmap.org">OpenStreetMap</a>,
  * under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.

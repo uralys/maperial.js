@@ -1,5 +1,6 @@
 var utils = require('../../../libs/utils.js'),
     Source = require('../models/source.js'),
+    ajax = require('../../../libs/lodash.js'),
     ajax = require('../../../libs/ajax.js');
 
 //----------------------------------------------------------------------------
@@ -119,8 +120,13 @@ SourceManager.prototype.loadAPISource = function (url, requestId) {
 
 SourceManager.prototype.loadImage = function (sourceId, x, y, z) {
 
-    var url = this.getImageURL(sourceId, x, y, z),
-        requestId = getRequestId(sourceId, x, y, z);
+    var sourceType = sourceId.split('.')[0];
+    var isImage = 'images' === sourceType;
+
+    var url = isImage   ? this.getImageURL(sourceId, x, y, z)
+                        : this.getWMSURL(sourceId, x, y, z);
+
+    var requestId = getRequestId(sourceId, x, y, z);
 
     if (this.requests[requestId])
         return;
@@ -234,83 +240,91 @@ SourceManager.prototype.getImageURL = function (sourceId, tx, ty, z) {
 
     switch (sourceId) {
 
-    case Source.MAPERIAL_EARTHLIGHT:
-        return Maperial.staticURL + "/tiles/earthlight/earth_" + tx + "_" + ty + "_" + z + ".png";
-        break;
+        case Source.MAPERIAL_EARTHLIGHT:
+            return Maperial.staticURL + "/tiles/earthlight/earth_" + tx + "_" + ty + "_" + z + ".png";
+            break;
 
-    case Source.MAPERIAL_AEROSOL:
-        return Maperial.staticURL + "/tiles/aerosol/aerosol_" + tx + "_" + ty + "_" + z + ".png";
-        break;
+        case Source.MAPERIAL_AEROSOL:
+            return Maperial.staticURL + "/tiles/aerosol/aerosol_" + tx + "_" + ty + "_" + z + ".png";
+            break;
 
-    case Source.MAPERIAL_NDVI:
-        return Maperial.staticURL + "/tiles/ndvi/ndvi_" + tx + "_" + ty + "_" + z + ".png";
-        break;
+        case Source.MAPERIAL_NDVI:
+            return Maperial.staticURL + "/tiles/ndvi/ndvi_" + tx + "_" + ty + "_" + z + ".png";
+            break;
 
-    case Source.MAPERIAL_SRTM:
-        return Maperial.staticURL + "/tiles/srtm/retiled_" + tx + "_" + ty + "_" + z + ".png";
-        break;
+        case Source.MAPERIAL_SRTM:
+            return Maperial.staticURL + "/tiles/srtm/retiled_" + tx + "_" + ty + "_" + z + ".png";
+            break;
 
-    case Source.MAPERIAL_SST:
-        return Maperial.staticURL + "/tiles/sst/sst_" + tx + "_" + ty + "_" + z + ".png";
-        break;
+        case Source.MAPERIAL_SST:
+            return Maperial.staticURL + "/tiles/sst/sst_" + tx + "_" + ty + "_" + z + ".png";
+            break;
 
-    case Source.IMAGES_MAPQUEST: // need to check http://developer.mapquest.com/web/products/open/map
-        var r = utils.random1(4);
-        return "http://otile" + r + ".mqcdn.com/tiles/1.0.0/osm/" + z + "/" + tx + "/" + gty + ".png";
-        break;
+        case Source.IMAGES_MAPQUEST: // need to check http://developer.mapquest.com/web/products/open/map
+            var r = utils.random1(4);
+            return "http://otile" + r + ".mqcdn.com/tiles/1.0.0/osm/" + z + "/" + tx + "/" + gty + ".png";
+            break;
 
-    case Source.IMAGES_MAPQUEST_SATELLITE: // need to check http://developer.mapquest.com/web/products/open/map
-        var r = utils.random1(4);
-        return "http://otile" + r + ".mqcdn.com/tiles/1.0.0/sat/" + z + "/" + tx + "/" + gty + ".png";
+        case Source.IMAGES_MAPQUEST_SATELLITE: // need to check http://developer.mapquest.com/web/products/open/map
+            var r = utils.random1(4);
+            return "http://otile" + r + ".mqcdn.com/tiles/1.0.0/sat/" + z + "/" + tx + "/" + gty + ".png";
 
-    case Source.IMAGES_OCM_CYCLE:
-        var s = utils.random0(2);
-        return "http://" + server[s] + ".tile.opencyclemap.org/cycle/" + z + "/" + tx + "/" + gty + ".png";
+        case Source.IMAGES_OCM:
+            var s = utils.random0(2);
+            return "http://" + server[s] + ".tile.opencyclemap.org/cycle/" + z + "/" + tx + "/" + gty + ".png";
 
-    case Source.IMAGES_OCM_TRANSPORT:
-        var s = utils.random0(2);
-        return "http://" + server[s] + ".tile2.opencyclemap.org/transport/" + z + "/" + tx + "/" + gty + ".png";
+        case Source.IMAGES_OCM_TRANSPORT:
+            var s = utils.random0(2);
+            return "http://" + server[s] + ".tile2.opencyclemap.org/transport/" + z + "/" + tx + "/" + gty + ".png";
 
-    case Source.IMAGES_OCM_LANDSCAPE:
-        var s = utils.random0(2);
-        return "http://" + server[s] + ".tile3.opencyclemap.org/landscape/" + z + "/" + tx + "/" + gty + ".png";
+        case Source.IMAGES_OCM_LANDSCAPE:
+            var s = utils.random0(2);
+            return "http://" + server[s] + ".tile3.opencyclemap.org/landscape/" + z + "/" + tx + "/" + gty + ".png";
 
-    case Source.IMAGES_STAMEN_WATERCOLOR:
-        var s = utils.random0(3);
-        return "http://" + server[s] + ".tile.stamen.com/watercolor/" + z + "/" + tx + "/" + gty + ".jpg";
+        case Source.IMAGES_OCM_TRANSPORT_DARK:
+            var s = utils.random0(2);
+            return "http://" + server[s] + ".tile3.opencyclemap.org/transport-dark/" + z + "/" + tx + "/" + gty + ".png";
 
-    case Source.IMAGES_STAMEN_TERRAIN: // US only
-        var s = utils.random0(3);
-        return "http://" + server[s] + ".tile.stamen.com/terrain/" + z + "/" + tx + "/" + gty + ".jpg";
+        case Source.IMAGES_OCM_OUTDOORS:
+            var s = utils.random0(2);
+            return "http://" + server[s] + ".tile3.opencyclemap.org/outdoors/" + z + "/" + tx + "/" + gty + ".png";
 
-    case Source.IMAGES_STAMEN_TONER:
-        var s = utils.random0(3);
-        return "http://" + server[s] + ".tile.stamen.com/toner/" + z + "/" + tx + "/" + gty + ".png";
+        case Source.IMAGES_STAMEN_WATERCOLOR:
+            var s = utils.random0(3);
+            return "http://" + server[s] + ".tile.stamen.com/watercolor/" + z + "/" + tx + "/" + gty + ".jpg";
 
-    case Source.IMAGES_STAMEN_TONER_BG:
-        var s = utils.random0(3);
-        return "http://" + server[s] + ".tile.stamen.com/toner-background/" + z + "/" + tx + "/" + gty + ".png";
+        case Source.IMAGES_STAMEN_TERRAIN: // US only
+            var s = utils.random0(3);
+            return "http://" + server[s] + ".tile.stamen.com/terrain/" + z + "/" + tx + "/" + gty + ".jpg";
 
-    case Source.IMAGES_OSM: // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
-    default:
-        var s = utils.random0(2);
-        return "http://" + server[s] + ".tile.openstreetmap.org/" + z + "/" + tx + "/" + gty + ".png";
-        break;
+        case Source.IMAGES_STAMEN_TONER:
+            var s = utils.random0(3);
+            return "http://" + server[s] + ".tile.stamen.com/toner/" + z + "/" + tx + "/" + gty + ".png";
 
-        //      // Use google API
-        //      case Source.IMAGES_GOOGLE_SATELLITE :
-        //      return "http://khm1.google.com/kh/v=121&x="+tx+"&y="+gty+"&z="+z
-        //      case Source.IMAGES_GOOGLE_TERRAIN :
-        //      return "http://mt0.googleapis.com/vt?x="+tx+"&y="+gty+"&z="+z;
+        case Source.IMAGES_STAMEN_TONER_BG:
+            var s = utils.random0(3);
+            return "http://" + server[s] + ".tile.stamen.com/toner-background/" + z + "/" + tx + "/" + gty + ".png";
 
-        // PB JPG ?
-        //      case Source.IRS_SATELLITE:
-        //      return "http://irs.gis-lab.info/?layers=landsat&request=GetTile&z="+z+"&x="+tx+"&y="+gty;
-        //      //http://irs.gis-lab.info/
+        case Source.IMAGES_OSM: // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
+        default:
+            var s = utils.random0(2);
+            return "http://" + server[s] + ".tile.openstreetmap.org/" + z + "/" + tx + "/" + gty + ".png";
+            break;
 
-        //      // Check nokia
+            //      // Use google API
+            //      case Source.IMAGES_GOOGLE_SATELLITE :
+            //      return "http://khm1.google.com/kh/v=121&x="+tx+"&y="+gty+"&z="+z
+            //      case Source.IMAGES_GOOGLE_TERRAIN :
+            //      return "http://mt0.googleapis.com/vt?x="+tx+"&y="+gty+"&z="+z;
 
-        //      http://www.neongeo.com/wiki/doku.php?id=map_servers
+            // PB JPG ?
+            //      case Source.IRS_SATELLITE:
+            //      return "http://irs.gis-lab.info/?layers=landsat&request=GetTile&z="+z+"&x="+tx+"&y="+gty;
+            //      //http://irs.gis-lab.info/
+
+            //      // Check nokia
+
+            //      http://www.neongeo.com/wiki/doku.php?id=map_servers
     };
 
 };
@@ -338,59 +352,59 @@ SourceManager.prototype.getWMSURL = function (source, tx, ty, z) {
 
     switch (source.params.src) {
 
-    case Source.WMS_BRETAGNECANTONS:
-        //http://www.mapmatters.org/wms/602246
+        case Source.WMS_BRETAGNECANTONS:
+            //http://www.mapmatters.org/wms/602246
 
-        var topLeft = topLeftM;
-        var bottomRight = bottomRightM;
+            var topLeft = topLeftM;
+            var bottomRight = bottomRightM;
 
-        return (Maperial.apiURL + "/geo1?SERVICE=WMS&LAYERS=bzh%3ACANTON&FORMAT=image%2Fpng&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
-        break;
+            return (Maperial.apiURL + "/geo1?SERVICE=WMS&LAYERS=bzh%3ACANTON&FORMAT=image%2Fpng&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
+            break;
 
-    case Source.WMS_FRANCECOURSDEAU:
-        //http://www.mapmatters.org/wms/647145
+        case Source.WMS_FRANCECOURSDEAU:
+            //http://www.mapmatters.org/wms/647145
 
-        var topLeft = topLeftM;
-        var bottomRight = bottomRightM;
+            var topLeft = topLeftM;
+            var bottomRight = bottomRightM;
 
-        return (Maperial.apiURL + "/geo2?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
-        break;
+            return (Maperial.apiURL + "/geo2?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
+            break;
 
-    case Source.WMS_SOLS_ILEETVILAINE:
-        //http://www.mapmatters.org/wms/647148
+        case Source.WMS_SOLS_ILEETVILAINE:
+            //http://www.mapmatters.org/wms/647148
 
-        var topLeft = topLeftM;
-        var bottomRight = bottomRightM;
+            var topLeft = topLeftM;
+            var bottomRight = bottomRightM;
 
-        return (Maperial.apiURL + "/geo2?SERVICE=WMS&LAYERS=igcs%3Aucs35&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
-        break;
+            return (Maperial.apiURL + "/geo2?SERVICE=WMS&LAYERS=igcs%3Aucs35&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
+            break;
 
-    case Source.WMS_CORINE_LAND_COVER:
+        case Source.WMS_CORINE_LAND_COVER:
 
-        var topLeft = topLeftM;
-        var bottomRight = bottomRightM;
+            var topLeft = topLeftM;
+            var bottomRight = bottomRightM;
 
-        return (Maperial.apiURL + "/geo3?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
-        break;
+            return (Maperial.apiURL + "/geo3?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A900913&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
+            break;
 
-        //          case Source.WMS4:
-        // http://www.mapmatters.org/wms/624097
-        // http://www.mapmatters.org/wms/603594
-        // http://www.mapmatters.org/server/4114
-        // Bretagne : http://www.mapmatters.org/server/3525   (leurs png n'ont pas dalpha :( )
+            //          case Source.WMS4:
+            // http://www.mapmatters.org/wms/624097
+            // http://www.mapmatters.org/wms/603594
+            // http://www.mapmatters.org/server/4114
+            // Bretagne : http://www.mapmatters.org/server/3525   (leurs png n'ont pas dalpha :( )
 
-        //          console.log("http://ws.carmen.developpement-durable.gouv.fr/cgi-bin/mapserv?map=/mnt/data_carmen/PACA/Publication/environnement.map&LAYERS=layer227&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A2154&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
-        //          break;
+            //          console.log("http://ws.carmen.developpement-durable.gouv.fr/cgi-bin/mapserv?map=/mnt/data_carmen/PACA/Publication/environnement.map&LAYERS=layer227&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A2154&BBOX="+topLeft.x+","+topLeft.y+","+bottomRight.x+","+bottomRight.y+"&WIDTH="+Maperial.tileSize+"&HEIGHT="+Maperial.tileSize)
+            //          break;
 
-        break;
+            break;
 
-    default:
-        var topLeft = topLeftM;
-        var bottomRight = bottomRightM;
+        default:
+            var topLeft = topLeftM;
+            var bottomRight = bottomRightM;
 
-        return (source.params.src + "&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
+            return (source.params.src + "&BBOX=" + topLeft.x + "," + topLeft.y + "," + bottomRight.x + "," + bottomRight.y + "&WIDTH=" + Maperial.tileSize + "&HEIGHT=" + Maperial.tileSize);
 
-    }
+    };
 };
 
 //----------------------------------------------------------------------------

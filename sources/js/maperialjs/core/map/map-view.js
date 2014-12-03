@@ -45,7 +45,7 @@ MapView.prototype.expose = function () {
      * http://www.thunderforest.com/
      * @function
      */
-    this.addOCMTransport = function () {
+    this.addTransport = function () {
         return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
     }.bind(this);
 
@@ -53,7 +53,7 @@ MapView.prototype.expose = function () {
      * http://www.thunderforest.com/
      * @function
      */
-    this.addOCMLandscape = function () {
+    this.addLandscape = function () {
         return this.addImageLayer(Source.IMAGES_OCM_LANDSCAPE);
     }.bind(this);
 
@@ -61,8 +61,24 @@ MapView.prototype.expose = function () {
      * http://www.thunderforest.com/
      * @function
      */
-    this.addOCMCycle = function () {
-        return this.addImageLayer(Source.IMAGES_OCM_CYCLE);
+    this.addOCM = function () {
+        return this.addImageLayer(Source.IMAGES_OCM);
+    }.bind(this);
+
+    /**
+     * http://www.thunderforest.com/
+     * @function
+     */
+    this.addOCMTransportDark = function () {
+        return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT_DARK);
+    }.bind(this);
+
+    /**
+     * http://www.thunderforest.com/
+     * @function
+     */
+    this.addOCMOutdoors = function () {
+        return this.addImageLayer(Source.IMAGES_OCM_OUTDOORS);
     }.bind(this);
 
     /**
@@ -215,6 +231,7 @@ MapView.prototype.expose = function () {
 
     /**
      * A Lens is a view to zoom in your map, centered on where the Lens is placed.
+     *
      * A Lens allows to highlight an area using a greater zoom.
      *
      * @function
@@ -257,6 +274,7 @@ MapView.prototype.expose = function () {
 
     /**
      * A Minifier is a view to zoom out your map, with the same center
+     *
      * It allows to understand where is situated the area using a lower zoom.
      *
      * @function
