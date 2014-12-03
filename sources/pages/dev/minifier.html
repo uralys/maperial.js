@@ -13,16 +13,15 @@
 <script type="text/javascript" src="http://static.maperial.localhost/js/maperial.js"></script>
 <script type="text/javascript">
     (function () {
-        var maperial = new window.Maperial();
-
+        var maperial = new Maperial();
         var map = maperial.createMap({
-          container:   'map',
-          defaultZoom: 8,
-          latitude:    54.619144,
-          longitude:   28.837023
-        });
+          container : 'map',
+          latitude : -37.823873,
+          longitude : 144.9239664
 
-        map.addMapquest();
+        });
+        map.context.zoom = 5;
+        map.addOutdoors();
         var lens = map.addLens();
         // map.addMinifier();
 
@@ -30,9 +29,6 @@
           views:[map]
         });
 
-        maperial.addSimpleZoom({
-          views:[lens]
-        });
     })();
 </script>
 

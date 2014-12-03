@@ -69,7 +69,7 @@ MapView.prototype.expose = function () {
      * http://www.thunderforest.com/
      * @function
      */
-    this.addOCMTransportDark = function () {
+    this.addTransportDark = function () {
         return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT_DARK);
     }.bind(this);
 
@@ -77,7 +77,7 @@ MapView.prototype.expose = function () {
      * http://www.thunderforest.com/
      * @function
      */
-    this.addOCMOutdoors = function () {
+    this.addOutdoors = function () {
         return this.addImageLayer(Source.IMAGES_OCM_OUTDOORS);
     }.bind(this);
 
