@@ -43,8 +43,8 @@ function wmsBounds(sourceId, x, y, z, context){
     }
 
     var topLeftP = {
-        x: tx * Maperial.tileSize,
-        y: ty * Maperial.tileSize
+        x: x * Maperial.tileSize,
+        y: y * Maperial.tileSize
     };
 
     var topLeftM = context.coordS.PixelsToMeters(

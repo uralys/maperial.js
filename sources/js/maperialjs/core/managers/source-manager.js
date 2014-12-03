@@ -332,8 +332,8 @@ SourceManager.prototype.getWMSURL = function (sourceId, bounds) {
         case Source.WMS_BRETAGNECANTONS:
             return (
                 Maperial.apiURL +
-                '/geo1?SERVICE=WMS&LAYERS=bzh%3ACANTON&FORMAT=image%2Fpng\
-                    &VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX=' +
+                '/geo1?SERVICE=WMS&LAYERS=bzh%3ACANTON&FORMAT=image%2Fpng' +
+                '&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG%3A900913&BBOX=' +
                 bounds.topLeft.x     + ',' +
                 bounds.topLeft.y     + ',' +
                 bounds.bottomRight.x + ',' +
@@ -346,11 +346,11 @@ SourceManager.prototype.getWMSURL = function (sourceId, bounds) {
         case Source.WMS_FRANCECOURSDEAU:
             return (
                 Maperial.apiURL +
-                '/geo2?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha\
-                    &ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng\
-                    &VERSION=1.1.1&REQUEST=GetMap&STYLES=\
-                    &EXCEPTIONS=application%2Fvnd.ogc.se_inimage\
-                    &SRS=EPSG%3A900913&BBOX=' +
+                '/geo2?SERVICE=WMS&LAYERS=france%3Arh_france_1000ha' +
+                '&ISBASELAYER=false&TRANSPARENT=true&FORMAT=image%2Fpng' +
+                '&VERSION=1.1.1&REQUEST=GetMap&STYLES=' +
+                '&EXCEPTIONS=application%2Fvnd.ogc.se_inimage' +
+                '&SRS=EPSG%3A900913&BBOX=' +
                 bounds.topLeft.x     + ',' +
                 bounds.topLeft.y     + ',' +
                 bounds.bottomRight.x + ',' +
@@ -363,11 +363,11 @@ SourceManager.prototype.getWMSURL = function (sourceId, bounds) {
         case Source.WMS_SOLS_ILEETVILAINE:
             return (
                 Maperial.apiURL +
-                '/geo2?SERVICE=WMS&LAYERS=igcs%3Aucs35&ISBASELAYER=false\
-                    &TRANSPARENT=true&FORMAT=image%2Fpng\
-                    &VERSION=1.1.1&REQUEST=GetMap&STYLES=\
-                    &EXCEPTIONS=application%2Fvnd.ogc.se_inimage\
-                    &SRS=EPSG%3A900913&BBOX=' +
+                '/geo2?SERVICE=WMS&LAYERS=igcs%3Aucs35&ISBASELAYER=false' +
+                '&TRANSPARENT=true&FORMAT=image%2Fpng' +
+                '&VERSION=1.1.1&REQUEST=GetMap&STYLES=' +
+                '&EXCEPTIONS=application%2Fvnd.ogc.se_inimage' +
+                '&SRS=EPSG%3A900913&BBOX=' +
                 bounds.topLeft.x     + ',' +
                 bounds.topLeft.y     + ',' +
                 bounds.bottomRight.x + ',' +
@@ -379,11 +379,11 @@ SourceManager.prototype.getWMSURL = function (sourceId, bounds) {
         case Source.WMS_CORINE_LAND_COVER:
             return (
                 Maperial.apiURL +
-                '/geo3?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&ISBASELAYER=false\
-                    &TRANSPARENT=true&FORMAT=image%2Fpng\
-                    &VERSION=1.1.1&REQUEST=GetMap&STYLES=\
-                    &EXCEPTIONS=application%2Fvnd.ogc.se_inimage\
-                    &SRS=EPSG%3A900913&BBOX=' +
+                '/geo3?SERVICE=WMS&LAYERS=topp%3ACLC06_WGS&ISBASELAYER=false' +
+                '&TRANSPARENT=true&FORMAT=image%2Fpng' +
+                '&VERSION=1.1.1&REQUEST=GetMap&STYLES=' +
+                '&EXCEPTIONS=application%2Fvnd.ogc.se_inimage' +
+                '&SRS=EPSG%3A900913&BBOX=' +
                 bounds.topLeft.x     + ',' +
                 bounds.topLeft.y     + ',' +
                 bounds.bottomRight.x + ',' +
