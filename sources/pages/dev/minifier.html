@@ -16,14 +16,10 @@
         var maperial = new Maperial();
         var map = maperial.createMap({
           container : 'map',
-          latitude : -37.823873,
-          longitude : 144.9239664
-
         });
-        map.context.zoom = 5;
-        map.addOutdoors();
-        var lens = map.addLens();
-        // map.addMinifier();
+
+        map.context.zoom = 10;
+        map.addCorineLandCover();
 
         maperial.addSimpleZoom({
           views:[map]

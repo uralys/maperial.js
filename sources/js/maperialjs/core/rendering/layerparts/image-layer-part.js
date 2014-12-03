@@ -12,7 +12,7 @@ function ImageLayerPart(layer, tile, gl) {
     this.w = 0;
     this.h = 0;
 
-    this.data = new ImageData(layer.sourceId, tile.x, tile.y, tile.z);
+    this.data = new ImageData(layer.sourceId, tile);
 
     this.layer.on(Layer.REFRESH, function(){
         this.reset();

@@ -1,15 +1,27 @@
 //----------------------------------------------------------------------------
 
-function ImageData(sourceId, x, y, z) {
+function ImageData(sourceId, tile) {
 
     this.sourceId = sourceId;
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.x = tile.x;
+    this.y = tile.y;
+    this.z = tile.z;
 
     this.content = null;
 
-    Maperial.sourceManager.loadImage(sourceId, x, y, z);
+    Maperial.sourceManager.loadImage(
+        sourceId,
+        this.x,
+        this.y,
+        this.z,
+        wmsBounds(
+            sourceId,
+            this.x,
+            this.y,
+            this.z,
+            tile.mapView.context
+        )
+    );
 };
 
 //----------------------------------------------------------------------------
@@ -21,6 +33,42 @@ ImageData.prototype.tryToFillContent = function () {
 ImageData.prototype.release = function () {
     Maperial.sourceManager.release(this.sourceId, this.x, this.y, this.z);
 };
+
+//----------------------------------------------------------------------------
+
+function wmsBounds(sourceId, x, y, z, context){
+
+    if('wms' !== sourceId.split('.')[0]){
+        return null;
+    }
+
+    var topLeftP = {
+        x: tx * Maperial.tileSize,
+        y: ty * Maperial.tileSize
+    };
+
+    var topLeftM = context.coordS.PixelsToMeters(
+        topLeftP.x,
+        topLeftP.y,
+        context.zoom
+    );
+
+    var bottomRightP = {
+        x: topLeftP.x + Maperial.tileSize,
+        y: topLeftP.y + Maperial.tileSize
+    };
+
+    var bottomRightM = context.coordS.PixelsToMeters(
+        bottomRightP.x,
+        bottomRightP.y,
+        context.zoom
+    );
+
+    return {
+        topLeft:     topLeftM,
+        bottomRight: bottomRightM
+    };
+}
 
 //----------------------------------------------------------------------------
 
