@@ -132,19 +132,28 @@ Mover.prototype.dragTool = function (event) {
     var left = parseFloat(this.mapView.container.style.left.split('px')[0]);
     var top  = parseFloat(this.mapView.container.style.top.split('px')[0]);
 
+    var mx = event.srcEvent.movementX
+                ? event.srcEvent.movementX
+                : event.srcEvent.mozMovementX ;
+
+    var my = event.srcEvent.movementY
+                ? event.srcEvent.movementY
+                : event.srcEvent.mozMovementY ;
+
     var newLeft = Math.max(0, Math.min(
-        left + event.srcEvent.movementX,
+        left + mx,
         this.mapView.parent.width - this.mapView.width
     ));
 
     var newTop = Math.max(0, Math.min(
-        top + event.srcEvent.movementY,
+        top + my,
         this.mapView.parent.height - this.mapView.height
     ));
 
     this.mapView.container.style.left = newLeft + 'px';
     this.mapView.container.style.top  = newTop  + 'px';
 
+    console.log(newLeft, newTop);
     this.mapView.refreshCamera();
 };
 

@@ -26,9 +26,11 @@
     position:absolute;
     border: 3px solid #666;
     cursor: -webkit-grab;
+    border-radius: 130px;
     -webkit-border-radius: 130px;
 
     canvas {
+        border-radius: 130px;
         -webkit-border-radius: 130px;
     }
 }
