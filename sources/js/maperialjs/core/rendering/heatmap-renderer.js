@@ -234,6 +234,9 @@ HeatmapRenderer.prototype.update = function () {
                     var tmpx = line[0] * this.scaleX + this.trX,
                         tmpy = line[1] * this.scaleY + this.trY;
 
+                    console.log('---');
+                    console.log(diameter, scale);
+
                     mat4.identity(mvMatrix);
                     mat4.translate(mvMatrix, [tmpx, tmpy, 0]);
                     mat4.scale(mvMatrix, [diameter, diameter, 1.0]);

@@ -14,35 +14,32 @@
 <script type="text/javascript">
     (function () {
 
-        /*
-            Maperial is a free javascript API to create maps for your web applications.
-            https://github.com/maperial/maperial.js
-        */
-        var maperial = new Maperial();
+    /*
+      Maperial is a free javascript API to create maps for your web applications.
+      https://github.com/maperial/maperial.js
+    */
+    var maperial = new Maperial();
 
-        var map = maperial.createMap({
-            container: "map",
-            defaultZoom: 7,
-            latitude: 50.916584,
-            longitude: 3.136998
-        });
+    var map = maperial.createMap({
+        container: "map",
+        defaultZoom: 13
+    });
 
-        var url = 'http://static.maperial.com/geojson/heatmap.geojson.json';
-        var data = window.data  = maperial.createHeatmapData(url);
+    var url = 'http://static.maperial.localhost/geojson/zepfrance.json';
+    var data = maperial.createHeatmapData(url);
 
-        var options = {
-            diameter: 300,
-            scale: 0.8,
-            fill: "linear", // "gaussian"
-            diameterUnit: "meter",
-        };
+    var options = {
+        fill: "linear", // "gaussian"
+        diameterUnit: "pixel",
+         // diameterUnit: "meter",
+    };
 
-        map.addSatellite();
-        map.addHeatmapLayer(data, options);
+    map.addOSM();
+    map.addHeatmapLayer(data, options);
 
-        maperial.addSimpleZoom({
-            views: [map]
-        });
+    maperial.addSimpleZoom({
+      views: [map]
+    });
 
         //-------------------------------------------------------//
         // dev purpose
