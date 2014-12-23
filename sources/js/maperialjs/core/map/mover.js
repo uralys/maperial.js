@@ -131,6 +131,8 @@ Mover.prototype.dragMap = function (event) {
 Mover.prototype.dragTool = function (event) {
     var left = parseFloat(this.mapView.container.style.left.split('px')[0]);
     var top  = parseFloat(this.mapView.container.style.top.split('px')[0]);
+    console.log('------');
+    console.log(event);
 
     var mx = event.srcEvent.movementX
                 ? event.srcEvent.movementX
@@ -139,6 +141,8 @@ Mover.prototype.dragTool = function (event) {
     var my = event.srcEvent.movementY
                 ? event.srcEvent.movementY
                 : event.srcEvent.mozMovementY ;
+
+    console.log(mx, event.srcEvent.movementX, event.srcEvent.mozMovementX);
 
     var newLeft = Math.max(0, Math.min(
         left + mx,
