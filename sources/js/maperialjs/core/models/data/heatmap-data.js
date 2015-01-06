@@ -223,9 +223,10 @@ HeatmapData.prototype.removePoint = function (pointToRemove) {
 //------------------------------------------------------------------------------
 
 /**
- * @function
  * Load one FeatureCollection after the other to animate your Array over time.
- * @param {Array|String} data An array of FeatureCollections or use a REST endpoint to import huge a Array.
+ *
+ * @function
+ * @param {Array|String} data An array of FeatureCollections or use a REST endpoint to import huge Array.
  */
 HeatmapData.prototype.animate = function (data) {
     if (data) {

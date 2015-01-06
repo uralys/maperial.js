@@ -180,8 +180,9 @@ DynamicalData.prototype.addPoint = function (feature) {
 //------------------------------------------------------------------------------
 
 /**
- * @function
  * Remove a point fromt your set :
+ *
+ * @function
  * @param  {object} pointToRemove A Maperial Point given by {@link #addPoint} for example
  */
 DynamicalData.prototype.removePoint = function (pointToRemove) {
@@ -198,6 +199,9 @@ DynamicalData.prototype.removePoint = function (pointToRemove) {
 
 //------------------------------------------------------------------------------
 
+/**
+ * @function
+ */
 DynamicalData.prototype.removeAll = function () {
     this.points = [];
     this.version++;
