@@ -22,31 +22,27 @@
 
         var map = maperial.createMap({
             container: "map",
-            defaultZoom: 8,
-            latitude: 50.916584,
-            longitude: 3.136998
+            defaultZoom: 4,
+            latitude: 13.186584,
+            longitude: 64.036998
         });
 
         var data = maperial.createHeatmapData();
 
         var options = {
-            diameter: 300,
-            scale: 0.8,
             fill: "linear", // "gaussian"
             diameterUnit: "meter",
         };
 
-        map.addSatellite();
+        map.addMapquest();
         map.addHeatmapLayer(data, options);
 
-        var batch = 'http://static.maperial.com/geojson/u5mr.geojson.json';
+        var batch = 'http://static.maperial.localhost/geojson/u5mr.geojson.json';
         data.animate(batch);
 
-        //-------------------------------------------------------//
-        // dev purpose
-
-        window.data = data;
-        window.map = map;
+        maperial.addSimpleZoom({
+          views: [map]
+        });
 
     })();
 </script>
