@@ -5,13 +5,80 @@ var utils = require('../../../../libs/utils.js'),
 //------------------------------------------------------------------------------
 
 /**
- * A HeatmapData may be shared between many MapView.
+ * To gather heat points on your maps, use HeatmapData.
  *
- * Create a HeatmapData using the [Maperial]{@link Maperial#createHeatmapData}
+ * One HeatmapData may be shared between many {@link MapView}.
  *
- * @class
+ * Create a HeatmapData using {@link Maperial#createHeatmapData}
  *
- * @example on [codepen](http://codepen.io/chrisdugne/pen/Wbbggr?editors=101)
+ * You may directly import a FeatureCollection either by a url or an object.
+ *
+ * Each 'feature' in your FeatureCollection should be formatted as Point, with a scale and a diameter as properties :
+ *
+ * <pre>
+ * {
+ *   "geometry": {
+ *     "type": "Point",
+ *     "coordinates": [
+ *       4.792116752641117,
+ *       53.05105507065753
+ *     ]
+ *   },
+ *   "type": "Feature",
+ *   "properties": {
+ *       "diameter": 10000,
+ *       "scale": 0.6
+ *   }
+ * }
+ * </pre>
+ *
+ * @constructor
+ *
+ * @param {object|string} featureCollection
+ *                        <a href="http://geojson.org">GeoJson</a>
+ *                        FeatureCollection
+ *
+ * @example <caption>Use a REST endpoint to import a FeatureCollection</caption>
+ * var url = 'http://static.maperial.com/geojson/heatmap.geojson.json';
+ * var data = maperial.createHeatmapData(url);
+ *
+ * @example <caption>Or use your js built FeatureCollection</caption>
+ * var collection = {
+ *   "type": "FeatureCollection",
+ *   "features": [
+ *     {
+ *       "geometry": {
+ *         "type": "Point",
+ *         "coordinates": [
+ *           4.792116752641117,
+ *           53.05105507065753
+ *         ]
+ *       },
+ *       "type": "Feature",
+ *       "properties": {
+ *           "diameter": 9000,
+ *           "scale": 0.54
+ *       }
+ *     },
+ *     {
+ *       "geometry": {
+ *         "type": "Point",
+ *         "coordinates": [
+ *           4.792800810802329,
+ *           53.05119775566745
+ *         ]
+ *       },
+ *       "type": "Feature",
+ *       "properties": {
+ *           "diameter": 10000,
+ *           "scale": 0.67
+ *       }
+ *     }
+ *   ]
+ * }
+ *
+ * var data = maperial.createHeatmapData(collection);
+ *
  */
 function HeatmapData(data) {
     this.id = utils.generateUID();
@@ -52,6 +119,9 @@ HeatmapData.prototype.import = function (data) {
 
 //------------------------------------------------------------------------------
 
+/**
+ * @function
+ */
 HeatmapData.prototype.addPoints = function (collection) {
     collection.features.forEach(function (feature) {
         this.addPoint(feature);
@@ -60,6 +130,9 @@ HeatmapData.prototype.addPoints = function (collection) {
 
 //------------------------------------------------------------------------------
 
+/**
+ * @function
+ */
 HeatmapData.prototype.addPoint = function (feature) {
 
     var latitude = feature.geometry.coordinates[1];
@@ -110,6 +183,9 @@ HeatmapData.prototype.addPoint = function (feature) {
 
 //------------------------------------------------------------------------------
 
+/**
+ * @function
+ */
 HeatmapData.prototype.reset = function () {
     this.points = [];
     this.content = {
@@ -120,10 +196,17 @@ HeatmapData.prototype.reset = function () {
     this.version++;
 }
 
+/**
+ * alias for {@link #reset}
+ * @function
+ */
 HeatmapData.prototype.removeAll = HeatmapData.prototype.reset;
 
 //------------------------------------------------------------------------------
 
+/**
+ * @function
+ */
 HeatmapData.prototype.removePoint = function (pointToRemove) {
     if (pointToRemove) {
         this.points.splice(
@@ -139,8 +222,11 @@ HeatmapData.prototype.removePoint = function (pointToRemove) {
 
 //------------------------------------------------------------------------------
 
+/**
+ * @function
+ * @param {Array} data An array of FeatureCollections. The animation will load one FeatureCollection after the other to animate your Array over time.
+ */
 HeatmapData.prototype.animate = function (data) {
-
     if (data) {
         if ('string' === typeof (data)) {
             ajax.get({
