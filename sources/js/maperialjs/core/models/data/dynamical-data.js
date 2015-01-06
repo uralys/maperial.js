@@ -122,10 +122,9 @@ DynamicalData.prototype.addPoints = function (collection) {
 /**
  * @function
  * @param feature GeoJson Feature
- * @returns the point, use it to {@link DynamicalData#removePoint}
+ * @returns . A Maperial Point, use it to {@link DynamicalData#removePoint}
  *
- * <pre>
- *  // parameter
+ * @example <caption>A feature example :</caption>
  *  var feature = {
  *    "geometry": {
  *      "type": "Point",
@@ -135,12 +134,10 @@ DynamicalData.prototype.addPoints = function (collection) {
  *      ]
  *    },
  *    "type": "Feature",
- *    "properties": {}
- *  \}
- * </pre>
+ *    "properties": {},
+ *  }
  *
- * <pre>
- * // returns
+ * @example <caption>A Maperial Point returned example :</caption>
  * var point = {
  *   id: id,
  *   lat: latitude,
@@ -149,7 +146,7 @@ DynamicalData.prototype.addPoints = function (collection) {
  *   y: Proj4js.Point.y,
  *   data: feature.properties,
  * };
- * </pre>
+ *
  */
 DynamicalData.prototype.addPoint = function (feature) {
     var latitude = feature.geometry.coordinates[1];
