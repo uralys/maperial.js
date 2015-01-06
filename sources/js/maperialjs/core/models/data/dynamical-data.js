@@ -108,6 +108,9 @@ DynamicalData.prototype.import = function (data) {
 
 //------------------------------------------------------------------------------
 
+/**
+ * @function
+ */
 DynamicalData.prototype.addPoints = function (collection) {
     collection.features.forEach(function (feature) {
         this.addPoint(feature);
@@ -116,6 +119,36 @@ DynamicalData.prototype.addPoints = function (collection) {
 
 //------------------------------------------------------------------------------
 
+/**
+ * @function
+ * @param feature GeoJson Feature
+ * @returns the point, use it to {@link #removePoint}
+ *
+ * <pre>
+ *  {
+ *    "geometry": {
+ *      "type": "Point",
+ *      "coordinates": [
+ *        4.792116752641117,
+ *        53.05105507065753
+ *      ]
+ *    },
+ *    "type": "Feature",
+ *    "properties": {}
+ *  \}
+ * </pre>
+ *
+ * <pre>
+ * var point = {
+ *   id: id,
+ *   lat: latitude,
+ *   lon: longitude,
+ *   x: p.x,
+ *   y: p.y,
+ *   data: feature.properties,
+ * };
+ * </pre>
+ */
 DynamicalData.prototype.addPoint = function (feature) {
     var latitude = feature.geometry.coordinates[1];
     var longitude = feature.geometry.coordinates[0];
@@ -147,6 +180,11 @@ DynamicalData.prototype.addPoint = function (feature) {
 
 //------------------------------------------------------------------------------
 
+/**
+ * @function
+ * Remove a point fromt your set :
+ * @param  {object} pointToRemove A Maperial Point given by {@link #addPoint} for example
+ */
 DynamicalData.prototype.removePoint = function (pointToRemove) {
     if (pointToRemove) {
         this.points.splice(
