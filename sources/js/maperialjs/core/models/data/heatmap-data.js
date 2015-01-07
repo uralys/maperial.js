@@ -227,36 +227,40 @@ HeatmapData.prototype.removePoint = function (pointToRemove) {
  *
  * @function
  * @param {Array|String} data An array of FeatureCollections or use a REST endpoint to import huge Array.
+ * @param {object} options
+ * @param {int} options.stepMillis the time between batches in milliseconds
  */
-HeatmapData.prototype.animate = function (data) {
+HeatmapData.prototype.animate = function (data, options) {
+    options = options || {};
     if (data) {
         if ('string' === typeof (data)) {
             ajax.get({
                 url: data,
                 async: true,
                 callback: function (error, batch) {
-                    this.animateBatches(batch);
+                    this.animateBatches(batch, options);
                 }.bind(this)
             });
         } else if ('object' === typeof (data)) {
-            this.animateBatches(data);
+            this.animateBatches(data, options);
         }
     }
 }
 
 HeatmapData.prototype.animateBatches = function (batches, options) {
 
-    options      = options || {};
-    options.step = options.step || 0;
+    options            = options || {};
+    options.step       = options.step || 0;
+    options.stepMillis = options.stepMillis || 25;
 
     var displayBatch = function(){
         this.removeAll();
         this.import(batches[options.step]);
         options.step = (options.step + 1) % batches.length;
-        setTimeout(displayBatch, 25);
+        setTimeout(displayBatch, options.stepMillis);
     }.bind(this);
 
-    setTimeout(displayBatch, 25);
+    setTimeout(displayBatch, options.stepMillis);
 }
 
 //------------------------------------------------------------------------------
