@@ -18,6 +18,7 @@ function SimpleZoom(options) {
         views[0].container.appendChild(container);
     }
 
+    container.className = "maperial-simple-zoom";
     zoomIn.className = "maperial-simple-zoom-in";
     zoomOut.className = "maperial-simple-zoom-out";
 

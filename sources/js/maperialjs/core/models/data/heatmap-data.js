@@ -88,6 +88,9 @@ function HeatmapData(data) {
     this.maxx = -100000000000;
     this.miny = 100000000000;
     this.maxy = -100000000000;
+    this.animationProperties = {
+        stepMillis : 45
+    };
 
     // source coordinates will be in Longitude/Latitude
     this.srcPrj = new Proj4js.Proj('EPSG:4326');
@@ -237,6 +240,11 @@ HeatmapData.prototype.removePoint = function (pointToRemove) {
  */
 HeatmapData.prototype.animate = function (data, options) {
     options = options || {};
+
+    if(options.stepMillis){
+        this.animationProperties.stepMillis = options.stepMillis;
+    }
+
     if (data) {
         if ('string' === typeof (data)) {
             ajax.get({
@@ -256,17 +264,16 @@ HeatmapData.prototype.animateBatches = function (batches, options) {
 
     options            = options || {};
     options.step       = options.step || 0;
-    options.stepMillis = options.stepMillis || 25;
 
     var displayBatch = function(){
         this.removeAll();
         this.import(batches[options.step]);
         options.step = (options.step + 1) % batches.length;
-        this.trigger('batch:changed', {plop:'ee', zooom:options.step});
-        setTimeout(displayBatch, options.stepMillis);
+        this.trigger('batch:changed');
+        setTimeout(displayBatch, this.animationProperties.stepMillis);
     }.bind(this);
 
-    setTimeout(displayBatch, options.stepMillis);
+    setTimeout(displayBatch, this.animationProperties.stepMillis);
 }
 
 //------------------------------------------------------------------------------

@@ -1,4 +1,6 @@
 
+var commonTools = require('./common-tools.js');
+
 module.exports = function AnimationTools(options) {
 
     var container = null;
@@ -22,6 +24,22 @@ module.exports = function AnimationTools(options) {
         options.data.on('batch:changed', function(state){
             caption.innerHTML = this.properties.year;
         });
+    }
+
+    if(options.speed){
+        var animationSpeed = commonTools.createSlider({
+            min:      45,
+            step:     5,
+            max:      500,
+            value:    545 - options.data.animationProperties.stepMillis,
+            modifier: function(value){
+                options.data.animationProperties.stepMillis = 545 - value;
+            },
+            label:    'Speed'
+        });
+
+        animationSpeed.className = "maperial-animation-speed";
+        container.appendChild(animationSpeed);
     }
 
     //--------------------------------------------------------------------------
