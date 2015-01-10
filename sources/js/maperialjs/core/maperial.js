@@ -14,7 +14,7 @@ var MapView = require('./map/map-view.js'),
     SimpleZoom       = require('../tools/simple-zoom.js'),
     ShadeControls    = require('../tools/shade-controls.js'),
     FusionControls   = require('../tools/fusion-controls.js'),
-    AnimationCaption = require('../tools/animation-caption.js'),
+    AnimationTools   = require('../tools/animation-tools.js'),
 
     environment      = require('../../environment/config.js');
 
@@ -286,8 +286,8 @@ Maperial.prototype.expose = function () {
      *                              (Note : Does not work with Anchors.)
      * @param {string} options.data This animated data.
      */
-    this.addAnimationCaption = function (options) {
-        new AnimationCaption(options);
+    this.addAnimationTools = function (options) {
+        new AnimationTools(options);
     };
 };
 

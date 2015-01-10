@@ -40,16 +40,16 @@ Animation: http://bit.ly/1HTv75m under-5 mortality rate since 1950 @UNICEF @WHO 
         var batch = 'http://static.maperial.localhost/geojson/u5mr.geojson.json';
         data.animate(batch, {
             stepMillis: 500
-            // tools: true
         });
 
         maperial.addSimpleZoom({
           views: [map]
         });
 
-        maperial.addAnimationCaption({
+        maperial.addAnimationTools({
           data: data,
-          views: [map]
+          views: [map],
+          caption: true
         });
 
     })();
