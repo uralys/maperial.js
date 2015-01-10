@@ -1,6 +1,7 @@
 
 var Composition = require('../core/models/layers/composition.js'),
-    Layer = require('../core/models/layer.js');
+    Layer = require('../core/models/layer.js'),
+    commonTools = require('./common-tools.js');
 
 //------------------------------------------------------------------------------
 
@@ -73,31 +74,34 @@ function refreshParameters(container, mode, layer){
     switch(mode){
         case Composition.ALPHA_BLEND:
         case Composition.ALPHA_CLIP:
-            container.parameters.appendChild(createSlider({
+            container.parameters.appendChild(commonTools.createSlider({
                 min:      -1,
                 step:     0.01,
                 max:      1,
                 value:    layer.composition.alpha(),
-                modifier: layer.setAlpha.bind(layer)
+                modifier: layer.setAlpha.bind(layer),
+                label:    'Alpha'
             }));
             break;
 
         case Composition.X_BLEND:
-            container.parameters.appendChild(createSlider({
+            container.parameters.appendChild(commonTools.createSlider({
                 min:      -1,
                 step:     0.01,
                 max:      1,
                 value:    layer.composition.contrast(),
-                modifier: layer.setContrast.bind(layer)
+                modifier: layer.setContrast.bind(layer),
+                label:    'Contrast'
             }));
-            container.parameters.appendChild(createSlider({
+            container.parameters.appendChild(commonTools.createSlider({
                 min:      -1,
                 step:     0.01,
                 max:      1,
                 value:    layer.composition.luminosity(),
-                modifier: layer.setLuminosity.bind(layer)
+                modifier: layer.setLuminosity.bind(layer),
+                label:    'Luminosity'
             }));
-            // container.parameters.appendChild(createSlider({
+            // container.parameters.appendChild(commonTools.createSlider({
             //     min:      1,
             //     step:     1,
             //     max:      4,
@@ -109,21 +113,3 @@ function refreshParameters(container, mode, layer){
 
     container.appendChild(container.parameters);
 }
-
-function createSlider(options){
-    var slider       = document.createElement('input');
-
-    slider.type      = 'range';
-    slider.className = 'slider';
-    slider.step      = options.step;
-    slider.min       = options.min;
-    slider.max       = options.max;
-    slider.value     = options.value;
-
-    slider.addEventListener("input", function (event) {
-        options.modifier(event.target.valueAsNumber);
-    });
-
-    return slider;
-}
-

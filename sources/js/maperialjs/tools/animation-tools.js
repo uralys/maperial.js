@@ -13,8 +13,6 @@ module.exports = function AnimationTools(options) {
 
     //--------------------------------------------------------------------------
 
-    console.log(options);
-    console.log(options.caption);
     if(options.caption){
         var caption   = document.createElement('div');
 
