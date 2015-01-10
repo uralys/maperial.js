@@ -1,5 +1,6 @@
-var utils = require('../../../../libs/utils.js'),
-    ajax = require('../../../../libs/ajax.js'),
+var utils   = require('../../../../libs/utils.js'),
+    ajax    = require('../../../../libs/ajax.js'),
+    Events  = require('../../../libs/events.js'),
     Proj4js = require('../../../libs/proj4js-compressed.js');
 
 //------------------------------------------------------------------------------
@@ -94,6 +95,8 @@ function HeatmapData(data) {
     // destination coordinates google
     this.dstPrj = new Proj4js.Proj('EPSG:900913');
 
+    Events.call(this);
+
     this.reset();
     this.import(data);
 }
@@ -123,6 +126,7 @@ HeatmapData.prototype.import = function (data) {
  * @function
  */
 HeatmapData.prototype.addPoints = function (collection) {
+    this.properties = collection.properties;
     collection.features.forEach(function (feature) {
         this.addPoint(feature);
     }.bind(this))
@@ -188,6 +192,7 @@ HeatmapData.prototype.addPoint = function (feature) {
  */
 HeatmapData.prototype.reset = function () {
     this.points = [];
+    this.properties = null;
     this.content = {
         "h": Maperial.tileSize,
         "w": Maperial.tileSize,
@@ -257,6 +262,7 @@ HeatmapData.prototype.animateBatches = function (batches, options) {
         this.removeAll();
         this.import(batches[options.step]);
         options.step = (options.step + 1) % batches.length;
+        this.trigger('batch:changed', {plop:'ee', zooom:options.step});
         setTimeout(displayBatch, options.stepMillis);
     }.bind(this);
 

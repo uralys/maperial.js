@@ -17,6 +17,8 @@
         /*
             Maperial is a free javascript API to create maps for your web applications.
             https://github.com/maperial/maperial.js
+
+Animation: http://bit.ly/1HTv75m under-5 mortality rate since 1950 @UNICEF @WHO @WorldBank @WeCanEndPoverty #dataoftheday #Promise4Children
         */
         var maperial = new Maperial();
 
@@ -29,18 +31,24 @@
 
         var data = maperial.createHeatmapData();
 
-        var options = {
-            fill: "linear", // "gaussian"
-            diameterUnit: "meter",
-        };
-
         map.addMapquest();
-        map.addHeatmapLayer(data, options);
+        map.addHeatmapLayer(data, {
+            fill: "linear", // "gaussian"
+            diameterUnit: "meter"
+        });
 
         var batch = 'http://static.maperial.localhost/geojson/u5mr.geojson.json';
-        data.animate(batch);
+        data.animate(batch, {
+            stepMillis: 500
+            // tools: true
+        });
 
         maperial.addSimpleZoom({
+          views: [map]
+        });
+
+        maperial.addAnimationCaption({
+          data: data,
           views: [map]
         });
 

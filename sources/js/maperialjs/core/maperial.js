@@ -1,21 +1,22 @@
 //-----------------------------------------------------------------
 
 var MapView = require('./map/map-view.js'),
-    SourceManager   = require('./managers/source-manager.js'),
-    StyleManager    = require('./managers/style-manager.js'),
-    ColorbarManager = require('./managers/colorbar-manager.js'),
-    DynamicalData   = require('./models/data/dynamical-data.js'),
+    SourceManager    = require('./managers/source-manager.js'),
+    StyleManager     = require('./managers/style-manager.js'),
+    ColorbarManager  = require('./managers/colorbar-manager.js'),
+    DynamicalData    = require('./models/data/dynamical-data.js'),
 
-    HeatmapData     = require('./models/data/heatmap-data.js'),
-    Source          = require('./models/source.js'),
+    HeatmapData      = require('./models/data/heatmap-data.js'),
+    Source           = require('./models/source.js'),
 
-    utils           = require('../../libs/utils.js'),
+    utils            = require('../../libs/utils.js'),
 
-    SimpleZoom      = require('../tools/simple-zoom.js'),
-    ShadeControls   = require('../tools/shade-controls.js'),
-    FusionControls  = require('../tools/fusion-controls.js'),
+    SimpleZoom       = require('../tools/simple-zoom.js'),
+    ShadeControls    = require('../tools/shade-controls.js'),
+    FusionControls   = require('../tools/fusion-controls.js'),
+    AnimationCaption = require('../tools/animation-caption.js'),
 
-    environment     = require('../../environment/config.js');
+    environment      = require('../../environment/config.js');
 
 //-----------------------------------------------------------------
 
@@ -276,6 +277,17 @@ Maperial.prototype.expose = function () {
      */
     this.addSimpleZoom = function (options) {
         new SimpleZoom(options);
+    };
+
+    /**
+     * @function
+     * @param {object} options
+     * @param {array} options.views Attach controls to this array of MapViews.
+     *                              (Note : Does not work with Anchors.)
+     * @param {string} options.data This animated data.
+     */
+    this.addAnimationCaption = function (options) {
+        new AnimationCaption(options);
     };
 };
 
