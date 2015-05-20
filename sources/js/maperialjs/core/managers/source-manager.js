@@ -230,12 +230,19 @@ SourceManager.prototype.getImageURL = function (sourceId, tx, ty, z) {
                     gty + '.png';
 
         case Source.IMAGES_OCM_TRANSPORT:
-            var s = utils.random0(2);
-            return 'http://' + server[s] +
-                    '.tile2.opencyclemap.org/transport/' +
+            var s = utils.random0(3);
+            // 10/528-354.png
+            return 'http://mtc' + s +
+                    '.meilleursagents.com/www_pricemap_fr/2015-02-01/' +
                     z + '/' +
-                    tx + '/' +
+                    tx + '-' +
                     gty + '.png';
+
+            // return 'http://' + server[s] +
+            //         '.tile2.opencyclemap.org/transport/' +
+            //         z + '/' +
+            //         tx + '/' +
+            //         gty + '.png';
 
         case Source.IMAGES_OCM_LANDSCAPE:
             var s = utils.random0(2);
