@@ -19,7 +19,3 @@ to let us know your feedback !
 - Understand [Maperial](http://maperial.github.io/concepts/)'s concepts
 - Explore the complete API [reference](http://maperial.github.io/documentation/)
 to draft your own maps.
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/maperial/maperial.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
