@@ -2,7 +2,6 @@
   "name": "Maperial",
   "description": "Maperial JS to craft awesome maps on the Cloud",
   "version": "0.1.0",
-  "author": "Maperial <contact@maperial.com>",
   "devDependencies": {
     "browserify": "~3",
     "envify": "~1.2.0",
