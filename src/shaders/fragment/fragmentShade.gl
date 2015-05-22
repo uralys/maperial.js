@@ -1,0 +1,23 @@
+precision mediump float;
+varying vec2 vTextureCoord;
+
+uniform sampler2D uSampler ;
+uniform vec3      uLight;
+uniform float     uScale;
+uniform float     uPixRes;
+
+void main(void) {
+   vec3  lightVec = uLight;
+   float pixRes   = uPixRes;
+   float scale    = uScale;
+
+   vec3 n = texture2D(uSampler , vTextureCoord ).xyz;
+   n.x = (n.x * 2.0 - 1.0) * scale;
+   n.y = (n.y * 2.0 - 1.0) * scale;
+   n.z = (n.z * 2.0 - 1.0);
+   n = normalize (n);
+
+   lightVec = normalize( lightVec );
+   float diffuse = max( dot( -1.0 * lightVec, n)   , 0.0 );
+   gl_FragColor  = vec4(diffuse,diffuse,diffuse,1.0);
+}

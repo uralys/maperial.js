@@ -1,0 +1,11 @@
+{
+ "attributes": {
+  "textureCoordAttribute": "aTextureCoord", 
+  "vertexPositionAttribute": "aVertexPosition"
+ },
+ "type": "x-shader/x-vertex", 
+ "parameters": {
+  "mvMatrixUniform": ["uMVMatrix", null],
+  "pMatrixUniform": ["uPMatrix", null]
+ }
+}

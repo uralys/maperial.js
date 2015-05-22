@@ -1,0 +1,21 @@
+
+.maperial-slider {
+    margin-top: 10px;
+}
+
+.hud {
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4px;
+    opacity: 0.8;
+    background: -webkit-linear-gradient(top, #ddd, #fff) #fff;
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+}

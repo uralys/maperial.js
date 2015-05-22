@@ -1,0 +1,16 @@
+{
+  "tags"      : {
+    "allowUnknownTags" : true
+  },
+  "plugins"   : ["plugins/markdown"],
+
+  "templates" : {
+    "systemName": "Maperial",
+    "copyright":  "Maperial Copyright © 2012-2014.",
+    "navType":    "vertical"
+  },
+  "markdown"  : {
+    "parser"   : "gfm",
+    "hardwrap" : true
+  }
+}

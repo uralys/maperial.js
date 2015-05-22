@@ -1,0 +1,12 @@
+.settings/
+.classpath
+.project
+bin/
+static/
+.DS_Store
+/build
+/node_modules
+.sass-cache
+/.externalToolBuilders
+/environment/env.json
+/sources/js/environment/

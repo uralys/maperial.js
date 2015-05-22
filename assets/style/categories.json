@@ -1,0 +1,209 @@
+{
+   "categories" : {
+      
+
+      "Landscape" : [
+         { "id" : "grounds", "surname": "Grounds", 
+           "elements" : [
+               { "name" : "world",             "surname": "Ground 0 - 9",   "type": "poly" , "line" : "none" },
+               { "name" : "coast_poly",        "surname": "Ground 10+",     "type": "poly" , "line" : "none" }
+            ]
+         },
+         { "id" : "trees", "surname": "Trees", 
+           "elements" : [
+               { "name" : "landmark", "filter" : "forest",        "surname" : "Forest",   "type": "poly" , "line" : "none"},
+               { "name" : "landmark", "filter" : "playground",    "surname" : "Park",   "type": "poly" , "line" : "none"},
+               { "name" : "landmark", "filter" : "golf_course",   "surname" : "Golf",   "type": "poly" , "line" : "none"}
+            ]
+         },
+         { "id" : "buildings", "surname": "Buildings", 
+           "elements" : [
+               { "name" : "building",                             "surname" : "building",  "type": "poly" , "line" : "none" },
+               { "name" : "landmark", "filter" : "residential",   "surname" : "Residential",   "type": "poly" , "line" : "none"},
+               { "name" : "landmark", "filter" : "parking",       "surname" : "Parking",   "type": "poly" , "line" : "none"}
+            ]
+         },
+         { "id" : "military", "surname": "Military", 
+           "elements" : [
+               { "name" : "landmark", "filter" : "barracks",      "surname" : "Barracks",   "type": "poly" , "line" : "none"},
+               { "name" : "landmark", "filter" : "military",      "surname" : "Military",   "type": "poly" , "line" : "none"},
+               { "name" : "military",                             "surname" : "military",  "type": "poly" , "line" : "none" }
+             ]
+         },
+         { "id" : "other_grounds", "surname": "Other", 
+           "elements" : [
+               { "name" : "landmark", "filter" : "beach",         "surname" : "Beach",   "type": "poly" , "line" : "none"},
+               { "name" : "landmark", "filter" : "runway",        "surname" : "Runway",   "type": "poly" , "line" : "none"}
+            ]
+         }
+      ],
+      
+      
+      
+      "Road" : [
+         { "id" : "motorway", "surname": "Motorway", 
+           "elements" : [
+               { "name" : "motorway",          "surname": "Motorway",            "type": "line" , "casing": "motorway_casing",      "center": "motorway_centerline" },
+               { "name" : "interchange",       "surname": "Interchange",         "type": "line" , "casing": "interchange_casing",   "center": "none" }
+            ]
+         },
+         { "id" : "largerRoads", "surname": "Larger Roads", 
+            "elements" : [
+               { "name" : "trunk",             "surname": "Trunk",               "type": "line" , "casing": "trunk_casing",         "center": "none" },
+               { "name" : "primary",           "surname": "Primary",             "type": "line" , "casing": "primary_casing",       "center": "none" }
+             ]
+         },
+         { "id" : "smallerRoads", "surname": "Smaller Roads", 
+            "elements" : [
+               { "name" : "secondary",         "surname": "Secondary",           "type": "line" , "casing": "secondary_casing",     "center": "none" },
+               { "name" : "tertiary",          "surname": "Tertiary",            "type": "line" , "casing": "tertiary_casing",      "center": "none" },
+               { "name" : "road_bridges_fill", "surname": "Bridges",             "type": "line" , "casing": "road_bridges_casing",  "center": "none" }
+             ]
+         },
+         { "id" : "railway", "surname": "Railway", 
+           "elements" : [
+              { "name" : "rail",               "surname": "Rail",                "type": "line" , "casing": "rail_casing",     "center": "none" }
+            ]
+         }
+      ],
+      
+      
+      
+      "Path" : [
+          { "id" : "carPaths", "surname": "Cars", 
+            "elements" : [
+                { "name" : "cul_de_sac",        "surname": "Dead end",           "type": "line" , "casing": "none",                 "center": "none" },
+                { "name" : "alley",             "surname": "Alley",              "type": "line" , "casing": "alley_casing",         "center": "none" }
+             ]
+          },
+          { "id" : "cyclePaths", "surname": "Cycles", 
+            "elements" : [
+                { "name" : "cycleway",          "surname": "Cycleway",           "type": "line" , "casing": "cycleway_casing",      "center": "none" }
+             ]
+          },
+          { "id" : "pedestrianPaths", "surname": "Pedestrian", 
+            "elements" : [
+                { "name" : "pedestrian_walkways",          "surname": "Walkways",           "type": "line" , "casing": "none",      "center": "none" },
+                { "name" : "pedestrian_polygon",          "surname": "Polygon",           "type": "none"}
+            ]
+          }
+      ],
+      
+      
+      
+      "Places" : [
+         { "id" : "largeCity", "surname": "Large city", 
+           "elements" : [
+              { "name" : "capital",   "surname" : "Capital",   "type": "none"},
+              { "name" : "city_1_lowzoom",   "surname" : "Metropolis 4-5",   "type": "none"},
+              { "name" : "city_1",   "surname" : "Metropolis 6+",   "type": "none"},
+              { "name" : "city_2",   "surname" : "Large town",   "type": "none"}
+            ]
+         },
+         { "id" : "smallCity", "surname": "Small city", 
+           "elements" : [
+              { "name" : "city_3",   "surname" : "Small town",   "type": "none"},
+              { "name" : "city_4",   "surname" : "Suburb town",   "type": "none"},
+              { "name" : "neighborhood",   "surname" : "Village",   "type": "none"},
+              { "name" : "locality",   "surname" : "Locality",   "type": "none"}
+            ]
+         },
+         { "id" : "areas", "surname": "Areas", 
+           "elements" : [
+              { "name" : "state",   "surname" : "State",   "type": "none"},
+              { "name" : "county",   "surname" : "County",   "type": "none"},
+              { "name" : "country",   "surname" : "Country",   "type": "none"},
+              { "name" : "continent",   "surname" : "Continent",   "type": "none"}
+           ]
+         },
+         { "id" : "borders", "surname": "Borders", 
+           "elements" : [
+              { "name" : "state_border",      "surname" : "State border",   "type": "line" , "casing": "state_border_casing" , "center": "none"},
+              { "name" : "country_border",      "surname" : "Country border",   "type": "line" , "casing": "county_border_casing" , "center": "none"}
+            ]
+         }
+      ],
+      
+      
+      
+      "Services" : [
+        { "id" : "publicServices", "surname": "Public services", 
+           "elements" : [
+              { "name" : "landmark", "filter" : "[landuse] = 'retail'", "surname" : "Retail",   "type": "poly" , "line" : "none"},
+              { "name" : "landmark", "filter" : "university",    "surname" : "School",   "type": "poly" , "line" : "none"},
+              { "name" : "landmark", "filter" : "hospital",      "surname" : "Hospital",   "type": "poly" , "line" : "none"}
+            ]
+        },
+        { "id" : "otherServices", "surname": "Other", 
+           "elements" : [
+             { "name" : "landmark", "filter" : "cemetery",      "surname" : "Cemetery",   "type": "poly" , "line" : "none"},
+             { "name" : "landmark", "filter" : "aerodrome",     "surname" : "Aerodrome",   "type": "poly" , "line" : "none"},
+             { "name" : "landmark", "filter" : "stadium",       "surname" : "Stadium",   "type": "poly" , "line" : "none"}
+           ]
+        }
+      ],
+
+
+      
+      
+      "Water" : [
+         { "id" : "water", "surname": "Water", 
+            "elements" : [
+               { "name" : "water_lines",  "surname" : "Water lines",   "type": "poly" , "line" : "none"},
+               { "name" : "water_areas",  "surname" : "Water areas",   "type": "poly" , "line" : "none"},
+               { "name" : "ferry_routes",   "surname" : "Ferry routes",   "type": "none"}
+             ]
+         }
+      ],
+      
+      
+      
+      
+      
+      "Texts" : [
+        { "id" : "landmarkTexts", "surname": "Landmark", 
+          "elements" : [
+             { "name" : "landmark_poly_text",       "surname": "Poly text",        "type": "text"},
+             { "name" : "landmark_point_text",       "surname": "Point text",        "type": "text"}
+           ]
+        },
+        { "id" : "cityTexts", "surname": "City", 
+          "elements" : [
+             { "name" : "street_text",       "surname": "street_text",        "type": "text"}
+           ]
+        },
+        { "id" : "cityTexts", "surname": "Water", 
+          "elements" : [
+             { "name" : "ferry_text",       "surname": "Ferry",        "type": "text"},
+             { "name" : "water_text",       "surname": "Water Text",        "type": "text"},
+             { "name" : "water_line_text",       "surname": "Water Line Text",        "type": "text"}
+           ]
+        },
+        { "id" : "otherTexts", "surname": "Other", 
+           "elements" : [
+              { "name" : "symbol_text",       "surname": "Symbol",        "type": "text"},
+              { "name" : "barrier_text",       "surname": "Barrier",        "type": "text"},
+              { "name" : "shield_text",       "surname": "Shield",        "type": "text"}
+            ]
+        }
+      ],
+      
+
+      
+      
+      "Other" : [
+          { "id" : "otherCategory", "surname": "Other", 
+            "elements" : [
+                { "name" : "builtup",           "surname": "Builtup",            "type":  "none" },
+                { "name" : "runway",            "surname": "Runway",             "type":  "none" },
+                { "name" : "direction_arrows",  "surname": "Direction Arrows",   "type":  "none" },
+                { "name" : "symbols",           "surname": "Symbols",            "type":  "none" },
+                { "name" : "barriers",          "surname": "Barriers",           "type":  "none"  },
+                { "name" : "barrier_symbols",   "surname": "Barrier Symbols",    "type":  "none" },
+                { "name" : "addressing",        "surname": "Addressing",         "type":  "none" },
+                { "name" : "interpolation",     "surname": "Interpolation",      "type":  "none" }
+             ]
+          }
+      ]
+   }
+}
