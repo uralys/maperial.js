@@ -21,7 +21,6 @@
     "node": ">= 0.8"
   },
   "dependencies": {
-    "bower": "^1.4.1",
     "jscs": "^1.13.1",
     "jshint": "^2.7.0",
     "lodash": "^3.9.1",
