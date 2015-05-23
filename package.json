@@ -22,7 +22,8 @@
     "node": ">= 0.8"
   },
   "dependencies": {
-    "grunt-jsbeautifier": "^0.2.7",
+    "jscs": "^1.13.1",
+    "jshint": "^2.7.0",
     "raf": "~2.0.1",
     "tween.js": "~0.14.0"
   }

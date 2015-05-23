@@ -4,9 +4,9 @@ module.exports = function (grunt) {
     require('time-grunt')(grunt);
 
     var gruntCfg = {
-        documentation : "../../maperial.github.io/documentation",
         pkg: grunt.file.readJSON('package.json'),
-        env: grunt.file.readJSON('environment/env.json'),
+        env: grunt.file.readJSON('config/env/env.json'),
+        documentation : "<%= env.documentation %>",
 
         replace: {
             dist: {
@@ -20,13 +20,17 @@ module.exports = function (grunt) {
                     }, {
                         match: 'tileURL',
                         replacement: '<%= env.tileURL %>'
-                    }]
+                    }, {
+                        match: 'documentation',
+                        replacement: '<%= env.documentation %>'
+                    }
+                    ]
                 },
                 files: [{
                     expand: true,
                     flatten: true,
-                    src: ['environment/config.js'],
-                    dest: 'sources/js/environment/'
+                    src: ['config/env/config.js'],
+                    dest: 'config/env/build/'
                 }]
             }
         },
@@ -35,7 +39,7 @@ module.exports = function (grunt) {
 
             /* dev : simple browserify + source map */
             compile: {
-                src: ['sources/js/maperialjs/core/maperial.js'],
+                src: ['src/js/maperialjs/core/maperial.js'],
                 dest: 'static/js/maperial.js',
                 options: {
                     debug: true
@@ -44,7 +48,7 @@ module.exports = function (grunt) {
 
             /* prod : build as standalone */
             standalone: {
-                src: ['sources/js/maperialjs/core/maperial.js'],
+                src: ['src/js/maperialjs/core/maperial.js'],
                 dest: 'static/js/maperial.js',
                 options: {
                     standalone: '<%= pkg.name %>'
@@ -75,7 +79,7 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: 'sources/css/sass/',
+                    cwd: 'src/css/sass/',
                     src: ['maperial.scss'],
                     dest: 'static/css/',
                     ext: '.css'
@@ -83,38 +87,21 @@ module.exports = function (grunt) {
             }
         },
 
-        jsbeautifier: {
-            modify: {
-                src: [
-                    'Gruntfile.js'
-                ],
-                options: {
-                    config: '.jsbeautifyrc'
-                }
-            }
-        },
-
-        eslint: {
-            target: [
-                'sources/js/maperialjs/**/*.js'
-            ],
-        },
-
         jsdoc: {
             dist: {
                 src: [
-                    'sources/js/maperialjs/core/maperial.js',
-                    'sources/js/maperialjs/core/map/map-view.js',
-                    'sources/js/maperialjs/core/models/data/dynamical-data.js',
-                    'sources/js/maperialjs/core/models/data/heatmap-data.js',
-                    'sources/js/maperialjs/core/models/layers/composition.js',
-                    'sources/js/maperialjs/core/models/layers/shade-layer.js',
-                    'sources/js/maperialjs/core/models/layers/image-layer.js',
+                    'src/js/maperialjs/core/maperial.js',
+                    'src/js/maperialjs/core/map/map-view.js',
+                    'src/js/maperialjs/core/models/data/dynamical-data.js',
+                    'src/js/maperialjs/core/models/data/heatmap-data.js',
+                    'src/js/maperialjs/core/models/layers/composition.js',
+                    'src/js/maperialjs/core/models/layers/shade-layer.js',
+                    'src/js/maperialjs/core/models/layers/image-layer.js',
                 ],
                 options: {
                     destination: '<%= documentation %>',
                     template: "assets/jsdoc-jaguarjs",
-                    configure: "jsdoc.conf.json"
+                    configure: "config/jsdoc/config.json"
                 }
             },
         },
@@ -129,9 +116,9 @@ module.exports = function (grunt) {
             assets: "cp -r assets/symbols static/symbols; \
                                 cp -r assets/images/ static/images; \
                             cp assets/geojson/* static/geojson/; \
-                            cp sources/shaders/all.json static/shaders/all.json; \
-                            cp sources/js/vendors/* static/js/; \
-                            cp sources/css/vendors/* static/css/; \
+                            cp src/shaders/all.json static/shaders/all.json; \
+                            cp src/js/vendors/* static/js/; \
+                            cp src/css/vendors/* static/css/; \
                             ",
             cleanDoc: "rm -rf <%= documentation %> ",
             prepareDocIndex: "rm -f <%= documentation %>/index.html; \
@@ -149,9 +136,8 @@ module.exports = function (grunt) {
     /** Init Project configuration. */
     grunt.initConfig(gruntCfg);
 
-    /** js cleanup -> modify sources not to tidy everything */
-    grunt.registerTask('tidy', ['jsbeautifier:modify']);
-    grunt.registerTask('lint', ['eslint']);
+    /** js cleanup -> modify src not to tidy everything */
+    // grunt.registerTask('validate', ['jscs', 'jshint']);
 
     /** define custom tasks */
     grunt.registerTask('clean', ['exec:clean']);

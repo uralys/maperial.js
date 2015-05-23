@@ -16,7 +16,7 @@ var MapView = require('./map/map-view.js'),
     FusionControls   = require('../tools/fusion-controls.js'),
     AnimationTools   = require('../tools/animation-tools.js'),
 
-    environment      = require('../../environment/config.js');
+    environment      = require('../../../../config/env/build/config.js');
 
 //-----------------------------------------------------------------
 
