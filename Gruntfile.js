@@ -106,24 +106,31 @@ module.exports = function (grunt) {
             },
         },
 
+        clean: {
+            'static' : 'static/',
+            'shaders' : 'static/shaders/',
+            'shaders-dist': ['static/shaders/*', '!static/shaders/all.json'],
+            'doc' : '<%= documentation %>'
+        },
+
         exec: {
-            clean: "rm -rf static/",
-            tmp: "mkdir -p static; \
+            'prepare-static': "mkdir -p static; \
                             mkdir -p static/js; \
                             mkdir -p static/css; \
-                            mkdir -p static/geojson; \
-                            mkdir -p static/shaders",
-            assets: "cp -r assets/symbols static/symbols; \
-                                cp -r assets/images/ static/images; \
+                            mkdir -p static/geojson;",
+            'assets': "cp -r assets/symbols static/symbols; \
+                            cp -r assets/images/ static/images; \
                             cp assets/geojson/* static/geojson/; \
-                            cp src/shaders/all.json static/shaders/all.json; \
-                            cp src/js/vendors/* static/js/; \
                             cp src/css/vendors/* static/css/; \
                             ",
-            cleanDoc: "rm -rf <%= documentation %> ",
-            prepareDocIndex: "rm -f <%= documentation %>/index.html; \
+            'prepare-shaders': "mkdir -p static/shaders; cp -r src/shaders/* static/shaders/",
+            'build-shaders': {
+                cmd : 'python mkjson.py',
+                cwd: 'static/shaders'
+            },
+            'prepareDocIndex': "rm -f <%= documentation %>/index.html; \
                               cp <%= documentation %>/Maperial.html <%= documentation %>/index.html",
-            pushDoc: {
+            'pushDoc': {
                 cmd : "git add --all .; \
                         git commit -am 'generated documentation'; \
                         git push origin master",
@@ -140,23 +147,28 @@ module.exports = function (grunt) {
     // grunt.registerTask('validate', ['jscs', 'jshint']);
 
     /** define custom tasks */
-    grunt.registerTask('clean', ['exec:clean']);
     grunt.registerTask('css', ['sass:dist']);
     grunt.registerTask('js', ['browserify:compile']);
     grunt.registerTask('standalone', ['browserify:standalone']);
     grunt.registerTask('jsmin', ['standalone', 'uglify']);
+    grunt.registerTask('shaders', [
+        'clean:shaders',
+        'exec:prepare-shaders',
+        'exec:build-shaders',
+        'clean:shaders-dist'
+    ]);
 
     /** building jsdoc */
     grunt.registerTask('doc', [
-        'exec:cleanDoc',
+        'clean:doc',
         'jsdoc:dist',
         'exec:prepareDocIndex',
         'exec:pushDoc'
     ]);
 
     /** register custom 'deps' task */
-    grunt.registerTask('dev', ['exec:clean', 'exec:tmp', 'replace', 'js', 'css', 'exec:assets']);
-    grunt.registerTask('prod', ['exec:clean', 'exec:tmp', 'replace', 'jsmin', 'css', 'exec:assets']);
+    grunt.registerTask('dev', ['clean:static', 'exec:prepare-static', 'replace', 'js', 'css', 'shaders', 'exec:assets']);
+    grunt.registerTask('prod', ['clean:static', 'exec:prepare-static', 'replace', 'jsmin', 'css', 'shaders', 'exec:assets']);
 
     /** default is min */
     grunt.registerTask('default', ['prod']);
