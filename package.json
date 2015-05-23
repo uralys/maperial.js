@@ -1,7 +1,7 @@
 {
-  "name": "Maperial",
-  "description": "Maperial JS to craft awesome maps on the Cloud",
-  "version": "0.1.0",
+  "name": "maperial",
+  "description": "maperial.js : draw your webgl maps",
+  "version": "1.0.0",
   "devDependencies": {
     "browserify": "~3",
     "envify": "~1.2.0",
@@ -10,14 +10,12 @@
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-sass": "~0.7.3",
     "grunt-contrib-uglify": "~0.3.2",
-    "grunt-eslint": "^2.0.0",
     "grunt-exec": "~0.4.5",
     "grunt-jsdoc": "^0.5.7",
     "grunt-replace": "~0.7.7",
     "load-grunt-tasks": "^1.0.0",
     "time-grunt": "^1.0.0",
-    "uglify-js": "*",
-    "underscore": "~1.6.0"
+    "uglify-js": "*"
   },
   "engines": {
     "node": ">= 0.8"
