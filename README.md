@@ -1,3 +1,4 @@
+# Currently in preparation to go open-source : not building yet
 
 ## A new way to create maps
 
