@@ -1,0 +1,5 @@
+ - 1 data : http://data.unicef.org/download.php?file=U5MR_mortality_rate_39_39.xlsx&type=topics
+ - 2 convert to csv : https://github.com/dilshod/xlsx2csv
+ - 3 convert to json : http://www.convertcsv.com/csv-to-json.htm
+ - 4 find countries lat/lon https://opendata.socrata.com/dataset/Country-Lat-Lon/av8e-fqid
+ - 5 rewrite json to match
