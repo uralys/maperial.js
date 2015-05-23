@@ -2,7 +2,7 @@
 
 var Style = require('./style.js'),
     PointSymbolizer = require('../rendering/symbolizers/point-symbolizer.js'),
-    utils = require('../../../libs/utils.js');
+    utils = require('../../libs/utils.js');
 
 //-----------------------------------------------------------------------------------//
 
@@ -22,7 +22,7 @@ function VectorialStyle(options) {
 
     this.symbId = this.AddSymbolizer(ps, 18, 0);
 
-    // register 
+    // register
     window.maperialStyles[this.uid] = this
 }
 

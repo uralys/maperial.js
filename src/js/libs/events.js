@@ -1,4 +1,4 @@
-var _ = require("../../libs/lodash.js");
+var _ = require("lodash");
 
 /*
  * Mixins for an object to let it trigger Events or receive Events.

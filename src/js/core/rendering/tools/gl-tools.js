@@ -1,4 +1,4 @@
-var _ = require("../../../../libs/lodash.js");
+var _ = require("lodash");
 
 function GLTools() {}
 
@@ -63,12 +63,12 @@ GLTools.prototype.LoadCanvasAsTexture = function (gl, inUrl, inCallback) {
 
 GLTools.prototype.LoadSvgAsTexture = function (gl, inUrl, inCallback) {
     /*var tex     = gl.createTexture();
-      tex.isLoad  = false; 
+      tex.isLoad  = false;
       tex.error   = false;
       tex.req     = $.ajax({
          type     : "GET",
          url      : inUrl,
-         dataType : "text",  
+         dataType : "text",
          success  : function(data, textStatus, jqXHR) {
             tex.svgRenderer = document.createElement("canvas");
             canvg(tex.svgRenderer, data
@@ -260,7 +260,7 @@ GLTools.prototype.MakeProgram = function (inVertexName, inFragmentName, inAssets
 GLTools.prototype.LoadTexture = function (gl, url, callback) {
     /*
       var tex     = gl.createTexture();
-      tex.isLoad  = false; 
+      tex.isLoad  = false;
       tex.image   = new Image();
       tex.image.onload = function () {
          gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -271,7 +271,7 @@ GLTools.prototype.LoadTexture = function (gl, url, callback) {
          gl.bindTexture(gl.TEXTURE_2D, null);
          tex.isLoad = true;
          delete tex.image;
-         callback() ; 
+         callback() ;
       }
 
       tex.image.src = url;
@@ -310,7 +310,7 @@ GLTools.prototype.LoadTexture = function (gl, url, callback) {
 GLTools.prototype.LoadCsvTexture = function (gl, url, callback) {
     /*
       var tex     = gl.createTexture();
-      tex.isLoad  = false; 
+      tex.isLoad  = false;
       tex.image   = new Image();
       tex.image.onload = function () {
          gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -321,7 +321,7 @@ GLTools.prototype.LoadCsvTexture = function (gl, url, callback) {
          gl.bindTexture(gl.TEXTURE_2D, null);
          tex.isLoad = true;
          delete tex.image;
-         callback() ; 
+         callback() ;
       }
 
       tex.image.src = url;

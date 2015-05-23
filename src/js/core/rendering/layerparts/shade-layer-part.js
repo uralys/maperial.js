@@ -1,7 +1,7 @@
 var ShadeData = require("../../models/data/shade-data.js"),
     GLTools = require("../tools/gl-tools.js"),
     Layer = require('../../models/layer.js'),
-    _ = require("../../../../libs/lodash.js");
+    _ = require("lodash");
 
 //---------------------------------------------------------------------------
 

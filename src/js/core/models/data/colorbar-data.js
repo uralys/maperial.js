@@ -1,4 +1,4 @@
-var utils = require('../../../../libs/utils.js'),
+var utils = require('../../../libs/utils.js'),
     RGBAColor = require('../../../libs/rgba-color.js');
 
 //-----------------------------------------------------------------------------------//

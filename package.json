@@ -24,6 +24,7 @@
   "dependencies": {
     "jscs": "^1.13.1",
     "jshint": "^2.7.0",
+    "lodash": "^3.9.1",
     "raf": "~2.0.1",
     "tween.js": "~0.14.0"
   }

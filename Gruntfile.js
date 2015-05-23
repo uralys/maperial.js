@@ -39,7 +39,7 @@ module.exports = function (grunt) {
 
             /* dev : simple browserify + source map */
             compile: {
-                src: ['src/js/maperialjs/core/maperial.js'],
+                src: ['src/js/core/maperial.js'],
                 dest: 'static/js/maperial.js',
                 options: {
                     debug: true
@@ -48,7 +48,7 @@ module.exports = function (grunt) {
 
             /* prod : build as standalone */
             standalone: {
-                src: ['src/js/maperialjs/core/maperial.js'],
+                src: ['src/js/core/maperial.js'],
                 dest: 'static/js/maperial.js',
                 options: {
                     standalone: '<%= pkg.name %>'
@@ -90,13 +90,13 @@ module.exports = function (grunt) {
         jsdoc: {
             dist: {
                 src: [
-                    'src/js/maperialjs/core/maperial.js',
-                    'src/js/maperialjs/core/map/map-view.js',
-                    'src/js/maperialjs/core/models/data/dynamical-data.js',
-                    'src/js/maperialjs/core/models/data/heatmap-data.js',
-                    'src/js/maperialjs/core/models/layers/composition.js',
-                    'src/js/maperialjs/core/models/layers/shade-layer.js',
-                    'src/js/maperialjs/core/models/layers/image-layer.js',
+                    'src/js/core/maperial.js',
+                    'src/js/core/map/map-view.js',
+                    'src/js/core/models/data/dynamical-data.js',
+                    'src/js/core/models/data/heatmap-data.js',
+                    'src/js/core/models/layers/composition.js',
+                    'src/js/core/models/layers/shade-layer.js',
+                    'src/js/core/models/layers/image-layer.js',
                 ],
                 options: {
                     destination: '<%= documentation %>',

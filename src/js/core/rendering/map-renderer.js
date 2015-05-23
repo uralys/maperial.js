@@ -5,9 +5,9 @@ var GLTools = require("./tools/gl-tools.js"),
     ColorbarRenderer = require('./colorbar-renderer.js'),
     DynamicalRenderer = require('./dynamical-renderer.js'),
     HeatmapRenderer = require('./heatmap-renderer.js'),
-    utils = require('../../../libs/utils.js'),
+    utils = require('../../libs/utils.js'),
     mat4 = require('../../libs/gl-matrix-min.js').mat4,
-    ajax = require('../../../libs/ajax.js'),
+    ajax = require('../../libs/ajax.js'),
     TWEEN = require('tween.js');
 
 //-----------------------------------------------------------------------------

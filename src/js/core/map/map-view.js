@@ -9,8 +9,8 @@ var Context      = require('./context.js'),
     Composition  = require('../models/layers/composition.js'),
     Source       = require('../models/source.js'),
     Events       = require('../../libs/events.js'),
-    utils        = require('../../../libs/utils.js'),
-    _            = require('../../../libs/lodash.js'),
+    utils        = require('../../libs/utils.js'),
+    _            = require('lodash'),
     TWEEN        = require('tween.js');
 
 //--------------------------------------------------------------------------

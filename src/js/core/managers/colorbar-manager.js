@@ -2,8 +2,8 @@
 
 var GradiantColor = require('../../libs/gradient-color.js'),
     ColorbarData = require('../models/data/colorbar-data.js'),
-    utils = require('../../../libs/utils.js'),
-    ajax = require('../../../libs/ajax.js');
+    utils = require('../../libs/utils.js'),
+    ajax = require('../../libs/ajax.js');
 
 //------------------------------------------------------------------//
 

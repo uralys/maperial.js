@@ -1,5 +1,5 @@
-var utils = require('../../../../libs/utils.js');
-var ajax = require('../../../../libs/ajax.js'),
+var utils = require('../../../libs/utils.js');
+var ajax = require('../../../libs/ajax.js'),
     Proj4js = require('../../../libs/proj4js-compressed.js');
 
 //------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-var utils = require('../../../libs/utils.js'),
+var utils = require('../../libs/utils.js'),
     GLTools = require("./tools/gl-tools.js"),
     CoordinateSystem = require('../../libs/coordinate-system.js');
 

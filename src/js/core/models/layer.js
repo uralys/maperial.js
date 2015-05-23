@@ -1,8 +1,8 @@
 
 var Events = require('../../libs/events.js'),
     Composition = require('./layers/composition.js'),
-    utils = require('../../../libs/utils.js'),
-    _ = require('../../../libs/lodash.js');
+    utils = require('../../libs/utils.js'),
+    _ = require('lodash');
 
 //-----------------------------------------------------------------
 

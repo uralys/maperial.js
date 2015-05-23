@@ -1,7 +1,6 @@
-var utils = require('../../../libs/utils.js'),
+var utils = require('../../libs/utils.js'),
     Source = require('../models/source.js'),
-    ajax = require('../../../libs/lodash.js'),
-    ajax = require('../../../libs/ajax.js');
+    ajax = require('../../libs/ajax.js');
 
 //------------------------------------------------------------------------------
 // à analyser : ancien loadRaster, ou passage par loadAPISource ?

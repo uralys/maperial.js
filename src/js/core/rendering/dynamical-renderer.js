@@ -1,4 +1,4 @@
-var utils = require('../../../libs/utils.js'),
+var utils = require('../../libs/utils.js'),
     ExtendCanvasContext = require('./tools/render-text.js'),
     TileRenderer = require('./tile-renderer.js');
 

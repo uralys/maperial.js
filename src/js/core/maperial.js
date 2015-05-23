@@ -9,14 +9,14 @@ var MapView = require('./map/map-view.js'),
     HeatmapData      = require('./models/data/heatmap-data.js'),
     Source           = require('./models/source.js'),
 
-    utils            = require('../../libs/utils.js'),
+    utils            = require('../libs/utils.js'),
 
     SimpleZoom       = require('../tools/simple-zoom.js'),
     ShadeControls    = require('../tools/shade-controls.js'),
     FusionControls   = require('../tools/fusion-controls.js'),
     AnimationTools   = require('../tools/animation-tools.js'),
 
-    environment      = require('../../../../config/env/build/config.js');
+    environment      = require('../../../config/env/build/config.js');
 
 //-----------------------------------------------------------------
 
