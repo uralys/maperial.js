@@ -1,0 +1,26 @@
+{
+  "name": "maperial",
+  "version": "1.0.0",
+  "homepage": "https://github.com/maperial/maperial.js",
+  "authors": [
+    "maperial"
+  ],
+  "description": "maperial.js is a lib to draw webgl maps",
+  "main": "src/js/core/maperial.js",
+  "keywords": [
+    "maps",
+    "webgl",
+    "javascript"
+  ],
+  "license": "BSD",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "prism": "*"
+  }
+}

@@ -1,8 +1,9 @@
 bin/
 static/
 .DS_Store
-build
-node_modules
+build/
+node_modules/
+bower_components/
 .sass-cache
 config/env/env.json
 config/env/build/
