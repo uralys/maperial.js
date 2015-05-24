@@ -30,8 +30,8 @@
   "config": {
     "blanket": {
       "pattern": [
-        "src/js",
-        "src/tools"
+        "src/js/",
+        "src/tools/"
       ]
     }
   }
