@@ -105,6 +105,22 @@ module.exports = function(grunt) {
             },
         },
 
+        mochacov: {
+            coverage: {
+              options: {
+                coveralls: true
+              }
+            },
+            test: {
+              options: {
+                reporter: 'spec'
+              }
+            },
+            options: {
+              files: 'test/**/*.js',
+            }
+          },
+
         mochaTest: {
             test: {
                 options: {
@@ -195,8 +211,8 @@ module.exports = function(grunt) {
     // grunt.registerTask('validate', ['jscs', 'jshint']);
 
     /** define custom tasks */
-    grunt.registerTask('test', ['mochaTest:test']);
-    grunt.registerTask('coverage', ['mochaTest:coverage']);
+    grunt.registerTask('test', ['mochacov:test']);
+    grunt.registerTask('coverage', ['mochacov:coverage']);
     grunt.registerTask('css', ['sass:dist']);
     grunt.registerTask('js', ['browserify:compile']);
     grunt.registerTask('standalone', ['browserify:standalone']);
