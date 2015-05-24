@@ -1,12 +1,11 @@
-module.exports = function (grunt) {
-
+module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
 
     var gruntCfg = {
         pkg: grunt.file.readJSON('package.json'),
         env: grunt.file.readJSON('config/env/env.json'),
-        documentation : "<%= env.documentation %>",
+        documentation: "<%= env.documentation %>",
 
         replace: {
             dist: {
@@ -106,11 +105,60 @@ module.exports = function (grunt) {
             },
         },
 
+        mochaTest: {
+            test: {
+                options: {
+                    reporter: 'spec',
+                    // Require blanket wrapper here to instrument other required
+                    // files on the fly.
+                    //
+                    // NB. We cannot require blanket directly as it
+                    // detects that we are not running mocha cli and loads differently.
+                    //
+                    // NNB. As mocha is 'clever' enough to only run the tests once for
+                    // each file the following coverage task does not actually run any
+                    // tests which is why the coverage instrumentation has to be done here
+                    require: 'blanket'
+                },
+                src: ['test/**/*.js']
+            },
+
+            coverage: {
+                options: {
+                    reporter: 'mocha-lcov-reporter',
+                    // use the quiet flag to suppress the mocha console output
+                    quiet: true,
+                    // specify a destination file to capture the mocha
+                    // output (the quiet option does not suppress this)
+                    captureFile: 'maperial.lcov'
+                },
+                src: ['test/**/*.js']
+            }
+        },
+
+        coveralls: {
+            // Options relevant to all targets
+            options: {
+              // When true, grunt-coveralls will only print a warning rather than
+              // an error, to prevent CI builds from failing unnecessarily (e.g. if
+              // coveralls.io is down). Optional, defaults to false.
+              force: false
+            },
+
+            coveralls: {
+              // LCOV coverage file (can be string, glob or array)
+              src: 'maperial.lcov',
+              options: {
+                // Any options for just this target
+              }
+            },
+        },
+
         clean: {
-            'static' : 'static/',
-            'shaders' : 'static/shaders/',
+            'static': 'static/',
+            'shaders': 'static/shaders/',
             'shaders-dist': ['static/shaders/*', '!static/shaders/all.json'],
-            'doc' : '<%= documentation %>'
+            'doc': '<%= documentation %>'
         },
 
         exec: {
@@ -125,13 +173,13 @@ module.exports = function (grunt) {
                             ",
             'prepare-shaders': "mkdir -p static/shaders; cp -r src/shaders/* static/shaders/",
             'build-shaders': {
-                cmd : 'python mkjson.py',
+                cmd: 'python mkjson.py',
                 cwd: 'static/shaders'
             },
             'prepareDocIndex': "rm -f <%= documentation %>/index.html; \
                               cp <%= documentation %>/Maperial.html <%= documentation %>/index.html",
             'pushDoc': {
-                cmd : "git add --all .; \
+                cmd: "git add --all .; \
                         git commit -am 'generated documentation'; \
                         git push origin master",
                 cwd: '<%= documentation %>'
@@ -147,6 +195,8 @@ module.exports = function (grunt) {
     // grunt.registerTask('validate', ['jscs', 'jshint']);
 
     /** define custom tasks */
+    grunt.registerTask('test', ['mochaTest:test']);
+    grunt.registerTask('coverage', ['mochaTest:coverage']);
     grunt.registerTask('css', ['sass:dist']);
     grunt.registerTask('js', ['browserify:compile']);
     grunt.registerTask('standalone', ['browserify:standalone']);
