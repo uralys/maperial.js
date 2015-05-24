@@ -1,3 +1,5 @@
+[ ![Codeship Status for maperial/maperial.js](https://codeship.com/projects/6fc738c0-e418-0132-19f9-16773c71d38d/status?branch=master)](https://codeship.com/projects/81785)
+
 # Currently in preparation to go open-source : not building yet
 
 ## A new way to create maps
