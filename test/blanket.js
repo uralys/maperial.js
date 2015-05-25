@@ -8,8 +8,8 @@ var fs = require('fs');
 
 var options = {
     pattern: [
-      "src/js/core",
-      "src/js/tools"
+      'src/js/core',
+      'src/js/tools'
     ]
 }
 
@@ -23,8 +23,8 @@ require('blanket')(options);
  */
 function walkDir(dir, action) {
     // Assert that action is a function
-    if (typeof action !== "function") {
-        action = function (error, file) {
+    if (typeof action !== 'function') {
+        action = function(error, file) {
         };
     }
 
@@ -33,28 +33,24 @@ function walkDir(dir, action) {
         for (var i = 0; i < dir.length; i++) {
             walkDir(dir[i], action);
         }
-    } else {
-        // Make sure dir is relative to the current directory
-        // if (dir.charAt(0) !== '.') {
-        //     dir = '../' + dir;
-        // }
-
+    }
+    else {
         // Read the directory
-        fs.readdir(dir, function (err, list) {
-
+        fs.readdir(dir, function(err, list) {
             // Return the error if something went wrong
             if (err) return action(err);
 
             // For every file in the list, check if it is a directory or file.
             // When it is a directory, recursively loop through that directory as well.
             // When it is a file, perform action on file.
-            list.forEach(function (file) {
-                var path = dir + "/" + file;
-                fs.stat(path, function (err, stat) {
+            list.forEach(function(file) {
+                var path = dir + '/' + file;
+                fs.stat(path, function(err, stat) {
                     if (stat && stat.isDirectory()) {
                         walkDir(path, action);
-                    } else {
-                        action(null, path);
+                    }
+                    else {
+                            action(null, path);
                     }
                 });
             });
@@ -63,11 +59,10 @@ function walkDir(dir, action) {
 };
 
 // Loop through all paths in the blanket pattern
-walkDir(options.pattern, function (err, path) {
+walkDir(options.pattern, function(err, path) {
     if (err) {
         console.error(err);
         return;
     }
-    console.error('Including ' + path + ' for blanket.js code coverage');
-    require(path);
+    require('../' + path);
 });
