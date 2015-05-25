@@ -112,7 +112,10 @@ module.exports = function(grunt) {
                     // tests are quite slow as thy spawn node processes
                     timeout: 10000
                 },
-                src: ['test/**/*.js']
+                src: [
+                    'test/**/*.js',
+                    '!test/blanket.js'
+                ]
             },
             coverage : {
                 options: {
