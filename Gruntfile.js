@@ -114,14 +114,6 @@ module.exports = function(grunt) {
                 },
                 src: [ 'test/spec/**/*.js' ]
             },
-            'html-cov': {
-                options: {
-                  reporter: 'html-cov',
-                  quiet: true,
-                  captureFile: 'test/coverage/coverage.html'
-                },
-                src: ['test/**/*.js']
-            },
             coverage : {
                 options: {
                     reporter: 'mocha-lcov-reporter',
