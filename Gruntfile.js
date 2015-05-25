@@ -89,13 +89,13 @@ module.exports = function(grunt) {
         jsdoc: {
             dist: {
                 src: [
-                    'src/js/core/maperial.js',
-                    'src/js/core/map/map-view.js',
-                    'src/js/core/models/data/dynamical-data.js',
-                    'src/js/core/models/data/heatmap-data.js',
-                    'src/js/core/models/layers/composition.js',
-                    'src/js/core/models/layers/shade-layer.js',
-                    'src/js/core/models/layers/image-layer.js',
+                'src/js/core/maperial.js',
+                'src/js/core/map/map-view.js',
+                'src/js/core/models/data/dynamical-data.js',
+                'src/js/core/models/data/heatmap-data.js',
+                'src/js/core/models/layers/composition.js',
+                'src/js/core/models/layers/shade-layer.js',
+                'src/js/core/models/layers/image-layer.js',
                 ],
                 options: {
                     destination: '<%= documentation %>',
@@ -105,69 +105,33 @@ module.exports = function(grunt) {
             },
         },
 
-        mochacov: {
-            coverage: {
-              options: {
-                coveralls: true
-              }
-            },
-            test: {
-              options: {
-                reporter: 'spec'
-              }
-            },
-            options: {
-              files: 'test/**/*.js',
-            }
-          },
-
         mochaTest: {
             test: {
                 options: {
                     reporter: 'spec',
-                    // Require blanket wrapper here to instrument other required
-                    // files on the fly.
-                    //
-                    // NB. We cannot require blanket directly as it
-                    // detects that we are not running mocha cli and loads differently.
-                    //
-                    // NNB. As mocha is 'clever' enough to only run the tests once for
-                    // each file the following coverage task does not actually run any
-                    // tests which is why the coverage instrumentation has to be done here
-                    require: 'blanket'
+                    // tests are quite slow as thy spawn node processes
+                    timeout: 10000
                 },
                 src: ['test/**/*.js']
             },
-
-            coverage: {
+            coverage : {
                 options: {
                     reporter: 'mocha-lcov-reporter',
-                    // use the quiet flag to suppress the mocha console output
                     quiet: true,
-                    // specify a destination file to capture the mocha
-                    // output (the quiet option does not suppress this)
-                    captureFile: 'maperial.lcov'
+                    captureFile: 'test/coverage/maperial.info'
                 },
                 src: ['test/**/*.js']
             }
         },
 
         coveralls: {
-            // Options relevant to all targets
             options: {
-              // When true, grunt-coveralls will only print a warning rather than
-              // an error, to prevent CI builds from failing unnecessarily (e.g. if
-              // coveralls.io is down). Optional, defaults to false.
-              force: false
+                force: false
             },
 
             coveralls: {
-              // LCOV coverage file (can be string, glob or array)
-              src: 'maperial.lcov',
-              options: {
-                // Any options for just this target
-              }
-            },
+                src: 'test/coverage/maperial.lcov'
+            }
         },
 
         clean: {
@@ -179,25 +143,25 @@ module.exports = function(grunt) {
 
         exec: {
             'prepare-static': "mkdir -p static; \
-                            mkdir -p static/js; \
-                            mkdir -p static/css; \
-                            mkdir -p static/geojson;",
+            mkdir -p static/js; \
+            mkdir -p static/css; \
+            mkdir -p static/geojson;",
             'assets': "cp -r assets/symbols static/symbols; \
-                            cp -r assets/images/ static/images; \
-                            cp assets/geojson/* static/geojson/; \
-                            cp src/css/vendors/* static/css/; \
-                            ",
+            cp -r assets/images/ static/images; \
+            cp assets/geojson/* static/geojson/; \
+            cp src/css/vendors/* static/css/; \
+            ",
             'prepare-shaders': "mkdir -p static/shaders; cp -r src/shaders/* static/shaders/",
             'build-shaders': {
                 cmd: 'python mkjson.py',
                 cwd: 'static/shaders'
             },
             'prepareDocIndex': "rm -f <%= documentation %>/index.html; \
-                              cp <%= documentation %>/Maperial.html <%= documentation %>/index.html",
+            cp <%= documentation %>/Maperial.html <%= documentation %>/index.html",
             'pushDoc': {
                 cmd: "git add --all .; \
-                        git commit -am 'generated documentation'; \
-                        git push origin master",
+                git commit -am 'generated documentation'; \
+                git push origin master",
                 cwd: '<%= documentation %>'
             },
         },
@@ -211,8 +175,8 @@ module.exports = function(grunt) {
     // grunt.registerTask('validate', ['jscs', 'jshint']);
 
     /** define custom tasks */
-    grunt.registerTask('test', ['mochacov:test']);
-    grunt.registerTask('coverage', ['mochacov:coverage']);
+    grunt.registerTask('test', ['mochaTest:test']);
+    grunt.registerTask('coverage', ['mochaTest:coverage']);
     grunt.registerTask('css', ['sass:dist']);
     grunt.registerTask('js', ['browserify:compile']);
     grunt.registerTask('standalone', ['browserify:standalone']);
@@ -222,7 +186,7 @@ module.exports = function(grunt) {
         'exec:prepare-shaders',
         'exec:build-shaders',
         'clean:shaders-dist'
-    ]);
+        ]);
 
     /** building jsdoc */
     grunt.registerTask('doc', [
@@ -230,7 +194,7 @@ module.exports = function(grunt) {
         'jsdoc:dist',
         'exec:prepareDocIndex',
         'exec:pushDoc'
-    ]);
+        ]);
 
     /** register custom 'deps' task */
     grunt.registerTask('dev', ['clean:static', 'exec:prepare-static', 'replace', 'js', 'css', 'shaders', 'exec:assets']);

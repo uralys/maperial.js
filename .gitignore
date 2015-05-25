@@ -4,3 +4,4 @@ node_modules/
 .sass-cache
 config/env/build/
 src/shaders/all.json
+test/coverage/
