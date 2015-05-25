@@ -118,7 +118,7 @@ module.exports = function(grunt) {
                 options: {
                     reporter: 'mocha-lcov-reporter',
                     quiet: true,
-                    captureFile: 'test/coverage/maperial.info'
+                    captureFile: 'test/coverage/maperial.lcov'
                 },
                 src: ['test/**/*.js']
             }
