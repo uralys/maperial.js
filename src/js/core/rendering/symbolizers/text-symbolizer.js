@@ -22,7 +22,7 @@ function TextSymbolizer(fontname, size) {
 }
 
 TextSymbolizer.prototype.CollisionDetection = function (this_, others) {
-    // this_    => This object try to detect collision with text, and it is not visible if collision is detected with more important text (apparition order). 
+    // this_    => This object try to detect collision with text, and it is not visible if collision is detected with more important text (apparition order).
     // others   => This object is used by less important text to detect collision, so it can skip other text.
     this.collisionThis = this_
     this.collisionOther = others
@@ -63,6 +63,6 @@ TextSymbolizer.prototype.SetCustomFunction = function (fctCustom, fctInit) {
     }
 }
 
-//------------------------------------------------------------------//
+// ------------------------------------------------------------------//
 
 module.exports = TextSymbolizer;

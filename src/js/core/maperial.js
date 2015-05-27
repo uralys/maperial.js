@@ -1,24 +1,24 @@
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
-var MapView = require('./map/map-view.js'),
-    SourceManager    = require('./managers/source-manager.js'),
-    StyleManager     = require('./managers/style-manager.js'),
-    ColorbarManager  = require('./managers/colorbar-manager.js'),
-    DynamicalData    = require('./models/data/dynamical-data.js'),
+'use strict';
 
-    HeatmapData      = require('./models/data/heatmap-data.js'),
-    Source           = require('./models/source.js'),
+// ------------------------------------------------------------------
 
-    utils            = require('../libs/utils.js'),
+var MapView = require('./map/map-view.js');
+var SourceManager    = require('./managers/source-manager.js');
+var StyleManager     = require('./managers/style-manager.js');
+var ColorbarManager  = require('./managers/colorbar-manager.js');
+var DynamicalData    = require('./models/data/dynamical-data.js');
+var HeatmapData      = require('./models/data/heatmap-data.js');
+var Source           = require('./models/source.js');
+var utils            = require('../libs/utils.js');
+var SimpleZoom       = require('../tools/simple-zoom.js');
+var ShadeControls    = require('../tools/shade-controls.js');
+var FusionControls   = require('../tools/fusion-controls.js');
+var AnimationTools   = require('../tools/animation-tools.js');
+var environment      = require('../../../config/env/build/config.js');
 
-    SimpleZoom       = require('../tools/simple-zoom.js'),
-    ShadeControls    = require('../tools/shade-controls.js'),
-    FusionControls   = require('../tools/fusion-controls.js'),
-    AnimationTools   = require('../tools/animation-tools.js'),
-
-    environment      = require('../../../config/env/build/config.js');
-
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
 /**
  * Instanciate one Maperial to build every maps on your web page.
@@ -43,48 +43,44 @@ function Maperial(options) {
     this.expose();
 }
 
-//-----------------------------------------------------------------
-//Views types
-//TYPE = css class
+// -----------------------------------------------------------------
+// Views types
+// TYPE = css class
 
 Maperial.MAIN = 'maperial-main';
 Maperial.ANCHOR = 'maperial-anchor';
 
-//camera centered on what is under it
+// camera centered on what is under it
 Maperial.LENS = 'maperial-lens';
 
-//camera centered on the parent's center
+// camera centered on the parent's center
 Maperial.MINIFIER = 'maperial-minifier';
 
-//-----------------------------------------------------------------
-//Vectorial layers types
+// -----------------------------------------------------------------
+// Vectorial layers types
 
 Maperial.OSM = 'tiles';
 Maperial.VECTORIAL_DATA = 'data';
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
 Maperial.EVENTS = {
     MAP_MOVED: 'maperial:map:moved'
 };
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
 Maperial.staticURL = environment.staticURL;
 Maperial.apiURL = environment.apiURL;
 Maperial.tileURL = environment.tileURL;
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
 Maperial.DEFAULT_ZOOM = 10;
 Maperial.DEFAULT_LATITUDE = 48.813;
 Maperial.DEFAULT_LONGITUDE = 2.313;
 
-//Clermont City
-//Maperial.DEFAULT_LATITUDE       = 45.779017;
-//Maperial.DEFAULT_LONGITUDE      = 3.10617;
-
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
 Maperial.bgdimg = 'symbols/water.png';
 
@@ -102,11 +98,11 @@ Maperial.DEFAULT_COLORBAR_UID = '1_colorbar_13c630ec3a5068919c3';
 
 Maperial.globalDataCpt = 0;
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Hidden
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Maperial.prototype.refreshSharedItems = function () {
+Maperial.prototype.refreshSharedItems = function() {
     console.log('Refreshing shared items');
 
     // cache containing all previously loaded colorbars
@@ -116,26 +112,25 @@ Maperial.prototype.refreshSharedItems = function () {
     Maperial.styleManager = Maperial.styleManager || new StyleManager();
     Maperial.colorbarManager = Maperial.colorbarManager || new ColorbarManager();
 
-    window.addEventListener('resize', function () {
-        this.views.forEach(function (view) {
+    window.addEventListener('resize', function() {
+        this.views.forEach(function(view) {
             view.refresh();
-        })
+        });
     }.bind(this));
 };
 
-Maperial.prototype.addMapView = function (options) {
+Maperial.prototype.addMapView = function(options) {
     var view = new MapView(this, options);
     this.views.push(view);
 
     return view;
 };
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // API
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-Maperial.prototype.expose = function () {
-
+Maperial.prototype.expose = function() {
     /**
      * @function
      * @param {object|string} options May be either an object containing many
@@ -164,9 +159,8 @@ Maperial.prototype.expose = function () {
      *     longitude:   4.844833878624368
      * });
      */
-    this.createMap = function (options) {
-
-        //-------------------------------------------
+    this.createMap = function(options) {
+        // -------------------------------------------
         // Checking options
 
         if (!options) {
@@ -176,10 +170,10 @@ Maperial.prototype.expose = function () {
         if ('string' === typeof (options)) {
             options = {
                 container: options
-            }
+            };
         }
 
-        //-------------------------------------------
+        // -------------------------------------------
         // Checking view
 
         console.log('Adding view in container ' + options.container);
@@ -191,7 +185,7 @@ Maperial.prototype.expose = function () {
 
         options.container = document.getElementById(options.container);
 
-        //-------------------------------------------
+        // -------------------------------------------
         // Set defaults
 
         if (options.type === undefined) {
@@ -206,7 +200,7 @@ Maperial.prototype.expose = function () {
             options.longitude = Maperial.DEFAULT_LONGITUDE;
         }
 
-        //-------------------------------------------
+        // -------------------------------------------
         // Proceed
 
         return this.addMapView(options);
@@ -226,7 +220,7 @@ Maperial.prototype.expose = function () {
      * var data = maperial.createDynamicalData(url);
      *
      */
-    this.createDynamicalData = function (data) {
+    this.createDynamicalData = function(data) {
         return new DynamicalData(data);
     };
 
@@ -241,7 +235,7 @@ Maperial.prototype.expose = function () {
      * var data = maperial.createHeatmapData(url);
      *
      */
-    this.createHeatmapData = function (data) {
+    this.createHeatmapData = function(data) {
         return new HeatmapData(data);
     };
 
@@ -252,7 +246,7 @@ Maperial.prototype.expose = function () {
      * @param {string} options.container *optional* The html div id where to
      *                                   attach this tool.
      */
-    this.addShadeControls = function (options) {
+    this.addShadeControls = function(options) {
         new ShadeControls(options);
     }.bind(this);
 
@@ -263,7 +257,7 @@ Maperial.prototype.expose = function () {
      * @param {string} options.container *optional* The html div id where to
      *                                   attach this tool.
      */
-    this.addFusionControls = function (options) {
+    this.addFusionControls = function(options) {
         new FusionControls(options);
     }.bind(this);
 
@@ -275,7 +269,7 @@ Maperial.prototype.expose = function () {
      * @param {string} options.container *optional* The html div id where to attach
      *                                  this tool.
      */
-    this.addSimpleZoom = function (options) {
+    this.addSimpleZoom = function(options) {
         new SimpleZoom(options);
     };
 
@@ -286,15 +280,28 @@ Maperial.prototype.expose = function () {
      *                              (Note : Does not work with Anchors.)
      * @param {string} options.data This animated data.
      */
-    this.addAnimationTools = function (options) {
+    this.addAnimationTools = function(options) {
         new AnimationTools(options);
     };
 };
 
-//-----------------------------------------------------------------
-// quicker than standalone...
-window.Maperial = Maperial;
+// -----------------------------------------------------------------
+//  Exposing
+// -----------------------------------------------------------------
 
-//-----------------------------------------------------------------
+// define Maperial for Node module pattern loaders, including Browserify
+if (typeof module === 'object' && typeof module.exports === 'object') {
+    module.exports = Maperial;
+}
 
-module.exports = Maperial;
+// define Maperial as an AMD module
+else if (typeof define === 'function' && define.amd) {
+    define(Maperial);
+}
+
+// define Maperial as a global L variable, saving the original L to restore later if needed
+if (typeof window !== 'undefined') {
+    window.Maperial = Maperial;
+}
+
+// -----------------------------------------------------------------

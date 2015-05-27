@@ -7,7 +7,7 @@ var GLTools = require("./tools/gl-tools.js"),
     ShadeLayerPart = require('./layerparts/shade-layer-part.js'),
     VectorialLayerPart = require('./layerparts/vectorial-layer-part.js');
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 function Tile(mapView, x, y, z) {
 
@@ -31,9 +31,9 @@ function Tile(mapView, x, y, z) {
     this.prepareBuffering();
 }
 
-//-----------------------------------------------------------------------------
-//-  STATUS MANAGEMENT
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// -  STATUS MANAGEMENT
+// -----------------------------------------------------------------------------
 
 Tile.prototype.refresh = function () {
     this.tex = null;
@@ -55,13 +55,13 @@ Tile.prototype.isUpToDate = function () {
     return textureReady && allLayerPartsAreReady;
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Tile.prototype.textureReady = function () {
     return this.tex != null || this.layerParts.length == 0;
 };
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 Tile.prototype.release = function () {
     this.layerParts.forEach(function (layerPart) {
@@ -80,7 +80,7 @@ Tile.prototype.release = function () {
     }
 };
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 Tile.prototype.releaseLayer = function (id) {
 
@@ -113,9 +113,9 @@ Tile.prototype.reset = function (onlyfuse) {
     this.refresh();
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //  LAYER PARTS MANAGEMENT
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Tile.prototype.buildLayerParts = function () {
     for (var i = 0; i < this.mapView.layers.length; i++) {
@@ -123,7 +123,7 @@ Tile.prototype.buildLayerParts = function () {
     }
 };
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 Tile.prototype.createLayerPart = function (layer, index) {
 
@@ -175,7 +175,7 @@ Tile.prototype.createLayerPart = function (layer, index) {
     }
 };
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 Tile.prototype.addLayer = function (layerConfig) {
     this.createLayerFromConfig(layerConfig, this.config.layers.length - 1)
@@ -220,7 +220,7 @@ Tile.prototype.exchangeLayers = function (exchangedIds) {
     this.refresh();
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 //TODO v2 : A mettre dans chaque layerpart.prepare (layerParts[i].Init -> layerParts[i].prepare)
 
@@ -252,7 +252,7 @@ Tile.prototype.exchangeLayers = function (exchangedIds) {
 //}
 //}
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 //v2 @deprecated ?
 Tile.prototype.RenderVectorialLayers = function (context, wx, wy) {
@@ -263,9 +263,9 @@ Tile.prototype.RenderVectorialLayers = function (context, wx, wy) {
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //RENDERING
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 Tile.prototype.prepareBuffering = function () {
     var gltools = new GLTools()
@@ -276,18 +276,18 @@ Tile.prototype.prepareBuffering = function () {
     }
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 Tile.prototype.update = function (maxTime) {
 
-    //-------------------------------------
+    // -------------------------------------
 
     var date = new Date(),
         startT = date.getTime(),
         diffT = 0,
         noLayerPartUpdate = true;
 
-    //-------------------------------------
+    // -------------------------------------
     // layerParts update
 
     this.layerParts.forEach(function (part, index) {
@@ -304,7 +304,7 @@ Tile.prototype.update = function (maxTime) {
         }
     }.bind(this));
 
-    //-------------------------------------
+    // -------------------------------------
     // tile.tex update
 
     if (noLayerPartUpdate && this.textureReady()) {
@@ -321,11 +321,11 @@ Tile.prototype.update = function (maxTime) {
 
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 Tile.prototype.compose = function () {
 
-    //------------------------
+    // ------------------------
 
     var layerPartsTocompose = []
     for (var i = 0; i < this.layerParts.length; i++) {
@@ -336,7 +336,7 @@ Tile.prototype.compose = function () {
     if (layerPartsTocompose.length == 0)
         return;
 
-    //------------------------
+    // ------------------------
 
     var backTex = layerPartsTocompose[0].tex
     var destFb = this.frameBufferL[0]
@@ -369,7 +369,7 @@ Tile.prototype.compose = function () {
     }
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 Tile.prototype.copy = function (backTex, destFB) {
 
@@ -410,7 +410,7 @@ Tile.prototype.copy = function (backTex, destFB) {
         this.gl.activeTexture(this.gl.TEXTURE0);
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);
     }
-    //----------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
 
 Tile.prototype.fuse = function (backTex, frontTex, destFB, prog, params) {
     var gl = this.gl,
@@ -462,7 +462,7 @@ Tile.prototype.fuse = function (backTex, frontTex, destFB, prog, params) {
     gl.bindTexture(gl.TEXTURE_2D, null);
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 Tile.prototype.render = function (pMatrix, mvMatrix) {
 
@@ -498,6 +498,6 @@ Tile.prototype.render = function (pMatrix, mvMatrix) {
     }
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 module.exports = Tile;

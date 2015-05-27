@@ -10,7 +10,7 @@ var GLTools = require("./tools/gl-tools.js"),
     ajax = require('../../libs/ajax.js'),
     TWEEN = require('tween.js');
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 function MapRenderer(mapView) {
 
@@ -29,7 +29,7 @@ function MapRenderer(mapView) {
     this.drawScene();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 MapRenderer.prototype.init = function () {
 
@@ -58,7 +58,7 @@ MapRenderer.prototype.init = function () {
     return true;
 }
 
-//--------------------------------------------------------------------
+// --------------------------------------------------------------------
 
 MapRenderer.prototype.fitToSize = function () {
 
@@ -81,7 +81,7 @@ MapRenderer.prototype.initGL = function () {
 
 }
 
-//--------------------------------------------------------------------
+// --------------------------------------------------------------------
 
 MapRenderer.prototype.addDynamicalRenderer = function (dynamicalData, style) {
 
@@ -95,7 +95,7 @@ MapRenderer.prototype.addDynamicalRenderer = function (dynamicalData, style) {
     return renderer;
 }
 
-//-------------------------------------------------------------------------
+// -------------------------------------------------------------------------
 
 MapRenderer.prototype.addHeatmapRenderer = function (heatmapData, colorbar, options) {
 
@@ -110,7 +110,7 @@ MapRenderer.prototype.addHeatmapRenderer = function (heatmapData, colorbar, opti
     return renderer;
 }
 
-//--------------------------------------------------------------------
+// --------------------------------------------------------------------
 
 MapRenderer.prototype.drawScene = function () {
 
@@ -149,11 +149,11 @@ MapRenderer.prototype.drawScene = function () {
         nbTileX = Math.floor(w / Maperial.tileSize + 1),
         nbTileY = Math.floor(h / Maperial.tileSize + 1);
 
-    //---------------------------------------------------------------
+    // ---------------------------------------------------------------
 
     this.colorbarRenderer.refreshAllColorBars();
 
-    //---------------------------------------------------------------
+    // ---------------------------------------------------------------
 
     var tilesChanged = this.updateTiles(
         tileC.x,
@@ -185,7 +185,7 @@ MapRenderer.prototype.drawScene = function () {
         }
     }
 
-    //---------------------------------------------------------------
+    // ---------------------------------------------------------------
 
     // @FIXME
     // bug : once in a while data is not displayed : only with a image layer
@@ -200,7 +200,7 @@ MapRenderer.prototype.drawScene = function () {
         );
     }
 
-    //---------------------------------------------------------------
+    // ---------------------------------------------------------------
 
     this.forceGlobalRedraw = true;
     // this.forceTileRedraw    = false;
@@ -208,7 +208,7 @@ MapRenderer.prototype.drawScene = function () {
     requestAnimationFrame(this.drawScene.bind(this));
 };
 
-//--------------------------------------------------------------------
+// --------------------------------------------------------------------
 
 MapRenderer.prototype.updateTiles = function (txB, txE, tyB, tyE, forceTileRedraw) {
 
@@ -265,9 +265,9 @@ MapRenderer.prototype.createTile = function (x, y, z) {
     return new Tile(this.mapView, x, y, z);
 };
 
-//----------------------------------------------------------------
+// ----------------------------------------------------------------
 //PRIVATE
-//--------------------------------------------------------------------
+// --------------------------------------------------------------------
 
 function prepareGL(glAsset, gl, glTools) {
 
@@ -362,6 +362,6 @@ function prepareGL(glAsset, gl, glTools) {
     glAsset.prog[Composition.ALPHA_BLEND] = glTools.MakeProgram('vertexTex', 'fragmentAlphaBlend', glAsset);
 }
 
-//----------------------------------------------------------------
+// ----------------------------------------------------------------
 
 module.exports = MapRenderer;

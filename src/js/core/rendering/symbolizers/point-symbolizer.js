@@ -33,6 +33,6 @@ PointSymbolizer.prototype.SetCustomFunction = function (fctCustom, fctInit) {
     }
 }
 
-//------------------------------------------------------------------//
+// ------------------------------------------------------------------//
 
 module.exports = PointSymbolizer;

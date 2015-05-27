@@ -40,6 +40,6 @@ LineSymbolizer.prototype.SetCustomFunction = function (fctCustom, fctInit) {
     }
 }
 
-//------------------------------------------------------------------//
+// ------------------------------------------------------------------//
 
 module.exports = LineSymbolizer;

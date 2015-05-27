@@ -8,6 +8,6 @@ Symbolizercomposer.prototype.Add = function (inSymb) {
     this.symbs.push(inSymb);
 }
 
-//------------------------------------------------------------------//
+// ------------------------------------------------------------------//
 
 module.exports = Symbolizercomposer;

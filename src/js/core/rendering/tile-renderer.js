@@ -1,6 +1,6 @@
 var TileRenderer = {};
 
-//----------------------------------------------------------------------------------------------//
+// ----------------------------------------------------------------------------------------------//
 /*
  * subLayerId + zoom = ruleId = unique
  */
@@ -44,12 +44,12 @@ TileRenderer.ApplyStyle = function (ctx, line, attr, subLayerId, zoom, style) {
 TileRenderer.maxRenderTime = 0
 TileRenderer.RenderLayers = function (osmVisibilities, layerPosition, ctx, data, zoom, style, needle) {
 
-    //-------------------------------------------------//
+    // -------------------------------------------------//
 
     if (!data)
         return needle;
 
-    //-------------------------------------------------//
+    // -------------------------------------------------//
 
     var limitTime = false,
         date = new Date(),
@@ -61,7 +61,7 @@ TileRenderer.RenderLayers = function (osmVisibilities, layerPosition, ctx, data,
         limitTime = true;
     }
 
-    //-------------------------------------------------//
+    // -------------------------------------------------//
 
     for (var i = needle; i < data["l"].length; ++i) {
 
@@ -95,7 +95,7 @@ TileRenderer.RenderLayers = function (osmVisibilities, layerPosition, ctx, data,
         }
     }
 
-    //-------------------------------------------------//
+    // -------------------------------------------------//
 
     var diffT = (new Date).getTime() - startT;
     if (i < data["l"].length)
@@ -104,16 +104,16 @@ TileRenderer.RenderLayers = function (osmVisibilities, layerPosition, ctx, data,
         return [null, diffT];
 }
 
-//------------------------------------------------------------------------------------------------//
+// ------------------------------------------------------------------------------------------------//
 
 TileRenderer.RenderDynamicalLayer = function (ctx, data, zoom, style, needle) {
 
-    //-------------------------------------------------//
+    // -------------------------------------------------//
 
     if (!data)
         return needle;
 
-    //-------------------------------------------------//
+    // -------------------------------------------------//
 
     var limitTime = false,
         date = new Date(),
@@ -125,7 +125,7 @@ TileRenderer.RenderDynamicalLayer = function (ctx, data, zoom, style, needle) {
         limitTime = true;
     }
 
-    //-------------------------------------------------//
+    // -------------------------------------------------//
     // rendering points only
     // todo : render lines
 
@@ -144,7 +144,7 @@ TileRenderer.RenderDynamicalLayer = function (ctx, data, zoom, style, needle) {
         needle++;
     }
 
-    //-------------------------------------------------//
+    // -------------------------------------------------//
 
     var diffT = (new Date).getTime() - startT;
     if (needle < Object.keys(data.points).length) {
@@ -154,7 +154,7 @@ TileRenderer.RenderDynamicalLayer = function (ctx, data, zoom, style, needle) {
     }
 }
 
-//------------------------------------------------------------------------------------------------//
+// ------------------------------------------------------------------------------------------------//
 
 TileRenderer.FindSubLayerId = function (point, ctx, data, zoom, styleContent, layerPosition, osmVisibilities) {
 
@@ -232,7 +232,7 @@ TileRenderer.ApplyLookupStyle = function (ctx, line, attr, subLayer, zoom) {
     }
 }
 
-//----------------------------------------------------------------------------------------------//
+// ----------------------------------------------------------------------------------------------//
 
 //v2 @deprecated ?
 TileRenderer.DrawImages = function (tile, ctx, wx, wy) {
@@ -258,7 +258,7 @@ TileRenderer.DrawImages = function (tile, ctx, wx, wy) {
     }
 }
 
-//----------------------------------------------------------------------------------------------//
+// ----------------------------------------------------------------------------------------------//
 //Symbolizer rendering
 
 TileRenderer.LineSymbolizer = function (ctx, line, attr, params) {
@@ -579,6 +579,6 @@ TileRenderer.GlyphSymbolizer = function (ctx, line, attr, params) {
         // ctx.restore()
 }
 
-//------------------------------------------------------------------//
+// ------------------------------------------------------------------//
 
 module.exports = TileRenderer;

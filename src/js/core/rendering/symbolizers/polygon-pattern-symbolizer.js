@@ -17,6 +17,6 @@ PolygonPatternSymbolizer.prototype.SetCustomFunction = function (fctCustom, fctI
     }
 }
 
-//------------------------------------------------------------------//
+// ------------------------------------------------------------------//
 
 module.exports = PolygonPatternSymbolizer;
