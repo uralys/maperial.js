@@ -1,19 +1,10 @@
 'use strict';
 var chai          = require('chai');
-var sinon         = require('sinon');
 var expect        = chai.expect;
 var DynamicalData = require('../../../../src/js/core/models/data/dynamical-data');
 
 var dummyCollection = require('../../../dummy-content/zepfrance.json');
 var dummyPoint      = require('../../../dummy-content/point.json');
-
-before(function() {
-    this.server = sinon.fakeServer.create();
-});
-
-after(function() {
-    this.server.restore();
-});
 
 describe('DynamicalData', function() {
     describe('addPoint', function() {
@@ -31,8 +22,6 @@ describe('DynamicalData', function() {
     //         [200, {"Content-Type": "application/json"}, JSON.stringify(dummyCollection)]);
 
     //         var data = new DynamicalData();
-    //         console.log(JSON.stringify(dummyCollection));
-
     //         sinon.spy();
     //         data.import('/dummy-collection.json');
     //         this.server.respond();
