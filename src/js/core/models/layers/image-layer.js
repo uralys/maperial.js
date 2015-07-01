@@ -1,9 +1,13 @@
-var utils = require('../../../libs/utils.js'),
-    _ = require('lodash'),
-    Composition = require('./composition.js'),
-    Layer = require('../layer.js');
+'use strict';
 
-//------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+
+var utils       = require('../../../libs/utils.js');
+var _           = require('lodash');
+var Composition = require('./composition.js');
+var Layer       = require('../layer.js');
+
+// ------------------------------------------------------------------------
 
 /**
  * @constructor
@@ -11,15 +15,15 @@ var utils = require('../../../libs/utils.js'),
  * @mixes Composition
  */
 function ImageLayer(options) {
-
     _.extend(this, new Layer(options));
 
-    this.type = Layer.Images;
+    this.type     = Layer.Images;
+    this.options  = options;
     this.sourceId = options.sourceId;
 
     this.setAlphaBlend();
 }
 
-//------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
 module.exports = ImageLayer;

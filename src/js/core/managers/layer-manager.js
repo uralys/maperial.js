@@ -1,14 +1,16 @@
-//---------------------------------------------------------------
+'use strict';
 
-var Layer          = require('../models/layer.js'),
-    Composition    = require('../models/layers/composition.js'),
-    DynamicalLayer = require('../models/layers/dynamical-layer.js'),
-    ImageLayer     = require('../models/layers/image-layer.js'),
-    ShadeLayer     = require('../models/layers/shade-layer.js'),
-    RasterLayer    = require('../models/layers/raster-layer.js'),
-    HeatmapLayer   = require('../models/layers/heatmap-layer.js');
+// ---------------------------------------------------------------
 
-//---------------------------------------------------------------
+var Layer          = require('../models/layer.js');
+var Composition    = require('../models/layers/composition.js');
+var DynamicalLayer = require('../models/layers/dynamical-layer.js');
+var ImageLayer     = require('../models/layers/image-layer.js');
+var ShadeLayer     = require('../models/layers/shade-layer.js');
+var RasterLayer    = require('../models/layers/raster-layer.js');
+var HeatmapLayer   = require('../models/layers/heatmap-layer.js');
+
+// ---------------------------------------------------------------
 
 // TODO : une mapview doit gerer ca, cest de la merde ce manager
 // --> exemple : mapview.layer.reset -> reset all layertparts
@@ -16,14 +18,13 @@ function LayerManager(mapView) {
     this.mapView = mapView;
 }
 
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 
-LayerManager.prototype.addLayer = function (layerType, params) {
-
-    console.log("  adding layer " + layerType);
-    var layer = null,
-        tiles = this.mapView.tiles,
-        layers = this.mapView.layers;
+LayerManager.prototype.addLayer = function(layerType, options) {
+    console.log(' adding layer ' + layerType);
+    var layer  = null;
+    var tiles  = this.mapView.tiles;
+    var layers = this.mapView.layers;
 
     switch (layerType) {
 
@@ -32,7 +33,7 @@ LayerManager.prototype.addLayer = function (layerType, params) {
         case Layer.Dynamical:
             layer = new DynamicalLayer({
                 mapView: this.mapView,
-                params: params,
+                params: options
             });
             break;
 
@@ -41,7 +42,7 @@ LayerManager.prototype.addLayer = function (layerType, params) {
         case Layer.Heat:
             layer = new HeatmapLayer({
                 mapView: this.mapView,
-                params: params
+                params: options
             });
             break;
 
@@ -58,7 +59,7 @@ LayerManager.prototype.addLayer = function (layerType, params) {
         case Layer.Raster:
             layer = new RasterLayer({
                 mapView: this.mapView,
-                sourceId: params
+                sourceId: options.sourceId
             });
             break;
 
@@ -66,10 +67,9 @@ LayerManager.prototype.addLayer = function (layerType, params) {
 
         case Layer.Images:
         case Layer.WMS:
-            layer = new ImageLayer({
-                mapView: this.mapView,
-                sourceId: params
-            });
+            layer = new ImageLayer(_.extend({
+                mapView: this.mapView
+            }, options));
             break;
 
             // ---------------------------------------
@@ -88,10 +88,10 @@ LayerManager.prototype.addLayer = function (layerType, params) {
     return layer;
 };
 
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 
-LayerManager.prototype.duplicate = function (layers) {
-    layers.forEach(function(layer){
+LayerManager.prototype.duplicate = function(layers) {
+    layers.forEach(function(layer) {
         var tiles = this.mapView.tiles;
         var layers = this.mapView.layers;
 
@@ -103,6 +103,6 @@ LayerManager.prototype.duplicate = function (layers) {
     }.bind(this));
 };
 
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 
 module.exports = LayerManager;

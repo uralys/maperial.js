@@ -4,7 +4,7 @@ var Source = require('../models/source.js');
 var ajax   = require('../../libs/ajax.js');
 var Maperial = window.Maperial;
 
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 function SourceManager() {
     this.data     = {};
@@ -19,14 +19,14 @@ function getRequestId(sourceId, x, y, z) {
     return sourceId + '_' + x + '_' + y + '_' + z;
 }
 
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SourceManager.prototype.getData = function(source, x, y, z) {
     var requestId = getRequestId(source, x, y, z);
     return this.data[requestId];
 };
 
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SourceManager.prototype.releaseNetwork = function() {
     for (var requestId in this.requests) {
@@ -47,7 +47,7 @@ SourceManager.prototype.releaseNetwork = function() {
     }
 };
 
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SourceManager.prototype.release = function(sourceId, x, y, z) {
     var requestId = getRequestId(sourceId, x, y, z);
@@ -71,7 +71,7 @@ SourceManager.prototype.release = function(sourceId, x, y, z) {
     }
 };
 
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SourceManager.prototype.loadVectorial = function(sourceId, x, y, z) {
     var url = Maperial.apiURL + '/api/tile?x=' + x + '&y=' + y + '&z=' + z;
@@ -93,7 +93,7 @@ SourceManager.prototype.loadShade = function(x, y, z) {
 //     this.loadAPISource(url, requestId)
 // }
 
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SourceManager.prototype.loadAPISource = function(url, requestId) {
     var sourceReceived = function(error, content) {
@@ -122,11 +122,17 @@ SourceManager.prototype.loadAPISource = function(url, requestId) {
     });
 };
 
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-SourceManager.prototype.loadImage = function(sourceId, x, y, z, wmsBounds) {
-    var url = wmsBounds ? this.getWMSURL(sourceId, wmsBounds)
-                        : this.getImageURL(sourceId, x, y, z);
+SourceManager.prototype.loadImage = function(options) {
+    var sourceId  = options.sourceId;
+    var x         = options.x;
+    var y         = options.y;
+    var z         = options.z;
+    var wmsBounds = options.wmsBounds;
+
+    var url       = wmsBounds ? this.getWMSURL(sourceId, wmsBounds)
+                              : this.getImageURL(options);
 
     var requestId = getRequestId(sourceId, x, y, z);
 
@@ -159,11 +165,15 @@ SourceManager.prototype.loadImage = function(sourceId, x, y, z, wmsBounds) {
     this.requests[requestId].src = url;
 };
 
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-SourceManager.prototype.getImageURL = function(sourceId, tx, ty, z) {
-    var gty = (Math.pow(2, z) - 1) - ty;
-    var server = ['a', 'b', 'c', 'd'];
+SourceManager.prototype.getImageURL = function(options) {
+    var sourceId = options.sourceId;
+    var tx       = options.x;
+    var ty       = options.y;
+    var z        = options.z;
+    var gty      = (Math.pow(2, z) - 1) - ty;
+    var server   = ['a', 'b', 'c', 'd'];
 
     switch (sourceId) {
 
@@ -288,6 +298,13 @@ SourceManager.prototype.getImageURL = function(sourceId, tx, ty, z) {
                     tx + '/' +
                     gty + '.png';
 
+        case Source.IMAGES_MAPBOX_CUSTOM:
+            return 'http://' + server[utils.random0(1)] +
+                    '.tiles.mapbox.com/v4/' + options.mapboxReferenceMap + '/' +
+                    z + '/' +
+                    tx + '/' +
+                    gty + '@2x.png?access_token=' + options.mapboxApiKey;
+
         // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
         case Source.IMAGES_OSM:
         default:
@@ -315,7 +332,7 @@ SourceManager.prototype.getImageURL = function(sourceId, tx, ty, z) {
 // http://www.neongeo.com/wiki/doku.php?id=map_servers
 };
 
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SourceManager.prototype.getWMSURL = function(sourceId, bounds) {
     switch (sourceId) {
@@ -398,6 +415,6 @@ SourceManager.prototype.getWMSURL = function(sourceId, bounds) {
     }
 };
 
-// ------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 module.exports = SourceManager;

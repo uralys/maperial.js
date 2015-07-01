@@ -40,27 +40,28 @@ function wmsBounds(sourceId, x, y, z, context) {
 
 // ----------------------------------------------------------------------------
 
-function ImageData(sourceId, tile) {
-    this.sourceId = sourceId;
+function ImageData(options, tile) {
+    this.sourceId = options.sourceId;
     this.x = tile.x;
     this.y = tile.y;
     this.z = tile.z;
 
     this.content = null;
 
-    Maperial.sourceManager.loadImage(
-        sourceId,
-        this.x,
-        this.y,
-        this.z,
-        wmsBounds(
-            sourceId,
+    var params = _.extend({
+        x: this.x,
+        y: this.y,
+        z: this.z,
+        wmsBounds: wmsBounds(
+            this.sourceId,
             this.x,
             this.y,
             this.z,
             tile.mapView.context
         )
-    );
+    }, options);
+
+    Maperial.sourceManager.loadImage(params);
 }
 
 // ----------------------------------------------------------------------------

@@ -1,10 +1,13 @@
-var ImageData = require('../../models/data/image-data.js'),
-    Layer = require('../../models/layer.js');
+'use strict';
 
-//---------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+
+var ImageData = require('../../models/data/image-data.js');
+var Layer     = require('../../models/layer.js');
+
+// ---------------------------------------------------------------------------
 
 function ImageLayerPart(layer, tile, gl) {
-
     this.layer = layer;
     this.gl = gl;
 
@@ -12,21 +15,20 @@ function ImageLayerPart(layer, tile, gl) {
     this.w = 0;
     this.h = 0;
 
-    this.data = new ImageData(layer.sourceId, tile);
+    this.data = new ImageData(layer.options, tile);
 
-    this.layer.on(Layer.REFRESH, function(){
+    this.layer.on(Layer.REFRESH, function() {
         this.reset();
     }.bind(this));
-
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-ImageLayerPart.prototype.dataReady = function () {
-
+ImageLayerPart.prototype.dataReady = function() {
     if (this.data.content) {
         return 1;
-    } else {
+    }
+ else {
         this.data.tryToFillContent();
 
         if (this.data.content) {
@@ -38,16 +40,16 @@ ImageLayerPart.prototype.dataReady = function () {
     return 0;
 };
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-ImageLayerPart.prototype.prepare = function () {
+ImageLayerPart.prototype.prepare = function() {
     this.w = this.data.content.width;
     this.h = this.data.content.height;
 };
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-ImageLayerPart.prototype.reset = function () {
+ImageLayerPart.prototype.reset = function() {
     if (this.tex) {
         this.gl.deleteTexture(this.tex);
         delete this.tex;
@@ -55,7 +57,7 @@ ImageLayerPart.prototype.reset = function () {
     }
 };
 
-ImageLayerPart.prototype.release = function () {
+ImageLayerPart.prototype.release = function() {
     this.reset();
 
     if (this.data.content) {
@@ -64,16 +66,15 @@ ImageLayerPart.prototype.release = function () {
     }
 };
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-ImageLayerPart.prototype.isUpToDate = function () {
+ImageLayerPart.prototype.isUpToDate = function() {
     return this.tex != null;
 };
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-ImageLayerPart.prototype.update = function () {
-
+ImageLayerPart.prototype.update = function() {
     if (this.tex)
         return 0;
 
@@ -82,7 +83,6 @@ ImageLayerPart.prototype.update = function () {
         gl = this.gl;
 
     if (this.data.content != null && this.data.content.width > 0) {
-
         this.tex = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, this.tex);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
@@ -90,7 +90,8 @@ ImageLayerPart.prototype.update = function () {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
         gl.bindTexture(gl.TEXTURE_2D, null);
-    } else { // create fake
+    }
+ else { // create fake
 
         this.tex = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, this.tex);
@@ -106,9 +107,8 @@ ImageLayerPart.prototype.update = function () {
 
     var diffT = date.getTime() - startT;
     return diffT
-
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 module.exports = ImageLayerPart;

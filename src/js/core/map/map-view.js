@@ -1,19 +1,22 @@
-//--------------------------------------------------------------------------
+'use strict';
 
-var Context      = require('./context.js'),
-    Mouse        = require('./mouse.js'),
-    Mover        = require('./mover.js'),
-    MapRenderer  = require('../rendering/map-renderer.js'),
-    LayerManager = require('../managers/layer-manager.js'),
-    Layer        = require('../models/layer.js'),
-    Composition  = require('../models/layers/composition.js'),
-    Source       = require('../models/source.js'),
-    Events       = require('../../libs/events.js'),
-    utils        = require('../../libs/utils.js'),
-    _            = require('lodash'),
-    TWEEN        = require('tween.js');
+// --------------------------------------------------------------------------
 
-//--------------------------------------------------------------------------
+var Maperial     = require('../maperial');
+var Context      = require('./context.js');
+var Mouse        = require('./mouse.js');
+var Mover        = require('./mover.js');
+var MapRenderer  = require('../rendering/map-renderer.js');
+var LayerManager = require('../managers/layer-manager.js');
+var Layer        = require('../models/layer.js');
+var Composition  = require('../models/layers/composition.js');
+var Source       = require('../models/source.js');
+var Events       = require('../../libs/events.js');
+var utils        = require('../../libs/utils.js');
+var _            = require('lodash');
+var TWEEN        = require('tween.js');
+
+// --------------------------------------------------------------------------
 
 /**
  * A MapView is the object you get when you create :
@@ -29,23 +32,22 @@ var Context      = require('./context.js'),
 function MapView(maperial, options) {
     this.prepare(maperial, options);
     this.expose();
-};
+}
 
-//--------------------------------------------------------------------------
-//-     API
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+// -     API
+// --------------------------------------------------------------------------
 
-MapView.prototype.expose = function () {
-
-    //--------------------------------------------------------------------------
+MapView.prototype.expose = function() {
+    // --------------------------------------------------------------------------
     //      Image Layers
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     /**
      * http://www.thunderforest.com/
      * @function
      */
-    this.addTransport = function () {
+    this.addTransport = function() {
         return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT);
     }.bind(this);
 
@@ -53,7 +55,7 @@ MapView.prototype.expose = function () {
      * http://www.thunderforest.com/
      * @function
      */
-    this.addLandscape = function () {
+    this.addLandscape = function() {
         return this.addImageLayer(Source.IMAGES_OCM_LANDSCAPE);
     }.bind(this);
 
@@ -61,7 +63,7 @@ MapView.prototype.expose = function () {
      * http://www.thunderforest.com/
      * @function
      */
-    this.addOCM = function () {
+    this.addOCM = function() {
         return this.addImageLayer(Source.IMAGES_OCM);
     }.bind(this);
 
@@ -69,7 +71,7 @@ MapView.prototype.expose = function () {
      * http://www.thunderforest.com/
      * @function
      */
-    this.addTransportDark = function () {
+    this.addTransportDark = function() {
         return this.addImageLayer(Source.IMAGES_OCM_TRANSPORT_DARK);
     }.bind(this);
 
@@ -77,7 +79,7 @@ MapView.prototype.expose = function () {
      * http://www.thunderforest.com/
      * @function
      */
-    this.addOutdoors = function () {
+    this.addOutdoors = function() {
         return this.addImageLayer(Source.IMAGES_OCM_OUTDOORS);
     }.bind(this);
 
@@ -85,7 +87,7 @@ MapView.prototype.expose = function () {
      * http://maps.stamen.com/
      * @function
      */
-    this.addWatercolor = function () {
+    this.addWatercolor = function() {
         return this.addImageLayer(Source.IMAGES_STAMEN_WATERCOLOR);
     }.bind(this);
 
@@ -93,7 +95,7 @@ MapView.prototype.expose = function () {
      * http://maps.stamen.com/
      * @function
      */
-    this.addTerrain = function () {
+    this.addTerrain = function() {
         return this.addImageLayer(Source.IMAGES_STAMEN_TERRAIN);
     }.bind(this);
 
@@ -101,7 +103,7 @@ MapView.prototype.expose = function () {
      * http://maps.stamen.com/
      * @function
      */
-    this.addToner = function () {
+    this.addToner = function() {
         return this.addImageLayer(Source.IMAGES_STAMEN_TONER);
     }.bind(this);
 
@@ -109,92 +111,99 @@ MapView.prototype.expose = function () {
      * http://maps.stamen.com/
      * @function
      */
-    this.addTonerBG = function () {
+    this.addTonerBG = function() {
         return this.addImageLayer(Source.IMAGES_STAMEN_TONER_BG);
     }.bind(this);
 
     /**
      * @function
      */
-    this.addMapquest = function () {
+    this.addMapquest = function() {
         return this.addImageLayer(Source.IMAGES_MAPQUEST);
     }.bind(this);
 
     /**
      * @function
      */
-    this.addSatellite = function () {
+    this.addSatellite = function() {
         return this.addImageLayer(Source.IMAGES_MAPQUEST_SATELLITE);
     }.bind(this);
 
     /**
      * @function
      */
-    this.addOSM = function () {
-        return this.addImageLayer(Source.IMAGES_OSM);
+    this.addMapbox = function(options) {
+        return this.addImageLayer(Source.IMAGES_MAPBOX_CUSTOM, options);
     }.bind(this);
-
-    //--------------------------------------------------------------------------
-    //      Maperial layers
-    //--------------------------------------------------------------------------
 
     /**
      * @function
      */
-    this.addShade = function () {
+    this.addOSM = function() {
+        return this.addImageLayer(Source.IMAGES_OSM);
+    }.bind(this);
+
+    // --------------------------------------------------------------------------
+    //      Maperial layers
+    // --------------------------------------------------------------------------
+
+    /**
+     * @function
+     */
+    this.addShade = function() {
         return this.addShadeLayer();
     }.bind(this);
 
     /**
      * @function
      */
-    this.addEarthLight = function () {
+    this.addEarthLight = function() {
         return this.addImageLayer(Source.MAPERIAL_EARTHLIGHT);
     }.bind(this);
 
     /**
      * @function
      */
-    this.addAerosol = function () {
+    this.addAerosol = function() {
         return this.addImageLayer(Source.MAPERIAL_AEROSOL);
     }.bind(this);
 
     /**
      * @function
      */
-    this.addNDVI = function () {
+    this.addNDVI = function() {
         return this.addImageLayer(Source.MAPERIAL_NDVI);
     }.bind(this);
 
     /**
      * @function
      */
-    this.addSRTM = function () {
+    this.addSRTM = function() {
         return this.addImageLayer(Source.MAPERIAL_SRTM);
     }.bind(this);
 
     /**
      * @function
      */
-    this.addSST = function () {
+    this.addSST = function() {
         return this.addImageLayer(Source.MAPERIAL_SST);
     }.bind(this);
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //      WMS layers
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     /**
      * test WMS CLC
      * @function
      */
-    this.addCorineLandCover = function () {
+    this.addCorineLandCover = function() {
         return this.addImageLayer(Source.WMS_CORINE_LAND_COVER);
     }.bind(this);
 
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //      Child MapViews
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
     /**
      * @function
@@ -209,10 +218,10 @@ MapView.prototype.expose = function () {
      *                             in pixels.(Default : 0)
      *
      */
-    this.addAnchor = function (options) {
+    this.addAnchor = function(options) {
         options = options || {};
         this.prepareChildOptions(options, {
-            type : Maperial.ANCHOR
+            type: Maperial.ANCHOR
         });
 
         var width = (options.width || this.width / 2) + 'px';
@@ -226,7 +235,6 @@ MapView.prototype.expose = function () {
         options.container.style.left = left;
 
         return this.createChild(options);
-
     }.bind(this);
 
     /**
@@ -247,7 +255,7 @@ MapView.prototype.expose = function () {
      *                            in pixels.
      *                            (Default : placed at parent.left - 20px)
      */
-    this.addLens = function (options) {
+    this.addLens = function(options) {
         options = options || {};
         options.diffZoom = options.diffZoom || 2;
 
@@ -255,9 +263,9 @@ MapView.prototype.expose = function () {
             type: Maperial.LENS,
         });
 
-        var defaultTop = this.height - (options.height || 250 ) - 20;
-        var width  = (options.width || 250 ) + 'px';
-        var height = (options.height || 250 ) + 'px';
+        var defaultTop = this.height - (options.height || 250) - 20;
+        var width  = (options.width || 250) + 'px';
+        var height = (options.height || 250) + 'px';
         var left   = (options.left || 20) + 'px';
         var top    = (options.top || defaultTop) + 'px';
 
@@ -290,7 +298,7 @@ MapView.prototype.expose = function () {
      *                            in pixels.
      *                            (Default : placed at parent.left - 20px)
      */
-    this.addMinifier = function (options) {
+    this.addMinifier = function(options) {
         options = options || {};
         options.diffZoom = options.diffZoom || -3;
 
@@ -298,9 +306,9 @@ MapView.prototype.expose = function () {
             type: Maperial.MINIFIER,
         });
 
-        var defaultTop = this.height - (options.height || 200 ) - 20;
-        var width  = (options.width || 200 ) + 'px';
-        var height = (options.height || 200 ) + 'px';
+        var defaultTop = this.height - (options.height || 200) - 20;
+        var width  = (options.width || 200) + 'px';
+        var height = (options.height || 200) + 'px';
         var left   = (options.left || 20) + 'px';
         var top    = (options.top || defaultTop) + 'px';
 
@@ -314,17 +322,16 @@ MapView.prototype.expose = function () {
 
         return minifier;
     }.bind(this);
-
 };
 
-//--------------------------------------------------------------------------
-//-     VIEW
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+// -     VIEW
+// --------------------------------------------------------------------------
 
-MapView.prototype.prepare = function (maperial, options) {
+MapView.prototype.prepare = function(maperial, options) {
     console.log("  prepare MapView : " + options.container.id);
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // settings
 
     this.maperial = maperial;
@@ -333,24 +340,24 @@ MapView.prototype.prepare = function (maperial, options) {
     this.container = options.container;
     this.type = options.type;
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // plug mixins in
 
     Events.call(this);
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // prepare the view
 
     this.prepareView();
     this.prepareCamera();
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
     // plug modules
 
     new Mouse(this);
     new Mover(this);
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
 
     // array to use push and splice
     this.layers = [];
@@ -368,7 +375,7 @@ MapView.prototype.prepare = function (maperial, options) {
     this.mapRenderer = new MapRenderer(this);
     this.layerManager = new LayerManager(this);
 
-    //-------------------------------------------------------------
+    // -------------------------------------------------------------
 
     this.shaders = [
         Composition.ALPHA_CLIP,
@@ -377,11 +384,11 @@ MapView.prototype.prepare = function (maperial, options) {
     ];
 };
 
-//--------------------------------------------------------------------------
-//-     CONTAINER
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+// -     CONTAINER
+// --------------------------------------------------------------------------
 
-MapView.prototype.prepareView = function () {
+MapView.prototype.prepareView = function() {
     this.canvas = document.createElement('canvas');
     this.container.classList.add(this.type);
     this.container.appendChild(this.canvas);
@@ -389,24 +396,25 @@ MapView.prototype.prepareView = function () {
     this.refresh();
 };
 
-MapView.prototype.refresh = function () {
+MapView.prototype.refresh = function() {
     this.canvas.width = this.width = this.container.clientWidth;
     this.canvas.height = this.height = this.container.clientHeight;
 };
 
-//--------------------------------------------------------------------------
-//-     PLUGINS for API
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+// -     PLUGINS for API
+// --------------------------------------------------------------------------
 
-MapView.prototype.addImageLayer = function (sourceId) {
-    return this.layerManager.addLayer(Layer.Images, sourceId);
+MapView.prototype.addImageLayer = function(sourceId, options) {
+    return this.layerManager.addLayer(Layer.Images, _.extend({
+        sourceId: sourceId
+    }, options));
 };
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
-MapView.prototype.addDynamicalLayer = function (dynamicalData, options) {
-
-    //-------------------------------------------
+MapView.prototype.addDynamicalLayer = function(dynamicalData, options) {
+    // -------------------------------------------
     // Checking options
 
     var options = utils.prepareOptions(options, "style");
@@ -414,7 +422,7 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options) {
         console.log("Wrong call to addDynamicalLayer. Check the options");
     }
 
-    //-------------------------------------------
+    // -------------------------------------------
     // Proceed
 
     return this.layerManager.addLayer(Layer.Dynamical, {
@@ -422,17 +430,15 @@ MapView.prototype.addDynamicalLayer = function (dynamicalData, options) {
         dynamicalData: dynamicalData,
         style: options.style
     });
-
 };
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
-MapView.prototype.addHeatmapLayer = function (heatmapData, options) {
-
+MapView.prototype.addHeatmapLayer = function(heatmapData, options) {
     options.colorbar = options.colorbar ||
         Maperial.colorbarManager.defaultColorbar(this);
 
-    //-------------------------------------------
+    // -------------------------------------------
     // Proceed
 
     return this.layerManager.addLayer(Layer.Heat, {
@@ -441,47 +447,45 @@ MapView.prototype.addHeatmapLayer = function (heatmapData, options) {
         colorbar: options.colorbar,
         options: options
     });
-
 };
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
 // SHADE AND RASTER SHOULD JUST BE OPTIONS IN RETILER TYPE LAYER
 
-MapView.prototype.addShadeLayer = function () {
+MapView.prototype.addShadeLayer = function() {
     return this.layerManager.addLayer(Layer.Shade);
 };
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
-MapView.prototype.addRasterLayer = function (sourceId) {
+MapView.prototype.addRasterLayer = function(sourceId) {
     return this.layerManager.addLayer(Layer.Raster, sourceId);
 };
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
-MapView.prototype.addWMSLayer = function (sourceId) {
-
+MapView.prototype.addWMSLayer = function(sourceId) {
 };
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
-MapView.prototype.addOSMLayer = function (styleId) {
+MapView.prototype.addOSMLayer = function(styleId) {
     if (!styleId)
         styleId = Maperial.DEFAULT_STYLE_UID;
 };
 
-//--------------------------------------------------------------------------
-//-     Child tools
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+// -     Child tools
+// --------------------------------------------------------------------------
 
-MapView.prototype.prepareChildOptions = function (options, settings) {
+MapView.prototype.prepareChildOptions = function(options, settings) {
     _.extend(options, settings);
     options.container = document.createElement('div');
     this.container.appendChild(options.container);
 };
 
-MapView.prototype.createChild = function (options) {
+MapView.prototype.createChild = function(options) {
     var child = this.maperial.addMapView(options);
 
     this.link(child);
@@ -494,8 +498,8 @@ MapView.prototype.createChild = function (options) {
 };
 
 // links mapViews so that each Event may change the linkedMapViews
-MapView.prototype.link = function (view) {
-    this.linkedMapViews.forEach(function (link) {
+MapView.prototype.link = function(view) {
+    this.linkedMapViews.forEach(function(link) {
         view.linkedMapViews.push(link);
         link.linkedMapViews.push(view);
 
@@ -510,13 +514,13 @@ MapView.prototype.link = function (view) {
     view.on(Maperial.EVENTS.MAP_MOVED, this.refreshCamera.bind(this));
 }
 
-//--------------------------------------------------------------------------
-//-     Camera
+// --------------------------------------------------------------------------
+// -     Camera
 // TODO: create ./camera.js and move the following algo there
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 
-MapView.prototype.prepareCamera = function () {
-    this.on('zoom-in', function () {
+MapView.prototype.prepareCamera = function() {
+    this.on('zoom-in', function() {
         if ((this.options.zoomMax || 18) > this.context.zoom) {
             this.zoomCanvas(2);
             this.context.zoom++;
@@ -524,7 +528,7 @@ MapView.prototype.prepareCamera = function () {
         }
     }.bind(this));
 
-    this.on('zoom-out', function () {
+    this.on('zoom-out', function() {
         if ((this.options.zoomMin || 2) < this.context.zoom) {
             this.zoomCanvas(0.5);
             this.context.zoom--;
@@ -533,10 +537,9 @@ MapView.prototype.prepareCamera = function () {
     }.bind(this));
 };
 
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 
-MapView.prototype.refreshCamera = function (event) {
-
+MapView.prototype.refreshCamera = function(event) {
     var initiator = event ? event.currentTarget : this.parent;
 
     switch (this.type) {
@@ -557,10 +560,9 @@ MapView.prototype.refreshCamera = function (event) {
             this.refreshCenter(initiator);
             break;
     }
-
 }
 
-MapView.prototype.refreshCenter = function (initiator) {
+MapView.prototype.refreshCenter = function(initiator) {
     var initiatorBox = initiator.container.getBoundingClientRect();
     var initiatorCenterX = initiatorBox.left + initiatorBox.width / 2;
     var initiatorCenterY = initiatorBox.top + initiatorBox.height / 2;
@@ -581,11 +583,10 @@ MapView.prototype.refreshCenter = function (initiator) {
     );
 }
 
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 // TODO: create ./zoomer.js and move the following algo there
 
-MapView.prototype.zoomCanvas = function (scaleTo) {
-
+MapView.prototype.zoomCanvas = function(scaleTo) {
     var canvas = cloneCanvas(this.canvas),
         div = document.createElement('div'),
         container = this.container;
@@ -608,12 +609,12 @@ MapView.prototype.zoomCanvas = function (scaleTo) {
         tween = new TWEEN.Tween(from)
         .to(to, time)
         .easing(TWEEN.Easing.Circular.Out)
-        .onUpdate(function () {
+        .onUpdate(function() {
             var transform = 'scale(' + this.scale + ')';
             canvas.style.webkitTransform = transform;
             canvas.style.transform = transform;
         })
-        .onComplete(function () {
+        .onComplete(function() {
             var from = {
                     alpha: 1
                 },
@@ -624,20 +625,18 @@ MapView.prototype.zoomCanvas = function (scaleTo) {
                 tween = new TWEEN.Tween(from)
                 .to(to, time)
                 .easing(TWEEN.Easing.Circular.In)
-                .onUpdate(function () {
+                .onUpdate(function() {
                     canvas.style.opacity = this.alpha;
                 })
-                .onComplete(function () {
+                .onComplete(function() {
                     container.removeChild(div);
                 })
                 .start();
         })
         .start();
-
 }
 
 function cloneCanvas(oldCanvas) {
-
     //create a new canvas
     var newCanvas = document.createElement('canvas');
     var context = newCanvas.getContext('2d');
@@ -654,7 +653,7 @@ function cloneCanvas(oldCanvas) {
     var imageExported = new Image();
 
     // load image from data url
-    imageExported.onload = function () {
+    imageExported.onload = function() {
         context.drawImage(this, 0, 0);
     };
 
@@ -664,6 +663,6 @@ function cloneCanvas(oldCanvas) {
     return newCanvas;
 }
 
-//--------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 
 module.exports = MapView;
