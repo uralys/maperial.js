@@ -1,0 +1,72 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+    {
+        "type": "Feature",
+        "properties": {
+            "Name": "AIX-MARSEILLE",
+            "Description": "<div class=\"googft-info-window\"> <b>AcadÃ©mie:</b> AIX-MARSEILLE<br> <b>Etablissement:</b> CollÃ¨ge JEAN GIONO, MANOSQUE (ALPES-DE-HAUTE-PROVENCE)<br> <b>Statut:</b> REP </div>",
+            "type": 1,
+            "diameter": 40,
+            "scale": 0.54
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                5.776548,
+                43.825454
+            ]
+        }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+            "Name": "AIX-MARSEILLE",
+            "Description": "<div class=\"googft-info-window\"> <b>AcadÃ©mie:</b> AIX-MARSEILLE<br> <b>Etablissement:</b> CollÃ¨ge JAS DE BOUFFAN, AIX-EN-PROVENCE(BOUCHES-DU-RHONE)<br> <b>Statut:</b> REP </div>",
+            "type": 1,
+            "diameter": 40,
+            "scale": 0.54
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                5.421285,
+                43.525953
+            ]
+        }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+            "Name": "AIX-MARSEILLE",
+            "Description": "<div class=\"googft-info-window\"> <b>AcadÃ©mie:</b> AIX-MARSEILLE<br> <b>Etablissement:</b> CollÃ¨ge VINCENT VAN GOGH, ARLES(BOUCHES-DU-RHONE)<br> <b>Statut:</b> REP </div>",
+            "type": 1,
+            "diameter": 40,
+            "scale": 0.54
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                4.637673,
+                43.679158
+            ]
+        }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+            "Name": "AIX-MARSEILLE",
+            "Description": "<div class=\"googft-info-window\"> <b>AcadÃ©mie:</b> AIX-MARSEILLE<br> <b>Etablissement:</b> CollÃ¨ge LOU GARLABAN, AUBAGNE(BOUCHES-DU-RHONE)<br> <b>Statut:</b> REP </div>",
+            "type": 1,
+            "diameter": 40,
+            "scale": 0.54
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                5.548602,
+                43.280991
+            ]
+        }
+    }]
+}

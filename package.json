@@ -24,6 +24,7 @@
     "lodash": "^3.9.1",
     "mocha": "^2.2.5",
     "mocha-lcov-reporter": "0.0.2",
+    "sinon": "^1.15.4",
     "time-grunt": "^1.0.0"
   },
   "engines": {

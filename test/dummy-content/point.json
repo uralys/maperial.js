@@ -1,0 +1,17 @@
+{
+    "type": "Feature",
+    "properties": {
+        "Name": "AIX-MARSEILLE",
+        "Description": "desc",
+        "type": 1,
+        "diameter": 40,
+        "scale": 0.54
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            5.776548,
+            43.825454
+        ]
+    }
+}

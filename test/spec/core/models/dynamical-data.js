@@ -1,25 +1,19 @@
 'use strict';
-var chai = require('chai');
-var expect = chai.expect;
+var chai          = require('chai');
+var sinon         = require('sinon');
+var expect        = chai.expect;
 var DynamicalData = require('../../../../src/js/core/models/data/dynamical-data');
 
-var dummyPoint = {
-    type: 'Feature',
-    properties: {
-        Name: 'AIX-MARSEILLE',
-        Description: 'desc',
-        type: 1,
-        diameter: 40,
-        scale: 0.54
-    },
-    geometry: {
-        type: 'Point',
-        coordinates: [
-        5.776548,
-        43.825454
-        ]
-    }
-};
+var dummyCollection = require('../../../dummy-content/zepfrance.json');
+var dummyPoint      = require('../../../dummy-content/point.json');
+
+before(function() {
+    this.server = sinon.fakeServer.create();
+});
+
+after(function() {
+    this.server.restore();
+});
 
 describe('DynamicalData', function() {
     describe('addPoint', function() {
@@ -28,6 +22,30 @@ describe('DynamicalData', function() {
             expect(data.points.length).to.equal(0);
             data.addPoint(dummyPoint);
             expect(data.points.length).to.equal(1);
+        });
+    });
+
+    // describe('import URL', function() {
+    //     it('should import a collection', function() {
+    //         this.server.respondWith("GET", "/dummy-collection.json",
+    //         [200, {"Content-Type": "application/json"}, JSON.stringify(dummyCollection)]);
+
+    //         var data = new DynamicalData();
+    //         console.log(JSON.stringify(dummyCollection));
+
+    //         sinon.spy();
+    //         data.import('/dummy-collection.json');
+    //         this.server.respond();
+
+    //         expect(data.points.length).to.equal(4);
+    //     });
+    // });
+
+    describe('import collection', function() {
+        it('should import a collection', function() {
+            var data = new DynamicalData();
+            data.import(dummyCollection);
+            expect(data.points.length).to.equal(4);
         });
     });
 

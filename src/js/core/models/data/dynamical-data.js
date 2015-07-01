@@ -1,8 +1,9 @@
+'use strict';
 var utils = require('../../../libs/utils.js');
-var ajax = require('../../../libs/ajax.js'),
-    Proj4js = require('../../../libs/proj4js-compressed.js');
+var ajax = require('../../../libs/ajax.js');
+var Proj4js = require('../../../libs/proj4js-compressed.js');
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /**
  * To add points on your maps, use DynamicalData.
@@ -89,35 +90,36 @@ function DynamicalData(featureCollection) {
     this.import(featureCollection);
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-DynamicalData.prototype.import = function (data) {
+DynamicalData.prototype.import = function(data) {
     if (data) {
         if ('string' === typeof (data)) {
             ajax.get({
                 url: data,
-                callback: function (error, data) {
+                callback: function(error, data) {
                     this.addPoints(data);
                 }.bind(this)
             });
-        } else if ('object' === typeof (data)) {
+        }
+        else if ('object' === typeof (data)) {
             this.addPoints(data);
         }
     }
-}
+};
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /**
  * @function
  */
-DynamicalData.prototype.addPoints = function (collection) {
-    collection.features.forEach(function (feature) {
+DynamicalData.prototype.addPoints = function(collection) {
+    collection.features.forEach(function(feature) {
         this.addPoint(feature);
-    }.bind(this))
-}
+    }.bind(this));
+};
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /**
  * @function
@@ -148,7 +150,7 @@ DynamicalData.prototype.addPoints = function (collection) {
  * };
  *
  */
-DynamicalData.prototype.addPoint = function (feature) {
+DynamicalData.prototype.addPoint = function(feature) {
     var latitude = feature.geometry.coordinates[1];
     var longitude = feature.geometry.coordinates[0];
     var data = feature.properties;
@@ -168,16 +170,16 @@ DynamicalData.prototype.addPoint = function (feature) {
         lon: longitude,
         x: p.x,
         y: p.y,
-        data: data,
+        data: data
     };
 
     this.points.push(point);
     this.version++;
 
     return point;
-}
+};
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /**
  * Remove a point fromt your set :
@@ -185,28 +187,28 @@ DynamicalData.prototype.addPoint = function (feature) {
  * @function
  * @param  {object} pointToRemove A Maperial Point given by {@link #addPoint} for example
  */
-DynamicalData.prototype.removePoint = function (pointToRemove) {
+DynamicalData.prototype.removePoint = function(pointToRemove) {
     if (pointToRemove) {
         this.points.splice(
             this.points.indexOf(
-                this.points.filter(function (point) {
+                this.points.filter(function(point) {
                     return point.id === pointToRemove.id;
                 })
             ), 1);
         this.version++;
     }
-}
+};
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /**
  * @function
  */
-DynamicalData.prototype.removeAll = function () {
+DynamicalData.prototype.removeAll = function() {
     this.points = [];
     this.version++;
-}
+};
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 module.exports = DynamicalData;

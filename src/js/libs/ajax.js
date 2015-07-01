@@ -1,8 +1,8 @@
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
 var ajax = {};
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 /*
     readyState : Holds the status of the XMLHttpRequest. Changes from 0 to 4:
         0: request not initialized
@@ -19,9 +19,9 @@ var ajax = {};
 ajax.RESPONSE_READY = 4;
 ajax.STATUS_OK = 200;
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
-ajax.x = function () {
+ajax.x = function() {
     if (typeof XMLHttpRequest !== 'undefined') {
         return new XMLHttpRequest();
     }
@@ -39,12 +39,13 @@ ajax.x = function () {
         try {
             xhr = new ActiveXObject(versions[i]);
             break;
-        } catch (e) {}
+        }
+        catch (e) {}
     }
     return xhr;
 };
 
-ajax.send = function (url, callback, method, data, dataType, responseType, async) {
+ajax.send = function(url, callback, method, data, dataType, responseType, async) {
     var xhr = ajax.x();
 
     xhr.open(method, url, async);
@@ -55,19 +56,21 @@ ajax.send = function (url, callback, method, data, dataType, responseType, async
 
     xhr.dataType = dataType || 'json';
 
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
         if (xhr.readyState == ajax.RESPONSE_READY) {
             if (xhr.status === ajax.STATUS_OK) {
                 var response;
 
                 try {
                     response = JSON.parse(xhr.responseText);
-                } catch (e) {
+                }
+ catch (e) {
                     response = xhr.response;
                 }
 
                 callback(response.error, response);
-            } else
+            }
+ else
                 callback(true, null);
         }
     };
@@ -79,9 +82,9 @@ ajax.send = function (url, callback, method, data, dataType, responseType, async
     xhr.send(data);
 };
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
-ajax.get = function (options, callback) {
+ajax.get = function(options, callback) {
     var query = [];
 
     for (var key in options.data) {
@@ -105,7 +108,7 @@ ajax.get = function (options, callback) {
     );
 };
 
-ajax.post = function (options, callback) {
+ajax.post = function(options, callback) {
     var query = [];
 
     for (var key in options.data) {
@@ -123,7 +126,7 @@ ajax.post = function (options, callback) {
     );
 };
 
-//-----------------------------------------------------------------
+// -----------------------------------------------------------------
 
 module.exports = {
     get: ajax.get,
