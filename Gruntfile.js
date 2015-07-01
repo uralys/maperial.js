@@ -52,7 +52,7 @@ module.exports = function(grunt) {
                 options: {
                     standalone: '<%= pkg.name %>'
                 }
-            },
+            }
         },
 
         uglify: {
@@ -82,7 +82,7 @@ module.exports = function(grunt) {
                     src: ['maperial.scss'],
                     dest: 'static/css/',
                     ext: '.css'
-                }],
+                }]
             }
         },
 
@@ -102,7 +102,7 @@ module.exports = function(grunt) {
                     template: "assets/jsdoc-jaguarjs",
                     configure: "config/jsdoc/config.json"
                 }
-            },
+            }
         },
 
         mochaTest: {
@@ -112,9 +112,9 @@ module.exports = function(grunt) {
                     // tests are quite slow as thy spawn node processes
                     timeout: 10000
                 },
-                src: [ 'test/spec/**/*.js' ]
+                src: ['test/spec/**/*.js']
             },
-            coverage : {
+            coverage: {
                 options: {
                     reporter: 'mocha-lcov-reporter',
                     quiet: true,
@@ -163,9 +163,8 @@ module.exports = function(grunt) {
                 git commit -am 'generated documentation'; \
                 git push origin master",
                 cwd: '<%= documentation %>'
-            },
-        },
-
+            }
+        }
     };
 
     /** Init Project configuration. */
@@ -186,7 +185,7 @@ module.exports = function(grunt) {
         'exec:prepare-shaders',
         'exec:build-shaders',
         'clean:shaders-dist'
-        ]);
+    ]);
 
     /** building jsdoc */
     grunt.registerTask('doc', [
@@ -194,7 +193,7 @@ module.exports = function(grunt) {
         'jsdoc:dist',
         'exec:prepareDocIndex',
         'exec:pushDoc'
-        ]);
+    ]);
 
     /** register custom 'deps' task */
     grunt.registerTask('dev', ['clean:static', 'exec:prepare-static', 'replace', 'js', 'css', 'shaders', 'exec:assets']);
