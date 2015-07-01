@@ -1,44 +1,12 @@
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
-function ImageData(sourceId, tile) {
+'use strict';
+var Maperial = window.Maperial;
 
-    this.sourceId = sourceId;
-    this.x = tile.x;
-    this.y = tile.y;
-    this.z = tile.z;
+// ----------------------------------------------------------------------------
 
-    this.content = null;
-
-    Maperial.sourceManager.loadImage(
-        sourceId,
-        this.x,
-        this.y,
-        this.z,
-        wmsBounds(
-            sourceId,
-            this.x,
-            this.y,
-            this.z,
-            tile.mapView.context
-        )
-    );
-};
-
-//----------------------------------------------------------------------------
-
-ImageData.prototype.tryToFillContent = function () {
-    this.content = Maperial.sourceManager.getData(this.sourceId, this.x, this.y, this.z);
-};
-
-ImageData.prototype.release = function () {
-    Maperial.sourceManager.release(this.sourceId, this.x, this.y, this.z);
-};
-
-//----------------------------------------------------------------------------
-
-function wmsBounds(sourceId, x, y, z, context){
-
-    if('wms' !== sourceId.split('.')[0]){
+function wmsBounds(sourceId, x, y, z, context) {
+    if ('wms' !== sourceId.split('.')[0]) {
         return null;
     }
 
@@ -70,6 +38,41 @@ function wmsBounds(sourceId, x, y, z, context){
     };
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+function ImageData(sourceId, tile) {
+    this.sourceId = sourceId;
+    this.x = tile.x;
+    this.y = tile.y;
+    this.z = tile.z;
+
+    this.content = null;
+
+    Maperial.sourceManager.loadImage(
+        sourceId,
+        this.x,
+        this.y,
+        this.z,
+        wmsBounds(
+            sourceId,
+            this.x,
+            this.y,
+            this.z,
+            tile.mapView.context
+        )
+    );
+}
+
+// ----------------------------------------------------------------------------
+
+ImageData.prototype.tryToFillContent = function() {
+    this.content = Maperial.sourceManager.getData(this.sourceId, this.x, this.y, this.z);
+};
+
+ImageData.prototype.release = function() {
+    Maperial.sourceManager.release(this.sourceId, this.x, this.y, this.z);
+};
+
+// ----------------------------------------------------------------------------
 
 module.exports = ImageData;
