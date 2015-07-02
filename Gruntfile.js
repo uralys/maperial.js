@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     var gruntCfg = {
         pkg: grunt.file.readJSON('package.json'),
         env: grunt.file.readJSON('config/env/env.json'),
-        documentation: "<%= env.documentation %>",
+        documentation: '<%= env.documentation %>',
 
         replace: {
             dist: {
@@ -36,7 +36,6 @@ module.exports = function(grunt) {
         },
 
         browserify: {
-
             /* dev : simple browserify + source map */
             compile: {
                 src: ['src/js/core/maperial.js'],
@@ -69,21 +68,16 @@ module.exports = function(grunt) {
             }
         },
 
-        sass: {
-            options: {
-                compass: true,
-                sourcemap: true,
-                quiet: true,
-                style: 'compressed'
-            },
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'src/css/sass/',
-                    src: ['maperial.scss'],
-                    dest: 'static/css/',
-                    ext: '.css'
-                }]
+        stylus: {
+            compile: {
+                options: {
+                    use: [
+                        require('autoprefixer-stylus')
+                    ]
+                },
+                files: {
+                    'static/css/maperial.css': 'src/stylus/maperial.styl'
+                }
             }
         },
 
@@ -204,7 +198,7 @@ module.exports = function(grunt) {
     /** define custom tasks */
     grunt.registerTask('test', ['mochaTest:test']);
     grunt.registerTask('coverage', ['mochaTest:coverage']);
-    grunt.registerTask('css', ['sass:dist']);
+    grunt.registerTask('css', ['stylus']);
     grunt.registerTask('js', ['browserify:compile']);
     grunt.registerTask('standalone', ['browserify:standalone']);
     grunt.registerTask('jsmin', ['standalone', 'uglify']);
