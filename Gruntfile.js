@@ -1,3 +1,4 @@
+'use strict';
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
@@ -89,18 +90,18 @@ module.exports = function(grunt) {
         jsdoc: {
             dist: {
                 src: [
-                'src/js/core/maperial.js',
-                'src/js/core/map/map-view.js',
-                'src/js/core/models/data/dynamical-data.js',
-                'src/js/core/models/data/heatmap-data.js',
-                'src/js/core/models/layers/composition.js',
-                'src/js/core/models/layers/shade-layer.js',
-                'src/js/core/models/layers/image-layer.js',
+                    'src/js/core/maperial.js',
+                    'src/js/core/map/map-view.js',
+                    'src/js/core/models/data/dynamical-data.js',
+                    'src/js/core/models/data/heatmap-data.js',
+                    'src/js/core/models/layers/composition.js',
+                    'src/js/core/models/layers/shade-layer.js',
+                    'src/js/core/models/layers/image-layer.js'
                 ],
                 options: {
                     destination: '<%= documentation %>',
-                    template: "assets/jsdoc-jaguarjs",
-                    configure: "config/jsdoc/config.json"
+                    template: 'assets/jsdoc-jaguarjs',
+                    configure: 'config/jsdoc/config.json'
                 }
             }
         },
@@ -131,6 +132,33 @@ module.exports = function(grunt) {
 
             coveralls: {
                 src: 'test/coverage/maperial.lcov'
+            }
+        },
+
+        aws_s3: {
+            options: {
+                accessKeyId: '<%= process.env.AWS_ACCESS_KEY_ID %>',
+                secretAccessKey: '<%= process.env.AWS_SECRET_KEY %>',
+                region: 'oregon', // forget this settings will cause a 301 error
+                uploadConcurrency: 50,
+                stream: true,
+                gzip: true
+            },
+            production: {
+                 // These options override the defaults
+                options: {
+                    bucket: 'static-maperial'
+                },
+                // Files to be uploaded.
+                files: [
+                    {
+                        action: 'upload',
+                        expand: true,
+                        cwd: 'static/js',
+                        src: ['maperial.js'],
+                        dest: 'js/'
+                    }
+                ]
             }
         },
 
@@ -195,10 +223,28 @@ module.exports = function(grunt) {
         'exec:pushDoc'
     ]);
 
-    /** register custom 'deps' task */
-    grunt.registerTask('dev', ['clean:static', 'exec:prepare-static', 'replace', 'js', 'css', 'shaders', 'exec:assets']);
-    grunt.registerTask('prod', ['clean:static', 'exec:prepare-static', 'replace', 'jsmin', 'css', 'shaders', 'exec:assets']);
+    /** main tasks */
+    grunt.registerTask('dev', [
+        'clean:static',
+        'exec:prepare-static',
+        'replace',
+        'js',
+        'css',
+        'shaders',
+        'exec:assets'
+    ]);
 
-    /** default is min */
+    grunt.registerTask('prod', [
+        'clean:static',
+        'exec:prepare-static',
+        'replace',
+        'jsmin',
+        'css',
+        'shaders',
+        'exec:assets',
+        'aws_s3:production'
+    ]);
+
+    /** default is minified */
     grunt.registerTask('default', ['prod']);
 };
