@@ -129,33 +129,6 @@ module.exports = function(grunt) {
             }
         },
 
-        // aws_s3: {
-        //     options: {
-        //         accessKeyId: '<%= process.env.AWS_ACCESS_KEY_ID %>',
-        //         secretAccessKey: '<%= process.env.AWS_SECRET_KEY %>',
-        //         region: 'oregon', // forget this settings will cause a 301 error
-        //         uploadConcurrency: 50,
-        //         stream: true,
-        //         gzip: true
-        //     },
-        //     production: {
-        //          // These options override the defaults
-        //         options: {
-        //             bucket: 'static-maperial'
-        //         },
-        //         // Files to be uploaded.
-        //         files: [
-        //             {
-        //                 action: 'upload',
-        //                 expand: true,
-        //                 cwd: 'static/js',
-        //                 src: ['maperial.js'],
-        //                 dest: 'js/'
-        //             }
-        //         ]
-        //     }
-        // },
-
         clean: {
             'static': 'static/',
             'shaders': 'static/shaders/',
