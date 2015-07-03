@@ -207,8 +207,7 @@ module.exports = function(grunt) {
         'jsmin',
         'css',
         'shaders',
-        'exec:assets',
-        'aws_s3:production'
+        'exec:assets'
     ]);
 
     /** default is minified */
