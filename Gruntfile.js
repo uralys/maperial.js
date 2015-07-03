@@ -165,15 +165,14 @@ module.exports = function(grunt) {
 
         exec: {
             'prepare-static': "mkdir -p static; \
-            mkdir -p static/js; \
-            mkdir -p static/css; \
-            mkdir -p static/geojson;",
-            'assets': "cp -r assets/symbols static/symbols; \
-            cp -r assets/images/ static/images; \
-            cp assets/geojson/* static/geojson/; \
-            cp src/css/vendors/* static/css/; \
-            ",
+                               mkdir -p static/js; \
+                               mkdir -p static/css; \
+                               mkdir -p static/geojson;",
+
+            'assets': "cp -r assets/images/ static/images;",
+
             'prepare-shaders': "mkdir -p static/shaders; cp -r src/shaders/* static/shaders/",
+
             'build-shaders': {
                 cmd: 'python mkjson.py',
                 cwd: 'static/shaders'
