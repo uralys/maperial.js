@@ -62,8 +62,7 @@ module.exports = function(grunt) {
             },
             build: {
                 files: {
-                    /* 'override.same.dest' : [source] */
-                    'static/js/maperial.js': ['static/js/maperial.min.js']
+                    'static/js/maperial.min.js': ['static/js/maperial.js']
                 }
             }
         },
