@@ -138,8 +138,7 @@ module.exports = function(grunt) {
         exec: {
             'prepare-static': "mkdir -p static; \
                                mkdir -p static/js; \
-                               mkdir -p static/css; \
-                               mkdir -p static/geojson;",
+                               mkdir -p static/css;",
 
             'assets': "cp -r assets/images/ static/images;",
 
