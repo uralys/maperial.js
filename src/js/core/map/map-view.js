@@ -2,7 +2,6 @@
 
 // --------------------------------------------------------------------------
 
-var Maperial     = require('../maperial');
 var Context      = require('./context.js');
 var Mouse        = require('./mouse.js');
 var Mover        = require('./mover.js');

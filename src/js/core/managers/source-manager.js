@@ -2,7 +2,6 @@
 var utils  = require('../../libs/utils.js');
 var Source = require('../models/source.js');
 var ajax   = require('../../libs/ajax.js');
-var Maperial = window.Maperial;
 
 // -----------------------------------------------------------------------------
 

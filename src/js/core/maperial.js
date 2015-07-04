@@ -4,7 +4,7 @@
 
 // ------------------------------------------------------------------
 
-var MapView = require('./map/map-view.js');
+var MapView          = require('./map/map-view.js');
 var SourceManager    = require('./managers/source-manager.js');
 var StyleManager     = require('./managers/style-manager.js');
 var ColorbarManager  = require('./managers/colorbar-manager.js');
