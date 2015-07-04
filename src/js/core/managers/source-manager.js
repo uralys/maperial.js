@@ -299,10 +299,10 @@ SourceManager.prototype.getImageURL = function(options) {
 
         case Source.IMAGES_MAPBOX_CUSTOM:
             return 'http://' + server[utils.random0(1)] +
-                    '.tiles.mapbox.com/v4/' + options.mapboxReferenceMap + '/' +
+                    '.tiles.mapbox.com/v4/' + options.referenceMap + '/' +
                     z + '/' +
                     tx + '/' +
-                    gty + '@2x.png?access_token=' + options.mapboxApiKey;
+                    gty + '@2x.png?access_token=' + options.apiKey;
 
         // http://wiki.openstreetmap.org/wiki/Tile_usage_policy
         case Source.IMAGES_OSM:

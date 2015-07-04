@@ -130,6 +130,8 @@ MapView.prototype.expose = function() {
 
     /**
      * @function
+     * options.referenceMap
+     * options.apiKey
      */
     this.addMapbox = function(options) {
         return this.addImageLayer(Source.IMAGES_MAPBOX_CUSTOM, options);
