@@ -62,7 +62,7 @@ module.exports = function(grunt) {
             },
             build: {
                 files: {
-                    'static/js/maperial.min.<%= pkg.version %>.js': ['static/js/maperial.js']
+                    'static/js/maperial-<%= pkg.version %>.min.js': ['static/js/maperial.js']
                 }
             }
         },
