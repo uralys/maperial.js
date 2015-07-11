@@ -45,6 +45,7 @@
   },
   "main": "src/js/core/maperial.js",
   "dependencies": {
+    "hammerjs": "^2.0.4",
     "tween.js": "~0.14.0"
   }
 }

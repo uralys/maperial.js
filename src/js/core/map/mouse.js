@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 // events here : https://github.com/EightMedia/hammer.js/wiki/Getting-Started
-var Hammer = require('../../libs/hammer.js');
+var Hammer = require('hammerjs');
 
 //------------------------------------------------------------------------------
 
