@@ -1,4 +1,4 @@
-# Maperial.js
+# Maperial.js [![Analytics](https://ga-beacon.appspot.com/UA-40162385-2/maperial.js/readme?pixel)](https://github.com/maperial/maperial.js)
 
 [ ![Codeship Status](https://img.shields.io/codeship/6fc738c0-e418-0132-19f9-16773c71d38d/master.svg)](https://codeship.com/projects/81785)
 <!-- [![Coverage Status](https://coveralls.io/repos/maperial/maperial.js/badge.svg)](https://coveralls.io/r/maperial/maperial.js) -->
