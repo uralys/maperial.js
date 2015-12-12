@@ -179,5 +179,9 @@ view.addHeamapLayer(data, options);
 ## BSD License
 You may use Maperial.js in a free or commercial project, providing you follow the [BSD](http://www.linfo.org/bsdlicense.html) crediting requirements, provided in the project [LICENSE](https://github.com/maperial/maperial.js/blob/master/LICENSE)
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/maperial/maperial.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
+## Let me play !
+- Get [started](http://maperial.github.io/getting-started/) with a first map
+- Check out a whole bunch of Codepen [examples](http://codepen.io/chrisdugne/)
+- Understand [Maperial](http://maperial.github.io/concepts/)'s concepts
+- Explore the complete API [reference](http://maperial.github.io/documentation/)
+to draft your own maps.
