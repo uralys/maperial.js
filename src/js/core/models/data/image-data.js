@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 
 'use strict';
-var _        = require('lodash');
+var _extend = require('lodash/object/extend');
 
 // ----------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ function ImageData(options, tile) {
 
     this.content = null;
 
-    var params = _.extend({
+    var params = _extend({
         x: this.x,
         y: this.y,
         z: this.z,

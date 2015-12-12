@@ -1,5 +1,4 @@
 var utils = require('../../libs/utils.js'),
-    ExtendCanvasContext = require('./tools/render-text.js'),
     TileRenderer = require('./tile-renderer.js');
 
 //-----------------------------------------------------------------------------
@@ -110,7 +109,6 @@ DynamicalRenderer.prototype.AllocCanvas = function (sizeX, sizeY) {
     this.cnv.height = sizeY;
     this.cnv.width = sizeX;
     this.ctx = this.cnv.getContext("2d");
-    ExtendCanvasContext(this.ctx);
     this.ctx.globalCompositeOperation = "source-over";
 
     // Clear ...
