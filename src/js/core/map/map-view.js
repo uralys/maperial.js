@@ -12,7 +12,7 @@ var Composition  = require('../models/layers/composition.js');
 var Source       = require('../models/source.js');
 var Events       = require('../../libs/events.js');
 var utils        = require('../../libs/utils.js');
-var _            = require('lodash/object');
+var _extend      = require('lodash/object/extend');
 var TWEEN        = require('tween.js');
 
 // --------------------------------------------------------------------------
@@ -407,7 +407,7 @@ MapView.prototype.refresh = function() {
 // --------------------------------------------------------------------------
 
 MapView.prototype.addImageLayer = function(sourceId, options) {
-    return this.layerManager.addLayer(Layer.Images, _.extend({
+    return this.layerManager.addLayer(Layer.Images, _extend({
         sourceId: sourceId
     }, options));
 };
@@ -481,7 +481,7 @@ MapView.prototype.addOSMLayer = function(styleId) {
 // --------------------------------------------------------------------------
 
 MapView.prototype.prepareChildOptions = function(options, settings) {
-    _.extend(options, settings);
+    _extend(options, settings);
     options.container = document.createElement('div');
     this.container.appendChild(options.container);
 };

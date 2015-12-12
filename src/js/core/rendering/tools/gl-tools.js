@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash/object');
+var _extend = require('lodash/object/extend');
 
 function GLTools() {}
 
@@ -91,10 +91,10 @@ GLTools.prototype.MakeProgram = function(inVertexName, inFragmentName, inAssets)
     var attributes = {};
     var parameters = {};
 
-    _.extend(attributes, vertObj.attributes);
-    _.extend(parameters, vertObj.parameters);
-    _.extend(attributes, fragObj.attributes);
-    _.extend(parameters, fragObj.parameters);
+    _extend(attributes, vertObj.attributes);
+    _extend(parameters, vertObj.parameters);
+    _extend(attributes, fragObj.attributes);
+    _extend(parameters, fragObj.parameters);
 
     gl.attachShader(shaderProgram, vertObj.obj);
     gl.attachShader(shaderProgram, fragObj.obj);

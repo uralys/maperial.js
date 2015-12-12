@@ -3,7 +3,7 @@
 var Events      = require('../../libs/events.js');
 var Composition = require('./layers/composition.js');
 var utils       = require('../../libs/utils.js');
-var _           = require('lodash/object');
+var _extend     = require('lodash/object/extend');
 
 // -----------------------------------------------------------------
 
@@ -14,7 +14,7 @@ function Layer(options) {
     this.mapView = options.mapView;
 
     this.composition = new Composition(this);
-    _.extend(this, this.composition.api);
+    _extend(this, this.composition.api);
 
     this.refresh = function() {
         this.trigger(Layer.REFRESH);

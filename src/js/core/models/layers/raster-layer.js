@@ -1,14 +1,14 @@
-var utils = require('../../../libs/utils.js'),
-    _ = require('lodash/object'),
+var utils       = require('../../../libs/utils.js'),
+    _extend     = require('lodash/object/extend'),
     Composition = require('./composition.js'),
-    Layer = require('../layer.js');
+    Layer       = require('../layer.js');
 
 
 //---------------------------------------------------------------------------
 
 function RasterLayer(options) {
 
-    _.extend(this, new Layer(options));
+    _extend(this, new Layer(options));
 
     this.type = Layer.Raster;
     this.sourceId = options.sourceId;

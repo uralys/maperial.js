@@ -2,7 +2,7 @@
 
 // ---------------------------------------------------------------
 
-var _              = require('lodash/object');
+var _extend        = require('lodash/object/extend');
 var Layer          = require('../models/layer.js');
 var Composition    = require('../models/layers/composition.js');
 var DynamicalLayer = require('../models/layers/dynamical-layer.js');
@@ -68,7 +68,7 @@ LayerManager.prototype.addLayer = function(layerType, options) {
 
         case Layer.Images:
         case Layer.WMS:
-            layer = new ImageLayer(_.extend({
+            layer = new ImageLayer(_extend({
                 mapView: this.mapView
             }, options));
             break;

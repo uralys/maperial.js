@@ -1,11 +1,11 @@
-var _ = require('lodash/collection');
+'use strict';
+var _filter = require('lodash/collection/filter');
 
 /*
  * Mixins for an object to let it trigger Events or receive Events.
  * If this object has a parent, the Event bubbles to this parent.
  */
 function Events() {
-
     /* element using this mixin */
     var me = this,
 
@@ -23,7 +23,7 @@ function Events() {
          *                      the triggered callback
          * "this" default to the event emitter if not provided
          */
-        on = function (type, cb, context) {
+        on = function(type, cb, context) {
             listeners.push({
                 type: type,
                 cb: cb,
@@ -38,10 +38,10 @@ function Events() {
          * @param type {string} the type of the event listener to unregister
          * @param cb {function} the callback of the listener to unregister
          */
-        off = function (type, cb) {
-            listeners = _.filter(listeners, function (listener) {
+        off = function(type, cb) {
+            listeners = _filter(listeners, function(listener) {
                 return !(listener.type === type && listener.cb === cb);
-            })
+            });
         },
 
         //-------------------------------------------------------------//
@@ -61,16 +61,14 @@ function Events() {
          *      -> set him as currentTarget
          *
          */
-        trigger = function (type, event) {
-
+        trigger = function(type, event) {
             event = event || {};
             event.currentTarget = event.currentTarget || me;
 
-            listeners.forEach(function (listener) {
+            listeners.forEach(function(listener) {
                 if (type === listener.type) {
                     listener.cb.call(listener.context, event);
                 }
-
             });
 
             /* bubbling */

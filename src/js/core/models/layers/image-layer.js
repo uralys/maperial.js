@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------
 
 var utils       = require('../../../libs/utils.js');
-var _           = require('lodash/object');
+var _extend     = require('lodash/object/extend');
 var Composition = require('./composition.js');
 var Layer       = require('../layer.js');
 
@@ -15,7 +15,7 @@ var Layer       = require('../layer.js');
  * @mixes Composition
  */
 function ImageLayer(options) {
-    _.extend(this, new Layer(options));
+    _extend(this, new Layer(options));
 
     this.type     = Layer.Images;
     this.options  = options;
