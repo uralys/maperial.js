@@ -1,5 +1,5 @@
 var utils = require('../../../libs/utils.js'),
-    _ = require('lodash'),
+    _ = require('lodash/object'),
     Composition = require('./composition.js'),
     Layer = require('../layer.js');
 

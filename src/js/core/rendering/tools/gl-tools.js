@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash');
+var _ = require('lodash/object');
 
 function GLTools() {}
 
@@ -58,7 +58,7 @@ GLTools.prototype.BuildShader = function(gl, inShader) {
     return shader;
 };
 
-GLTools.prototype.MakeProgram = function (inVertexName, inFragmentName, inAssets) {
+GLTools.prototype.MakeProgram = function(inVertexName, inFragmentName, inAssets) {
     if (!inAssets.shaderData) {
         console.log('invalid shader data');
         return null;

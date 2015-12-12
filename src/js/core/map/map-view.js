@@ -12,7 +12,7 @@ var Composition  = require('../models/layers/composition.js');
 var Source       = require('../models/source.js');
 var Events       = require('../../libs/events.js');
 var utils        = require('../../libs/utils.js');
-var _            = require('lodash');
+var _            = require('lodash/object');
 var TWEEN        = require('tween.js');
 
 // --------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------
 
 var utils       = require('../../../libs/utils.js');
-var _           = require('lodash');
+var _           = require('lodash/object');
 var Composition = require('./composition.js');
 var Layer       = require('../layer.js');
 

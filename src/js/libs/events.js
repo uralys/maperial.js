@@ -1,4 +1,4 @@
-var _ = require("lodash");
+var _ = require('lodash/collection');
 
 /*
  * Mixins for an object to let it trigger Events or receive Events.

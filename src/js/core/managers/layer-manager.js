@@ -2,7 +2,7 @@
 
 // ---------------------------------------------------------------
 
-var _              = require('lodash');
+var _              = require('lodash/object');
 var Layer          = require('../models/layer.js');
 var Composition    = require('../models/layers/composition.js');
 var DynamicalLayer = require('../models/layers/dynamical-layer.js');
